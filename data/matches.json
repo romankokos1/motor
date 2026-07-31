@@ -1,6 +1,5 @@
 {
-  "generated": null,
-  "note": "Seed data (jen domácí zápasy) — po prvním běhu GitHub Actions bude nahrazeno kompletním rozpisem (doma i venku) přímo z hcmotor.cz.",
+  "generated": "2026-07-31T12:14:10Z",
   "teams": {
     "mdo": "Mladší dorost",
     "sdo": "Starší dorost",
@@ -8,508 +7,1003 @@
   },
   "matches": [
     {
-      "team": "mdo",
-      "round": 2,
-      "date": "2026-09-12",
-      "time": "12:00",
-      "home": true,
-      "opponent": "RB Salcburk",
-      "location": "Budvar aréna, České Budějovice"
+      "team": "sdo",
+      "date": "2026-09-04",
+      "time": "13:30",
+      "home": false,
+      "opponent": "HC Tábor",
+      "location": "Tábor, Zimní stadion",
+      "round": null
+    },
+    {
+      "team": "u20",
+      "date": "2026-09-04",
+      "time": "16:00",
+      "home": false,
+      "opponent": "HC Slavia Praha",
+      "location": "Praha, Zimní stadion Eden",
+      "round": 1
     },
     {
       "team": "mdo",
-      "round": 4,
+      "date": "2026-09-05",
+      "time": "10:00",
+      "home": false,
+      "opponent": "HC Škoda Plzeň",
+      "location": "Plzeň, LOGSPEED CZ Aréna",
+      "round": 1
+    },
+    {
+      "team": "u20",
+      "date": "2026-09-05",
+      "time": "10:00",
+      "home": false,
+      "opponent": "HC Škoda Plzeň",
+      "location": "Plzeň, LOGSPEED CZ Aréna",
+      "round": 2
+    },
+    {
+      "team": "sdo",
+      "date": "2026-09-11",
+      "time": "13:30",
+      "home": false,
+      "opponent": "Banes Motor České Budějovice",
+      "location": "České Budějovice, Budvar aréna",
+      "round": null
+    },
+    {
+      "team": "u20",
+      "date": "2026-09-11",
+      "time": "13:30",
+      "home": false,
+      "opponent": "Banes Motor České Budějovice",
+      "location": "České Budějovice, Budvar aréna",
+      "round": 3
+    },
+    {
+      "team": "mdo",
+      "date": "2026-09-12",
+      "time": "10:00",
+      "home": false,
+      "opponent": "Banes Motor České Budějovice",
+      "location": "České Budějovice, Budvar aréna",
+      "round": 2
+    },
+    {
+      "team": "sdo",
+      "date": "2026-09-12",
+      "time": "10:00",
+      "home": false,
+      "opponent": "Banes Motor České Budějovice",
+      "location": "České Budějovice, Budvar aréna",
+      "round": null
+    },
+    {
+      "team": "u20",
+      "date": "2026-09-12",
+      "time": "10:00",
+      "home": false,
+      "opponent": "Banes Motor České Budějovice",
+      "location": "České Budějovice, Budvar aréna",
+      "round": 4
+    },
+    {
+      "team": "mdo",
+      "date": "2026-09-13",
+      "time": "10:00",
+      "home": false,
+      "opponent": "Rytíři Kladno",
+      "location": "Kladno, ČEZ STADION Kladno",
+      "round": 3
+    },
+    {
+      "team": "sdo",
+      "date": "2026-09-18",
+      "time": "13:30",
+      "home": false,
+      "opponent": "HC Slavia Praha",
+      "location": "Praha, Zimní stadion Eden",
+      "round": null
+    },
+    {
+      "team": "u20",
+      "date": "2026-09-18",
+      "time": "13:30",
+      "home": false,
+      "opponent": "BK Mladá Boleslav",
+      "location": "Mladá Boleslav, ŠKOENERGO Aréna",
+      "round": 5
+    },
+    {
+      "team": "mdo",
       "date": "2026-09-19",
-      "time": "12:00",
-      "home": true,
-      "opponent": "Pilsen Wolves",
-      "location": "Budvar aréna, České Budějovice"
+      "time": "10:00",
+      "home": false,
+      "opponent": "Banes Motor České Budějovice",
+      "location": "České Budějovice, Budvar aréna",
+      "round": 4
+    },
+    {
+      "team": "sdo",
+      "date": "2026-09-19",
+      "time": "10:00",
+      "home": false,
+      "opponent": "HC Sparta Praha",
+      "location": "Praha - Holešovice, Sportovní hala Fortuna",
+      "round": null
+    },
+    {
+      "team": "u20",
+      "date": "2026-09-19",
+      "time": "10:00",
+      "home": false,
+      "opponent": "Bílí Tygři Liberec",
+      "location": "Liberec, Home Credit Arena",
+      "round": 6
     },
     {
       "team": "mdo",
-      "round": 7,
+      "date": "2026-09-20",
+      "time": "10:00",
+      "home": false,
+      "opponent": "Piráti Chomutov",
+      "location": "Chomutov, ROCKNET ARÉNA",
+      "round": 5
+    },
+    {
+      "team": "sdo",
+      "date": "2026-09-25",
+      "time": "13:30",
+      "home": false,
+      "opponent": "Banes Motor České Budějovice",
+      "location": "České Budějovice, Budvar aréna",
+      "round": null
+    },
+    {
+      "team": "u20",
+      "date": "2026-09-25",
+      "time": "13:30",
+      "home": false,
+      "opponent": "Banes Motor České Budějovice",
+      "location": "České Budějovice, Budvar aréna",
+      "round": 7
+    },
+    {
+      "team": "mdo",
+      "date": "2026-09-26",
+      "time": "10:00",
+      "home": false,
+      "opponent": "HC Energie Karlovy Vary",
+      "location": "Karlovy Vary, Mattoni Arena",
+      "round": 6
+    },
+    {
+      "team": "sdo",
+      "date": "2026-09-26",
+      "time": "10:00",
+      "home": false,
+      "opponent": "Banes Motor České Budějovice",
+      "location": "České Budějovice, Budvar aréna",
+      "round": null
+    },
+    {
+      "team": "u20",
+      "date": "2026-09-26",
+      "time": "10:00",
+      "home": false,
+      "opponent": "Banes Motor České Budějovice",
+      "location": "České Budějovice, Budvar aréna",
+      "round": 8
+    },
+    {
+      "team": "mdo",
       "date": "2026-09-27",
-      "time": "12:00",
-      "home": true,
-      "opponent": "Litvínov",
-      "location": "Budvar aréna, České Budějovice"
-    },
-    {
-      "team": "mdo",
-      "round": 8,
-      "date": "2026-10-03",
-      "time": "12:00",
-      "home": true,
-      "opponent": "Plzeň",
-      "location": "Budvar aréna, České Budějovice"
-    },
-    {
-      "team": "mdo",
-      "round": 10,
-      "date": "2026-10-11",
-      "time": "12:00",
-      "home": true,
-      "opponent": "Kladno",
-      "location": "Budvar aréna, České Budějovice"
-    },
-    {
-      "team": "mdo",
-      "round": 12,
-      "date": "2026-10-18",
-      "time": "12:00",
-      "home": true,
-      "opponent": "Chomutov",
-      "location": "Budvar aréna, České Budějovice"
-    },
-    {
-      "team": "mdo",
-      "round": 13,
-      "date": "2026-10-24",
-      "time": "12:00",
-      "home": true,
-      "opponent": "Karlovy Vary",
-      "location": "Budvar aréna, České Budějovice"
-    },
-    {
-      "team": "mdo",
-      "round": 16,
-      "date": "2026-11-15",
-      "time": "12:00",
-      "home": true,
-      "opponent": "RB Salcburk",
-      "location": "Budvar aréna, České Budějovice"
-    },
-    {
-      "team": "mdo",
-      "round": 18,
-      "date": "2026-11-22",
-      "time": "12:00",
-      "home": true,
-      "opponent": "Pilsen Wolves",
-      "location": "Budvar aréna, České Budějovice"
-    },
-    {
-      "team": "mdo",
-      "round": 21,
-      "date": "2026-12-05",
-      "time": "12:00",
-      "home": true,
-      "opponent": "Litvínov",
-      "location": "Budvar aréna, České Budějovice"
-    },
-    {
-      "team": "mdo",
-      "round": 22,
-      "date": "2026-12-06",
-      "time": "12:00",
-      "home": true,
-      "opponent": "Plzeň",
-      "location": "Budvar aréna, České Budějovice"
-    },
-    {
-      "team": "mdo",
-      "round": 24,
-      "date": "2026-12-13",
-      "time": "12:00",
-      "home": true,
-      "opponent": "Kladno",
-      "location": "Budvar aréna, České Budějovice"
-    },
-    {
-      "team": "mdo",
-      "round": 26,
-      "date": "2027-01-03",
-      "time": "12:00",
-      "home": true,
-      "opponent": "Chomutov",
-      "location": "Budvar aréna, České Budějovice"
-    },
-    {
-      "team": "mdo",
-      "round": 27,
-      "date": "2027-01-09",
-      "time": "12:00",
-      "home": true,
-      "opponent": "Karlovy Vary",
-      "location": "Budvar aréna, České Budějovice"
-    },
-    {
-      "team": "sdo",
-      "round": 2,
-      "date": "2026-09-11",
-      "time": "15:30",
-      "home": true,
-      "opponent": "Litvínov",
-      "location": "Budvar aréna, České Budějovice"
-    },
-    {
-      "team": "sdo",
-      "round": 3,
-      "date": "2026-09-12",
-      "time": "12:00",
-      "home": true,
-      "opponent": "Chomutov",
-      "location": "Budvar aréna, České Budějovice"
-    },
-    {
-      "team": "sdo",
-      "round": 6,
-      "date": "2026-09-25",
-      "time": "15:30",
-      "home": true,
-      "opponent": "Olomouc",
-      "location": "Budvar aréna, České Budějovice"
-    },
-    {
-      "team": "sdo",
-      "round": 7,
-      "date": "2026-09-26",
-      "time": "12:00",
-      "home": true,
-      "opponent": "Poruba",
-      "location": "Budvar aréna, České Budějovice"
-    },
-    {
-      "team": "sdo",
-      "round": 10,
-      "date": "2026-10-09",
-      "time": "15:30",
-      "home": true,
-      "opponent": "Kometa Brno",
-      "location": "Budvar aréna, České Budějovice"
-    },
-    {
-      "team": "sdo",
-      "round": 11,
-      "date": "2026-10-10",
-      "time": "12:00",
-      "home": true,
-      "opponent": "Jihlava",
-      "location": "Budvar aréna, České Budějovice"
-    },
-    {
-      "team": "sdo",
-      "round": 14,
-      "date": "2026-10-23",
-      "time": "15:30",
-      "home": true,
-      "opponent": "Liberec",
-      "location": "Budvar aréna, České Budějovice"
-    },
-    {
-      "team": "sdo",
-      "round": 15,
-      "date": "2026-10-24",
-      "time": "12:00",
-      "home": true,
-      "opponent": "Mladá Boleslav",
-      "location": "Budvar aréna, České Budějovice"
-    },
-    {
-      "team": "sdo",
-      "round": 16,
-      "date": "2026-11-13",
-      "time": "15:30",
-      "home": true,
-      "opponent": "Třinec",
-      "location": "Budvar aréna, České Budějovice"
-    },
-    {
-      "team": "sdo",
-      "round": 17,
-      "date": "2026-11-14",
-      "time": "12:00",
-      "home": true,
-      "opponent": "Vítkovice",
-      "location": "Budvar aréna, České Budějovice"
-    },
-    {
-      "team": "sdo",
-      "round": 22,
-      "date": "2026-12-04",
-      "time": "15:30",
-      "home": true,
-      "opponent": "Slavia Praha",
-      "location": "Budvar aréna, České Budějovice"
-    },
-    {
-      "team": "sdo",
-      "round": 23,
-      "date": "2026-12-05",
-      "time": "12:00",
-      "home": true,
-      "opponent": "Sparta Praha",
-      "location": "Budvar aréna, České Budějovice"
-    },
-    {
-      "team": "sdo",
-      "round": 26,
-      "date": "2027-01-03",
-      "time": "12:00",
-      "home": true,
-      "opponent": "Tábor",
-      "location": "Budvar aréna, České Budějovice"
-    },
-    {
-      "team": "sdo",
-      "round": 27,
-      "date": "2027-01-08",
-      "time": "15:30",
-      "home": true,
-      "opponent": "Přerov",
-      "location": "Budvar aréna, České Budějovice"
-    },
-    {
-      "team": "sdo",
-      "round": 28,
-      "date": "2027-01-09",
-      "time": "12:00",
-      "home": true,
-      "opponent": "Zlín",
-      "location": "Budvar aréna, České Budějovice"
-    },
-    {
-      "team": "sdo",
-      "round": 31,
-      "date": "2027-01-22",
-      "time": "15:30",
-      "home": true,
-      "opponent": "Plzeň",
-      "location": "Budvar aréna, České Budějovice"
-    },
-    {
-      "team": "sdo",
-      "round": 32,
-      "date": "2027-01-23",
-      "time": "12:00",
-      "home": true,
-      "opponent": "Karlovy Vary",
-      "location": "Budvar aréna, České Budějovice"
-    },
-    {
-      "team": "sdo",
-      "round": 37,
-      "date": "2027-02-19",
-      "time": "15:30",
-      "home": true,
-      "opponent": "Hradec Králové",
-      "location": "Budvar aréna, České Budějovice"
-    },
-    {
-      "team": "sdo",
-      "round": 38,
-      "date": "2027-02-20",
-      "time": "12:00",
-      "home": true,
-      "opponent": "Pardubice",
-      "location": "Budvar aréna, České Budějovice"
+      "time": "10:00",
+      "home": false,
+      "opponent": "Banes Motor České Budějovice",
+      "location": "České Budějovice, Budvar aréna",
+      "round": 7
     },
     {
       "team": "u20",
-      "round": 3,
-      "date": "2026-09-11",
-      "time": "15:30",
-      "home": true,
-      "opponent": "Pardubice",
-      "location": "Budvar aréna, České Budějovice"
-    },
-    {
-      "team": "u20",
-      "round": 4,
-      "date": "2026-09-12",
-      "time": "12:00",
-      "home": true,
-      "opponent": "Hradec Králové",
-      "location": "Budvar aréna, České Budějovice"
-    },
-    {
-      "team": "u20",
-      "round": 7,
-      "date": "2026-09-25",
-      "time": "15:30",
-      "home": true,
-      "opponent": "Kometa Brno",
-      "location": "Budvar aréna, České Budějovice"
-    },
-    {
-      "team": "u20",
-      "round": 8,
-      "date": "2026-09-26",
-      "time": "12:00",
-      "home": true,
-      "opponent": "Ostrava - Poruba",
-      "location": "Budvar aréna, České Budějovice"
-    },
-    {
-      "team": "u20",
-      "round": 9,
       "date": "2026-09-28",
-      "time": "12:00",
-      "home": true,
-      "opponent": "Jihlava",
-      "location": "Budvar aréna, České Budějovice"
+      "time": "10:00",
+      "home": false,
+      "opponent": "Banes Motor České Budějovice",
+      "location": "České Budějovice, Budvar aréna",
+      "round": 9
+    },
+    {
+      "team": "sdo",
+      "date": "2026-10-02",
+      "time": "13:30",
+      "home": false,
+      "opponent": "HC ZUBR Přerov",
+      "location": "Přerov, Zimní stadion",
+      "round": null
     },
     {
       "team": "u20",
-      "round": 12,
+      "date": "2026-10-02",
+      "time": "13:30",
+      "home": false,
+      "opponent": "HC Sparta Praha",
+      "location": "Praha - Holešovice, Sportovní hala Fortuna",
+      "round": 10
+    },
+    {
+      "team": "mdo",
+      "date": "2026-10-03",
+      "time": "10:00",
+      "home": false,
+      "opponent": "Banes Motor České Budějovice",
+      "location": "České Budějovice, Budvar aréna",
+      "round": 8
+    },
+    {
+      "team": "sdo",
+      "date": "2026-10-03",
+      "time": "10:00",
+      "home": false,
+      "opponent": "PSG Berani Zlín",
+      "location": "Zlín, Trinity Bank Arena Luďka Čajky",
+      "round": null
+    },
+    {
+      "team": "u20",
+      "date": "2026-10-03",
+      "time": "10:00",
+      "home": false,
+      "opponent": "Rytíři Kladno",
+      "location": "Kladno, ČEZ STADION Kladno",
+      "round": 11
+    },
+    {
+      "team": "sdo",
       "date": "2026-10-09",
-      "time": "15:30",
-      "home": true,
-      "opponent": "Třinec",
-      "location": "Budvar aréna, České Budějovice"
+      "time": "13:30",
+      "home": false,
+      "opponent": "Banes Motor České Budějovice",
+      "location": "České Budějovice, Budvar aréna",
+      "round": null
     },
     {
       "team": "u20",
-      "round": 13,
+      "date": "2026-10-09",
+      "time": "13:30",
+      "home": false,
+      "opponent": "Banes Motor České Budějovice",
+      "location": "České Budějovice, Budvar aréna",
+      "round": 12
+    },
+    {
+      "team": "mdo",
       "date": "2026-10-10",
-      "time": "12:00",
-      "home": true,
-      "opponent": "Vítkovice",
-      "location": "Budvar aréna, České Budějovice"
+      "time": "10:00",
+      "home": false,
+      "opponent": "EC Red Bull Salcburk",
+      "location": "Salzburg, RED BULL ACADEMY ARENA",
+      "round": 9
+    },
+    {
+      "team": "sdo",
+      "date": "2026-10-10",
+      "time": "10:00",
+      "home": false,
+      "opponent": "Banes Motor České Budějovice",
+      "location": "České Budějovice, Budvar aréna",
+      "round": null
     },
     {
       "team": "u20",
-      "round": 16,
+      "date": "2026-10-10",
+      "time": "10:00",
+      "home": false,
+      "opponent": "Banes Motor České Budějovice",
+      "location": "České Budějovice, Budvar aréna",
+      "round": 13
+    },
+    {
+      "team": "mdo",
+      "date": "2026-10-11",
+      "time": "10:00",
+      "home": false,
+      "opponent": "Banes Motor České Budějovice",
+      "location": "České Budějovice, Budvar aréna",
+      "round": 10
+    },
+    {
+      "team": "sdo",
+      "date": "2026-10-16",
+      "time": "13:30",
+      "home": false,
+      "opponent": "HC Škoda Plzeň",
+      "location": "Plzeň, LOGSPEED CZ Aréna",
+      "round": null
+    },
+    {
+      "team": "u20",
+      "date": "2026-10-16",
+      "time": "13:30",
+      "home": false,
+      "opponent": "HC Energie Karlovy Vary",
+      "location": "Karlovy Vary, Mattoni Arena",
+      "round": 14
+    },
+    {
+      "team": "mdo",
+      "date": "2026-10-17",
+      "time": "10:00",
+      "home": false,
+      "opponent": "HC Pilsen Wolves",
+      "location": "Plzeň - Košutka, ICE ARENA Plzeň",
+      "round": 11
+    },
+    {
+      "team": "sdo",
+      "date": "2026-10-17",
+      "time": "10:00",
+      "home": false,
+      "opponent": "HC Energie Karlovy Vary",
+      "location": "Karlovy Vary, Mattoni Arena",
+      "round": null
+    },
+    {
+      "team": "u20",
+      "date": "2026-10-17",
+      "time": "10:00",
+      "home": false,
+      "opponent": "HC Verva Litvínov",
+      "location": "Litvínov, Zimní stadion Ivana Hlinky",
+      "round": 15
+    },
+    {
+      "team": "mdo",
+      "date": "2026-10-18",
+      "time": "10:00",
+      "home": false,
+      "opponent": "Banes Motor České Budějovice",
+      "location": "České Budějovice, Budvar aréna",
+      "round": 12
+    },
+    {
+      "team": "sdo",
       "date": "2026-10-23",
-      "time": "15:30",
-      "home": true,
-      "opponent": "Plzeň",
-      "location": "Budvar aréna, České Budějovice"
+      "time": "13:30",
+      "home": false,
+      "opponent": "Banes Motor České Budějovice",
+      "location": "České Budějovice, Budvar aréna",
+      "round": null
     },
     {
       "team": "u20",
-      "round": 17,
+      "date": "2026-10-23",
+      "time": "13:30",
+      "home": false,
+      "opponent": "Banes Motor České Budějovice",
+      "location": "České Budějovice, Budvar aréna",
+      "round": 16
+    },
+    {
+      "team": "mdo",
       "date": "2026-10-24",
-      "time": "12:00",
-      "home": true,
-      "opponent": "Slavia Praha",
-      "location": "Budvar aréna, České Budějovice"
+      "time": "10:00",
+      "home": false,
+      "opponent": "Banes Motor České Budějovice",
+      "location": "České Budějovice, Budvar aréna",
+      "round": 13
+    },
+    {
+      "team": "sdo",
+      "date": "2026-10-24",
+      "time": "10:00",
+      "home": false,
+      "opponent": "Banes Motor České Budějovice",
+      "location": "České Budějovice, Budvar aréna",
+      "round": null
     },
     {
       "team": "u20",
-      "round": 20,
+      "date": "2026-10-24",
+      "time": "10:00",
+      "home": false,
+      "opponent": "Banes Motor České Budějovice",
+      "location": "České Budějovice, Budvar aréna",
+      "round": 17
+    },
+    {
+      "team": "mdo",
+      "date": "2026-10-25",
+      "time": "11:00",
+      "home": false,
+      "opponent": "HC Verva Litvínov",
+      "location": "Litvínov, Zimní stadion Ivana Hlinky",
+      "round": 14
+    },
+    {
+      "team": "u20",
+      "date": "2026-10-30",
+      "time": "14:30",
+      "home": false,
+      "opponent": "HK Mountfield Hradec Králové",
+      "location": "Hradec Králové, ČPP ARÉNA",
+      "round": 18
+    },
+    {
+      "team": "u20",
+      "date": "2026-10-31",
+      "time": "11:00",
+      "home": false,
+      "opponent": "HC Dynamo Pardubice",
+      "location": "Pardubice, enteria arena",
+      "round": 19
+    },
+    {
+      "team": "sdo",
       "date": "2026-11-13",
-      "time": "15:30",
-      "home": true,
-      "opponent": "Liberec",
-      "location": "Budvar aréna, České Budějovice"
+      "time": "14:30",
+      "home": false,
+      "opponent": "Banes Motor České Budějovice",
+      "location": "České Budějovice, Budvar aréna",
+      "round": null
     },
     {
       "team": "u20",
-      "round": 21,
+      "date": "2026-11-13",
+      "time": "14:30",
+      "home": false,
+      "opponent": "Banes Motor České Budějovice",
+      "location": "České Budějovice, Budvar aréna",
+      "round": 20
+    },
+    {
+      "team": "mdo",
       "date": "2026-11-14",
-      "time": "12:00",
-      "home": true,
-      "opponent": "Mladá Boleslav",
-      "location": "Budvar aréna, České Budějovice"
+      "time": "11:00",
+      "home": false,
+      "opponent": "HC Škoda Plzeň",
+      "location": "Plzeň, LOGSPEED CZ Aréna",
+      "round": 15
+    },
+    {
+      "team": "sdo",
+      "date": "2026-11-14",
+      "time": "11:00",
+      "home": false,
+      "opponent": "Banes Motor České Budějovice",
+      "location": "České Budějovice, Budvar aréna",
+      "round": null
     },
     {
       "team": "u20",
-      "round": 25,
+      "date": "2026-11-14",
+      "time": "11:00",
+      "home": false,
+      "opponent": "Banes Motor České Budějovice",
+      "location": "České Budějovice, Budvar aréna",
+      "round": 21
+    },
+    {
+      "team": "mdo",
+      "date": "2026-11-15",
+      "time": "11:00",
+      "home": false,
+      "opponent": "Banes Motor České Budějovice",
+      "location": "České Budějovice, Budvar aréna",
+      "round": 16
+    },
+    {
+      "team": "u20",
+      "date": "2026-11-17",
+      "time": "11:00",
+      "home": false,
+      "opponent": "HC Dukla Jihlava",
+      "location": "Jihlava, CZ LOKO ARÉNA",
+      "round": 22
+    },
+    {
+      "team": "sdo",
+      "date": "2026-11-20",
+      "time": "14:30",
+      "home": false,
+      "opponent": "HK Mountfield Hradec Králové",
+      "location": "Hradec Králové, ČPP ARÉNA",
+      "round": null
+    },
+    {
+      "team": "u20",
+      "date": "2026-11-20",
+      "time": "14:30",
+      "home": false,
+      "opponent": "HC RT Torax Poruba 2011",
+      "location": "Ostrava, RT TORAX ARENA",
+      "round": 23
+    },
+    {
+      "team": "mdo",
+      "date": "2026-11-21",
+      "time": "11:00",
+      "home": false,
+      "opponent": "Rytíři Kladno",
+      "location": "Kladno, ČEZ STADION Kladno",
+      "round": 17
+    },
+    {
+      "team": "sdo",
+      "date": "2026-11-21",
+      "time": "11:00",
+      "home": false,
+      "opponent": "HC Dynamo Pardubice",
+      "location": "Pardubice, enteria arena",
+      "round": null
+    },
+    {
+      "team": "u20",
+      "date": "2026-11-21",
+      "time": "11:00",
+      "home": false,
+      "opponent": "HC Kometa Brno",
+      "location": "Brno, Winning Group Arena",
+      "round": 24
+    },
+    {
+      "team": "mdo",
+      "date": "2026-11-22",
+      "time": "11:00",
+      "home": false,
+      "opponent": "Banes Motor České Budějovice",
+      "location": "České Budějovice, Budvar aréna",
+      "round": 18
+    },
+    {
+      "team": "sdo",
       "date": "2026-11-27",
-      "time": "15:30",
-      "home": true,
-      "opponent": "Kladno",
-      "location": "Budvar aréna, České Budějovice"
+      "time": "14:30",
+      "home": false,
+      "opponent": "HC Verva Litvínov",
+      "location": "Litvínov, Zimní stadion Ivana Hlinky",
+      "round": null
     },
     {
       "team": "u20",
-      "round": 26,
+      "date": "2026-11-27",
+      "time": "14:30",
+      "home": false,
+      "opponent": "Banes Motor České Budějovice",
+      "location": "České Budějovice, Budvar aréna",
+      "round": 25
+    },
+    {
+      "team": "mdo",
       "date": "2026-11-28",
-      "time": "12:00",
-      "home": true,
-      "opponent": "Sparta Praha",
-      "location": "Budvar aréna, České Budějovice"
+      "time": "11:00",
+      "home": false,
+      "opponent": "Piráti Chomutov",
+      "location": "Chomutov, ROCKNET ARÉNA",
+      "round": 19
+    },
+    {
+      "team": "sdo",
+      "date": "2026-11-28",
+      "time": "11:00",
+      "home": false,
+      "opponent": "Piráti Chomutov",
+      "location": "Chomutov, ROCKNET ARÉNA",
+      "round": null
     },
     {
       "team": "u20",
-      "round": 29,
+      "date": "2026-11-28",
+      "time": "11:00",
+      "home": false,
+      "opponent": "Banes Motor České Budějovice",
+      "location": "České Budějovice, Budvar aréna",
+      "round": 26
+    },
+    {
+      "team": "mdo",
+      "date": "2026-11-29",
+      "time": "11:00",
+      "home": false,
+      "opponent": "HC Energie Karlovy Vary",
+      "location": "Karlovy Vary, Mattoni Arena",
+      "round": 20
+    },
+    {
+      "team": "sdo",
+      "date": "2026-12-04",
+      "time": "14:30",
+      "home": false,
+      "opponent": "Banes Motor České Budějovice",
+      "location": "České Budějovice, Budvar aréna",
+      "round": null
+    },
+    {
+      "team": "u20",
+      "date": "2026-12-04",
+      "time": "14:30",
+      "home": false,
+      "opponent": "HC Vítkovice Ridera",
+      "location": "Ostrava, OSTRAVAR ARÉNA",
+      "round": 27
+    },
+    {
+      "team": "mdo",
+      "date": "2026-12-05",
+      "time": "11:00",
+      "home": false,
+      "opponent": "Banes Motor České Budějovice",
+      "location": "České Budějovice, Budvar aréna",
+      "round": 21
+    },
+    {
+      "team": "sdo",
+      "date": "2026-12-05",
+      "time": "11:00",
+      "home": false,
+      "opponent": "Banes Motor České Budějovice",
+      "location": "České Budějovice, Budvar aréna",
+      "round": null
+    },
+    {
+      "team": "u20",
+      "date": "2026-12-05",
+      "time": "11:00",
+      "home": false,
+      "opponent": "HC Oceláři Třinec",
+      "location": "Třinec, MINI WERK ARENA",
+      "round": 28
+    },
+    {
+      "team": "mdo",
+      "date": "2026-12-06",
+      "time": "11:00",
+      "home": false,
+      "opponent": "Banes Motor České Budějovice",
+      "location": "České Budějovice, Budvar aréna",
+      "round": 22
+    },
+    {
+      "team": "mdo",
       "date": "2026-12-12",
-      "time": "12:00",
-      "home": true,
-      "opponent": "Litvínov",
-      "location": "Budvar aréna, České Budějovice"
+      "time": "11:00",
+      "home": false,
+      "opponent": "EC Red Bull Salcburk",
+      "location": "Salzburg, RED BULL ACADEMY ARENA",
+      "round": 23
     },
     {
       "team": "u20",
-      "round": 30,
+      "date": "2026-12-12",
+      "time": "11:00",
+      "home": false,
+      "opponent": "Banes Motor České Budějovice",
+      "location": "České Budějovice, Budvar aréna",
+      "round": 29
+    },
+    {
+      "team": "mdo",
       "date": "2026-12-13",
-      "time": "12:00",
-      "home": true,
-      "opponent": "Karlovy Vary",
-      "location": "Budvar aréna, České Budějovice"
+      "time": "11:00",
+      "home": false,
+      "opponent": "Banes Motor České Budějovice",
+      "location": "České Budějovice, Budvar aréna",
+      "round": 24
     },
     {
       "team": "u20",
-      "round": 31,
+      "date": "2026-12-13",
+      "time": "11:00",
+      "home": false,
+      "opponent": "Banes Motor České Budějovice",
+      "location": "České Budějovice, Budvar aréna",
+      "round": 30
+    },
+    {
+      "team": "u20",
       "date": "2026-12-17",
-      "time": "15:30",
-      "home": true,
-      "opponent": "Sparta Praha",
-      "location": "Budvar aréna, České Budějovice"
+      "time": "14:30",
+      "home": false,
+      "opponent": "Banes Motor České Budějovice",
+      "location": "České Budějovice, Budvar aréna",
+      "round": 31
+    },
+    {
+      "team": "sdo",
+      "date": "2026-12-18",
+      "time": "14:30",
+      "home": false,
+      "opponent": "HC Olomouc",
+      "location": "Olomouc, Zimní stadion",
+      "round": null
+    },
+    {
+      "team": "mdo",
+      "date": "2026-12-19",
+      "time": "11:00",
+      "home": false,
+      "opponent": "HC Pilsen Wolves",
+      "location": "Plzeň - Košutka, ICE ARENA Plzeň",
+      "round": 25
+    },
+    {
+      "team": "sdo",
+      "date": "2026-12-19",
+      "time": "11:00",
+      "home": false,
+      "opponent": "HC RT TORAX Poruba",
+      "location": "Ostrava, RT TORAX ARENA",
+      "round": null
     },
     {
       "team": "u20",
-      "round": 33,
+      "date": "2026-12-19",
+      "time": "11:00",
+      "home": false,
+      "opponent": "HC RT Torax Poruba 2011",
+      "location": "Ostrava, RT TORAX ARENA",
+      "round": 32
+    },
+    {
+      "team": "mdo",
       "date": "2027-01-03",
-      "time": "12:00",
-      "home": true,
-      "opponent": "Hradec Králové",
-      "location": "Budvar aréna, České Budějovice"
+      "time": "11:00",
+      "home": false,
+      "opponent": "Banes Motor České Budějovice",
+      "location": "České Budějovice, Budvar aréna",
+      "round": 26
+    },
+    {
+      "team": "sdo",
+      "date": "2027-01-03",
+      "time": "11:00",
+      "home": false,
+      "opponent": "Banes Motor České Budějovice",
+      "location": "České Budějovice, Budvar aréna",
+      "round": null
     },
     {
       "team": "u20",
-      "round": 35,
+      "date": "2027-01-03",
+      "time": "11:00",
+      "home": false,
+      "opponent": "Banes Motor České Budějovice",
+      "location": "České Budějovice, Budvar aréna",
+      "round": 33
+    },
+    {
+      "team": "u20",
+      "date": "2027-01-07",
+      "time": "14:30",
+      "home": false,
+      "opponent": "HC Slavia Praha",
+      "location": "Praha, Zimní stadion Eden",
+      "round": 34
+    },
+    {
+      "team": "sdo",
+      "date": "2027-01-08",
+      "time": "14:30",
+      "home": false,
+      "opponent": "Banes Motor České Budějovice",
+      "location": "České Budějovice, Budvar aréna",
+      "round": null
+    },
+    {
+      "team": "mdo",
       "date": "2027-01-09",
-      "time": "12:00",
-      "home": true,
-      "opponent": "Litvínov",
-      "location": "Budvar aréna, České Budějovice"
+      "time": "11:00",
+      "home": false,
+      "opponent": "Banes Motor České Budějovice",
+      "location": "České Budějovice, Budvar aréna",
+      "round": 27
+    },
+    {
+      "team": "sdo",
+      "date": "2027-01-09",
+      "time": "11:00",
+      "home": false,
+      "opponent": "Banes Motor České Budějovice",
+      "location": "České Budějovice, Budvar aréna",
+      "round": null
     },
     {
       "team": "u20",
-      "round": 37,
+      "date": "2027-01-09",
+      "time": "11:00",
+      "home": false,
+      "opponent": "Banes Motor České Budějovice",
+      "location": "České Budějovice, Budvar aréna",
+      "round": 35
+    },
+    {
+      "team": "mdo",
+      "date": "2027-01-10",
+      "time": "11:00",
+      "home": false,
+      "opponent": "HC Verva Litvínov",
+      "location": "Litvínov, Zimní stadion Ivana Hlinky",
+      "round": 28
+    },
+    {
+      "team": "u20",
+      "date": "2027-01-14",
+      "time": "14:30",
+      "home": false,
+      "opponent": "HC Oceláři Třinec",
+      "location": "Třinec, MINI WERK ARENA",
+      "round": 36
+    },
+    {
+      "team": "sdo",
+      "date": "2027-01-15",
+      "time": "14:30",
+      "home": false,
+      "opponent": "HC Kometa Brno",
+      "location": "Brno, Winning Group Arena",
+      "round": null
+    },
+    {
+      "team": "sdo",
       "date": "2027-01-16",
-      "time": "12:00",
-      "home": true,
-      "opponent": "Pardubice",
-      "location": "Budvar aréna, České Budějovice"
+      "time": "11:00",
+      "home": false,
+      "opponent": "HC Dukla Jihlava",
+      "location": "Jihlava, CZ LOKO ARÉNA",
+      "round": null
     },
     {
       "team": "u20",
-      "round": 39,
+      "date": "2027-01-16",
+      "time": "11:00",
+      "home": false,
+      "opponent": "Banes Motor České Budějovice",
+      "location": "České Budějovice, Budvar aréna",
+      "round": 37
+    },
+    {
+      "team": "u20",
+      "date": "2027-01-21",
+      "time": "14:30",
+      "home": false,
+      "opponent": "HC Energie Karlovy Vary",
+      "location": "Karlovy Vary, Mattoni Arena",
+      "round": 38
+    },
+    {
+      "team": "sdo",
+      "date": "2027-01-22",
+      "time": "14:30",
+      "home": false,
+      "opponent": "Banes Motor České Budějovice",
+      "location": "České Budějovice, Budvar aréna",
+      "round": null
+    },
+    {
+      "team": "sdo",
       "date": "2027-01-23",
-      "time": "12:00",
-      "home": true,
-      "opponent": "Mladá Boleslav",
-      "location": "Budvar aréna, České Budějovice"
+      "time": "11:00",
+      "home": false,
+      "opponent": "Banes Motor České Budějovice",
+      "location": "České Budějovice, Budvar aréna",
+      "round": null
     },
     {
       "team": "u20",
-      "round": 41,
+      "date": "2027-01-23",
+      "time": "11:00",
+      "home": false,
+      "opponent": "Banes Motor České Budějovice",
+      "location": "České Budějovice, Budvar aréna",
+      "round": 39
+    },
+    {
+      "team": "u20",
+      "date": "2027-01-28",
+      "time": "14:30",
+      "home": false,
+      "opponent": "HC Kometa Brno",
+      "location": "Brno, Winning Group Arena",
+      "round": 40
+    },
+    {
+      "team": "sdo",
+      "date": "2027-01-29",
+      "time": "14:30",
+      "home": false,
+      "opponent": "Bílí Tygři Liberec",
+      "location": "Liberec, Svijanská aréna",
+      "round": null
+    },
+    {
+      "team": "sdo",
       "date": "2027-01-30",
-      "time": "12:00",
-      "home": true,
-      "opponent": "Kladno",
-      "location": "Budvar aréna, České Budějovice"
+      "time": "11:00",
+      "home": false,
+      "opponent": "BK Mladá Boleslav",
+      "location": "Mladá Boleslav, ŠKOENERGO Aréna",
+      "round": null
     },
     {
       "team": "u20",
-      "round": 42,
+      "date": "2027-01-30",
+      "time": "11:00",
+      "home": false,
+      "opponent": "Banes Motor České Budějovice",
+      "location": "České Budějovice, Budvar aréna",
+      "round": 41
+    },
+    {
+      "team": "sdo",
+      "date": "2027-02-05",
+      "time": "14:30",
+      "home": false,
+      "opponent": "HC Oceláři Třinec",
+      "location": "Třinec, WERK ARENA",
+      "round": null
+    },
+    {
+      "team": "sdo",
+      "date": "2027-02-06",
+      "time": "11:00",
+      "home": false,
+      "opponent": "HC Vítkovice Ridera",
+      "location": "Ostrava,  Multifunkční hala",
+      "round": null
+    },
+    {
+      "team": "u20",
       "date": "2027-02-11",
-      "time": "15:30",
-      "home": true,
-      "opponent": "Plzeň",
-      "location": "Budvar aréna, České Budějovice"
+      "time": "14:30",
+      "home": false,
+      "opponent": "Banes Motor České Budějovice",
+      "location": "České Budějovice, Budvar aréna",
+      "round": 42
     },
     {
       "team": "u20",
-      "round": 44,
+      "date": "2027-02-13",
+      "time": "11:00",
+      "home": false,
+      "opponent": "HC Vítkovice Ridera",
+      "location": "Ostrava, OSTRAVAR ARÉNA",
+      "round": 43
+    },
+    {
+      "team": "u20",
       "date": "2027-02-18",
-      "time": "15:30",
-      "home": true,
-      "opponent": "Liberec",
-      "location": "Budvar aréna, České Budějovice"
+      "time": "14:30",
+      "home": false,
+      "opponent": "Banes Motor České Budějovice",
+      "location": "České Budějovice, Budvar aréna",
+      "round": 44
+    },
+    {
+      "team": "sdo",
+      "date": "2027-02-19",
+      "time": "14:30",
+      "home": false,
+      "opponent": "Banes Motor České Budějovice",
+      "location": "České Budějovice, Budvar aréna",
+      "round": null
+    },
+    {
+      "team": "sdo",
+      "date": "2027-02-20",
+      "time": "11:00",
+      "home": false,
+      "opponent": "Banes Motor České Budějovice",
+      "location": "České Budějovice, Budvar aréna",
+      "round": null
+    },
+    {
+      "team": "u20",
+      "date": "2027-02-20",
+      "time": "11:00",
+      "home": false,
+      "opponent": "HC Dukla Jihlava",
+      "location": "Jihlava, CZ LOKO ARÉNA",
+      "round": 45
     }
   ]
 }
