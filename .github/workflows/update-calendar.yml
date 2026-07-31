@@ -1,1 +1,40 @@
+name: Aktualizace rozpisu Motor mládež
 
+on:
+  schedule:
+    # každý den v 6:15 ráno (UTC) = cca 7:15/8:15 SEČ/SELČ
+    - cron: "15 6 * * *"
+  workflow_dispatch: {}   # umožní ruční spuštění z GitHub UI
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Nainstalovat závislosti
+        run: pip install -r scripts/requirements.txt
+
+      - name: Stáhnout a sloučit rozpisy
+        run: python scripts/build_calendar.py
+
+      - name: Commit změn (pokud nějaké jsou)
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/matches.json data/motor-mladez.ics
+          if git diff --cached --quiet; then
+            echo "Žádná změna v rozpisu."
+          else
+            git commit -m "Aktualizace rozpisu ($(date -u +'%Y-%m-%d %H:%M UTC'))"
+            git push
+          fi
