@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rozpis — HC Motor České Budějovice, mládež</title>
+<style>
+  :root{
+    --paper: #f6f7f5;
+    --panel: #ffffff;
+    --ink: #1b2b3a;
+    --muted: #7c8896;
+    --line: #e2e5e2;
+    --line-strong: #c9cec9;
+
+    --navy: #1a3a63;
+    --gold: #b5810a;
+    --red:  #a52a3a;
+    --sky:  #2f6a95;
+
+    --mdo: var(--gold);
+    --sdo: var(--sky);
+    --u20: var(--red);
+
+    --mdo-bg: #faf3e2;
+    --sdo-bg: #eaf1f5;
+    --u20-bg: #f7e9ea;
+  }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    background: var(--paper);
+    color: var(--ink);
+    font-family: Georgia, "Iowan Old Style", "Palatino Linotype", serif;
+    padding: clamp(16px,4vw,36px) 0 60px;
+  }
+  .wrap{ max-width: 900px; margin:0 auto; padding: 0 clamp(14px,4vw,20px); }
+
+  header{
+    display:flex; align-items:flex-end; justify-content:space-between;
+    gap: 16px; flex-wrap: wrap;
+    padding-bottom: 14px;
+    border-bottom: 3px double var(--line-strong);
+    margin-bottom: 20px;
+  }
+  .htext .eyebrow{
+    margin:0 0 4px;
+    font: 500 11px/1 "Helvetica Neue", Arial, sans-serif;
+    letter-spacing:.14em; text-transform:uppercase; color: var(--muted);
+  }
+  h1{
+    margin:0; font-size: clamp(24px,4.6vw,32px); font-weight:400;
+    color: var(--navy); letter-spacing:.005em;
+  }
+  h1 b{ font-weight:700; color: var(--ink); }
+  .htext .sub{ margin: 3px 0 0; font-size: 13px; color: var(--muted); font-style: italic; }
+
+  .crest{ flex:none; width:46px; height:46px; opacity:.85; }
+  .crest circle{ fill:none; stroke: var(--navy); stroke-width:1.4; }
+  .crest text{ fill: var(--red); font-family: Georgia, serif; font-weight:700; }
+
+  .controls{
+    display:flex; flex-wrap:wrap; gap: 14px; align-items:center; justify-content:space-between;
+    margin-bottom: 18px;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+  }
+  .tabs{ display:flex; flex-wrap:wrap; gap:7px; }
+  .tab{
+    appearance:none; cursor:pointer;
+    background: var(--panel); color: var(--muted);
+    border: 1px solid var(--line-strong);
+    border-radius: 3px;
+    padding: 6px 12px;
+    font: 500 12px/1 "Helvetica Neue", Arial, sans-serif;
+    letter-spacing:.02em;
+    display:flex; align-items:center; gap:6px;
+  }
+  .tab .sw{ width:7px; height:7px; border-radius:50%; background:currentColor; opacity:.5; }
+  .tab[data-team="mdo"]{ color: var(--mdo); }
+  .tab[data-team="sdo"]{ color: var(--sdo); }
+  .tab[data-team="u20"]{ color: var(--u20); }
+  .tab.active{ background: var(--ink); color:#fff; border-color: var(--ink); }
+  .tab.active[data-team="mdo"]{ background: var(--mdo); border-color: var(--mdo); }
+  .tab.active[data-team="sdo"]{ background: var(--sdo); border-color: var(--sdo); }
+  .tab.active[data-team="u20"]{ background: var(--u20); border-color: var(--u20); }
+  .tab.active .sw{ opacity:1; background:#fff; }
+
+  .switch{
+    display:flex; align-items:center; gap:8px;
+    font: 500 12px/1 "Helvetica Neue", Arial, sans-serif; color: var(--muted);
+  }
+  .switch input{ accent-color: var(--navy); }
+
+  .month{ margin-bottom: 30px; }
+  .month-head{
+    display:flex; align-items:baseline; justify-content:space-between;
+    margin-bottom: 8px;
+  }
+  .month-head h2{
+    margin:0; font-size: 18px; font-weight:400; color: var(--navy);
+    text-transform: capitalize;
+  }
+  .month-head .n{
+    font: 11px/1 "Helvetica Neue", Arial, sans-serif; color: var(--muted); letter-spacing:.03em;
+  }
+
+  .cal{ background: var(--panel); border: 1px solid var(--line); }
+  .dows{
+    display:grid; grid-template-columns: repeat(7,1fr);
+    border-bottom: 1px solid var(--line-strong);
+  }
+  .dows span{
+    text-align:center; padding: 7px 0;
+    font: 600 10px/1 "Helvetica Neue", Arial, sans-serif;
+    letter-spacing:.08em; text-transform:uppercase; color: var(--muted);
+  }
+  .dows span:nth-child(6), .dows span:nth-child(7){ color: var(--navy); }
+
+  .cells{ display:grid; grid-template-columns: repeat(7,1fr); }
+  .cell{
+    min-height: 84px;
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 5px 5px 6px;
+  }
+  .cells .cell:nth-child(7n){ border-right:none; }
+  .cell.empty{ background: repeating-linear-gradient(45deg, transparent, transparent 9px, rgba(27,43,58,0.015) 9px, rgba(27,43,58,0.015) 10px); }
+  .cell.weekend{ background: rgba(26,58,99,0.02); }
+  .daynum{ font: 12px/1 "Helvetica Neue", Arial, sans-serif; color: var(--muted); }
+  .cell.today{ box-shadow: inset 0 0 0 1.5px var(--navy); }
+  .cell.today .daynum{ color: var(--navy); font-weight:700; }
+
+  .ev{
+    margin-top: 4px;
+    padding: 2px 5px 3px;
+    border-left: 2px solid transparent;
+    font: 10.5px/1.35 "Helvetica Neue", Arial, sans-serif;
+  }
+  .ev.mdo{ background: var(--mdo-bg); border-left-color: var(--mdo); color: #5a3f04; }
+  .ev.sdo{ background: var(--sdo-bg); border-left-color: var(--sdo); color: #1c3f56; }
+  .ev.u20{ background: var(--u20-bg); border-left-color: var(--u20); color: #5c1521; }
+  .ev.away{ opacity: .6; border-left-style: dashed; }
+  .ev .nm{ display:block; font-weight:600; }
+  .ev .nm .away-tag{ font-weight:400; font-style:italic; }
+  .ev .tm{ opacity:.72; }
+
+  .state{
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    color: var(--muted); font-size: 13px; padding: 30px 0; text-align:center;
+  }
+
+  footer{
+    text-align:center; color: var(--muted); font-size: 11px;
+    margin-top: 26px; font-family:"Helvetica Neue", Arial, sans-serif;
+    letter-spacing:.02em;
+  }
+  footer a{ color: var(--muted); }
+
+  @media (max-width: 560px){
+    .cell{ min-height: 66px; }
+    .ev{ font-size: 9px; }
+    h1{ font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="htext">
+      <p class="eyebrow">HC Motor České Budějovice · mládež</p>
+      <h1>Rozpis <b>2026／27</b></h1>
+      <p class="sub">Mladší dorost, starší dorost a junioři</p>
+    </div>
+    <svg class="crest" viewBox="0 0 46 46">
+      <circle cx="23" cy="23" r="20"/>
+      <text x="23" y="30" font-size="20" text-anchor="middle">M</text>
+    </svg>
+  </header>
+
+  <div class="controls">
+    <div class="tabs" id="tabs">
+      <button class="tab active" data-team="all"><span class="sw"></span>Vše</button>
+      <button class="tab" data-team="mdo"><span class="sw"></span>Mladší dorost</button>
+      <button class="tab" data-team="sdo"><span class="sw"></span>Starší dorost</button>
+      <button class="tab" data-team="u20"><span class="sw"></span>Junioři</button>
+    </div>
+    <label class="switch"><input type="checkbox" id="home-only"> jen domácí zápasy</label>
+  </div>
+
+  <div id="calendar"><div class="state">Načítám rozpis…</div></div>
+
+  <footer id="footer"></footer>
+</div>
+
+<script>
+const teamLabel = {mdo:'Ml. dorost', sdo:'St. dorost', u20:'Junioři'};
+const monthNames = ['leden','únor','březen','duben','květen','červen','červenec','srpen','září','říjen','listopad','prosinec'];
+const dow = ['Po','Út','St','Čt','Pá','So','Ne'];
+const todayStr = new Date().toISOString().slice(0,10);
+
+let active = 'all';
+let homeOnly = false;
+let ALL_MATCHES = [];
+
+const calEl = document.getElementById('calendar');
+
+function renderMonth(key, list){
+  const [y,mo] = key.split('-').map(Number);
+  const first = new Date(y, mo-1, 1);
+  const daysInMonth = new Date(y, mo, 0).getDate();
+  let startOffset = first.getDay() - 1;
+  if (startOffset < 0) startOffset = 6;
+
+  const byDay = {};
+  list.forEach(m=>{
+    const d = Number(m.date.slice(8,10));
+    (byDay[d] = byDay[d] || []).push(m);
+  });
+
+  let cells = '';
+  for(let i=0;i<startOffset;i++) cells += '<div class="cell empty"></div>';
+  for(let d=1; d<=daysInMonth; d++){
+    const dateStr = `${y}-${String(mo).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const wd = new Date(y, mo-1, d).getDay();
+    const isWeekend = wd === 0 || wd === 6;
+    const isToday = dateStr === todayStr;
+    let evHtml = '';
+    (byDay[d]||[]).forEach(m=>{
+      const timeTxt = m.time || '';
+      const oppTxt = m.home ? m.opponent : `${m.opponent} (venku)`;
+      evHtml += `<div class="ev ${m.team}${m.home?'':' away'}"><span class="nm">${teamLabel[m.team]}</span><span class="tm">${timeTxt} · ${oppTxt}</span></div>`;
+    });
+    cells += `<div class="cell${isWeekend?' weekend':''}${isToday?' today':''}"><div class="daynum">${d}</div>${evHtml}</div>`;
+  }
+  const dowRow = dow.map(d=>`<span>${d}</span>`).join('');
+  return `
+    <div class="month">
+      <div class="month-head">
+        <h2>${monthNames[mo-1]} ${y}</h2>
+        <span class="n">${list.length} zápas${list.length===1?'':(list.length<5?'y':'ů')}</span>
+      </div>
+      <div class="cal">
+        <div class="dows">${dowRow}</div>
+        <div class="cells">${cells}</div>
+      </div>
+    </div>`;
+}
+
+function render(){
+  let filtered = active === 'all' ? ALL_MATCHES : ALL_MATCHES.filter(m=>m.team===active);
+  if(homeOnly) filtered = filtered.filter(m=>m.home);
+
+  if(filtered.length === 0){
+    calEl.innerHTML = '<div class="state">Žádné zápasy k zobrazení.</div>';
+    return;
+  }
+
+  const byMonth = {};
+  filtered.forEach(m=>{
+    const key = m.date.slice(0,7);
+    (byMonth[key]=byMonth[key]||[]).push(m);
+  });
+  const keys = Object.keys(byMonth).sort();
+  calEl.innerHTML = keys.map(k=>renderMonth(k, byMonth[k])).join('');
+}
+
+document.getElementById('tabs').addEventListener('click', e=>{
+  const btn = e.target.closest('.tab');
+  if(!btn) return;
+  active = btn.dataset.team;
+  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active', t===btn));
+  render();
+});
+document.getElementById('home-only').addEventListener('change', e=>{
+  homeOnly = e.target.checked;
+  render();
+});
+
+fetch('data/matches.json', {cache: 'no-store'})
+  .then(r => {
+    if(!r.ok) throw new Error('HTTP ' + r.status);
+    return r.json();
+  })
+  .then(data => {
+    ALL_MATCHES = data.matches || [];
+    render();
+    const footer = document.getElementById('footer');
+    if(data.generated){
+      const dt = new Date(data.generated);
+      footer.textContent = 'Data z hcmotor.cz · naposledy aktualizováno ' + dt.toLocaleString('cs-CZ');
+    }
+  })
+  .catch(err => {
+    calEl.innerHTML = `<div class="state">Rozpis se nepodařilo načíst (${err.message}).<br>Zkontroluj, že existuje soubor <code>data/matches.json</code>.</div>`;
+  });
+</script>
+</body>
+</html>
