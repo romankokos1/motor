@@ -10,9 +10,12 @@ import re
 import sys
 from datetime import datetime, timedelta
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
 import requests
 from icalendar import Calendar
+
+PRAGUE = ZoneInfo("Europe/Prague")
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT_JSON = ROOT / "data" / "matches.json"
@@ -75,8 +78,10 @@ def fetch_team(team_code: str, meta: dict) -> list:
             continue
         dtstart = component.get("dtstart").dt
         if isinstance(dtstart, datetime):
-            date_str = dtstart.strftime("%Y-%m-%d")
-            time_str = dtstart.strftime("%H:%M")
+            # ics ze hcmotor.cz dává čas v UTC — převedeme na pražský čas
+            local_dt = dtstart.astimezone(PRAGUE) if dtstart.tzinfo else dtstart
+            date_str = local_dt.strftime("%Y-%m-%d")
+            time_str = local_dt.strftime("%H:%M")
         else:
             date_str = dtstart.strftime("%Y-%m-%d")
             time_str = None
