@@ -1,5 +1,5 @@
 {
-  "generated": "2026-07-31T12:29:40Z",
+  "generated": "2026-08-01T08:33:30Z",
   "teams": {
     "mdo": "Mladší dorost",
     "sdo": "Starší dorost",
@@ -99,7 +99,7 @@
     {
       "team": "sdo",
       "date": "2026-09-18",
-      "time": "15:30",
+      "time": "15:00",
       "home": false,
       "opponent": "HC Slavia Praha",
       "location": "Praha, Zimní stadion Eden",
