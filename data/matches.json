@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-12T07:50:35Z",
+  "generated": "2026-08-13T07:51:31Z",
   "teams": {
     "mdo": "Mladší dorost",
     "sdo": "Starší dorost",
@@ -115,15 +115,6 @@
       "round": 5
     },
     {
-      "team": "mdo",
-      "date": "2026-09-19",
-      "time": "12:00",
-      "home": true,
-      "opponent": "HC Pilsen Wolves",
-      "location": "České Budějovice, Budvar aréna",
-      "round": 4
-    },
-    {
       "team": "sdo",
       "date": "2026-09-19",
       "time": "12:00",
@@ -140,6 +131,15 @@
       "opponent": "Bílí Tygři Liberec",
       "location": "Liberec, Svijanská aréna",
       "round": 6
+    },
+    {
+      "team": "mdo",
+      "date": "2026-09-19",
+      "time": "12:15",
+      "home": true,
+      "opponent": "HC Pilsen Wolves",
+      "location": "České Budějovice, Budvar aréna",
+      "round": 4
     },
     {
       "team": "mdo",
