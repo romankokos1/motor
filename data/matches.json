@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-14T07:49:21Z",
+  "generated": "2026-08-15T06:56:54Z",
   "teams": {
     "mdo": "Mladší dorost",
     "sdo": "Starší dorost",
@@ -9,7 +9,7 @@
     {
       "team": "sdo",
       "date": "2026-09-04",
-      "time": "15:30",
+      "time": "17:30",
       "home": false,
       "opponent": "HC Tábor",
       "location": "Tábor, Zimní stadion",
@@ -36,10 +36,10 @@
     {
       "team": "u20",
       "date": "2026-09-05",
-      "time": "12:00",
+      "time": "13:00",
       "home": false,
       "opponent": "HC Škoda Plzeň",
-      "location": "Plzeň, LOGSPEED CZ Aréna",
+      "location": "Plzeň, LOGSPEED CZ Aréna (tréninková hala)",
       "round": 2
     },
     {
@@ -54,10 +54,10 @@
     {
       "team": "u20",
       "date": "2026-09-11",
-      "time": "15:30",
+      "time": "16:30",
       "home": true,
       "opponent": "HC Dynamo Pardubice",
-      "location": "České Budějovice, Budvar aréna",
+      "location": "České Budějovice, Budvar aréna, II. LP",
       "round": 3
     },
     {
@@ -81,10 +81,10 @@
     {
       "team": "u20",
       "date": "2026-09-12",
-      "time": "12:00",
+      "time": "15:30",
       "home": true,
       "opponent": "HK Mountfield Hradec Králové",
-      "location": "České Budějovice, Budvar aréna",
+      "location": "České Budějovice, Budvar aréna, II. LP",
       "round": 4
     },
     {
@@ -151,15 +151,6 @@
       "round": 5
     },
     {
-      "team": "u20",
-      "date": "2026-09-25",
-      "time": "15:30",
-      "home": true,
-      "opponent": "HC Kometa Brno",
-      "location": "České Budějovice, Budvar aréna",
-      "round": 7
-    },
-    {
       "team": "sdo",
       "date": "2026-09-25",
       "time": "16:30",
@@ -167,6 +158,15 @@
       "opponent": "HC Olomouc",
       "location": "České Budějovice, Budvar aréna, II. LP",
       "round": null
+    },
+    {
+      "team": "u20",
+      "date": "2026-09-25",
+      "time": "17:30",
+      "home": true,
+      "opponent": "HC Kometa Brno",
+      "location": "České Budějovice, Budvar aréna",
+      "round": 7
     },
     {
       "team": "mdo",
@@ -178,15 +178,6 @@
       "round": 6
     },
     {
-      "team": "u20",
-      "date": "2026-09-26",
-      "time": "12:00",
-      "home": true,
-      "opponent": "HC RT Torax Poruba 2011",
-      "location": "České Budějovice, Budvar aréna",
-      "round": 8
-    },
-    {
       "team": "sdo",
       "date": "2026-09-26",
       "time": "12:30",
@@ -194,6 +185,15 @@
       "opponent": "HC RT TORAX Poruba",
       "location": "České Budějovice, Budvar aréna",
       "round": null
+    },
+    {
+      "team": "u20",
+      "date": "2026-09-26",
+      "time": "16:00",
+      "home": true,
+      "opponent": "HC RT Torax Poruba 2011",
+      "location": "České Budějovice, Budvar aréna",
+      "round": 8
     },
     {
       "team": "mdo",
@@ -207,7 +207,7 @@
     {
       "team": "u20",
       "date": "2026-09-28",
-      "time": "12:00",
+      "time": "13:00",
       "home": true,
       "opponent": "HC Dukla Jihlava",
       "location": "České Budějovice, Budvar aréna",
