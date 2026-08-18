@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-17T07:14:54Z",
+  "generated": "2026-08-18T07:02:51Z",
   "teams": {
     "mdo": "Mladší dorost",
     "sdo": "Starší dorost",
@@ -27,10 +27,10 @@
     {
       "team": "mdo",
       "date": "2026-09-05",
-      "time": "12:00",
+      "time": "11:00",
       "home": false,
       "opponent": "HC Škoda Plzeň",
-      "location": "Plzeň, LOGSPEED CZ Aréna",
+      "location": "Plzeň, LOGSPEED CZ Aréna (tréninková hala)",
       "round": 1
     },
     {
