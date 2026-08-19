@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-18T07:02:51Z",
+  "generated": "2026-08-19T07:04:08Z",
   "teams": {
     "mdo": "Mladší dorost",
     "sdo": "Starší dorost",
@@ -43,6 +43,15 @@
       "round": 2
     },
     {
+      "team": "mdo",
+      "date": "2026-09-09",
+      "time": "12:15",
+      "home": true,
+      "opponent": "EC Red Bull Salcburk",
+      "location": "České Budějovice, Budvar aréna",
+      "round": 2
+    },
+    {
       "team": "sdo",
       "date": "2026-09-11",
       "time": "15:30",
@@ -59,15 +68,6 @@
       "opponent": "HC Dynamo Pardubice",
       "location": "České Budějovice, Budvar aréna, II. LP",
       "round": 3
-    },
-    {
-      "team": "mdo",
-      "date": "2026-09-12",
-      "time": "12:00",
-      "home": true,
-      "opponent": "EC Red Bull Salcburk",
-      "location": "České Budějovice, Budvar aréna",
-      "round": 2
     },
     {
       "team": "sdo",
@@ -115,15 +115,6 @@
       "round": 5
     },
     {
-      "team": "sdo",
-      "date": "2026-09-19",
-      "time": "12:00",
-      "home": false,
-      "opponent": "HC Sparta Praha",
-      "location": "Praha - Holešovice, Sportovní hala Fortuna",
-      "round": null
-    },
-    {
       "team": "u20",
       "date": "2026-09-19",
       "time": "12:00",
@@ -140,6 +131,15 @@
       "opponent": "HC Pilsen Wolves",
       "location": "České Budějovice, Budvar aréna",
       "round": 4
+    },
+    {
+      "team": "sdo",
+      "date": "2026-09-19",
+      "time": "16:15",
+      "home": false,
+      "opponent": "HC Sparta Praha",
+      "location": "Praha - Výstaviště, Malá sportovní hala",
+      "round": null
     },
     {
       "team": "mdo",
