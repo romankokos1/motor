@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-23T06:59:41Z",
+  "generated": "2026-08-24T07:18:57Z",
   "teams": {
     "mdo": "Mladší dorost",
     "sdo": "Starší dorost",
@@ -97,15 +97,6 @@
       "round": 3
     },
     {
-      "team": "sdo",
-      "date": "2026-09-18",
-      "time": "15:00",
-      "home": false,
-      "opponent": "HC Slavia Praha",
-      "location": "Praha, Zimní stadion Eden",
-      "round": null
-    },
-    {
       "team": "u20",
       "date": "2026-09-18",
       "time": "15:30",
@@ -113,6 +104,15 @@
       "opponent": "BK Mladá Boleslav",
       "location": "Mladá Boleslav, ŠKOENERGO Aréna",
       "round": 5
+    },
+    {
+      "team": "sdo",
+      "date": "2026-09-18",
+      "time": "18:00",
+      "home": false,
+      "opponent": "HC Slavia Praha",
+      "location": "Praha, Zimní stadion Eden",
+      "round": null
     },
     {
       "team": "u20",
