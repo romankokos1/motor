@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-25T07:07:09Z",
+  "generated": "2026-08-26T07:07:30Z",
   "teams": {
     "mdo": "Mladší dorost",
     "sdo": "Starší dorost",
@@ -331,15 +331,6 @@
       "round": 14
     },
     {
-      "team": "mdo",
-      "date": "2026-10-17",
-      "time": "12:00",
-      "home": false,
-      "opponent": "HC Pilsen Wolves",
-      "location": "Plzeň - Košutka, ICE ARENA Plzeň",
-      "round": 11
-    },
-    {
       "team": "sdo",
       "date": "2026-10-17",
       "time": "12:00",
@@ -356,6 +347,15 @@
       "opponent": "HC Verva Litvínov",
       "location": "Litvínov, Zimní stadion Ivana Hlinky",
       "round": 15
+    },
+    {
+      "team": "mdo",
+      "date": "2026-10-17",
+      "time": "12:40",
+      "home": false,
+      "opponent": "HC Pilsen Wolves",
+      "location": "Plzeň - Košutka, ICE ARENA Plzeň",
+      "round": 11
     },
     {
       "team": "mdo",
