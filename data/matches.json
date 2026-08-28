@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-27T17:37:18Z",
+  "generated": "2026-08-28T18:39:35Z",
   "teams": {
     "mdo": "Mladší dorost",
     "sdo": "Starší dorost",
@@ -225,7 +225,7 @@
     {
       "team": "u20",
       "date": "2026-10-02",
-      "time": "15:30",
+      "time": "18:15",
       "home": false,
       "opponent": "HC Sparta Praha",
       "location": "Praha - Holešovice, Sportovní hala Fortuna",
