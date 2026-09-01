@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-31T13:45:26Z",
+  "generated": "2026-09-01T11:37:04Z",
   "teams": {
     "mdo": "Mladší dorost",
     "sdo": "Starší dorost",
@@ -36,7 +36,7 @@
     {
       "team": "u20",
       "date": "2026-09-05",
-      "time": "13:00",
+      "time": "15:00",
       "home": false,
       "opponent": "HC Škoda Plzeň",
       "location": "Plzeň, LOGSPEED CZ Aréna (tréninková hala)",
@@ -54,7 +54,7 @@
     {
       "team": "sdo",
       "date": "2026-09-11",
-      "time": "12:15",
+      "time": "13:00",
       "home": true,
       "opponent": "HC Verva Litvínov",
       "location": "České Budějovice, Budvar aréna, II. LP",
