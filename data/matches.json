@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-02T11:15:27Z",
+  "generated": "2026-09-03T11:11:45Z",
   "teams": {
     "mdo": "Mladší dorost",
     "sdo": "Starší dorost",
@@ -90,10 +90,10 @@
     {
       "team": "mdo",
       "date": "2026-09-13",
-      "time": "12:00",
+      "time": "12:10",
       "home": false,
       "opponent": "Rytíři Kladno",
-      "location": "Kladno, ČEZ STADION Kladno",
+      "location": "Kladno, ČEZ STADION Kladno - malá hala",
       "round": 3
     },
     {
