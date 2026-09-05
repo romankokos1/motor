@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-04T11:15:11Z",
+  "generated": "2026-09-05T10:32:39Z",
   "teams": {
     "mdo": "Mladší dorost",
     "sdo": "Starší dorost",
@@ -173,7 +173,7 @@
       "date": "2026-09-26",
       "time": "12:00",
       "home": false,
-      "opponent": "HC Energie Karlovy Vary",
+      "opponent": "BYD Energie Karlovy Vary",
       "location": "Karlovy Vary, Mattoni Arena",
       "round": 6
     },
@@ -326,7 +326,7 @@
       "date": "2026-10-16",
       "time": "15:30",
       "home": false,
-      "opponent": "HC Energie Karlovy Vary",
+      "opponent": "BYD Energie Karlovy Vary",
       "location": "Karlovy Vary, Mattoni Arena",
       "round": 14
     },
@@ -335,7 +335,7 @@
       "date": "2026-10-17",
       "time": "12:00",
       "home": false,
-      "opponent": "HC Energie Karlovy Vary",
+      "opponent": "BYD Energie Karlovy Vary",
       "location": "Karlovy Vary, Mattoni Arena",
       "round": null
     },
@@ -389,7 +389,7 @@
       "date": "2026-10-24",
       "time": "12:00",
       "home": true,
-      "opponent": "HC Energie Karlovy Vary",
+      "opponent": "BYD Energie Karlovy Vary",
       "location": "České Budějovice, Budvar aréna",
       "round": 13
     },
@@ -605,7 +605,7 @@
       "date": "2026-11-29",
       "time": "12:00",
       "home": false,
-      "opponent": "HC Energie Karlovy Vary",
+      "opponent": "BYD Energie Karlovy Vary",
       "location": "Karlovy Vary, Mattoni Arena",
       "round": 20
     },
@@ -695,7 +695,7 @@
       "date": "2026-12-13",
       "time": "12:00",
       "home": true,
-      "opponent": "HC Energie Karlovy Vary",
+      "opponent": "BYD Energie Karlovy Vary",
       "location": "České Budějovice, Budvar aréna",
       "round": 30
     },
@@ -794,7 +794,7 @@
       "date": "2027-01-09",
       "time": "12:00",
       "home": true,
-      "opponent": "HC Energie Karlovy Vary",
+      "opponent": "BYD Energie Karlovy Vary",
       "location": "České Budějovice, Budvar aréna",
       "round": 27
     },
@@ -866,7 +866,7 @@
       "date": "2027-01-21",
       "time": "15:30",
       "home": false,
-      "opponent": "HC Energie Karlovy Vary",
+      "opponent": "BYD Energie Karlovy Vary",
       "location": "Karlovy Vary, Mattoni Arena",
       "round": 38
     },
@@ -884,7 +884,7 @@
       "date": "2027-01-23",
       "time": "12:00",
       "home": true,
-      "opponent": "HC Energie Karlovy Vary",
+      "opponent": "BYD Energie Karlovy Vary",
       "location": "České Budějovice, Budvar aréna",
       "round": null
     },
