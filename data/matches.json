@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-06T10:53:58Z",
+  "generated": "2026-09-07T12:28:55Z",
   "teams": {
     "mdo": "Mladší dorost",
     "sdo": "Starší dorost",
@@ -99,7 +99,7 @@
     {
       "team": "u20",
       "date": "2026-09-18",
-      "time": "15:30",
+      "time": "12:30",
       "home": false,
       "opponent": "BK Mladá Boleslav",
       "location": "Mladá Boleslav, ŠKOENERGO Aréna",
