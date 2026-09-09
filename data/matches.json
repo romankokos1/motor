@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-08T11:15:59Z",
+  "generated": "2026-09-09T11:20:01Z",
   "teams": {
     "mdo": "Mladší dorost",
     "sdo": "Starší dorost",
@@ -198,10 +198,10 @@
     {
       "team": "mdo",
       "date": "2026-09-27",
-      "time": "12:00",
+      "time": "11:45",
       "home": true,
       "opponent": "HC Verva Litvínov",
-      "location": "České Budějovice, Budvar aréna",
+      "location": "České Budějovice, Budvar aréna, II. LP",
       "round": 7
     },
     {
