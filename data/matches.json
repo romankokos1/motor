@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-09T11:20:01Z",
+  "generated": "2026-09-10T11:16:45Z",
   "teams": {
     "mdo": "Mladší dorost",
     "sdo": "Starší dorost",
@@ -171,7 +171,7 @@
     {
       "team": "mdo",
       "date": "2026-09-26",
-      "time": "12:00",
+      "time": "12:30",
       "home": false,
       "opponent": "BYD Energie Karlovy Vary",
       "location": "Karlovy Vary, Mattoni Arena",
