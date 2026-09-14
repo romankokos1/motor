@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-13T11:48:53Z",
+  "generated": "2026-09-14T12:42:27Z",
   "teams": {
     "mdo": "Mladší dorost",
     "sdo": "Starší dorost",
@@ -144,10 +144,10 @@
     {
       "team": "mdo",
       "date": "2026-09-20",
-      "time": "12:00",
+      "time": "16:30",
       "home": false,
       "opponent": "Piráti Chomutov",
-      "location": "Chomutov, ROCKNET ARÉNA",
+      "location": "Chomutov, ROCKNET ARÉNA \"hala B\"",
       "round": 5
     },
     {
