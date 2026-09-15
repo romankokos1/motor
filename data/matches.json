@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-14T12:42:27Z",
+  "generated": "2026-09-15T11:41:48Z",
   "teams": {
     "mdo": "Mladší dorost",
     "sdo": "Starší dorost",
@@ -648,7 +648,7 @@
     {
       "team": "u20",
       "date": "2026-12-05",
-      "time": "12:00",
+      "time": "13:00",
       "home": false,
       "opponent": "HC Oceláři Třinec",
       "location": "Třinec, MINI WERK ARENA",
