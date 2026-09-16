@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plachta hráčů — Motor České Budějovice 2026/27</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0d0f12;
+    --panel:#161a1f;
+    --panel-2:#1e242b;
+    --border:#2a323b;
+    --text:#e8ebee;
+    --muted:#8a94a0;
+    --accent:#3fa9f5;
+    --gk:#f5a83f;
+    --def:#3fa9f5;
+    --fwd:#e5534b;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:'IBM Plex Sans', sans-serif;
+    padding:24px 16px 60px;
+  }
+  .toolbar{
+    max-width:900px;
+    margin:0 auto 20px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    flex-wrap:wrap;
+  }
+  h1{
+    font-size:20px;
+    margin:0;
+    font-weight:600;
+  }
+  .subtitle{
+    color:var(--muted);
+    font-size:12px;
+    font-family:'IBM Plex Mono', monospace;
+    margin-top:4px;
+  }
+  .print-btn{
+    background:var(--accent);
+    color:#08131c;
+    border:none;
+    font-weight:600;
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:14px;
+    padding:10px 20px;
+    border-radius:10px;
+    cursor:pointer;
+  }
+  .status{
+    max-width:900px;
+    margin:0 auto 16px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:var(--muted);
+  }
+  .status b{color:var(--text);}
+  .missing-box{
+    max-width:900px;
+    margin:0 auto 20px;
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:12px 14px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:var(--muted);
+    display:none;
+  }
+  .missing-box.show{display:block;}
+  .missing-box b{color:var(--text);}
+
+  .sheet{
+    max-width:900px;
+    margin:0 auto;
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:14px;
+  }
+  .tile{
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:12px;
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+  }
+  .tile .photo{
+    width:100%;
+    aspect-ratio:1/1;
+    background:var(--panel-2);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+  }
+  .tile .photo img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    object-position:top center;
+    display:block;
+  }
+  .tile .photo .noimg{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10px;
+    color:var(--muted);
+    text-align:center;
+    padding:8px;
+  }
+  .tile .label{
+    padding:8px 8px 10px;
+    text-align:center;
+  }
+  .tile .name{
+    font-size:13px;
+    font-weight:600;
+    line-height:1.2;
+  }
+  .tile .meta{
+    margin-top:3px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10px;
+    color:var(--muted);
+  }
+  .pos-G .meta{color:var(--gk);}
+  .pos-D .meta{color:var(--def);}
+  .pos-F .meta{color:var(--fwd);}
+
+  @media print{
+    body{background:#fff; color:#000; padding:0;}
+    .toolbar, .status, .missing-box{display:none !important;}
+    .sheet{
+      max-width:100%;
+      grid-template-columns:repeat(4, 1fr);
+      gap:8px;
+    }
+    .tile{
+      background:#fff;
+      border:1px solid #ccc;
+      break-inside:avoid;
+      page-break-inside:avoid;
+      -webkit-print-color-adjust:exact;
+      print-color-adjust:exact;
+    }
+    .tile .photo{background:#eee;}
+    .tile .name{color:#000;}
+    .tile .meta{color:#444 !important;}
+    @page{ margin:12mm; }
+  }
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <div>
+    <h1>Plachta hráčů — Motor České Budějovice</h1>
+    <div class="subtitle">Soupiska Muži 2026/27</div>
+  </div>
+  <button class="print-btn" id="printBtn">Vytisknout / uložit PDF</button>
+</div>
+
+<div class="status" id="status">Načítám fotky…</div>
+<div class="missing-box" id="missingBox"></div>
+
+<div class="sheet" id="sheet"></div>
+
+<script>
+// --- Data: soupiska Muži 2026/2027, https://hcmotor.cz/soupiska.asp ---
+const players = [
+  {num:35, name:"Milan Klouček", first:"Milan", last:"Klouček", pos:"G"},
+  {num:21, name:"Matyáš Mařík", first:"Matyáš", last:"Mařík", pos:"G"},
+  {num:2,  name:"Jan Strmeň", first:"Jan", last:"Strmeň", pos:"G"},
+
+  {num:79, name:"Ole Einar Engeland Andersen", first:"Ole", last:"Andersen", altFirst:["ole-einar-engeland","ole_einar_engeland"], pos:"D"},
+  {num:98, name:"Ondřej Kachyňa", first:"Ondřej", last:"Kachyňa", pos:"D"},
+  {num:84, name:"Tomáš Kundrátek", first:"Tomáš", last:"Kundrátek", pos:"D"},
+  {num:13, name:"Václav Nedorost", first:"Václav", last:"Nedorost", pos:"D"},
+  {num:8,  name:"Lucas Nordsäter", first:"Lucas", last:"Nordsäter", pos:"D"},
+  {num:12, name:"Pavel Pýcha", first:"Pavel", last:"Pýcha", pos:"D"},
+  {num:7,  name:"Jan Štencel", first:"Jan", last:"Štencel", pos:"D"},
+  {num:14, name:"Ondřej Vála", first:"Ondřej", last:"Vála", pos:"D"},
+  {num:69, name:"Roman Vráblík", first:"Roman", last:"Vráblík", pos:"D"},
+
+  {num:61, name:"Filip Ahl", first:"Filip", last:"Ahl", pos:"F"},
+  {num:92, name:"Parker Bell", first:"Parker", last:"Bell", pos:"F"},
+  {num:56, name:"Martin Beránek", first:"Martin", last:"Beránek", pos:"F"},
+  {num:88, name:"Michal Bulíř", first:"Michal", last:"Bulíř", pos:"F"},
+  {num:46, name:"Samuel Drančák", first:"Samuel", last:"Drančák", pos:"F"},
+  {num:37, name:"Marek Hejduk", first:"Marek", last:"Hejduk", pos:"F"},
+  {num:42, name:"Štěpán Hoch", first:"Štěpán", last:"Hoch", pos:"F"},
+  {num:27, name:"Matyáš Humeník", first:"Matyáš", last:"Humeník", pos:"F"},
+  {num:10, name:"Tomáš Chlubna", first:"Tomáš", last:"Chlubna", pos:"F"},
+  {num:22, name:"Josef Koláček", first:"Josef", last:"Koláček", pos:"F"},
+  {num:29, name:"Renars Krastenbergs", first:"Renars", last:"Krastenbergs", pos:"F"},
+  {num:16, name:"Róbert Lantoši", first:"Róbert", last:"Lantoši", pos:"F"},
+  {num:null, name:"Jakub Lev", first:"Jakub", last:"Lev", pos:"F"},
+  {num:11, name:"Pavel Novák", first:"Pavel", last:"Novák", pos:"F"},
+  {num:95, name:"Nick Alexander Olesen", first:"Nick", last:"Olesen", altFirst:["nick-alexander","nick_alexander"], pos:"F"},
+  {num:45, name:"Jan Ordoš", first:"Jan", last:"Ordoš", pos:"F"},
+  {num:64, name:"Jakub Pour", first:"Jakub", last:"Pour", pos:"F"},
+  {num:20, name:"Matěj Toman", first:"Matěj", last:"Toman", pos:"F"},
+  {num:26, name:"Marek Zachar", first:"Marek", last:"Zachar", pos:"F"},
+];
+
+const SEASON = "2027";
+const posLabel = {G:"Brankář", D:"Obránce", F:"Útočník"};
+
+function translit(s){
+  return s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+}
+
+function candidateUrls(p){
+  const last = translit(p.last);
+  const first = translit(p.first);
+  const urls = [`https://hcmotor.cz/foto/hraci/${SEASON}/${last}_${first}.jpg`];
+  if (p.altFirst) {
+    p.altFirst.forEach(af => urls.push(`https://hcmotor.cz/foto/hraci/${SEASON}/${last}_${af}.jpg`));
+  }
+  urls.push(`https://hcmotor.cz/foto/hraci/${SEASON}/${first}_${last}.jpg`);
+  return urls;
+}
+
+const sheetEl = document.getElementById('sheet');
+const statusEl = document.getElementById('status');
+const missingBox = document.getElementById('missingBox');
+const missing = [];
+let loadedCount = 0;
+
+// stabilní pořadí: G, D, F, v rámci skupiny podle čísla (null naposled)
+const order = {G:0, D:1, F:2};
+const sorted = players.slice().sort((a,b) => {
+  if(order[a.pos] !== order[b.pos]) return order[a.pos]-order[b.pos];
+  const an = a.num ?? 999, bn = b.num ?? 999;
+  return an-bn;
+});
+
+sorted.forEach(p => {
+  const tile = document.createElement('div');
+  tile.className = 'tile pos-' + p.pos;
+
+  const photo = document.createElement('div');
+  photo.className = 'photo';
+  const img = document.createElement('img');
+  img.alt = p.name;
+  photo.appendChild(img);
+  tile.appendChild(photo);
+
+  const label = document.createElement('div');
+  label.className = 'label';
+  label.innerHTML = `<div class="name">${p.name}</div><div class="meta">${p.num ? '#'+p.num+' · ' : ''}${posLabel[p.pos]}</div>`;
+  tile.appendChild(label);
+
+  sheetEl.appendChild(tile);
+
+  const urls = candidateUrls(p);
+  let idx = 0;
+  function tryNext(){
+    if(idx >= urls.length){
+      photo.innerHTML = '<div class="noimg">fotka<br>nenalezena</div>';
+      missing.push(p.name);
+      done();
+      return;
+    }
+    img.onload = () => done();
+    img.onerror = () => { idx++; tryNext(); };
+    img.src = urls[idx];
+  }
+  tryNext();
+
+  function done(){
+    loadedCount++;
+    if(loadedCount === sorted.length){
+      statusEl.innerHTML = `Načteno: <b>${sorted.length - missing.length}</b> / ${sorted.length} fotek`;
+      if(missing.length){
+        missingBox.classList.add('show');
+        missingBox.innerHTML = '<b>Nenačtené fotky (' + missing.length + ') — zkontroluj název souboru na webu:</b><br>' +
+          missing.map(n => '• ' + n).join('<br>');
+      }
+    }
+  }
+});
+
+document.getElementById('printBtn').addEventListener('click', () => window.print());
+</script>
+
+</body>
+</html>
