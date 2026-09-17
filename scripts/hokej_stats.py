@@ -8,6 +8,15 @@ v poli), tabulka pro aktuální sezónu/část soutěže.
 Denně stáhne aktuální tabulku, porovná ji s předchozím uloženým stavem
 (state.json), vygeneruje statickou HTML stránku (docs/stats.html) se
 základní tabulkou statistik a zvýrazněnými změnami od minula.
+
+Kromě toho volitelně načte players_baseline.json — ručně vedený soubor
+s výchozím stavem hráčů (konec minulé sezony pro ty, co zůstali v
+kádru; stav před příchodem do Motoru pro posily), rozdělený na "za
+Motor" a "v celé Extralize". Pokud tenhle soubor existuje, přičte
+aktuální sezónu k výchozímu stavu a vygeneruje navíc dvě kariérní
+tabulky (za Motor / v Extralize celkem). Tenhle soubor skript sám
+nikdy nezapisuje — udržuje ho ručně Gaffer.
+
 Stránku pak zobrazuje GitHub Pages.
 """
 
@@ -25,6 +34,7 @@ from bs4 import BeautifulSoup
 SCRIPT_DIR = Path(__file__).parent
 REPO_ROOT = SCRIPT_DIR.parent
 STATE_FILE = SCRIPT_DIR / "state.json"
+BASELINE_FILE = SCRIPT_DIR / "players_baseline.json"
 DOCS_DIR = REPO_ROOT / "docs"
 OUTPUT_HTML = DOCS_DIR / "stats.html"
 
@@ -190,6 +200,29 @@ def save_state(state: dict) -> None:
     )
 
 
+def load_baseline() -> dict:
+    """
+    Ručně vedený soubor s výchozím stavem hráčů (konec minulé sezony /
+    stav před příchodem do Motoru). Skript ho jen čte, nikdy nezapisuje.
+
+    Formát (klíč = přesně jméno, jak ho zobrazuje hcmotor.cz):
+    {
+      "Příjmení Jméno": {
+        "typ": "skater",                          # nebo "goalkeeper"
+        "motor":     {"z": .., "g": .., "a": .., "b": ..},
+        "extraliga": {"z": .., "g": .., "a": .., "b": ..}
+      }
+    }
+    U brankářů stačí v "motor"/"extraliga" jen klíč "z" (počet zápasů).
+    Klíče začínající podtržítkem (např. "_priklad") se ignorují —
+    slouží jen jako dokumentace formátu v souboru samém.
+    """
+    if not BASELINE_FILE.exists():
+        return {}
+    data = json.loads(BASELINE_FILE.read_text(encoding="utf-8"))
+    return {k: v for k, v in data.items() if not str(k).startswith("_")}
+
+
 def build_changes(old: dict, new: dict) -> list:
     """Vrátí seznam textových řádků se změnami od minulého běhu."""
     changes = []
@@ -240,7 +273,52 @@ def build_changes(old: dict, new: dict) -> list:
     return changes
 
 
-def render_html(new: dict, changes: list) -> str:
+def build_career_rows(current: dict, baseline: dict, player_type: str, scope: str) -> tuple:
+    """
+    Spočítá kariérní součty (baseline + aktuální sezóna) pro daný typ
+    hráče ("skater"/"goalkeeper") a rozsah ("motor"/"extraliga").
+
+    Vrátí (rows, missing) — rows jsou seřazené kariérní řádky (i pro
+    hráče bez zadaného výchozího stavu, ti mají "ma_baseline": False
+    a kariérní čísla rovná aktuální sezóně), missing je seznam jmen
+    hráčů z current, ke kterým chybí baseline vůbec.
+    """
+    rows = []
+    missing = []
+
+    for stats in current.values():
+        name = stats["jmeno"]
+        b = baseline.get(name)
+        has_baseline = bool(b) and b.get("typ") == player_type and scope in b
+
+        if player_type == "goalkeeper":
+            base_z = b[scope].get("z", 0) if has_baseline else 0
+            rows.append({
+                "jmeno": name,
+                "z": base_z + stats["z"],
+                "ma_baseline": has_baseline,
+            })
+        else:
+            base = b[scope] if has_baseline else {}
+            rows.append({
+                "jmeno": name,
+                "post": stats["post"],
+                "z": base.get("z", 0) + stats["z"],
+                "g": base.get("g", 0) + stats["g"],
+                "a": base.get("a", 0) + stats["a"],
+                "b": base.get("b", 0) + stats["b"],
+                "ma_baseline": has_baseline,
+            })
+
+        if not has_baseline:
+            missing.append(name)
+
+    sort_key = (lambda r: r["z"]) if player_type == "goalkeeper" else (lambda r: r["b"])
+    rows.sort(key=sort_key, reverse=True)
+    return rows, missing
+
+
+def render_html(new: dict, changes: list, baseline: dict) -> str:
     now = datetime.now(ZoneInfo("Europe/Prague")).strftime("%d.%m.%Y %H:%M")
 
     skaters = sorted(
@@ -279,6 +357,95 @@ def render_html(new: dict, changes: list) -> str:
         for g in goalkeepers
     )
 
+    # --- Kariérní tabulky (za Motor / v Extralize) ---
+    skater_career_motor, missing_sm = build_career_rows(
+        new.get("skaters", {}), baseline, "skater", "motor"
+    )
+    skater_career_liga, missing_sl = build_career_rows(
+        new.get("skaters", {}), baseline, "skater", "extraliga"
+    )
+    gk_career_motor, missing_gm = build_career_rows(
+        new.get("goalkeepers", {}), baseline, "goalkeeper", "motor"
+    )
+    gk_career_liga, missing_gl = build_career_rows(
+        new.get("goalkeepers", {}), baseline, "goalkeeper", "extraliga"
+    )
+
+    def row_class(r: dict) -> str:
+        return "" if r["ma_baseline"] else ' class="no-baseline"'
+
+    def skater_career_rows_html(rows: list) -> str:
+        return "".join(
+            f"<tr{row_class(r)}><td>{esc(r['jmeno'])}</td><td>{esc(r['post'])}</td>"
+            f"<td>{r['z']}</td><td>{r['g']}</td><td>{r['a']}</td>"
+            f"<td><strong>{r['b']}</strong></td></tr>"
+            for r in rows
+        )
+
+    def gk_career_rows_html(rows: list) -> str:
+        return "".join(
+            f"<tr{row_class(r)}><td>{esc(r['jmeno'])}</td><td>{r['z']}</td></tr>"
+            for r in rows
+        )
+
+    has_any_baseline = bool(baseline)
+
+    def missing_note(missing: list) -> str:
+        if not missing:
+            return ""
+        return (
+            "<p class='muted small'>Bez zadaného výchozího stavu (zobrazena jen "
+            "aktuální sezóna): " + esc(", ".join(sorted(missing))) + "</p>"
+        )
+
+    if has_any_baseline:
+        career_html = f"""
+  <h2 class="section-title">Kariéra za HC Motor</h2>
+  <div class="card">
+    <h2>Hráči v poli</h2>
+    <table>
+      <thead><tr><th>Hráč</th><th>Post</th><th>Z</th><th>G</th><th>A</th><th>B</th></tr></thead>
+      <tbody>{skater_career_rows_html(skater_career_motor)}</tbody>
+    </table>
+    {missing_note(missing_sm)}
+  </div>
+  <div class="card">
+    <h2>Brankáři (počet zápasů)</h2>
+    <table>
+      <thead><tr><th>Brankář</th><th>Z</th></tr></thead>
+      <tbody>{gk_career_rows_html(gk_career_motor)}</tbody>
+    </table>
+    {missing_note(missing_gm)}
+  </div>
+
+  <h2 class="section-title">Kariéra v Tipsport extralize celkem</h2>
+  <div class="card">
+    <h2>Hráči v poli</h2>
+    <table>
+      <thead><tr><th>Hráč</th><th>Post</th><th>Z</th><th>G</th><th>A</th><th>B</th></tr></thead>
+      <tbody>{skater_career_rows_html(skater_career_liga)}</tbody>
+    </table>
+    {missing_note(missing_sl)}
+  </div>
+  <div class="card">
+    <h2>Brankáři (počet zápasů)</h2>
+    <table>
+      <thead><tr><th>Brankář</th><th>Z</th></tr></thead>
+      <tbody>{gk_career_rows_html(gk_career_liga)}</tbody>
+    </table>
+    {missing_note(missing_gl)}
+  </div>
+"""
+    else:
+        career_html = """
+  <div class="card">
+    <h2>Kariérní statistiky</h2>
+    <p class="muted">Zatím nezadán výchozí stav hráčů (players_baseline.json) —
+    jakmile bude k dispozici, přibudou tu kariérní součty za Motor a za
+    celou Extraligu.</p>
+  </div>
+"""
+
     return f"""<!DOCTYPE html>
 <html lang="cs">
 <head>
@@ -299,6 +466,10 @@ def render_html(new: dict, changes: list) -> str:
   h1 {{ font-size: 1.5rem; margin-bottom: 4px; }}
   .updated {{ color: var(--muted); font-size: 0.85rem; margin-bottom: 4px; }}
   .season {{ color: var(--muted); font-size: 0.85rem; margin-bottom: 24px; }}
+  .section-title {{
+    font-size: 1.15rem; margin: 32px 0 12px; color: var(--navy);
+    border-bottom: 2px solid var(--red); padding-bottom: 6px;
+  }}
   .card {{
     background: var(--card); border: 1px solid var(--border); border-radius: 12px;
     padding: 18px 20px; margin-bottom: 20px; box-shadow: 0 1px 2px rgba(0,0,0,0.04);
@@ -308,10 +479,12 @@ def render_html(new: dict, changes: list) -> str:
   table {{ width: 100%; border-collapse: collapse; font-size: 0.88rem; }}
   th, td {{ text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--border); white-space: nowrap; }}
   th {{ color: var(--muted); font-weight: 600; font-size: 0.76rem; text-transform: uppercase; }}
+  tr.no-baseline {{ color: var(--muted); font-style: italic; }}
   .changes {{ list-style: none; margin: 0; padding: 0; }}
   .changes li {{ padding: 6px 0; border-bottom: 1px solid var(--border); }}
   .changes li:last-child {{ border-bottom: none; }}
   .muted {{ color: var(--muted); margin: 0; }}
+  .small {{ font-size: 0.78rem; margin-top: 10px; }}
 </style>
 </head>
 <body>
@@ -325,6 +498,7 @@ def render_html(new: dict, changes: list) -> str:
     {changes_html}
   </div>
 
+  <h2 class="section-title">Aktuální sezóna</h2>
   <div class="card">
     <h2>Hráči v poli</h2>
     <table>
@@ -340,6 +514,7 @@ def render_html(new: dict, changes: list) -> str:
       <tbody>{gk_rows}</tbody>
     </table>
   </div>
+{career_html}
 </div>
 </body>
 </html>
@@ -348,6 +523,7 @@ def render_html(new: dict, changes: list) -> str:
 
 def main() -> None:
     old_state = load_state()
+    baseline = load_baseline()
 
     soup = fetch(STATS_URL)
     new_state = parse_stats_page(soup)
@@ -355,11 +531,12 @@ def main() -> None:
     changes = build_changes(old_state, new_state)
 
     DOCS_DIR.mkdir(exist_ok=True)
-    OUTPUT_HTML.write_text(render_html(new_state, changes), encoding="utf-8")
+    OUTPUT_HTML.write_text(render_html(new_state, changes, baseline), encoding="utf-8")
 
     save_state(new_state)
     print(f"Hotovo. Hráčů v poli: {len(new_state['skaters'])}, "
-          f"brankářů: {len(new_state['goalkeepers'])}. Změn: {len(changes)}.")
+          f"brankářů: {len(new_state['goalkeepers'])}. Změn: {len(changes)}. "
+          f"Výchozí stav zadán pro {len(baseline)} hráčů.")
 
 
 if __name__ == "__main__":
