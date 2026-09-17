@@ -223,7 +223,14 @@ def load_baseline() -> dict:
     return {k: v for k, v in data.items() if not str(k).startswith("_")}
 
 
-def build_changes(old: dict, new: dict) -> list:
+MILESTONE_STEP = 50  # hlídáme kulatá čísla po 50 (50, 100, 150, ...)
+MILESTONE_LOOKAHEAD = 5  # "blíží se" = chybí max. tolik zápasů/bodů/gólů
+
+METRIC_LABELS = {"z": "zápas", "g": "gól", "b": "bod"}
+SCOPE_LABELS = {"motor": "za Motor", "extraliga": "v Extralize"}
+
+
+def build_changes(old: dict, new: dict, baseline: dict) -> list:
     """Vrátí seznam textových řádků se změnami od minulého běhu."""
     changes = []
 
@@ -270,7 +277,108 @@ def build_changes(old: dict, new: dict) -> list:
         if dso > 0:
             changes.append(f"🚫 {stats['jmeno']}: vychytal nulu! (celkem {stats['so']} SO)")
 
+    changes.extend(build_milestone_crossings(old, new, baseline))
+
     return changes
+
+
+def build_milestone_crossings(old: dict, new: dict, baseline: dict) -> list:
+    """
+    Porovná kariérní součty (baseline + sezóna) před a po tomto běhu a
+    nahlásí, když hráč právě překročil kulaté číslo (násobek
+    MILESTONE_STEP) v Z/G/B za Motor nebo v Extralize. Počítá se jen
+    u hráčů se zadaným baseline pro daný rozsah.
+    """
+    items = []
+
+    def crossings(old_stats: dict, new_stats: dict, base_scope: dict, metric: str, name: str, scope: str):
+        base_val = base_scope.get(metric, 0)
+        old_val = base_val + old_stats.get(metric, 0)
+        new_val = base_val + new_stats.get(metric, 0)
+        old_floor = old_val // MILESTONE_STEP
+        new_floor = new_val // MILESTONE_STEP
+        if new_floor > old_floor and new_val > 0:
+            milestone = new_floor * MILESTONE_STEP
+            label = METRIC_LABELS[metric]
+            items.append(
+                f"🎯 {name}: dosáhl/a {milestone}. {label}u {SCOPE_LABELS[scope]}!"
+            )
+
+    old_skaters = old.get("skaters", {})
+    new_skaters = new.get("skaters", {})
+    for pid, stats in new_skaters.items():
+        name = stats["jmeno"]
+        b = baseline.get(name)
+        if not b or b.get("typ") != "skater":
+            continue
+        old_stats = old_skaters.get(pid, {})
+        for scope in ("motor", "extraliga"):
+            base_scope = b.get(scope)
+            if not base_scope:
+                continue
+            for metric in ("z", "g", "b"):
+                crossings(old_stats, stats, base_scope, metric, name, scope)
+
+    old_gk = old.get("goalkeepers", {})
+    new_gk = new.get("goalkeepers", {})
+    for pid, stats in new_gk.items():
+        name = stats["jmeno"]
+        b = baseline.get(name)
+        if not b or b.get("typ") != "goalkeeper":
+            continue
+        old_stats = old_gk.get(pid, {})
+        for scope in ("motor", "extraliga"):
+            base_scope = b.get(scope)
+            if not base_scope:
+                continue
+            crossings(old_stats, stats, base_scope, "z", name, scope)
+
+    return items
+
+
+def build_upcoming_milestones(new: dict, baseline: dict) -> list:
+    """
+    Vrátí seznam hráčů, kterým do nejbližšího kulatého čísla (násobek
+    MILESTONE_STEP) chybí nejvýš MILESTONE_LOOKAHEAD zápasů/gólů/bodů,
+    zvlášť za Motor a zvlášť v Extralize. Jen pro hráče se zadaným
+    baseline pro daný rozsah — bez něj by číslo bylo zavádějící.
+    """
+    items = []
+
+    def check(name: str, value: int, metric: str, scope: str):
+        if value <= 0:
+            return
+        remainder = value % MILESTONE_STEP
+        if remainder == 0:
+            return  # milník byl dosažen přesně teď — to hlásí build_milestone_crossings
+        chybi = MILESTONE_STEP - remainder
+        if chybi <= MILESTONE_LOOKAHEAD:
+            items.append({
+                "jmeno": name,
+                "metric": metric,
+                "scope": scope,
+                "hodnota": value,
+                "milestone": value + chybi,
+                "chybi": chybi,
+            })
+
+    for scope in ("motor", "extraliga"):
+        rows, _ = build_career_rows(new.get("skaters", {}), baseline, "skater", scope)
+        for r in rows:
+            if not r["ma_baseline"]:
+                continue
+            check(r["jmeno"], r["z"], "z", scope)
+            check(r["jmeno"], r["g"], "g", scope)
+            check(r["jmeno"], r["b"], "b", scope)
+
+        gk_rows, _ = build_career_rows(new.get("goalkeepers", {}), baseline, "goalkeeper", scope)
+        for r in gk_rows:
+            if not r["ma_baseline"]:
+                continue
+            check(r["jmeno"], r["z"], "z", scope)
+
+    items.sort(key=lambda i: i["chybi"])
+    return items
 
 
 def build_career_rows(current: dict, baseline: dict, player_type: str, scope: str) -> tuple:
@@ -388,6 +496,30 @@ def render_html(new: dict, changes: list, baseline: dict) -> str:
             for r in rows
         )
 
+    # --- Blížící se milníky (do MILESTONE_LOOKAHEAD zápasů/gólů/bodů) ---
+    upcoming = build_upcoming_milestones(new, baseline)
+    if upcoming:
+        milestone_rows = "".join(
+            f"<tr><td>{esc(i['jmeno'])}</td>"
+            f"<td>{esc(METRIC_LABELS[i['metric']].capitalize())}</td>"
+            f"<td>{esc(SCOPE_LABELS[i['scope']])}</td>"
+            f"<td>{i['hodnota']}</td>"
+            f"<td><strong>{i['milestone']}</strong></td>"
+            f"<td>{i['chybi']}</td></tr>"
+            for i in upcoming
+        )
+        milestones_html = f"""
+  <div class="card">
+    <h2>🎯 Blížící se milníky (do {MILESTONE_LOOKAHEAD})</h2>
+    <table>
+      <thead><tr><th>Hráč</th><th>Co</th><th>Kde</th><th>Teď</th><th>Milník</th><th>Chybí</th></tr></thead>
+      <tbody>{milestone_rows}</tbody>
+    </table>
+  </div>
+"""
+    else:
+        milestones_html = ""
+
     has_any_baseline = bool(baseline)
 
     def missing_note(missing: list) -> str:
@@ -497,7 +629,7 @@ def render_html(new: dict, changes: list, baseline: dict) -> str:
     <h2>Změny od minulé aktualizace</h2>
     {changes_html}
   </div>
-
+{milestones_html}
   <h2 class="section-title">Aktuální sezóna</h2>
   <div class="card">
     <h2>Hráči v poli</h2>
@@ -528,7 +660,7 @@ def main() -> None:
     soup = fetch(STATS_URL)
     new_state = parse_stats_page(soup)
 
-    changes = build_changes(old_state, new_state)
+    changes = build_changes(old_state, new_state, baseline)
 
     DOCS_DIR.mkdir(exist_ok=True)
     OUTPUT_HTML.write_text(render_html(new_state, changes, baseline), encoding="utf-8")
