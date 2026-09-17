@@ -141,5 +141,21 @@
     "typ": "skater",
     "motor": {"z": 0, "g": 0, "a": 0, "b": 0},
     "extraliga": {"z": 433, "g": 50, "a": 47, "b": 97}
+  },
+
+  "Andersen Ole Einar Engeland": {
+    "typ": "skater",
+    "motor": {"z": 0, "g": 0, "a": 0, "b": 0},
+    "extraliga": {"z": 0, "g": 0, "a": 0, "b": 0}
+  },
+  "Nedorost Václav": {
+    "typ": "skater",
+    "motor": {"z": 0, "g": 0, "a": 0, "b": 0},
+    "extraliga": {"z": 0, "g": 0, "a": 0, "b": 0}
+  },
+  "Drančák Samuel": {
+    "typ": "skater",
+    "motor": {"z": 2, "g": 0, "a": 0, "b": 0},
+    "extraliga": {"z": 2, "g": 0, "a": 0, "b": 0}
   }
 }
