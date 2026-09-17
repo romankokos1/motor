@@ -241,23 +241,27 @@ def build_changes(old: dict, new: dict, baseline: dict) -> list:
         if old_stats is None:
             changes.append(f"🆕 Nový hráč v tabulce: {stats['jmeno']}")
             continue
-        dg = stats["g"] - old_stats.get("g", 0)
-        da = stats["a"] - old_stats.get("a", 0)
-        db = stats["b"] - old_stats.get("b", 0)
         dz = stats["z"] - old_stats.get("z", 0)
-        if db > 0:
-            detail = []
-            if dg:
-                detail.append(f"{dg}G")
-            if da:
-                detail.append(f"{da}A")
-            detail_str = f" ({'+'.join(detail)})" if detail else ""
-            changes.append(
-                f"🏒 {stats['jmeno']}: +{db}b{detail_str} → celkem {stats['b']}b "
-                f"({stats['g']}G {stats['a']}A, {stats['z']} zápasů)"
-            )
-        elif dz > 0:
-            changes.append(f"▫️ {stats['jmeno']}: odehrál další zápas ({stats['z']} celkem)")
+        # Zprávy o zápase/bodech hlásíme jen, když skutečně přibyl
+        # odehraný zápas (dz > 0) — jinak by šlo o opravu statistik
+        # (viz build_corrections), ne o nový zápas.
+        if dz > 0:
+            dg = stats["g"] - old_stats.get("g", 0)
+            da = stats["a"] - old_stats.get("a", 0)
+            db = stats["b"] - old_stats.get("b", 0)
+            if db > 0:
+                detail = []
+                if dg:
+                    detail.append(f"{dg}G")
+                if da:
+                    detail.append(f"{da}A")
+                detail_str = f" ({'+'.join(detail)})" if detail else ""
+                changes.append(
+                    f"🏒 {stats['jmeno']}: +{db}b{detail_str} → celkem {stats['b']}b "
+                    f"({stats['g']}G {stats['a']}A, {stats['z']} zápasů)"
+                )
+            else:
+                changes.append(f"▫️ {stats['jmeno']}: odehrál další zápas ({stats['z']} celkem)")
 
     old_gk = old.get("goalkeepers", {})
     new_gk = new.get("goalkeepers", {})
@@ -267,19 +271,77 @@ def build_changes(old: dict, new: dict, baseline: dict) -> list:
             changes.append(f"🆕 Nový brankář v tabulce: {stats['jmeno']}")
             continue
         dz = stats["z"] - old_stats.get("z", 0)
-        dso = stats["so"] - old_stats.get("so", 0)
+        # Stejně jako u hráčů v poli — jen když skutečně přibyl zápas.
         if dz > 0:
+            dso = stats["so"] - old_stats.get("so", 0)
             changes.append(
                 f"🥅 {stats['jmeno']}: odchytal další zápas — "
                 f"{stats['usp']:.1f}% úspěšnost, {stats['pru']:.2f} průměr "
                 f"({stats['z']} zápasů celkem)"
             )
-        if dso > 0:
-            changes.append(f"🚫 {stats['jmeno']}: vychytal nulu! (celkem {stats['so']} SO)")
+            if dso > 0:
+                changes.append(f"🚫 {stats['jmeno']}: vychytal nulu! (celkem {stats['so']} SO)")
 
     changes.extend(build_milestone_crossings(old, new, baseline))
 
     return changes
+
+
+def build_corrections(old: dict, new: dict) -> list:
+    """
+    Vrátí seznam hlášení o opravách statistik na hcmotor.cz — tedy o
+    změnách hodnot G/A/B/TM (u brankářů Ink/Zás/SO/TM), ke kterým
+    došlo BEZE změny počtu odehraných zápasů (Z). Týdenní korekce dat
+    se tak nepletou se skutečnými zápasovými změnami v "Změnách od
+    minulé aktualizace" — mají vlastní kartičku na stránce.
+
+    Pokud se navíc sníží i Z (vzácné, ale teoreticky možné — např.
+    škrtnutí chybně připsaného zápasu), hlásí se to tu také, protože
+    zápasy samy o sobě nikdy neubývají.
+    """
+    items = []
+
+    def deltas_str(old_stats: dict, stats: dict, fields: list) -> list:
+        parts = []
+        for field, label in fields:
+            d = stats.get(field, 0) - old_stats.get(field, 0)
+            if d != 0:
+                parts.append(f"{'+' if d > 0 else ''}{d}{label}")
+        return parts
+
+    old_skaters = old.get("skaters", {})
+    for pid, stats in new.get("skaters", {}).items():
+        old_stats = old_skaters.get(pid)
+        if old_stats is None:
+            continue  # nový hráč — není s čím srovnávat
+        dz = stats["z"] - old_stats.get("z", 0)
+        parts = deltas_str(old_stats, stats, [("g", "G"), ("a", "A"), ("b", "B"), ("tm", "TM")])
+        if dz < 0:
+            parts.insert(0, f"{dz}Z")
+            items.append(f"📝 {stats['jmeno']}: oprava statistik ({', '.join(parts)})")
+        elif dz == 0 and parts:
+            items.append(
+                f"📝 {stats['jmeno']}: oprava statistik ({', '.join(parts)}) "
+                f"— beze změny počtu zápasů"
+            )
+
+    old_gk = old.get("goalkeepers", {})
+    for pid, stats in new.get("goalkeepers", {}).items():
+        old_stats = old_gk.get(pid)
+        if old_stats is None:
+            continue
+        dz = stats["z"] - old_stats.get("z", 0)
+        parts = deltas_str(old_stats, stats, [("ink", "Ink"), ("zas", "Zás"), ("so", "SO"), ("tm", "TM")])
+        if dz < 0:
+            parts.insert(0, f"{dz}Z")
+            items.append(f"📝 {stats['jmeno']}: oprava statistik ({', '.join(parts)})")
+        elif dz == 0 and parts:
+            items.append(
+                f"📝 {stats['jmeno']}: oprava statistik ({', '.join(parts)}) "
+                f"— beze změny počtu zápasů"
+            )
+
+    return items
 
 
 def build_milestone_crossings(old: dict, new: dict, baseline: dict) -> list:
@@ -426,7 +488,7 @@ def build_career_rows(current: dict, baseline: dict, player_type: str, scope: st
     return rows, missing
 
 
-def render_html(new: dict, changes: list, baseline: dict) -> str:
+def render_html(new: dict, changes: list, baseline: dict, corrections: list | None = None) -> str:
     now = datetime.now(ZoneInfo("Europe/Prague")).strftime("%d.%m.%Y %H:%M")
 
     skaters = sorted(
@@ -452,6 +514,19 @@ def render_html(new: dict, changes: list, baseline: dict) -> str:
         if changes
         else "<p class='muted'>Od minulého běhu žádné změny.</p>"
     )
+
+    corrections = corrections or []
+    if corrections:
+        corrections_html = f"""
+  <div class="card">
+    <h2>📝 Opravy statistik na hcmotor.cz</h2>
+    <ul class="changes">{"".join(f"<li>{esc(c)}</li>" for c in corrections)}</ul>
+    <p class="muted small">Hodnoty se změnily, aniž by přibyl odehraný zápas —
+    typicky týdenní korekce dat na hcmotor.cz, ne nový zápas.</p>
+  </div>
+"""
+    else:
+        corrections_html = ""
 
     skater_rows = "".join(
         f"<tr><td>{esc(s['cislo'])}</td><td>{esc(s['jmeno'])}</td><td>{esc(s['post'])}</td>"
@@ -648,7 +723,7 @@ def render_html(new: dict, changes: list, baseline: dict) -> str:
     <h2>Změny od minulé aktualizace</h2>
     {changes_html}
   </div>
-{milestones_html}
+{corrections_html}{milestones_html}
   <h2 class="section-title">Aktuální sezóna</h2>
   <div class="card">
     <h2>Hráči v poli</h2>
@@ -680,13 +755,17 @@ def main() -> None:
     new_state = parse_stats_page(soup)
 
     changes = build_changes(old_state, new_state, baseline)
+    corrections = build_corrections(old_state, new_state)
 
     DOCS_DIR.mkdir(exist_ok=True)
-    OUTPUT_HTML.write_text(render_html(new_state, changes, baseline), encoding="utf-8")
+    OUTPUT_HTML.write_text(
+        render_html(new_state, changes, baseline, corrections), encoding="utf-8"
+    )
 
     save_state(new_state)
     print(f"Hotovo. Hráčů v poli: {len(new_state['skaters'])}, "
-          f"brankářů: {len(new_state['goalkeepers'])}. Změn: {len(changes)}. "
+          f"brankářů: {len(new_state['goalkeepers'])}. Změn: {len(changes)}, "
+          f"oprav: {len(corrections)}. "
           f"Výchozí stav zadán pro {len(baseline)} hráčů.")
 
 
