@@ -224,7 +224,8 @@ def load_baseline() -> dict:
 
 
 MILESTONE_STEP = 50  # hlídáme kulatá čísla po 50 (50, 100, 150, ...)
-MILESTONE_LOOKAHEAD = 5  # "blíží se" = chybí max. tolik zápasů/bodů/gólů
+MILESTONE_LOOKAHEAD = 5  # "blíží se" = chybí max. tolik zápasů/bodů/gólů (kartička na stránce)
+ICON_BADGE_LOOKAHEAD = 2  # užší práh jen pro odznak v titulku stránky (ikonka na ploše)
 
 METRIC_LABELS = {"z": "zápas", "g": "gól", "b": "bod"}
 SCOPE_LABELS = {"motor": "za Motor", "extraliga": "v Extralize"}
@@ -239,7 +240,12 @@ def build_changes(old: dict, new: dict, baseline: dict) -> list:
     for pid, stats in new_skaters.items():
         old_stats = old_skaters.get(pid)
         if old_stats is None:
-            changes.append(f"🆕 Nový hráč v tabulce: {stats['jmeno']}")
+            debut = (
+                f" — debut: {stats['z']} zápas, {stats['g']}G {stats['a']}A, {stats['b']}b"
+                if stats["z"] > 0
+                else ""
+            )
+            changes.append(f"🆕 Nový hráč v tabulce: {stats['jmeno']}{debut}")
             continue
         dz = stats["z"] - old_stats.get("z", 0)
         # Zprávy o zápase/bodech hlásíme jen, když skutečně přibyl
@@ -268,7 +274,12 @@ def build_changes(old: dict, new: dict, baseline: dict) -> list:
     for pid, stats in new_gk.items():
         old_stats = old_gk.get(pid)
         if old_stats is None:
-            changes.append(f"🆕 Nový brankář v tabulce: {stats['jmeno']}")
+            debut = (
+                f" — debut: {stats['z']} zápas, {stats['usp']:.1f}% úspěšnost"
+                if stats["z"] > 0
+                else ""
+            )
+            changes.append(f"🆕 Nový brankář v tabulce: {stats['jmeno']}{debut}")
             continue
         dz = stats["z"] - old_stats.get("z", 0)
         # Stejně jako u hráčů v poli — jen když skutečně přibyl zápas.
@@ -576,6 +587,16 @@ def render_html(new: dict, changes: list, baseline: dict, corrections: list | No
 
     # --- Blížící se milníky (do MILESTONE_LOOKAHEAD zápasů/gólů/bodů) ---
     upcoming = build_upcoming_milestones(new, baseline)
+    # Odznak v titulku stránky (pro ikonku na ploše) — užší práh než kartička,
+    # ať odznak upozorní jen na fakt blízké milníky (1-2), ne na celou pětku.
+    # Počítáme unikátní hráče, ne řádky (jeden hráč může být blízko milníku
+    # zároveň za Motor i v Extralize).
+    badge_count = len({i["jmeno"] for i in upcoming if i["chybi"] <= ICON_BADGE_LOOKAHEAD})
+    page_title = (
+        f"🎯{badge_count} Statistiky hráčů — HC Motor České Budějovice"
+        if badge_count
+        else "Statistiky hráčů — HC Motor České Budějovice"
+    )
     if upcoming:
         milestone_rows = "".join(
             f"<tr><td>{esc(i['jmeno'])}</td>"
@@ -661,7 +682,17 @@ def render_html(new: dict, changes: list, baseline: dict, corrections: list | No
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Statistiky hráčů — HC Motor České Budějovice</title>
+<title>{esc(page_title)}</title>
+
+<!-- Přidání na plochu (PWA) -->
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" href="icon-192.png" type="image/png">
+<meta name="theme-color" content="#c8102e">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="HC Motor stats">
 <style>
   :root {{
     --red: #c8102e; --navy: #0b1f3a; --bg: #f4f5f7; --card: #ffffff;
