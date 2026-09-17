@@ -20,9 +20,12 @@ from zoneinfo import ZoneInfo
 import requests
 from bs4 import BeautifulSoup
 
-ROOT = Path(__file__).parent
-STATE_FILE = ROOT / "state.json"
-DOCS_DIR = ROOT / "docs"
+# Skript žije v repu ve složce scripts/, ale výsledná stránka musí jít
+# do docs/ v kořeni repa (tam, kde běží GitHub Pages).
+SCRIPT_DIR = Path(__file__).parent
+REPO_ROOT = SCRIPT_DIR.parent
+STATE_FILE = SCRIPT_DIR / "state.json"
+DOCS_DIR = REPO_ROOT / "docs"
 OUTPUT_HTML = DOCS_DIR / "stats.html"
 
 # sezona=2027 -> sezóna 2026/2027, cast=1 -> základní část
