@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Statistiky hráčů — HC Motor České Budějovice</title>
+<style>
+  :root {
+    --red: #c8102e; --navy: #0b1f3a; --bg: #f4f5f7; --card: #ffffff;
+    --muted: #6b7280; --border: #e5e7eb;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg); color: var(--navy); margin: 0; padding: 24px 16px;
+  }
+  .wrap { max-width: 900px; margin: 0 auto; }
+  h1 { font-size: 1.5rem; margin-bottom: 4px; }
+  .updated { color: var(--muted); font-size: 0.85rem; margin-bottom: 4px; }
+  .season { color: var(--muted); font-size: 0.85rem; margin-bottom: 24px; }
+  .card {
+    background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+    padding: 18px 20px; margin-bottom: 20px; box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+    overflow-x: auto;
+  }
+  .card h2 { font-size: 1.05rem; margin: 0 0 12px; color: var(--red); }
+  table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+  th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+  th { color: var(--muted); font-weight: 600; font-size: 0.76rem; text-transform: uppercase; }
+  .changes { list-style: none; margin: 0; padding: 0; }
+  .changes li { padding: 6px 0; border-bottom: 1px solid var(--border); }
+  .changes li:last-child { border-bottom: none; }
+  .muted { color: var(--muted); margin: 0; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>🏒 Statistiky hráčů — HC Motor České Budějovice</h1>
+  <div class="updated">Naposledy aktualizováno: 17.09.2026 12:18</div>
+  <div class="season">Tipsport extraliga 2026/2027 — základní část · zdroj: <a href="https://hcmotor.cz/statistiky.asp?sezona=2027&cast=1">hcmotor.cz</a></div>
+
+  <div class="card">
+    <h2>Změny od minulé aktualizace</h2>
+    <p class='muted'>Od minulého běhu žádné změny.</p>
+  </div>
+
+  <div class="card">
+    <h2>Hráči v poli</h2>
+    <table>
+      <thead><tr><th>#</th><th>Hráč</th><th>Post</th><th>Z</th><th>G</th><th>A</th><th>B</th><th>+/-</th><th>TM</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>Brankáři</h2>
+    <table>
+      <thead><tr><th>#</th><th>Brankář</th><th>Z</th><th>Min</th><th>Stř</th><th>Ink</th><th>Zás</th><th>Prů</th><th>Úsp %</th><th>SO</th><th>A</th><th>TM</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</div>
+</body>
+</html>
