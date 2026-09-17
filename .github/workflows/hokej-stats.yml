@@ -1,0 +1,35 @@
+name: Hlídač hokejových statistik
+
+on:
+  schedule:
+    # 22:00 pražského času (léto=UTC+2 => 20:00 UTC, zima=UTC+1 => 21:00 UTC)
+    # nastaveno na 20:30 UTC jako kompromis, uprav dle potřeby
+    - cron: "30 20 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Instalace závislostí
+        run: pip install -r requirements.txt
+
+      - name: Spustit hlídač
+        run: python hokej_stats.py
+
+      - name: Commitnout novou stránku a stav
+        run: |
+          git config user.name "hokej-hlidac-bot"
+          git config user.email "actions@github.com"
+          git add docs/stats.html state.json
+          git diff --staged --quiet || git commit -m "Aktualizace statistik [skip ci]"
+          git push
