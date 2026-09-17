@@ -28,10 +28,17 @@ STATE_FILE = SCRIPT_DIR / "state.json"
 DOCS_DIR = REPO_ROOT / "docs"
 OUTPUT_HTML = DOCS_DIR / "stats.html"
 
-# sezona=2027 -> sezóna 2026/2027, cast=1 -> základní část
-# (cast=0 přípravné zápasy, cast=2 play-off, cast=3 baráž)
-STATS_URL = "https://hcmotor.cz/statistiky.asp?sezona=2027&cast=1"
-SEASON_LABEL = "Tipsport extraliga 2026/2027 — základní část"
+# sezona=2027 -> sezóna 2026/2027.
+# POZOR: endpoint statistiky.asp?sezona=...&cast=... (odkazy v navigaci
+# "přípravná utkání/základní část/play-off/baráž") v září 2026 hlásil
+# "vybrané statistiky nebyly nalezeny" pro všechny hodnoty cast, zatímco
+# stats.asp?sezona=... (bez cast) reálná data vrací spolehlivě a
+# zřejmě sám ukazuje aktuálně relevantní část sezóny. Používáme proto
+# tenhle endpoint; pokud by v budoucnu přestal fungovat (např. v
+# play-off), zkus nejdřív ručně v prohlížeči najít správnou URL a
+# STATS_URL podle toho uprav.
+STATS_URL = "https://hcmotor.cz/stats.asp?sezona=2027"
+SEASON_LABEL = "Tipsport extraliga 2026/2027"
 
 HEADERS = {
     "User-Agent": (
