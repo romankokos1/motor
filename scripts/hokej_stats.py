@@ -444,6 +444,9 @@ def render_html(new: dict, changes: list, baseline: dict) -> str:
             .replace(">", "&gt;")
         )
 
+    def lbl(full: str, short: str) -> str:
+        return f'<span class="lbl-full">{full}</span><span class="lbl-short">{short}</span>'
+
     changes_html = (
         "<ul class='changes'>" + "".join(f"<li>{esc(c)}</li>" for c in changes) + "</ul>"
         if changes
@@ -512,7 +515,7 @@ def render_html(new: dict, changes: list, baseline: dict) -> str:
   <div class="card">
     <h2>🎯 Blížící se milníky (do {MILESTONE_LOOKAHEAD})</h2>
     <table>
-      <thead><tr><th>Hráč</th><th>Co</th><th>Kde</th><th>Teď</th><th>Milník</th><th>Chybí</th></tr></thead>
+      <thead><tr><th>Hráč</th><th>Co</th><th>Kde</th><th>{lbl("Teď","T")}</th><th>{lbl("Milník","Mil.")}</th><th>{lbl("Chybí","Chy.")}</th></tr></thead>
       <tbody>{milestone_rows}</tbody>
     </table>
   </div>
@@ -536,7 +539,7 @@ def render_html(new: dict, changes: list, baseline: dict) -> str:
   <div class="card">
     <h2>Hráči v poli</h2>
     <table>
-      <thead><tr><th>Hráč</th><th>Post</th><th>Z</th><th>G</th><th>A</th><th>B</th></tr></thead>
+      <thead><tr><th>Hráč</th><th>{lbl("Post","P")}</th><th>Z</th><th>G</th><th>A</th><th>B</th></tr></thead>
       <tbody>{skater_career_rows_html(skater_career_motor)}</tbody>
     </table>
     {missing_note(missing_sm)}
@@ -554,7 +557,7 @@ def render_html(new: dict, changes: list, baseline: dict) -> str:
   <div class="card">
     <h2>Hráči v poli</h2>
     <table>
-      <thead><tr><th>Hráč</th><th>Post</th><th>Z</th><th>G</th><th>A</th><th>B</th></tr></thead>
+      <thead><tr><th>Hráč</th><th>{lbl("Post","P")}</th><th>Z</th><th>G</th><th>A</th><th>B</th></tr></thead>
       <tbody>{skater_career_rows_html(skater_career_liga)}</tbody>
     </table>
     {missing_note(missing_sl)}
@@ -617,6 +620,22 @@ def render_html(new: dict, changes: list, baseline: dict) -> str:
   .changes li:last-child {{ border-bottom: none; }}
   .muted {{ color: var(--muted); margin: 0; }}
   .small {{ font-size: 0.78rem; margin-top: 10px; }}
+  .lbl-short {{ display: none; }}
+
+  /* kompaktnější zobrazení na výšku na mobilu */
+  @media (max-width: 600px) {{
+    body {{ padding: 14px 8px; }}
+    .wrap {{ max-width: 100%; }}
+    h1 {{ font-size: 1.2rem; }}
+    .section-title {{ font-size: 1rem; margin: 24px 0 10px; }}
+    .card {{ padding: 12px 10px; margin-bottom: 14px; border-radius: 10px; }}
+    .card h2 {{ font-size: 0.95rem; }}
+    table {{ font-size: 0.72rem; }}
+    th, td {{ padding: 4px 5px; }}
+    th {{ font-size: 0.62rem; }}
+    .lbl-full {{ display: none; }}
+    .lbl-short {{ display: inline; }}
+  }}
 </style>
 </head>
 <body>
@@ -634,7 +653,7 @@ def render_html(new: dict, changes: list, baseline: dict) -> str:
   <div class="card">
     <h2>Hráči v poli</h2>
     <table>
-      <thead><tr><th>#</th><th>Hráč</th><th>Post</th><th>Z</th><th>G</th><th>A</th><th>B</th><th>+/-</th><th>TM</th></tr></thead>
+      <thead><tr><th>#</th><th>Hráč</th><th>{lbl("Post","P")}</th><th>Z</th><th>G</th><th>A</th><th>B</th><th>+/-</th><th>{lbl("TM","T")}</th></tr></thead>
       <tbody>{skater_rows}</tbody>
     </table>
   </div>
@@ -642,7 +661,7 @@ def render_html(new: dict, changes: list, baseline: dict) -> str:
   <div class="card">
     <h2>Brankáři</h2>
     <table>
-      <thead><tr><th>#</th><th>Brankář</th><th>Z</th><th>Min</th><th>Stř</th><th>Ink</th><th>Zás</th><th>Prů</th><th>Úsp %</th><th>SO</th><th>A</th><th>TM</th></tr></thead>
+      <thead><tr><th>#</th><th>{lbl("Brankář","GK")}</th><th>Z</th><th>{lbl("Min","M")}</th><th>{lbl("Stř","S")}</th><th>{lbl("Ink","I")}</th><th>{lbl("Zás","Zá")}</th><th>{lbl("Prů","Pr")}</th><th>{lbl("Úsp %","Úsp")}</th><th>SO</th><th>A</th><th>{lbl("TM","T")}</th></tr></thead>
       <tbody>{gk_rows}</tbody>
     </table>
   </div>
