@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-16T11:29:12Z",
+  "generated": "2026-09-17T11:38:40Z",
   "teams": {
     "mdo": "Mladší dorost",
     "sdo": "Starší dorost",
@@ -198,7 +198,7 @@
     {
       "team": "mdo",
       "date": "2026-09-27",
-      "time": "11:45",
+      "time": "12:00",
       "home": true,
       "opponent": "HC Verva Litvínov",
       "location": "České Budějovice, Budvar aréna, II. LP",
@@ -280,9 +280,9 @@
       "team": "mdo",
       "date": "2026-10-10",
       "time": "12:00",
-      "home": false,
+      "home": true,
       "opponent": "EC Red Bull Salcburk",
-      "location": "Salzburg, RED BULL ACADEMY ARENA",
+      "location": "České Budějovice, Budvar aréna",
       "round": 9
     },
     {
@@ -369,7 +369,7 @@
     {
       "team": "u20",
       "date": "2026-10-23",
-      "time": "15:30",
+      "time": "13:00",
       "home": true,
       "opponent": "HC Škoda Plzeň",
       "location": "České Budějovice, Budvar aréna",
@@ -439,6 +439,24 @@
       "round": 19
     },
     {
+      "team": "mdo",
+      "date": "2026-11-11",
+      "time": "17:00",
+      "home": false,
+      "opponent": "EC Red Bull Salcburk",
+      "location": "Salzburg, RED BULL ACADEMY ARENA",
+      "round": 23
+    },
+    {
+      "team": "mdo",
+      "date": "2026-11-12",
+      "time": "12:00",
+      "home": false,
+      "opponent": "EC Red Bull Salcburk",
+      "location": "Salzburg, RED BULL ACADEMY ARENA",
+      "round": 16
+    },
+    {
       "team": "sdo",
       "date": "2026-11-13",
       "time": "15:30",
@@ -482,15 +500,6 @@
       "opponent": "BK Mladá Boleslav",
       "location": "České Budějovice, Budvar aréna",
       "round": 21
-    },
-    {
-      "team": "mdo",
-      "date": "2026-11-15",
-      "time": "12:00",
-      "home": true,
-      "opponent": "EC Red Bull Salcburk",
-      "location": "České Budějovice, Budvar aréna",
-      "round": 16
     },
     {
       "team": "u20",
@@ -662,15 +671,6 @@
       "opponent": "HC Škoda Plzeň",
       "location": "České Budějovice, Budvar aréna",
       "round": 22
-    },
-    {
-      "team": "mdo",
-      "date": "2026-12-12",
-      "time": "12:00",
-      "home": false,
-      "opponent": "EC Red Bull Salcburk",
-      "location": "Salzburg, RED BULL ACADEMY ARENA",
-      "round": 23
     },
     {
       "team": "u20",
