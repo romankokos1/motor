@@ -2,12 +2,14 @@ name: Hlídač hokejových statistik
 
 on:
   schedule:
-    # 7:00 pražského času (léto=UTC+2 => 5:00 UTC, zima=UTC+1 => 6:00 UTC)
-    # cron je vždy v UTC a nepřepíná se sám na letní/zimní čas, takže
-    # tady je nastaveno 5:00 UTC (aktuálně platí letní čas) — až se na
-    # podzim přejde na zimní čas, budeš dostávat aktualizaci v 8:00
-    # místo v 7:00, pokud to nechceš, stačí pak přepsat na "0 6 * * *"
-    - cron: "30 8 * * *"
+    # DOČASNĚ nastaveno na 9:15 UTC (11:15 pražského času) — třetí
+    # test, tentokrát s velkou časovou rezervou na commit, abychom
+    # vyloučili, že jde jen o pozdní nahrání souboru.
+    #
+    # Po otestování přepni zpátky na běžný čas, ale na necelou minutu
+    # (ne "0 5 * * *"), např. "17 5 * * *" = cca 7:17 pražského času
+    # (léto=UTC+2), přes zimu (UTC+1) vychází na cca 8:17.
+    - cron: "15 9 * * *"
   workflow_dispatch: {}
 
 permissions:
