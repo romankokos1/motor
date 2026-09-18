@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-17T11:38:40Z",
+  "generated": "2026-09-18T11:11:15Z",
   "teams": {
     "mdo": "Mladší dorost",
     "sdo": "Starší dorost",
@@ -261,7 +261,7 @@
     {
       "team": "sdo",
       "date": "2026-10-09",
-      "time": "15:30",
+      "time": "13:00",
       "home": true,
       "opponent": "HC Kometa Brno",
       "location": "České Budějovice, Budvar aréna",
