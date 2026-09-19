@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-18T11:11:15Z",
+  "generated": "2026-09-19T05:56:24Z",
   "teams": {
     "mdo": "Mladší dorost",
     "sdo": "Starší dorost",
@@ -83,7 +83,7 @@
       "date": "2026-09-12",
       "time": "15:30",
       "home": true,
-      "opponent": "HK Mountfield Hradec Králové",
+      "opponent": "Mountfield Hradec Králové",
       "location": "České Budějovice, Budvar aréna, II. LP",
       "round": 4
     },
@@ -216,7 +216,7 @@
     {
       "team": "sdo",
       "date": "2026-10-02",
-      "time": "15:30",
+      "time": "16:00",
       "home": false,
       "opponent": "HC ZUBR Přerov",
       "location": "Přerov, Zimní stadion",
@@ -425,17 +425,17 @@
       "date": "2026-10-30",
       "time": "15:30",
       "home": false,
-      "opponent": "HK Mountfield Hradec Králové",
+      "opponent": "Mountfield Hradec Králové",
       "location": "Hradec Králové, ČPP ARÉNA",
       "round": 18
     },
     {
       "team": "u20",
       "date": "2026-10-31",
-      "time": "12:00",
+      "time": "13:00",
       "home": false,
       "opponent": "HC Dynamo Pardubice",
-      "location": "Pardubice, enteria arena",
+      "location": "Pardubice, malá hala",
       "round": 19
     },
     {
@@ -515,7 +515,7 @@
       "date": "2026-11-20",
       "time": "15:30",
       "home": false,
-      "opponent": "HK Mountfield Hradec Králové",
+      "opponent": "Mountfield Hradec Králové",
       "location": "Hradec Králové, ČPP ARÉNA",
       "round": null
     },
@@ -767,7 +767,7 @@
       "date": "2027-01-03",
       "time": "12:00",
       "home": true,
-      "opponent": "HK Mountfield Hradec Králové",
+      "opponent": "Mountfield Hradec Králové",
       "location": "České Budějovice, Budvar aréna",
       "round": 33
     },
@@ -983,7 +983,7 @@
       "date": "2027-02-19",
       "time": "15:30",
       "home": true,
-      "opponent": "HK Mountfield Hradec Králové",
+      "opponent": "Mountfield Hradec Králové",
       "location": "České Budějovice, Budvar aréna",
       "round": null
     },
