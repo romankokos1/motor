@@ -1,14 +1,6 @@
 name: Hlídač hokejových statistik
 
 on:
-  schedule:
-    # Trvalý čas: 7:17 pražského času (léto=UTC+2 => 5:17 UTC,
-    # zima=UTC+1 => 6:17 UTC). Necelá minuta schválně, aby se
-    # nepotkávalo s frontou cronů na kulatou hodinu. Tenhle řádek
-    # záměrně dál neměníme (viz diskuze o tom, že časté přepisování
-    # cron výrazu možná bránilo GitHubu si plán "usadit") — necháváme
-    # běžet a čekáme na zítřejší ráno.
-    - cron: "17 5 * * *"
   workflow_dispatch: {}
 
 permissions:
