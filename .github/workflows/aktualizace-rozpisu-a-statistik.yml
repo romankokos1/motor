@@ -61,7 +61,11 @@ jobs:
         run: |
           git config user.name "hokej-hlidac-bot"
           git config user.email "actions@github.com"
-          git pull --rebase
           git add docs/stats.html scripts/state.json
-          git diff --staged --quiet || git commit -m "Aktualizace statistik [skip ci]"
-          git push
+          if git diff --cached --quiet; then
+            echo "Žádná změna ve statistikách."
+          else
+            git commit -m "Aktualizace statistik [skip ci]"
+            git pull --rebase
+            git push
+          fi
