@@ -48,6 +48,15 @@
   .muted { color: var(--muted); margin: 0; }
   .small { font-size: 0.78rem; margin-top: 10px; }
   .lbl-short { display: none; }
+  details { border-bottom: 1px solid var(--border); padding: 8px 0; }
+  details:last-child { border-bottom: none; }
+  details > summary {
+    cursor: pointer; font-weight: 600; list-style: none; padding: 4px 0;
+  }
+  details > summary::-webkit-details-marker { display: none; }
+  details > summary::before { content: "▸ "; color: var(--red); }
+  details[open] > summary::before { content: "▾ "; }
+  details .changes { margin-top: 6px; }
 
   /* kompaktnější zobrazení na výšku na mobilu */
   @media (max-width: 600px) {
@@ -68,12 +77,30 @@
 <body>
 <div class="wrap">
   <h1>🏒 Statistiky hráčů — HC Motor České Budějovice</h1>
-  <div class="updated">Naposledy aktualizováno: 19.09.2026 12:56</div>
+  <div class="updated">Naposledy aktualizováno: 20.09.2026 07:34</div>
   <div class="season">Tipsport extraliga 2026/2027 · zdroj: <a href="https://hcmotor.cz/stats.asp?sezona=2027">hcmotor.cz</a></div>
 
   <div class="card">
     <h2>Změny od minulé aktualizace</h2>
     <p class='muted'>Od minulého běhu žádné změny.</p>
+  </div>
+
+  <div class="card">
+    <h2>📅 Měsíční přehled</h2>
+    <p class="muted small">Zápas zachycený ranním během se počítá do měsíce,
+    kdy se skutečně hrál (většinou večer předtím), ne do dne, kdy proběhl běh skriptu.</p>
+    
+    <details open>
+      <summary>září 2026 <span class="muted small">(0 hráčů)</span></summary>
+      <table>
+        <thead><tr><th>Hráč</th><th>Z</th><th>G</th><th>A</th><th>B</th></tr></thead>
+        <tbody></tbody>
+      </table>
+      <table>
+        <thead><tr><th>Brankář</th><th>Z</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </details>
   </div>
 
   <div class="card">
