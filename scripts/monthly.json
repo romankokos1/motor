@@ -1,6 +1,131 @@
 {
   "2026-09": {
-    "skaters": {},
-    "goalkeepers": {}
+    "skaters": {
+      "Pýcha Pavel": {
+        "z": 2,
+        "g": 0,
+        "a": 1,
+        "b": 1
+      },
+      "Vráblík Roman": {
+        "z": 2,
+        "g": 0,
+        "a": 1,
+        "b": 1
+      },
+      "Kachyňa Ondřej": {
+        "z": 1,
+        "g": 0,
+        "a": 0,
+        "b": 0
+      },
+      "Kundrátek Tomáš": {
+        "z": 2,
+        "g": 0,
+        "a": 0,
+        "b": 0
+      },
+      "Nordsäter Lucas": {
+        "z": 2,
+        "g": 0,
+        "a": 0,
+        "b": 0
+      },
+      "Štencel Jan": {
+        "z": 2,
+        "g": 0,
+        "a": 0,
+        "b": 0
+      },
+      "Vála Ondřej": {
+        "z": 2,
+        "g": 0,
+        "a": 0,
+        "b": 0
+      },
+      "Pour Jakub": {
+        "z": 2,
+        "g": 2,
+        "a": 0,
+        "b": 2
+      },
+      "Bell Parker": {
+        "z": 2,
+        "g": 1,
+        "a": 0,
+        "b": 1
+      },
+      "Olesen Nick Alexander": {
+        "z": 2,
+        "g": 1,
+        "a": 0,
+        "b": 1
+      },
+      "Ahl Filip": {
+        "z": 2,
+        "g": 0,
+        "a": 1,
+        "b": 1
+      },
+      "Bulíř Michal": {
+        "z": 2,
+        "g": 0,
+        "a": 1,
+        "b": 1
+      },
+      "Krastenbergs Renars": {
+        "z": 2,
+        "g": 0,
+        "a": 1,
+        "b": 1
+      },
+      "Toman Matěj": {
+        "z": 2,
+        "g": 0,
+        "a": 1,
+        "b": 1
+      },
+      "Beránek Martin": {
+        "z": 2,
+        "g": 0,
+        "a": 0,
+        "b": 0
+      },
+      "Hejduk Marek": {
+        "z": 2,
+        "g": 0,
+        "a": 0,
+        "b": 0
+      },
+      "Hoch Štěpán": {
+        "z": 2,
+        "g": 0,
+        "a": 0,
+        "b": 0
+      },
+      "Lantoši Róbert": {
+        "z": 2,
+        "g": 0,
+        "a": 0,
+        "b": 0
+      },
+      "Ordoš Jan": {
+        "z": 2,
+        "g": 0,
+        "a": 0,
+        "b": 0
+      },
+      "Zachar Marek": {
+        "z": 2,
+        "g": 0,
+        "a": 0,
+        "b": 0
+      }
+    },
+    "goalkeepers": {
+      "Klouček Milan": {
+        "z": 2
+      }
+    }
   }
 }
