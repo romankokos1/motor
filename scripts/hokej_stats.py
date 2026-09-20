@@ -22,7 +22,7 @@ Stránku pak zobrazuje GitHub Pages.
 
 import json
 import re
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
@@ -35,6 +35,14 @@ SCRIPT_DIR = Path(__file__).parent
 REPO_ROOT = SCRIPT_DIR.parent
 STATE_FILE = SCRIPT_DIR / "state.json"
 BASELINE_FILE = SCRIPT_DIR / "players_baseline.json"
+HISTORY_FILE = SCRIPT_DIR / "history.json"
+HISTORY_DAYS = 7  # kolik posledních dní se v historii drží
+MONTHLY_FILE = SCRIPT_DIR / "monthly.json"
+MONTHLY_MONTHS_SHOWN = 3  # kolik posledních měsíců se zobrazuje na stránce
+MONTHS_CS = {
+    1: "leden", 2: "únor", 3: "březen", 4: "duben", 5: "květen", 6: "červen",
+    7: "červenec", 8: "srpen", 9: "září", 10: "říjen", 11: "listopad", 12: "prosinec",
+}
 DOCS_DIR = REPO_ROOT / "docs"
 OUTPUT_HTML = DOCS_DIR / "stats.html"
 
@@ -200,6 +208,112 @@ def save_state(state: dict) -> None:
     )
 
 
+def load_history() -> list:
+    if HISTORY_FILE.exists():
+        return json.loads(HISTORY_FILE.read_text(encoding="utf-8"))
+    return []
+
+
+def save_history(history: list) -> None:
+    HISTORY_FILE.write_text(
+        json.dumps(history, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
+
+
+def update_history(history: list, changes: list, corrections: list) -> list:
+    """
+    Přidá dnešní den do historie (nebo ho přepíše, pokud skript dnes
+    běžel víckrát) a ořízne na posledních HISTORY_DAYS dní. Dny beze
+    změn i bez oprav se do historie nepřidávají (nic by se v nich
+    stejně nezobrazilo).
+    """
+    today = datetime.now(ZoneInfo("Europe/Prague")).strftime("%Y-%m-%d")
+    history = [d for d in history if d["date"] != today]
+    if changes or corrections:
+        history.append({"date": today, "changes": changes, "corrections": corrections})
+    history.sort(key=lambda d: d["date"], reverse=True)
+    return history[:HISTORY_DAYS]
+
+
+def effective_month_key() -> str:
+    """
+    Skript běží ráno a zachycuje zápas odehraný VČERA večer — takže pro
+    měsíční součty se datum běhu bere jako "včerejšek", ne dnešek.
+    Díky tomu se zápas zachycený ráno 1. 10. správně započte do září,
+    ne do října.
+    """
+    effective_date = datetime.now(ZoneInfo("Europe/Prague")) - timedelta(days=1)
+    return effective_date.strftime("%Y-%m")
+
+
+def build_monthly_deltas(old: dict, new: dict) -> dict:
+    """
+    Vrátí přírůstky Z/G/A/B (u brankářů jen Z) za TENTO běh — jen ze
+    skutečných zápasů (dz > 0, včetně debutu), ne z oprav statistik
+    (viz build_corrections). Tohle je vstup pro update_monthly.
+    """
+    deltas = {"skaters": {}, "goalkeepers": {}}
+
+    old_skaters = old.get("skaters", {})
+    for pid, stats in new.get("skaters", {}).items():
+        old_stats = old_skaters.get(pid)
+        if old_stats is None:
+            if stats["z"] > 0:
+                deltas["skaters"][stats["jmeno"]] = {
+                    "z": stats["z"], "g": stats["g"], "a": stats["a"], "b": stats["b"],
+                }
+            continue
+        dz = stats["z"] - old_stats.get("z", 0)
+        if dz > 0:
+            deltas["skaters"][stats["jmeno"]] = {
+                "z": dz,
+                "g": stats["g"] - old_stats.get("g", 0),
+                "a": stats["a"] - old_stats.get("a", 0),
+                "b": stats["b"] - old_stats.get("b", 0),
+            }
+
+    old_gk = old.get("goalkeepers", {})
+    for pid, stats in new.get("goalkeepers", {}).items():
+        old_stats = old_gk.get(pid)
+        if old_stats is None:
+            if stats["z"] > 0:
+                deltas["goalkeepers"][stats["jmeno"]] = {"z": stats["z"]}
+            continue
+        dz = stats["z"] - old_stats.get("z", 0)
+        if dz > 0:
+            deltas["goalkeepers"][stats["jmeno"]] = {"z": dz}
+
+    return deltas
+
+
+def load_monthly() -> dict:
+    if MONTHLY_FILE.exists():
+        return json.loads(MONTHLY_FILE.read_text(encoding="utf-8"))
+    return {}
+
+
+def save_monthly(monthly: dict) -> None:
+    MONTHLY_FILE.write_text(
+        json.dumps(monthly, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
+
+
+def update_monthly(monthly: dict, month_key: str, deltas: dict) -> dict:
+    """Přičte přírůstky z tohoto běhu do součtů daného měsíce (aditivně)."""
+    month = monthly.setdefault(month_key, {"skaters": {}, "goalkeepers": {}})
+
+    for name, d in deltas.get("skaters", {}).items():
+        cur = month["skaters"].setdefault(name, {"z": 0, "g": 0, "a": 0, "b": 0})
+        for k in ("z", "g", "a", "b"):
+            cur[k] += d.get(k, 0)
+
+    for name, d in deltas.get("goalkeepers", {}).items():
+        cur = month["goalkeepers"].setdefault(name, {"z": 0})
+        cur["z"] += d.get("z", 0)
+
+    return monthly
+
+
 def load_baseline() -> dict:
     """
     Ručně vedený soubor s výchozím stavem hráčů (konec minulé sezony /
@@ -234,6 +348,7 @@ SCOPE_LABELS = {"motor": "za Motor", "extraliga": "v Extralize"}
 def build_changes(old: dict, new: dict, baseline: dict) -> list:
     """Vrátí seznam textových řádků se změnami od minulého běhu."""
     changes = []
+    no_point_players = []  # hráči, co odehráli zápas beze změny bodů — sloučí se do 1 řádku
 
     old_skaters = old.get("skaters", {})
     new_skaters = new.get("skaters", {})
@@ -267,7 +382,15 @@ def build_changes(old: dict, new: dict, baseline: dict) -> list:
                     f"({stats['g']}G {stats['a']}A, {stats['z']} zápasů)"
                 )
             else:
-                changes.append(f"▫️ {stats['jmeno']}: odehrál další zápas ({stats['z']} celkem)")
+                # Beze změny bodů — nesypeme to jako samostatný řádek na
+                # hráče (na zápasový den by to bylo 15-20 řádků), ale
+                # sbíráme jméno a sloučíme do jednoho souhrnného řádku níž.
+                no_point_players.append(stats["jmeno"])
+
+    if no_point_players:
+        n = len(no_point_players)
+        jmena = ", ".join(sorted(no_point_players))
+        changes.append(f"▫️ Bez bodu odehráli zápas ({n}): {jmena}")
 
     old_gk = old.get("goalkeepers", {})
     new_gk = new.get("goalkeepers", {})
@@ -499,7 +622,14 @@ def build_career_rows(current: dict, baseline: dict, player_type: str, scope: st
     return rows, missing
 
 
-def render_html(new: dict, changes: list, baseline: dict, corrections: list | None = None) -> str:
+def render_html(
+    new: dict,
+    changes: list,
+    baseline: dict,
+    corrections: list | None = None,
+    history: list | None = None,
+    monthly: dict | None = None,
+) -> str:
     now = datetime.now(ZoneInfo("Europe/Prague")).strftime("%d.%m.%Y %H:%M")
 
     skaters = sorted(
@@ -538,6 +668,72 @@ def render_html(new: dict, changes: list, baseline: dict, corrections: list | No
 """
     else:
         corrections_html = ""
+
+    history = history or []
+    if history:
+        day_blocks = []
+        for i, day in enumerate(history):
+            try:
+                date_label = datetime.strptime(day["date"], "%Y-%m-%d").strftime("%d.%m.%Y")
+            except ValueError:
+                date_label = day["date"]
+            items = list(day.get("changes", [])) + list(day.get("corrections", []))
+            items_html = "".join(f"<li>{esc(c)}</li>" for c in items)
+            day_blocks.append(f"""
+    <details{" open" if i == 0 else ""}>
+      <summary>{esc(date_label)} <span class="muted small">({len(items)})</span></summary>
+      <ul class="changes">{items_html}</ul>
+    </details>""")
+        history_html = f"""
+  <div class="card">
+    <h2>🗓️ Historie posledních {HISTORY_DAYS} dní</h2>
+    {"".join(day_blocks)}
+  </div>
+"""
+    else:
+        history_html = ""
+
+    monthly = monthly or {}
+    if monthly:
+        month_keys = sorted(monthly.keys(), reverse=True)[:MONTHLY_MONTHS_SHOWN]
+        month_blocks = []
+        for i, mk in enumerate(month_keys):
+            year, mon = mk.split("-")
+            month_label = f"{MONTHS_CS.get(int(mon), mon)} {year}"
+            m = monthly[mk]
+            sk_rows = sorted(m.get("skaters", {}).items(), key=lambda kv: kv[1]["b"], reverse=True)
+            gk_rows = sorted(m.get("goalkeepers", {}).items(), key=lambda kv: kv[1]["z"], reverse=True)
+            sk_html = "".join(
+                f"<tr><td>{esc(name)}</td><td>{v['z']}</td><td>{v['g']}</td>"
+                f"<td>{v['a']}</td><td><strong>{v['b']}</strong></td></tr>"
+                for name, v in sk_rows
+            )
+            gk_html = "".join(
+                f"<tr><td>{esc(name)}</td><td>{v['z']}</td></tr>" for name, v in gk_rows
+            )
+            total_players = len(sk_rows) + len(gk_rows)
+            month_blocks.append(f"""
+    <details{" open" if i == 0 else ""}>
+      <summary>{esc(month_label)} <span class="muted small">({total_players} hráčů)</span></summary>
+      <table>
+        <thead><tr><th>Hráč</th><th>Z</th><th>G</th><th>A</th><th>B</th></tr></thead>
+        <tbody>{sk_html}</tbody>
+      </table>
+      <table>
+        <thead><tr><th>Brankář</th><th>Z</th></tr></thead>
+        <tbody>{gk_html}</tbody>
+      </table>
+    </details>""")
+        monthly_html = f"""
+  <div class="card">
+    <h2>📅 Měsíční přehled</h2>
+    <p class="muted small">Zápas zachycený ranním během se počítá do měsíce,
+    kdy se skutečně hrál (většinou večer předtím), ne do dne, kdy proběhl běh skriptu.</p>
+    {"".join(month_blocks)}
+  </div>
+"""
+    else:
+        monthly_html = ""
 
     skater_rows = "".join(
         f"<tr><td>{esc(s['cislo'])}</td><td>{esc(s['jmeno'])}</td><td>{esc(s['post'])}</td>"
@@ -727,6 +923,15 @@ def render_html(new: dict, changes: list, baseline: dict, corrections: list | No
   .muted {{ color: var(--muted); margin: 0; }}
   .small {{ font-size: 0.78rem; margin-top: 10px; }}
   .lbl-short {{ display: none; }}
+  details {{ border-bottom: 1px solid var(--border); padding: 8px 0; }}
+  details:last-child {{ border-bottom: none; }}
+  details > summary {{
+    cursor: pointer; font-weight: 600; list-style: none; padding: 4px 0;
+  }}
+  details > summary::-webkit-details-marker {{ display: none; }}
+  details > summary::before {{ content: "▸ "; color: var(--red); }}
+  details[open] > summary::before {{ content: "▾ "; }}
+  details .changes {{ margin-top: 6px; }}
 
   /* kompaktnější zobrazení na výšku na mobilu */
   @media (max-width: 600px) {{
@@ -754,7 +959,7 @@ def render_html(new: dict, changes: list, baseline: dict, corrections: list | No
     <h2>Změny od minulé aktualizace</h2>
     {changes_html}
   </div>
-{corrections_html}{milestones_html}
+{corrections_html}{history_html}{monthly_html}{milestones_html}
   <h2 class="section-title">Aktuální sezóna</h2>
   <div class="card">
     <h2>Hráči v poli</h2>
@@ -781,22 +986,34 @@ def render_html(new: dict, changes: list, baseline: dict, corrections: list | No
 def main() -> None:
     old_state = load_state()
     baseline = load_baseline()
+    history = load_history()
+    monthly = load_monthly()
 
     soup = fetch(STATS_URL)
     new_state = parse_stats_page(soup)
 
     changes = build_changes(old_state, new_state, baseline)
     corrections = build_corrections(old_state, new_state)
+    history = update_history(history, changes, corrections)
+
+    monthly_deltas = build_monthly_deltas(old_state, new_state)
+    month_key = effective_month_key()
+    monthly = update_monthly(monthly, month_key, monthly_deltas)
 
     DOCS_DIR.mkdir(exist_ok=True)
     OUTPUT_HTML.write_text(
-        render_html(new_state, changes, baseline, corrections), encoding="utf-8"
+        render_html(new_state, changes, baseline, corrections, history, monthly),
+        encoding="utf-8",
     )
 
     save_state(new_state)
+    save_history(history)
+    save_monthly(monthly)
     print(f"Hotovo. Hráčů v poli: {len(new_state['skaters'])}, "
           f"brankářů: {len(new_state['goalkeepers'])}. Změn: {len(changes)}, "
-          f"oprav: {len(corrections)}. "
+          f"oprav: {len(corrections)}. Historie: {len(history)} dní. "
+          f"Měsíc {month_key}: {len(monthly_deltas['skaters'])} hráčů, "
+          f"{len(monthly_deltas['goalkeepers'])} brankářů s přírůstkem. "
           f"Výchozí stav zadán pro {len(baseline)} hráčů.")
 
 
