@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-21T08:53:08Z",
+  "generated": "2026-09-21T12:45:48Z",
   "teams": {
     "mdo": "Mladší dorost",
     "sdo": "Starší dorost",
@@ -324,20 +324,11 @@
     {
       "team": "u20",
       "date": "2026-10-16",
-      "time": "15:30",
+      "time": "19:00",
       "home": false,
       "opponent": "BYD Energie Karlovy Vary",
-      "location": "Karlovy Vary, Mattoni Arena",
+      "location": "Karlovy Vary, Mattoni Arena, tréninková plocha",
       "round": 14
-    },
-    {
-      "team": "sdo",
-      "date": "2026-10-17",
-      "time": "12:00",
-      "home": false,
-      "opponent": "BYD Energie Karlovy Vary",
-      "location": "Karlovy Vary, Mattoni Arena",
-      "round": null
     },
     {
       "team": "u20",
@@ -356,6 +347,15 @@
       "opponent": "HC Pilsen Wolves",
       "location": "Plzeň - Košutka, ICE ARENA Plzeň",
       "round": 11
+    },
+    {
+      "team": "sdo",
+      "date": "2026-10-17",
+      "time": "12:45",
+      "home": false,
+      "opponent": "BYD Energie Karlovy Vary",
+      "location": "Karlovy Vary, Mattoni Arena, tréninková plocha",
+      "round": null
     },
     {
       "team": "mdo",
