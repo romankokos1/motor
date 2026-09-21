@@ -796,42 +796,64 @@ def build_record_svg(games: list) -> str:
             total -= 1
         cumulative.append((g["kolo"], total))
 
-    width, height = 760, 220
-    pad_l, pad_r, pad_t, pad_b = 34, 16, 20, 28
+    # Bod (0, 0) jako výchozí stav před 1. kolem — pak jeden bod za
+    # každé odehrané kolo, přesně jak chtěl Gaffer ("začíná se na 0").
+    points_xy = [(0, 0)] + cumulative
+
+    width, height = 760, 340
+    pad_l, pad_r, pad_t, pad_b = 34, 14, 14, 26
     plot_w = width - pad_l - pad_r
     plot_h = height - pad_t - pad_b
 
-    max_x = max(SEASON_ROUNDS, cumulative[-1][0])
-    values = [v for _, v in cumulative]
-    max_y = max(1, max(values))
-    min_y = min(-1, min(values))
-    span_y = max_y - min_y
+    x_max = ((SEASON_ROUNDS + 9) // 10) * 10  # zaokrouhlit nahoru na desítku (52 -> 60)
+    x_step = 10
 
-    def x_for(kolo: int) -> float:
-        return pad_l + (kolo - 1) / (max_x - 1) * plot_w
+    values = [v for _, v in points_xy]
+    raw_min, raw_max = min(values), max(values)
+    y_step = 2
+    y_min = (min(0, raw_min) // y_step) * y_step - y_step
+    y_max = -(-(max(0, raw_max)) // y_step) * y_step + y_step
 
-    def y_for(val: int) -> float:
-        return pad_t + (max_y - val) / span_y * plot_h
+    def x_for(kolo) -> float:
+        return pad_l + kolo / x_max * plot_w
 
-    points = " ".join(f"{x_for(k):.1f},{y_for(v):.1f}" for k, v in cumulative)
-    zero_y = y_for(0)
-    last_kolo, last_val = cumulative[-1]
-    dot_x, dot_y = x_for(last_kolo), y_for(last_val)
-    barva = "#1a7f37" if last_val > 0 else ("#c8102e" if last_val < 0 else "#555")
-    label_y = dot_y - 10 if dot_y > pad_t + 14 else dot_y + 18
+    def y_for(val) -> float:
+        return pad_t + (y_max - val) / (y_max - y_min) * plot_h
+
+    # Vodorovné (Y) a svislé (X) mřížkové čáry, jako v Excelu.
+    y_ticks = list(range(y_min, y_max + 1, y_step))
+    x_ticks = list(range(0, x_max + 1, x_step))
+
+    hgrid = "".join(
+        f'<line x1="{pad_l}" y1="{y_for(t):.1f}" x2="{width - pad_r}" y2="{y_for(t):.1f}" '
+        f'stroke="#e5e7eb" stroke-width="1"/>'
+        f'<text x="{pad_l - 8}" y="{y_for(t) + 4:.1f}" font-size="11" fill="#6b7280" '
+        f'text-anchor="end">{t}</text>'
+        for t in y_ticks
+    )
+    vgrid = "".join(
+        f'<line x1="{x_for(t):.1f}" y1="{pad_t}" x2="{x_for(t):.1f}" y2="{height - pad_b}" '
+        f'stroke="#e5e7eb" stroke-width="1"/>'
+        f'<text x="{x_for(t):.1f}" y="{height - pad_b + 16}" font-size="11" fill="#6b7280" '
+        f'text-anchor="middle">{t}</text>'
+        for t in x_ticks
+    )
+
+    points_str = " ".join(f"{x_for(k):.1f},{y_for(v):.1f}" for k, v in points_xy)
+    dots = "".join(
+        f'<circle cx="{x_for(k):.1f}" cy="{y_for(v):.1f}" r="3.5" fill="#0b1f3a"/>'
+        for k, v in points_xy
+    )
 
     return f"""
     <svg viewBox="0 0 {width} {height}" width="100%" height="auto" role="img"
          aria-label="Průběžná bilance výher a proher HC Motor">
-      <line x1="{pad_l}" y1="{zero_y:.1f}" x2="{width - pad_r}" y2="{zero_y:.1f}"
-            stroke="#ccc" stroke-dasharray="3,3"/>
-      <polyline points="{points}" fill="none" stroke="#0b1f3a" stroke-width="2"/>
-      <circle cx="{dot_x:.1f}" cy="{dot_y:.1f}" r="4" fill="{barva}"/>
-      <text x="{dot_x:.1f}" y="{label_y:.1f}" font-size="13" text-anchor="middle"
-            fill="{barva}" font-weight="bold">{last_val:+d}</text>
-      <text x="{pad_l}" y="{height - 8}" font-size="11" fill="#888">1. kolo</text>
-      <text x="{width - pad_r}" y="{height - 8}" font-size="11" fill="#888"
-            text-anchor="end">{max_x}. kolo</text>
+      <rect x="0.5" y="0.5" width="{width - 1}" height="{height - 1}" fill="#ffffff"
+            stroke="#e5e7eb"/>
+      {hgrid}
+      {vgrid}
+      <polyline points="{points_str}" fill="none" stroke="#0b1f3a" stroke-width="2"/>
+      {dots}
     </svg>
 """
 
@@ -1213,7 +1235,7 @@ def render_html(
     <h2>Změny od minulé aktualizace</h2>
     {changes_html}
   </div>
-{schedule_html}{corrections_html}{history_html}{record_html}{monthly_html}{milestones_html}{schedule_log_html}
+{milestones_html}{schedule_html}{corrections_html}{history_html}{record_html}{monthly_html}{schedule_log_html}
   <h2 class="section-title">Aktuální sezóna</h2>
   <div class="card">
     <h2>Hráči v poli</h2>
