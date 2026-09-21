@@ -34,6 +34,6 @@ jobs:
         run: |
           git config user.name "hokej-hlidac-bot"
           git config user.email "actions@github.com"
-          git add docs/stats.html scripts/state.json scripts/history.json scripts/monthly.json
+          git add docs/stats.html scripts/state.json scripts/history.json scripts/monthly.json scripts/schedule_watch.json scripts/schedule_changes_log.json
           git diff --staged --quiet || git commit -m "Aktualizace statistik [skip ci]"
           git push
