@@ -61,7 +61,7 @@ jobs:
         run: |
           git config user.name "hokej-hlidac-bot"
           git config user.email "actions@github.com"
-          git add docs/stats.html scripts/state.json scripts/history.json scripts/monthly.json
+          git add docs/stats.html scripts/state.json scripts/history.json scripts/monthly.json scripts/schedule_watch.json scripts/schedule_changes_log.json
           if git diff --cached --quiet; then
             echo "Žádná změna ve statistikách."
           else
