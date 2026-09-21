@@ -222,15 +222,21 @@ def save_history(history: list) -> None:
 
 def update_history(history: list, changes: list, corrections: list) -> list:
     """
-    Přidá dnešní den do historie (nebo ho přepíše, pokud skript dnes
-    běžel víckrát) a ořízne na posledních HISTORY_DAYS dní. Dny beze
+    Přidá dnešní změny/opravy do historie. Pokud skript dnes už běžel
+    (např. kvůli opravě dat), nový běh se PŘIPOJÍ k tomu, co už dnes
+    v historii je, místo aby ho přepsal — ať se neztratí změny
+    z prvního běhu. Ořízne na posledních HISTORY_DAYS dní. Dny beze
     změn i bez oprav se do historie nepřidávají (nic by se v nich
     stejně nezobrazilo).
     """
     today = datetime.now(ZoneInfo("Europe/Prague")).strftime("%Y-%m-%d")
-    history = [d for d in history if d["date"] != today]
+    existing = next((d for d in history if d["date"] == today), None)
     if changes or corrections:
-        history.append({"date": today, "changes": changes, "corrections": corrections})
+        if existing is not None:
+            existing["changes"] = list(existing.get("changes", [])) + list(changes)
+            existing["corrections"] = list(existing.get("corrections", [])) + list(corrections)
+        else:
+            history.append({"date": today, "changes": list(changes), "corrections": list(corrections)})
     history.sort(key=lambda d: d["date"], reverse=True)
     return history[:HISTORY_DAYS]
 
