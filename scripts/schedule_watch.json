@@ -1,0 +1,314 @@
+{
+  "1": {
+    "datum": "středa 16.9.",
+    "cas": null,
+    "misto": "České Budějovice, Budvar aréna",
+    "odehrano": true
+  },
+  "2": {
+    "datum": "pátek 18.9.",
+    "cas": null,
+    "misto": "Hradec Králové, ČPP ARÉNA",
+    "odehrano": true
+  },
+  "3": {
+    "datum": "neděle 20.9.",
+    "cas": null,
+    "misto": "České Budějovice, Budvar aréna",
+    "odehrano": true
+  },
+  "4": {
+    "datum": "pátek 25.9.",
+    "cas": "18:00",
+    "misto": "Karlovy Vary, Mattoni Arena",
+    "odehrano": false
+  },
+  "5": {
+    "datum": "neděle 27.9.",
+    "cas": "16:00",
+    "misto": "České Budějovice, Budvar aréna",
+    "odehrano": false
+  },
+  "6": {
+    "datum": "úterý 29.9.",
+    "cas": "18:00",
+    "misto": "Pardubice, enteria arena",
+    "odehrano": false
+  },
+  "7": {
+    "datum": "čtvrtek 1.10.",
+    "cas": "18:30",
+    "misto": "Praha, O2 arena",
+    "odehrano": false
+  },
+  "8": {
+    "datum": "pondělí 5.10.",
+    "cas": "17:30",
+    "misto": "České Budějovice, Budvar aréna",
+    "odehrano": false
+  },
+  "9": {
+    "datum": "čtvrtek 8.10.",
+    "cas": "17:30",
+    "misto": "Plzeň, LOGSPEED CZ Aréna",
+    "odehrano": false
+  },
+  "10": {
+    "datum": "neděle 11.10.",
+    "cas": "17:00",
+    "misto": "České Budějovice, Budvar aréna",
+    "odehrano": false
+  },
+  "11": {
+    "datum": "pátek 16.10.",
+    "cas": "17:30",
+    "misto": "Ostrava, OSTRAVAR ARÉNA",
+    "odehrano": false
+  },
+  "12": {
+    "datum": "neděle 18.10.",
+    "cas": "17:00",
+    "misto": "České Budějovice, Budvar aréna",
+    "odehrano": false
+  },
+  "13": {
+    "datum": "pátek 23.10.",
+    "cas": "17:00",
+    "misto": "Třinec, WERK ARENA",
+    "odehrano": false
+  },
+  "14": {
+    "datum": "neděle 25.10.",
+    "cas": "16:00",
+    "misto": "Mladá Boleslav, ŠKOENERGO Aréna",
+    "odehrano": false
+  },
+  "15": {
+    "datum": "úterý 27.10.",
+    "cas": "17:30",
+    "misto": "České Budějovice, Budvar aréna",
+    "odehrano": false
+  },
+  "16": {
+    "datum": "pátek 30.10.",
+    "cas": "18:00",
+    "misto": "Olomouc, Zimní stadion",
+    "odehrano": false
+  },
+  "17": {
+    "datum": "neděle 1.11.",
+    "cas": "17:00",
+    "misto": "České Budějovice, Budvar aréna",
+    "odehrano": false
+  },
+  "18": {
+    "datum": "pátek 13.11.",
+    "cas": "17:30",
+    "misto": "Litvínov, Zimní stadion Ivana Hlinky",
+    "odehrano": false
+  },
+  "19": {
+    "datum": "neděle 15.11.",
+    "cas": "17:00",
+    "misto": "České Budějovice, Budvar aréna",
+    "odehrano": false
+  },
+  "20": {
+    "datum": "pátek 20.11.",
+    "cas": "17:30",
+    "misto": "České Budějovice, Budvar aréna",
+    "odehrano": false
+  },
+  "21": {
+    "datum": "neděle 22.11.",
+    "cas": "17:00",
+    "misto": "Brno, Winning Group Arena",
+    "odehrano": false
+  },
+  "22": {
+    "datum": "úterý 24.11.",
+    "cas": "17:30",
+    "misto": "České Budějovice, Budvar aréna",
+    "odehrano": false
+  },
+  "23": {
+    "datum": "pátek 27.11.",
+    "cas": "18:00",
+    "misto": "Liberec, Home Credit Arena",
+    "odehrano": false
+  },
+  "24": {
+    "datum": "neděle 29.11.",
+    "cas": "17:00",
+    "misto": "České Budějovice, Budvar aréna",
+    "odehrano": false
+  },
+  "25": {
+    "datum": "pátek 4.12.",
+    "cas": "18:00",
+    "misto": "Kladno, ČEZ STADION Kladno",
+    "odehrano": false
+  },
+  "26": {
+    "datum": "neděle 6.12.",
+    "cas": "17:00",
+    "misto": "České Budějovice, Budvar aréna",
+    "odehrano": false
+  },
+  "27": {
+    "datum": "pátek 18.12.",
+    "cas": "17:30",
+    "misto": "České Budějovice, Budvar aréna",
+    "odehrano": false
+  },
+  "28": {
+    "datum": "neděle 20.12.",
+    "cas": "16:00",
+    "misto": "Hradec Králové, ČPP ARÉNA",
+    "odehrano": false
+  },
+  "29": {
+    "datum": "úterý 22.12.",
+    "cas": "17:30",
+    "misto": "České Budějovice, Budvar aréna",
+    "odehrano": false
+  },
+  "30": {
+    "datum": "sobota 26.12.",
+    "cas": "16:00",
+    "misto": "Karlovy Vary, Mattoni Arena",
+    "odehrano": false
+  },
+  "31": {
+    "datum": "pondělí 28.12.",
+    "cas": "17:30",
+    "misto": "České Budějovice, Budvar aréna",
+    "odehrano": false
+  },
+  "32": {
+    "datum": "středa 30.12.",
+    "cas": "18:00",
+    "misto": "Pardubice, enteria arena",
+    "odehrano": false
+  },
+  "33": {
+    "datum": "neděle 3.1.",
+    "cas": "16:00",
+    "misto": "Praha, O2 arena",
+    "odehrano": false
+  },
+  "35": {
+    "datum": "neděle 10.1.",
+    "cas": "16:30",
+    "misto": "Plzeň, LOGSPEED CZ Aréna",
+    "odehrano": false
+  },
+  "34": {
+    "datum": "středa 13.1.",
+    "cas": "18:00",
+    "misto": "Brno, Winning Group Arena",
+    "odehrano": false
+  },
+  "36": {
+    "datum": "pátek 15.1.",
+    "cas": "17:30",
+    "misto": "České Budějovice, Budvar aréna",
+    "odehrano": false
+  },
+  "37": {
+    "datum": "neděle 17.1.",
+    "cas": "16:00",
+    "misto": "Ostrava, OSTRAVAR ARÉNA",
+    "odehrano": false
+  },
+  "38": {
+    "datum": "pátek 22.1.",
+    "cas": "17:30",
+    "misto": "České Budějovice, Budvar aréna",
+    "odehrano": false
+  },
+  "39": {
+    "datum": "neděle 24.1.",
+    "cas": "15:00",
+    "misto": "Třinec, WERK ARENA",
+    "odehrano": false
+  },
+  "40": {
+    "datum": "úterý 26.1.",
+    "cas": "17:30",
+    "misto": "Mladá Boleslav, ŠKOENERGO Aréna",
+    "odehrano": false
+  },
+  "41": {
+    "datum": "pátek 29.1.",
+    "cas": "17:30",
+    "misto": "České Budějovice, Budvar aréna",
+    "odehrano": false
+  },
+  "42": {
+    "datum": "neděle 31.1.",
+    "cas": "17:00",
+    "misto": "Olomouc, Zimní stadion",
+    "odehrano": false
+  },
+  "43": {
+    "datum": "úterý 2.2.",
+    "cas": "17:30",
+    "misto": "České Budějovice, Budvar aréna",
+    "odehrano": false
+  },
+  "44": {
+    "datum": "pátek 5.2.",
+    "cas": "17:30",
+    "misto": "Litvínov, Zimní stadion Ivana Hlinky",
+    "odehrano": false
+  },
+  "45": {
+    "datum": "neděle 7.2.",
+    "cas": "17:00",
+    "misto": "České Budějovice, Budvar aréna",
+    "odehrano": false
+  },
+  "46": {
+    "datum": "středa 17.2.",
+    "cas": "17:30",
+    "misto": "České Budějovice, Budvar aréna",
+    "odehrano": false
+  },
+  "47": {
+    "datum": "pátek 19.2.",
+    "cas": "17:30",
+    "misto": "České Budějovice, Budvar aréna",
+    "odehrano": false
+  },
+  "48": {
+    "datum": "neděle 21.2.",
+    "cas": "17:00",
+    "misto": "České Budějovice, Budvar aréna",
+    "odehrano": false
+  },
+  "49": {
+    "datum": "pátek 26.2.",
+    "cas": "18:00",
+    "misto": "Liberec, Home Credit Arena",
+    "odehrano": false
+  },
+  "50": {
+    "datum": "neděle 28.2.",
+    "cas": "17:00",
+    "misto": "České Budějovice, Budvar aréna",
+    "odehrano": false
+  },
+  "51": {
+    "datum": "úterý 2.3.",
+    "cas": "17:30",
+    "misto": "Kladno, ČEZ STADION Kladno",
+    "odehrano": false
+  },
+  "52": {
+    "datum": "pátek 5.3.",
+    "cas": "17:30",
+    "misto": "České Budějovice, Budvar aréna",
+    "odehrano": false
+  }
+}
