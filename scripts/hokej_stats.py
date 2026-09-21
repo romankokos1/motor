@@ -43,6 +43,10 @@ MONTHS_CS = {
     1: "leden", 2: "únor", 3: "březen", 4: "duben", 5: "květen", 6: "červen",
     7: "červenec", 8: "srpen", 9: "září", 10: "říjen", 11: "listopad", 12: "prosinec",
 }
+SCHEDULE_WATCH_FILE = SCRIPT_DIR / "schedule_watch.json"
+SCHEDULE_LOG_FILE = SCRIPT_DIR / "schedule_changes_log.json"
+SEASON_ROUNDS = 52  # počet kol základní části - pro rozsah osy X grafu bilance
+CLUB_NAME = "České Budějovice"
 DOCS_DIR = REPO_ROOT / "docs"
 OUTPUT_HTML = DOCS_DIR / "stats.html"
 
@@ -56,6 +60,7 @@ OUTPUT_HTML = DOCS_DIR / "stats.html"
 # play-off), zkus nejdřív ručně v prohlížeči najít správnou URL a
 # STATS_URL podle toho uprav.
 STATS_URL = "https://hcmotor.cz/stats.asp?sezona=2027"
+SCHEDULE_URL = "https://hcmotor.cz/zapasy.asp?sezona=2027"
 SEASON_LABEL = "Tipsport extraliga 2026/2027"
 
 HEADERS = {
@@ -628,6 +633,209 @@ def build_career_rows(current: dict, baseline: dict, player_type: str, scope: st
     return rows, missing
 
 
+def parse_schedule_page(soup: BeautifulSoup) -> list:
+    """
+    Rozparsuje https://hcmotor.cz/zapasy.asp?sezona=... — seznam všech
+    kol sezóny (odehraných i budoucích). Vrací list dictů:
+    {"kolo": int, "domaci": str, "hoste": str, "datum": str, "misto": str,
+     "odehrano": bool, "cas": str|None, "vysledek": str|None,
+     "vyhra": bool, "prohra": bool}
+    "vyhra"/"prohra" jsou z pohledu Motoru — web sám odkaz na výsledek
+    značí třídou "win"/"loss", takže se nemusí ručně dohadovat, kdo hrál
+    doma/venku.
+    """
+    games = []
+    for game in soup.select("div.game"):
+        round_div = game.select_one("div.round")
+        teams_div = game.select_one("div.teams")
+        score_div = game.select_one("div.score")
+        if not round_div or not teams_div or not score_div:
+            continue
+
+        round_text = " ".join(round_div.get_text(" ", strip=True).split())
+        m = re.match(r"(\d+)\.\s*kolo,?\s*(.*)", round_text)
+        if not m:
+            continue
+        kolo = int(m.group(1))
+        rest = m.group(2)
+        parts = [p.strip() for p in rest.split(",", 1)]
+        datum = parts[0] if parts else ""
+        misto = parts[1].strip() if len(parts) > 1 else ""
+
+        teams_text = teams_div.get_text(strip=True)
+        domaci, _, hoste = teams_text.partition(" - ")
+
+        link = score_div.find("a")
+        if link:
+            classes = link.get("class") or []
+            games.append({
+                "kolo": kolo,
+                "domaci": domaci.strip(),
+                "hoste": hoste.strip(),
+                "datum": datum,
+                "misto": misto,
+                "odehrano": True,
+                "cas": None,
+                "vysledek": link.get_text(strip=True),
+                "vyhra": "win" in classes,
+                "prohra": "loss" in classes,
+            })
+        else:
+            cas_text = score_div.get_text(strip=True)
+            games.append({
+                "kolo": kolo,
+                "domaci": domaci.strip(),
+                "hoste": hoste.strip(),
+                "datum": datum,
+                "misto": misto,
+                "odehrano": False,
+                "cas": cas_text or None,
+                "vysledek": None,
+                "vyhra": False,
+                "prohra": False,
+            })
+    return games
+
+
+def load_schedule_watch() -> dict:
+    if SCHEDULE_WATCH_FILE.exists():
+        return json.loads(SCHEDULE_WATCH_FILE.read_text(encoding="utf-8"))
+    return {}
+
+
+def save_schedule_watch(data: dict) -> None:
+    SCHEDULE_WATCH_FILE.write_text(
+        json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
+
+
+def build_schedule_changes(old: dict, games: list) -> list:
+    """
+    Porovná dosud NEODEHRANÉ zápasy s posledně uloženým termínem/místem
+    a nahlásí, pokud se něco změnilo (datum, čas, nebo místo). Odehrané
+    zápasy se přeskakují — jejich termín se zpětně nemění. První běh
+    (žádný předchozí záznam pro dané kolo) nic nehlásí, jen založí stav.
+    """
+    changes = []
+    for g in games:
+        if g["odehrano"]:
+            continue
+        prev = old.get(str(g["kolo"]))
+        if prev is None or prev.get("odehrano"):
+            continue
+        rozdily = []
+        if prev.get("datum") != g["datum"]:
+            rozdily.append(f'datum {prev.get("datum") or "?"} → {g["datum"]}')
+        if prev.get("cas") != g["cas"]:
+            rozdily.append(f'čas {prev.get("cas") or "neuveden"} → {g["cas"] or "neuveden"}')
+        if prev.get("misto") != g["misto"]:
+            rozdily.append(f'místo {prev.get("misto") or "?"} → {g["misto"]}')
+        if rozdily:
+            soupeř = g["hoste"] if g["domaci"] == CLUB_NAME else g["domaci"]
+            changes.append(f'⏰ {g["kolo"]}. kolo ({soupeř}): ' + ", ".join(rozdily))
+    return changes
+
+
+def load_schedule_log() -> list:
+    if SCHEDULE_LOG_FILE.exists():
+        return json.loads(SCHEDULE_LOG_FILE.read_text(encoding="utf-8"))
+    return []
+
+
+def save_schedule_log(log: list) -> None:
+    SCHEDULE_LOG_FILE.write_text(
+        json.dumps(log, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
+
+
+def update_schedule_log(log: list, schedule_changes: list) -> list:
+    """
+    Na rozdíl od 7denní historie se tenhle log NEOŘEZÁVÁ — drží se celou
+    sezónu, ať je vidět celoroční přehled, kdy a jak se termíny měnily.
+    Nové změny se přidávají s dnešním datem; když skript proběhne
+    víckrát za den, prostě se přidají další řádky (nic se nepřepisuje).
+    """
+    if not schedule_changes:
+        return log
+    today = datetime.now(ZoneInfo("Europe/Prague")).strftime("%Y-%m-%d")
+    log = list(log)
+    for c in schedule_changes:
+        log.append({"datum": today, "zmena": c})
+    return log
+
+
+def update_schedule_watch(old: dict, games: list) -> dict:
+    new = dict(old)
+    for g in games:
+        new[str(g["kolo"])] = {
+            "datum": g["datum"],
+            "cas": g["cas"],
+            "misto": g["misto"],
+            "odehrano": g["odehrano"],
+        }
+    return new
+
+
+def build_record_svg(games: list) -> str:
+    """
+    SVG graf průběžné bilance Motoru: výhra +1, prohra -1 (jakýmkoliv
+    způsobem, i po prodloužení/nájezdech), kumulativně od 1. do
+    SEASON_ROUNDS kola. Nehraná kola zatím do grafu nepřidávají bod —
+    graf se tak den po dni "dokresluje", jak přibývají odehrané zápasy.
+    """
+    played = sorted((g for g in games if g["odehrano"]), key=lambda g: g["kolo"])
+    if not played:
+        return ""
+
+    cumulative = []
+    total = 0
+    for g in played:
+        if g["vyhra"]:
+            total += 1
+        elif g["prohra"]:
+            total -= 1
+        cumulative.append((g["kolo"], total))
+
+    width, height = 760, 220
+    pad_l, pad_r, pad_t, pad_b = 34, 16, 20, 28
+    plot_w = width - pad_l - pad_r
+    plot_h = height - pad_t - pad_b
+
+    max_x = max(SEASON_ROUNDS, cumulative[-1][0])
+    values = [v for _, v in cumulative]
+    max_y = max(1, max(values))
+    min_y = min(-1, min(values))
+    span_y = max_y - min_y
+
+    def x_for(kolo: int) -> float:
+        return pad_l + (kolo - 1) / (max_x - 1) * plot_w
+
+    def y_for(val: int) -> float:
+        return pad_t + (max_y - val) / span_y * plot_h
+
+    points = " ".join(f"{x_for(k):.1f},{y_for(v):.1f}" for k, v in cumulative)
+    zero_y = y_for(0)
+    last_kolo, last_val = cumulative[-1]
+    dot_x, dot_y = x_for(last_kolo), y_for(last_val)
+    barva = "#1a7f37" if last_val > 0 else ("#c8102e" if last_val < 0 else "#555")
+    label_y = dot_y - 10 if dot_y > pad_t + 14 else dot_y + 18
+
+    return f"""
+    <svg viewBox="0 0 {width} {height}" width="100%" height="auto" role="img"
+         aria-label="Průběžná bilance výher a proher HC Motor">
+      <line x1="{pad_l}" y1="{zero_y:.1f}" x2="{width - pad_r}" y2="{zero_y:.1f}"
+            stroke="#ccc" stroke-dasharray="3,3"/>
+      <polyline points="{points}" fill="none" stroke="#0b1f3a" stroke-width="2"/>
+      <circle cx="{dot_x:.1f}" cy="{dot_y:.1f}" r="4" fill="{barva}"/>
+      <text x="{dot_x:.1f}" y="{label_y:.1f}" font-size="13" text-anchor="middle"
+            fill="{barva}" font-weight="bold">{last_val:+d}</text>
+      <text x="{pad_l}" y="{height - 8}" font-size="11" fill="#888">1. kolo</text>
+      <text x="{width - pad_r}" y="{height - 8}" font-size="11" fill="#888"
+            text-anchor="end">{max_x}. kolo</text>
+    </svg>
+"""
+
+
 def render_html(
     new: dict,
     changes: list,
@@ -635,6 +843,9 @@ def render_html(
     corrections: list | None = None,
     history: list | None = None,
     monthly: dict | None = None,
+    schedule_changes: list | None = None,
+    record_svg: str = "",
+    schedule_log: list | None = None,
 ) -> str:
     now = datetime.now(ZoneInfo("Europe/Prague")).strftime("%d.%m.%Y %H:%M")
 
@@ -698,6 +909,43 @@ def render_html(
 """
     else:
         history_html = ""
+
+    schedule_changes = schedule_changes or []
+    if schedule_changes:
+        schedule_html = f"""
+  <div class="card">
+    <h2>⏰ Změna termínu zápasu</h2>
+    <ul class="changes">{"".join(f"<li>{esc(c)}</li>" for c in schedule_changes)}</ul>
+  </div>
+"""
+    else:
+        schedule_html = ""
+
+    schedule_log = schedule_log or []
+    if schedule_log:
+        log_rows = "".join(
+            f"<li>{esc(e['datum'])}: {esc(e['zmena'])}</li>"
+            for e in sorted(schedule_log, key=lambda e: e["datum"], reverse=True)
+        )
+        schedule_log_html = f"""
+  <div class="card">
+    <h2>📜 Historie změn termínů (celá sezóna)</h2>
+    <ul class="changes">{log_rows}</ul>
+  </div>
+"""
+    else:
+        schedule_log_html = ""
+
+    if record_svg:
+        record_html = f"""
+  <div class="card">
+    <h2>📈 Bilance výher a proher</h2>
+    <p class="muted small">Výhra +1, prohra -1 (jakýmkoliv způsobem), kumulativně od 1. kola.</p>
+    {record_svg}
+  </div>
+"""
+    else:
+        record_html = ""
 
     monthly = monthly or {}
     if monthly:
@@ -965,7 +1213,7 @@ def render_html(
     <h2>Změny od minulé aktualizace</h2>
     {changes_html}
   </div>
-{corrections_html}{history_html}{monthly_html}{milestones_html}
+{schedule_html}{corrections_html}{history_html}{record_html}{monthly_html}{milestones_html}{schedule_log_html}
   <h2 class="section-title">Aktuální sezóna</h2>
   <div class="card">
     <h2>Hráči v poli</h2>
@@ -994,6 +1242,8 @@ def main() -> None:
     baseline = load_baseline()
     history = load_history()
     monthly = load_monthly()
+    schedule_watch = load_schedule_watch()
+    schedule_log = load_schedule_log()
 
     soup = fetch(STATS_URL)
     new_state = parse_stats_page(soup)
@@ -1006,20 +1256,40 @@ def main() -> None:
     month_key = effective_month_key()
     monthly = update_monthly(monthly, month_key, monthly_deltas)
 
+    try:
+        schedule_soup = fetch(SCHEDULE_URL)
+        games = parse_schedule_page(schedule_soup)
+    except Exception as exc:  # rozpis nesmí shodit celý běh statistik
+        print(f"Varování: nepodařilo se načíst rozpis zápasů ({exc}).")
+        games = []
+
+    schedule_changes = build_schedule_changes(schedule_watch, games) if games else []
+    schedule_log = update_schedule_log(schedule_log, schedule_changes)
+    if games:
+        schedule_watch = update_schedule_watch(schedule_watch, games)
+    record_svg = build_record_svg(games) if games else ""
+
     DOCS_DIR.mkdir(exist_ok=True)
     OUTPUT_HTML.write_text(
-        render_html(new_state, changes, baseline, corrections, history, monthly),
+        render_html(
+            new_state, changes, baseline, corrections, history, monthly,
+            schedule_changes, record_svg, schedule_log,
+        ),
         encoding="utf-8",
     )
 
     save_state(new_state)
     save_history(history)
     save_monthly(monthly)
+    if games:
+        save_schedule_watch(schedule_watch)
+    save_schedule_log(schedule_log)
     print(f"Hotovo. Hráčů v poli: {len(new_state['skaters'])}, "
           f"brankářů: {len(new_state['goalkeepers'])}. Změn: {len(changes)}, "
           f"oprav: {len(corrections)}. Historie: {len(history)} dní. "
           f"Měsíc {month_key}: {len(monthly_deltas['skaters'])} hráčů, "
           f"{len(monthly_deltas['goalkeepers'])} brankářů s přírůstkem. "
+          f"Rozpis: {len(games)} kol, {len(schedule_changes)} změn termínu. "
           f"Výchozí stav zadán pro {len(baseline)} hráčů.")
 
 
