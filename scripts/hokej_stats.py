@@ -736,6 +736,101 @@ def build_schedule_changes(old: dict, games: list) -> list:
     return changes
 
 
+def build_next_match(games: list) -> dict | None:
+    """Nejbližší dosud neodehraný zápas (podle nejnižšího čísla kola)."""
+    upcoming = [g for g in games if not g["odehrano"]]
+    if not upcoming:
+        return None
+    g = min(upcoming, key=lambda x: x["kolo"])
+    doma = g["domaci"] == CLUB_NAME
+    return {
+        "kolo": g["kolo"],
+        "soupeř": g["hoste"] if doma else g["domaci"],
+        "doma": doma,
+        "datum": g["datum"],
+        "cas": g["cas"],
+        "misto": g["misto"],
+    }
+
+
+def build_home_away_split(games: list) -> dict:
+    """Bilance zvlášť pro domácí a venkovní zápasy (jen odehrané)."""
+    played = [g for g in games if g["odehrano"]]
+
+    def wl(lst: list) -> dict:
+        return {
+            "z": len(lst),
+            "v": sum(1 for g in lst if g["vyhra"]),
+            "p": sum(1 for g in lst if g["prohra"]),
+        }
+
+    return {
+        "doma": wl([g for g in played if g["domaci"] == CLUB_NAME]),
+        "venku": wl([g for g in played if g["domaci"] != CLUB_NAME]),
+    }
+
+
+def _bodu_za_zapas(vysledek: str | None, vyhra: bool, prohra: bool) -> int:
+    """
+    Skutečný bodový systém extraligy: výhra v základní hrací době = 3,
+    výhra po prodloužení/nájezdech = 2, prohra po prodloužení/nájezdech
+    = 1, prohra v základní hrací době = 0. Prodloužení/nájezdy pozná
+    podle "p"/"pp" za skóre (např. "2:3p", "2:3pp"), tak jak to značí
+    přímo hcmotor.cz.
+    """
+    if not vysledek:
+        return 0
+    prodlouzeni = bool(re.search(r"p", vysledek))
+    if vyhra:
+        return 2 if prodlouzeni else 3
+    if prohra:
+        return 1 if prodlouzeni else 0
+    return 0
+
+
+def build_league_points(games: list) -> int:
+    return sum(
+        _bodu_za_zapas(g["vysledek"], g["vyhra"], g["prohra"])
+        for g in games
+        if g["odehrano"]
+    )
+
+
+def build_streaks(games: list) -> dict:
+    """
+    Aktuální série od posledního odehraného zápasu zpátky: kolikrát v
+    řadě Motor vyhrál/prohrál, a kolikrát v řadě hrál doma/venku.
+    """
+    played = sorted((g for g in games if g["odehrano"]), key=lambda g: g["kolo"], reverse=True)
+
+    vysledek_typ, vysledek_pocet = None, 0
+    for g in played:
+        typ = "výher" if g["vyhra"] else ("proher" if g["prohra"] else None)
+        if typ is None:
+            break
+        if vysledek_typ is None:
+            vysledek_typ = typ
+        if typ != vysledek_typ:
+            break
+        vysledek_pocet += 1
+
+    misto_typ, misto_pocet = None, 0
+    for g in played:
+        typ = "doma" if g["domaci"] == CLUB_NAME else "venku"
+        if misto_typ is None:
+            misto_typ = typ
+        if typ != misto_typ:
+            break
+        misto_pocet += 1
+
+    return {
+        "vysledek_typ": vysledek_typ,
+        "vysledek_pocet": vysledek_pocet,
+        "misto_typ": misto_typ,
+        "misto_pocet": misto_pocet,
+    }
+
+
 def load_schedule_log() -> list:
     if SCHEDULE_LOG_FILE.exists():
         return json.loads(SCHEDULE_LOG_FILE.read_text(encoding="utf-8"))
@@ -868,6 +963,10 @@ def render_html(
     schedule_changes: list | None = None,
     record_svg: str = "",
     schedule_log: list | None = None,
+    next_match: dict | None = None,
+    home_away: dict | None = None,
+    league_points: int = 0,
+    streaks: dict | None = None,
 ) -> str:
     now = datetime.now(ZoneInfo("Europe/Prague")).strftime("%d.%m.%Y %H:%M")
 
@@ -943,6 +1042,20 @@ def render_html(
     else:
         schedule_html = ""
 
+    if next_match:
+        nm = next_match
+        misto_lbl = "🏠 doma" if nm["doma"] else "🚌 venku"
+        cas_lbl = nm["cas"] if nm["cas"] else "čas bude upřesněn"
+        next_match_html = f"""
+  <div class="card">
+    <h2>🏒 Příští zápas</h2>
+    <p><strong>{nm["kolo"]}. kolo:</strong> {esc(nm["soupeř"])} ({misto_lbl})</p>
+    <p class="muted small">{esc(nm["datum"])} · {esc(cas_lbl)} · {esc(nm["misto"])}</p>
+  </div>
+"""
+    else:
+        next_match_html = ""
+
     schedule_log = schedule_log or []
     if schedule_log:
         log_rows = "".join(
@@ -959,15 +1072,45 @@ def render_html(
         schedule_log_html = ""
 
     if record_svg:
+        streaks = streaks or {}
+        serie_bits = []
+        if streaks.get("vysledek_pocet", 0) >= 2:
+            serie_bits.append(f'{streaks["vysledek_pocet"]}× {streaks["vysledek_typ"]} v řadě')
+        if streaks.get("misto_pocet", 0) >= 2:
+            serie_bits.append(f'{streaks["misto_pocet"]}× {streaks["misto_typ"]} v řadě')
+        serie_html = (
+            f'<p class="muted small">Aktuální série: {" · ".join(serie_bits)}</p>'
+            if serie_bits else ""
+        )
         record_html = f"""
   <div class="card">
     <h2>📈 Bilance výher a proher</h2>
-    <p class="muted small">Výhra +1, prohra -1 (jakýmkoliv způsobem), kumulativně od 1. kola.</p>
+    <p class="muted small">Výhra +1, prohra -1 (jakýmkoliv způsobem), kumulativně od 1. kola.
+    Body v tabulce (systém 3-2-1-0): <strong>{league_points}</strong></p>
     {record_svg}
+    {serie_html}
   </div>
 """
     else:
         record_html = ""
+
+    home_away = home_away or {}
+    if home_away and (home_away.get("doma", {}).get("z", 0) or home_away.get("venku", {}).get("z", 0)):
+        d, v = home_away["doma"], home_away["venku"]
+        home_away_html = f"""
+  <div class="card">
+    <h2>🏠 Bilance doma / venku</h2>
+    <table>
+      <thead><tr><th></th><th>Z</th><th>V</th><th>P</th></tr></thead>
+      <tbody>
+        <tr><td>🏠 Doma</td><td>{d["z"]}</td><td>{d["v"]}</td><td>{d["p"]}</td></tr>
+        <tr><td>🚌 Venku</td><td>{v["z"]}</td><td>{v["v"]}</td><td>{v["p"]}</td></tr>
+      </tbody>
+    </table>
+  </div>
+"""
+    else:
+        home_away_html = ""
 
     monthly = monthly or {}
     if monthly:
@@ -1235,7 +1378,7 @@ def render_html(
     <h2>Změny od minulé aktualizace</h2>
     {changes_html}
   </div>
-{milestones_html}{schedule_html}{corrections_html}{history_html}{record_html}{monthly_html}{schedule_log_html}
+{milestones_html}{next_match_html}{schedule_html}{corrections_html}{history_html}{record_html}{home_away_html}{monthly_html}{schedule_log_html}
   <h2 class="section-title">Aktuální sezóna</h2>
   <div class="card">
     <h2>Hráči v poli</h2>
@@ -1290,12 +1433,17 @@ def main() -> None:
     if games:
         schedule_watch = update_schedule_watch(schedule_watch, games)
     record_svg = build_record_svg(games) if games else ""
+    next_match = build_next_match(games) if games else None
+    home_away = build_home_away_split(games) if games else {}
+    league_points = build_league_points(games) if games else 0
+    streaks = build_streaks(games) if games else {}
 
     DOCS_DIR.mkdir(exist_ok=True)
     OUTPUT_HTML.write_text(
         render_html(
             new_state, changes, baseline, corrections, history, monthly,
             schedule_changes, record_svg, schedule_log,
+            next_match, home_away, league_points, streaks,
         ),
         encoding="utf-8",
     )
