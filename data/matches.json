@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-22T11:36:11Z",
+  "generated": "2026-09-23T11:33:44Z",
   "teams": {
     "mdo": "Mladší dorost",
     "sdo": "Starší dorost",
@@ -243,7 +243,7 @@
     {
       "team": "u20",
       "date": "2026-10-03",
-      "time": "12:00",
+      "time": "14:15",
       "home": false,
       "opponent": "Rytíři Kladno",
       "location": "Kladno, ČEZ STADION Kladno",
@@ -277,15 +277,6 @@
       "round": 12
     },
     {
-      "team": "mdo",
-      "date": "2026-10-10",
-      "time": "12:00",
-      "home": true,
-      "opponent": "EC Red Bull Salcburk",
-      "location": "České Budějovice, Budvar aréna",
-      "round": 9
-    },
-    {
       "team": "sdo",
       "date": "2026-10-10",
       "time": "13:00",
@@ -311,6 +302,15 @@
       "opponent": "Rytíři Kladno",
       "location": "České Budějovice, Budvar aréna",
       "round": 10
+    },
+    {
+      "team": "mdo",
+      "date": "2026-10-12",
+      "time": "15:00",
+      "home": true,
+      "opponent": "EC Red Bull Salcburk",
+      "location": "České Budějovice, Budvar aréna",
+      "round": 9
     },
     {
       "team": "sdo",
