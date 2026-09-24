@@ -22,10 +22,21 @@
       "post": "O",
       "z": 3,
       "g": 1,
-      "a": 2,
-      "b": 3,
+      "a": 1,
+      "b": 2,
       "pm": 2,
       "tm": 0
+    },
+    "2173": {
+      "jmeno": "Nordsäter Lucas",
+      "cislo": "8",
+      "post": "O",
+      "z": 3,
+      "g": 0,
+      "a": 1,
+      "b": 1,
+      "pm": 1,
+      "tm": 2
     },
     "357": {
       "jmeno": "Pýcha Pavel",
@@ -82,17 +93,6 @@
       "pm": 0,
       "tm": 0
     },
-    "2173": {
-      "jmeno": "Nordsäter Lucas",
-      "cislo": "8",
-      "post": "O",
-      "z": 3,
-      "g": 0,
-      "a": 0,
-      "b": 0,
-      "pm": 1,
-      "tm": 2
-    },
     "2053": {
       "jmeno": "Vála Ondřej",
       "cislo": "14",
@@ -148,6 +148,17 @@
       "pm": -1,
       "tm": 2
     },
+    "2051": {
+      "jmeno": "Lantoši Róbert",
+      "cislo": "16",
+      "post": "U",
+      "z": 3,
+      "g": 0,
+      "a": 2,
+      "b": 2,
+      "pm": -1,
+      "tm": 2
+    },
     "1982": {
       "jmeno": "Olesen Nick Alexander",
       "cislo": "95",
@@ -181,22 +192,11 @@
       "pm": 2,
       "tm": 2
     },
-    "2051": {
-      "jmeno": "Lantoši Róbert",
-      "cislo": "16",
-      "post": "U",
-      "z": 3,
-      "g": 0,
-      "a": 1,
-      "b": 1,
-      "pm": -1,
-      "tm": 2
-    },
     "947": {
       "jmeno": "Toman Matěj",
       "cislo": "20",
       "post": "U",
-      "z": 2,
+      "z": 3,
       "g": 0,
       "a": 1,
       "b": 1,
