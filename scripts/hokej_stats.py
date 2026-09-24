@@ -37,7 +37,7 @@ STATE_FILE = SCRIPT_DIR / "state.json"
 BASELINE_FILE = SCRIPT_DIR / "players_baseline.json"
 HISTORY_FILE = SCRIPT_DIR / "history.json"
 HISTORY_DAYS = 7  # kolik posledních dní se v historii drží
-MONTHLY_FILE = SCRIPT_DIR / "monthly.json"
+MONTHLY_BOUNDARIES_FILE = SCRIPT_DIR / "month_boundaries.json"
 MONTHLY_MONTHS_SHOWN = 3  # kolik posledních měsíců se zobrazuje na stránce
 MONTHS_CS = {
     1: "leden", 2: "únor", 3: "březen", 4: "duben", 5: "květen", 6: "červen",
@@ -257,71 +257,76 @@ def effective_month_key() -> str:
     return effective_date.strftime("%Y-%m")
 
 
-def build_monthly_deltas(old: dict, new: dict) -> dict:
+def state_to_name_snapshot(state: dict) -> dict:
     """
-    Vrátí přírůstky Z/G/A/B (u brankářů jen Z) za TENTO běh — jen ze
-    skutečných zápasů (dz > 0, včetně debutu), ne z oprav statistik
-    (viz build_corrections). Tohle je vstup pro update_monthly.
+    Převede state.json (klíčovaný podle ID hráče) na snímek klíčovaný
+    podle jména — {"skaters": {jmeno: {z,g,a,b}}, "goalkeepers":
+    {jmeno: {z}}}. Tohle je "hraniční snímek" pro měsíční přehled (viz
+    build_monthly_from_boundaries).
     """
-    deltas = {"skaters": {}, "goalkeepers": {}}
-
-    old_skaters = old.get("skaters", {})
-    for pid, stats in new.get("skaters", {}).items():
-        old_stats = old_skaters.get(pid)
-        if old_stats is None:
-            if stats["z"] > 0:
-                deltas["skaters"][stats["jmeno"]] = {
-                    "z": stats["z"], "g": stats["g"], "a": stats["a"], "b": stats["b"],
-                }
-            continue
-        dz = stats["z"] - old_stats.get("z", 0)
-        if dz > 0:
-            deltas["skaters"][stats["jmeno"]] = {
-                "z": dz,
-                "g": stats["g"] - old_stats.get("g", 0),
-                "a": stats["a"] - old_stats.get("a", 0),
-                "b": stats["b"] - old_stats.get("b", 0),
-            }
-
-    old_gk = old.get("goalkeepers", {})
-    for pid, stats in new.get("goalkeepers", {}).items():
-        old_stats = old_gk.get(pid)
-        if old_stats is None:
-            if stats["z"] > 0:
-                deltas["goalkeepers"][stats["jmeno"]] = {"z": stats["z"]}
-            continue
-        dz = stats["z"] - old_stats.get("z", 0)
-        if dz > 0:
-            deltas["goalkeepers"][stats["jmeno"]] = {"z": dz}
-
-    return deltas
+    snap = {"skaters": {}, "goalkeepers": {}}
+    for s in state.get("skaters", {}).values():
+        snap["skaters"][s["jmeno"]] = {
+            "z": s.get("z", 0), "g": s.get("g", 0), "a": s.get("a", 0), "b": s.get("b", 0),
+        }
+    for g in state.get("goalkeepers", {}).values():
+        snap["goalkeepers"][g["jmeno"]] = {"z": g.get("z", 0)}
+    return snap
 
 
-def load_monthly() -> dict:
-    if MONTHLY_FILE.exists():
-        return json.loads(MONTHLY_FILE.read_text(encoding="utf-8"))
+def load_month_boundaries() -> dict:
+    if MONTHLY_BOUNDARIES_FILE.exists():
+        return json.loads(MONTHLY_BOUNDARIES_FILE.read_text(encoding="utf-8"))
     return {}
 
 
-def save_monthly(monthly: dict) -> None:
-    MONTHLY_FILE.write_text(
-        json.dumps(monthly, ensure_ascii=False, indent=2), encoding="utf-8"
+def save_month_boundaries(boundaries: dict) -> None:
+    MONTHLY_BOUNDARIES_FILE.write_text(
+        json.dumps(boundaries, ensure_ascii=False, indent=2), encoding="utf-8"
     )
 
 
-def update_monthly(monthly: dict, month_key: str, deltas: dict) -> dict:
-    """Přičte přírůstky z tohoto běhu do součtů daného měsíce (aditivně)."""
-    month = monthly.setdefault(month_key, {"skaters": {}, "goalkeepers": {}})
+def build_monthly_from_boundaries(boundaries: dict, live_snapshot: dict) -> dict:
+    """
+    Měsíční přehled se počítá jako rozdíl dvou "hraničních" snímků
+    celé sezóny (scripts/month_boundaries.json), ne jako postupné
+    sčítání přírůstků po jednotlivých bězích. Díky tomu se do
+    aktuálního (posledního, ještě "otevřeného") měsíce automaticky
+    promítne i oprava statistik na hcmotor.cz, protože se prostě
+    přepočítá "aktuální stav minus stav na začátku měsíce" — přesně
+    jak to jde vyčíst z tabulky Aktuální sezóna. Uzavřené měsíce (ne
+    ten poslední) se počítají jako rozdíl hranice tohoto měsíce a
+    hranice měsíce následujícího, takže zůstávají fixní.
+    """
+    if not boundaries:
+        return {}
 
-    for name, d in deltas.get("skaters", {}).items():
-        cur = month["skaters"].setdefault(name, {"z": 0, "g": 0, "a": 0, "b": 0})
-        for k in ("z", "g", "a", "b"):
-            cur[k] += d.get(k, 0)
+    keys = sorted(boundaries.keys())
 
-    for name, d in deltas.get("goalkeepers", {}).items():
-        cur = month["goalkeepers"].setdefault(name, {"z": 0})
-        cur["z"] += d.get("z", 0)
+    def diff(name_key: str, start: dict, end: dict) -> dict:
+        result = {}
+        all_names = set(start.get(name_key, {})) | set(end.get(name_key, {}))
+        for name in all_names:
+            s0 = start.get(name_key, {}).get(name, {})
+            s1 = end.get(name_key, {}).get(name, {})
+            if name_key == "goalkeepers":
+                dz = s1.get("z", 0) - s0.get("z", 0)
+                if dz:
+                    result[name] = {"z": dz}
+            else:
+                d = {f: s1.get(f, 0) - s0.get(f, 0) for f in ("z", "g", "a", "b")}
+                if any(d.values()):
+                    result[name] = d
+        return result
 
+    monthly = {}
+    for i, mk in enumerate(keys):
+        start = boundaries[mk]
+        end = boundaries[keys[i + 1]] if i + 1 < len(keys) else live_snapshot
+        monthly[mk] = {
+            "skaters": diff("skaters", start, end),
+            "goalkeepers": diff("goalkeepers", start, end),
+        }
     return monthly
 
 
@@ -1147,7 +1152,10 @@ def render_html(
   <div class="card">
     <h2>📅 Měsíční přehled</h2>
     <p class="muted small">Zápas zachycený ranním během se počítá do měsíce,
-    kdy se skutečně hrál (většinou večer předtím), ne do dne, kdy proběhl běh skriptu.</p>
+    kdy se skutečně hrál (většinou večer předtím), ne do dne, kdy proběhl běh skriptu.
+    Poslední (ještě "otevřený") měsíc se počítá vždy z aktuálního stavu sezóny, takže
+    se do něj promítnou i pozdější opravy statistik na hcmotor.cz; uzavřené měsíce
+    zůstávají fixní.</p>
     {"".join(month_blocks)}
   </div>
 """
@@ -1406,7 +1414,7 @@ def main() -> None:
     old_state = load_state()
     baseline = load_baseline()
     history = load_history()
-    monthly = load_monthly()
+    month_boundaries = load_month_boundaries()
     schedule_watch = load_schedule_watch()
     schedule_log = load_schedule_log()
 
@@ -1417,9 +1425,23 @@ def main() -> None:
     corrections = build_corrections(old_state, new_state)
     history = update_history(history, changes, corrections)
 
-    monthly_deltas = build_monthly_deltas(old_state, new_state)
     month_key = effective_month_key()
-    monthly = update_monthly(monthly, month_key, monthly_deltas)
+    if month_key not in month_boundaries:
+        if not month_boundaries:
+            # Úplně první běh s tímhle systémem hraničních snímků — bereme,
+            # že se instaluje v prvním měsíci sezóny (tak tomu bylo, když
+            # se to psalo), takže hranice = nulový stav před sezónou.
+            # Pokud by se to nasazovalo později v sezóně, tenhle bootstrap
+            # by první (aktuální) měsíc chybně nafouknul o celou dosavadní
+            # sezónu — v tom případě over-ridni ručně ten první klíč v
+            # scripts/month_boundaries.json na skutečný stav k 1. dni
+            # daného měsíce.
+            month_boundaries[month_key] = state_to_name_snapshot({})
+        else:
+            # Běžný přechod do nového měsíce: hranice = sezónní stav těsně
+            # před dnešním během (= konec předchozího měsíce).
+            month_boundaries[month_key] = state_to_name_snapshot(old_state)
+    monthly = build_monthly_from_boundaries(month_boundaries, state_to_name_snapshot(new_state))
 
     try:
         schedule_soup = fetch(SCHEDULE_URL)
@@ -1450,15 +1472,16 @@ def main() -> None:
 
     save_state(new_state)
     save_history(history)
-    save_monthly(monthly)
+    save_month_boundaries(month_boundaries)
     if games:
         save_schedule_watch(schedule_watch)
     save_schedule_log(schedule_log)
+    this_month = monthly.get(month_key, {"skaters": {}, "goalkeepers": {}})
     print(f"Hotovo. Hráčů v poli: {len(new_state['skaters'])}, "
           f"brankářů: {len(new_state['goalkeepers'])}. Změn: {len(changes)}, "
           f"oprav: {len(corrections)}. Historie: {len(history)} dní. "
-          f"Měsíc {month_key}: {len(monthly_deltas['skaters'])} hráčů, "
-          f"{len(monthly_deltas['goalkeepers'])} brankářů s přírůstkem. "
+          f"Měsíc {month_key}: {len(this_month['skaters'])} hráčů, "
+          f"{len(this_month['goalkeepers'])} brankářů s produkcí. "
           f"Rozpis: {len(games)} kol, {len(schedule_changes)} změn termínu. "
           f"Výchozí stav zadán pro {len(baseline)} hráčů.")
 
