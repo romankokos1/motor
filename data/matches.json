@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-25T11:49:10Z",
+  "generated": "2026-09-26T11:23:06Z",
   "teams": {
     "mdo": "Mladší dorost",
     "sdo": "Starší dorost",
@@ -178,18 +178,9 @@
       "round": 6
     },
     {
-      "team": "sdo",
-      "date": "2026-09-26",
-      "time": "12:30",
-      "home": true,
-      "opponent": "HC RT TORAX Poruba",
-      "location": "České Budějovice, Budvar aréna",
-      "round": null
-    },
-    {
       "team": "u20",
       "date": "2026-09-26",
-      "time": "16:00",
+      "time": "13:30",
       "home": true,
       "opponent": "HC RT Torax Poruba 2011",
       "location": "České Budějovice, Budvar aréna",
@@ -311,6 +302,15 @@
       "opponent": "EC Red Bull Salcburk",
       "location": "České Budějovice, Budvar aréna",
       "round": 9
+    },
+    {
+      "team": "sdo",
+      "date": "2026-10-14",
+      "time": "13:15",
+      "home": true,
+      "opponent": "HC RT TORAX Poruba",
+      "location": "České Budějovice, Budvar aréna, II. LP",
+      "round": null
     },
     {
       "team": "sdo",
