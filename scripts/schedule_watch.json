@@ -19,9 +19,9 @@
   },
   "4": {
     "datum": "pátek 25.9.",
-    "cas": "18:00",
+    "cas": null,
     "misto": "Karlovy Vary, Mattoni Arena",
-    "odehrano": false
+    "odehrano": true
   },
   "5": {
     "datum": "neděle 27.9.",
