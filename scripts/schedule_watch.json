@@ -25,9 +25,9 @@
   },
   "5": {
     "datum": "neděle 27.9.",
-    "cas": "16:00",
+    "cas": null,
     "misto": "České Budějovice, Budvar aréna",
-    "odehrano": false
+    "odehrano": true
   },
   "6": {
     "datum": "úterý 29.9.",
