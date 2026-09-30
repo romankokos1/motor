@@ -1495,28 +1495,41 @@ def render_html(
 </nav>
 
 <script>
-(function() {{
-  var buttons = document.querySelectorAll('.tab-btn');
-  var sections = document.querySelectorAll('.tabsection');
-  if (!buttons.length || !sections.length) return;
+function initTabbar() {{
+  try {{
+    var buttons = document.querySelectorAll('.tab-btn');
+    var sections = document.querySelectorAll('.tabsection');
+    if (!buttons.length || !sections.length) return;
 
-  function activate(tab) {{
-    buttons.forEach(function(b) {{ b.classList.toggle('is-active', b.getAttribute('data-tab') === tab); }});
-    sections.forEach(function(s) {{ s.classList.toggle('is-hidden', s.getAttribute('data-tab') !== tab); }});
+    function activate(tab) {{
+      for (var i = 0; i < buttons.length; i++) {{
+        buttons[i].classList.toggle('is-active', buttons[i].getAttribute('data-tab') === tab);
+      }}
+      for (var j = 0; j < sections.length; j++) {{
+        sections[j].classList.toggle('is-hidden', sections[j].getAttribute('data-tab') !== tab);
+      }}
+    }}
+
+    for (var k = 0; k < buttons.length; k++) {{
+      buttons[k].addEventListener('click', function() {{
+        activate(this.getAttribute('data-tab'));
+        window.scrollTo(0, 0);
+      }});
+    }}
+
+    // Výchozí stav (má vliv jen pod 640px, viz .tabsection.is-hidden v CSS) —
+    // zbytek sekcí schováme, ať se po přepnutí lišty na mobilu neukazuje
+    // něco navíc, co ještě nebylo vybráno.
+    activate('prehled');
+  }} catch (e) {{
+    if (window.console && window.console.error) {{ window.console.error('tabbar init selhal:', e); }}
   }}
-
-  buttons.forEach(function(btn) {{
-    btn.addEventListener('click', function() {{
-      activate(btn.getAttribute('data-tab'));
-      window.scrollTo({{top: 0, behavior: 'instant'}});
-    }});
-  }});
-
-  // Výchozí stav (má vliv jen pod 640px, viz .tabsection.is-hidden v CSS) —
-  // zbytek sekcí schováme, ať se po přepnutí lišty na mobilu neukazuje
-  // něco navíc, co ještě nebylo vybráno.
-  activate('prehled');
-}})();
+}}
+if (document.readyState === 'loading') {{
+  document.addEventListener('DOMContentLoaded', initTabbar);
+}} else {{
+  initTabbar();
+}}
 </script>
 </body>
 </html>
