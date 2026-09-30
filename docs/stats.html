@@ -2,7 +2,7 @@
 <html lang="cs">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>🎯2 Statistiky hráčů — HC Motor České Budějovice</title>
 
 <!-- Přidání na plochu (PWA) -->
@@ -23,7 +23,10 @@
   body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     background: var(--bg); color: var(--navy); margin: 0; padding: 24px 16px;
+    -webkit-tap-highlight-color: transparent;
   }
+  .hide-m { }
+  .tabbar { display: none; }
   .wrap { max-width: 900px; margin: 0 auto; }
   h1 { font-size: 1.5rem; margin-bottom: 4px; }
   .updated { color: var(--muted); font-size: 0.85rem; margin-bottom: 4px; }
@@ -58,32 +61,71 @@
   details[open] > summary::before { content: "▾ "; }
   details .changes { margin-top: 6px; }
 
-  /* kompaktnější zobrazení na výšku na mobilu */
-  @media (max-width: 600px) {
-    body { padding: 14px 8px; }
+  /* kompaktnější zobrazení na výšku na mobilu + spodní lišta se záložkami */
+  @media (max-width: 640px) {
+    body {
+      padding: 14px 8px;
+      padding-bottom: calc(84px + env(safe-area-inset-bottom));
+    }
     .wrap { max-width: 100%; }
     h1 { font-size: 1.2rem; }
     .section-title { font-size: 1rem; margin: 24px 0 10px; }
-    .card { padding: 12px 10px; margin-bottom: 14px; border-radius: 10px; }
+    .card { padding: 12px 10px; margin-bottom: 14px; border-radius: 10px; overflow-x: auto; }
     .card h2 { font-size: 0.95rem; }
     table { font-size: 0.72rem; }
     th, td { padding: 4px 5px; }
     th { font-size: 0.62rem; }
     .lbl-full { display: none; }
     .lbl-short { display: inline; }
+    .hide-m { display: none; }
+
+    /* Tabulka "Hráči v poli": necháme jméno + Z/G/A/B, schováme # / post / +- / TM */
+    .tbl-skaters th:nth-child(1), .tbl-skaters td:nth-child(1),
+    .tbl-skaters th:nth-child(3), .tbl-skaters td:nth-child(3),
+    .tbl-skaters th:nth-child(8), .tbl-skaters td:nth-child(8),
+    .tbl-skaters th:nth-child(9), .tbl-skaters td:nth-child(9) { display: none; }
+
+    /* Tabulka "Brankáři": necháme jméno + Z / Úsp % / SO, schováme zbytek */
+    .tbl-goalkeepers th:nth-child(1), .tbl-goalkeepers td:nth-child(1),
+    .tbl-goalkeepers th:nth-child(4), .tbl-goalkeepers td:nth-child(4),
+    .tbl-goalkeepers th:nth-child(5), .tbl-goalkeepers td:nth-child(5),
+    .tbl-goalkeepers th:nth-child(6), .tbl-goalkeepers td:nth-child(6),
+    .tbl-goalkeepers th:nth-child(7), .tbl-goalkeepers td:nth-child(7),
+    .tbl-goalkeepers th:nth-child(8), .tbl-goalkeepers td:nth-child(8),
+    .tbl-goalkeepers th:nth-child(11), .tbl-goalkeepers td:nth-child(11),
+    .tbl-goalkeepers th:nth-child(12), .tbl-goalkeepers td:nth-child(12) { display: none; }
+
+    /* Sekce přepínané spodní lištou — na mobilu vidět jen ta aktivní */
+    .tabsection.is-hidden { display: none; }
+
+    .tabbar {
+      display: flex; position: fixed; left: 0; right: 0; bottom: 0; z-index: 40;
+      background: var(--card); border-top: 1px solid var(--border);
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.13);
+      padding-bottom: calc(4px + env(safe-area-inset-bottom));
+    }
+    .tab-btn {
+      flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: center;
+      gap: 2px; background: none; border: none; color: var(--muted);
+      font-family: inherit; padding: 6px 2px 4px; cursor: pointer;
+    }
+    .tab-btn svg { width: 20px; height: 20px; flex-shrink: 0; }
+    .tab-btn span { font-size: 10px; line-height: 1.1; white-space: nowrap; }
+    .tab-btn.is-active { color: var(--red); }
   }
 </style>
 </head>
 <body>
 <div class="wrap">
   <h1>🏒 Statistiky hráčů — HC Motor České Budějovice</h1>
-  <div class="updated">Naposledy aktualizováno: 30.09.2026 14:32</div>
+  <div class="updated">Naposledy aktualizováno: 30.09.2026 16:56</div>
   <div class="season">Tipsport extraliga 2026/2027 · zdroj: <a href="https://hcmotor.cz/stats.asp?sezona=2027">hcmotor.cz</a></div>
 
-  <div class="card">
-    <h2>Změny od minulé aktualizace</h2>
-    <p class='muted'>Od minulého běhu žádné změny.</p>
-  </div>
+  <section class="tabsection" data-tab="prehled">
+    <div class="card">
+      <h2>Změny od minulé aktualizace</h2>
+      <p class='muted'>Od minulého běhu žádné změny.</p>
+    </div>
 
   <div class="card">
     <h2>🎯 Blížící se milníky (do 5)</h2>
@@ -99,31 +141,29 @@
     <p class="muted small">čtvrtek 1.10. · 18:30 · Praha, O2 arena</p>
   </div>
 
-  <div class="card">
-    <h2>🗓️ Historie posledních 7 dní</h2>
-    
-    <details open>
-      <summary>30.09.2026 <span class="muted small">(7)</span></summary>
-      <ul class="changes"><li>🏒 Vráblík Roman: +1b (1A) → celkem 2b (0G 2A, 6 zápasů)</li><li>🏒 Kachyňa Ondřej: +1b (1A) → celkem 1b (0G 1A, 5 zápasů)</li><li>🏒 Hoch Štěpán: +1b (1A) → celkem 5b (1G 4A, 6 zápasů)</li><li>🏒 Ordoš Jan: +1b (1G) → celkem 4b (3G 1A, 6 zápasů)</li><li>🏒 Beránek Martin: +1b (1G) → celkem 1b (1G 0A, 6 zápasů)</li><li>▫️ Bez bodu odehráli zápas (15): Ahl Filip, Andersen Ole Einar Engeland, Bell Parker, Bulíř Michal, Hejduk Marek, Krastenbergs Renars, Lantoši Róbert, Nordsäter Lucas, Olesen Nick Alexander, Pour Jakub, Pýcha Pavel, Toman Matěj, Vála Ondřej, Zachar Marek, Štencel Jan</li><li>🥅 Strmeň Jan: odchytal další zápas — 90.1% úspěšnost, 4.03 průměr (2 zápasů celkem)</li></ul>
-    </details>
-    <details>
-      <summary>28.09.2026 <span class="muted small">(10)</span></summary>
-      <ul class="changes"><li>🏒 Štencel Jan: +3b (1G+2A) → celkem 5b (2G 3A, 5 zápasů)</li><li>🏒 Vála Ondřej: +1b (1A) → celkem 1b (0G 1A, 5 zápasů)</li><li>🏒 Olesen Nick Alexander: +4b (2G+2A) → celkem 5b (3G 2A, 4 zápasů)</li><li>🏒 Hoch Štěpán: +2b (2A) → celkem 4b (1G 3A, 5 zápasů)</li><li>🏒 Lantoši Róbert: +2b (2A) → celkem 4b (0G 4A, 5 zápasů)</li><li>🏒 Ordoš Jan: +2b (2G) → celkem 3b (2G 1A, 5 zápasů)</li><li>🏒 Bulíř Michal: +1b (1A) → celkem 3b (0G 3A, 5 zápasů)</li><li>▫️ Bez bodu odehráli zápas (13): Ahl Filip, Andersen Ole Einar Engeland, Bell Parker, Beránek Martin, Hejduk Marek, Kachyňa Ondřej, Krastenbergs Renars, Nordsäter Lucas, Pour Jakub, Pýcha Pavel, Toman Matěj, Vráblík Roman, Zachar Marek</li><li>🆕 Nový brankář v tabulce: Strmeň Jan — debut: 1 zápas, 88.2% úspěšnost</li><li>🎯 Ordoš Jan: dosáhl/a 50. gólu za Motor!</li></ul>
-    </details>
-    <details>
-      <summary>26.09.2026 <span class="muted small">(5)</span></summary>
-      <ul class="changes"><li>🏒 Pýcha Pavel: +1b (1A) → celkem 2b (0G 2A, 4 zápasů)</li><li>🏒 Hoch Štěpán: +1b (1G) → celkem 2b (1G 1A, 4 zápasů)</li><li>🏒 Ordoš Jan: +1b (1A) → celkem 1b (0G 1A, 4 zápasů)</li><li>▫️ Bez bodu odehráli zápas (16): Ahl Filip, Andersen Ole Einar Engeland, Bell Parker, Beránek Martin, Bulíř Michal, Hejduk Marek, Kachyňa Ondřej, Krastenbergs Renars, Lantoši Róbert, Nordsäter Lucas, Pour Jakub, Toman Matěj, Vráblík Roman, Vála Ondřej, Zachar Marek, Štencel Jan</li><li>🥅 Klouček Milan: odchytal další zápas — 91.9% úspěšnost, 2.47 průměr (4 zápasů celkem)</li></ul>
-    </details>
-    <details>
-      <summary>24.09.2026 <span class="muted small">(5)</span></summary>
-      <ul class="changes"><li>▫️ Bez bodu odehráli zápas (1): Toman Matěj</li><li>🎯 Lantoši Róbert: dosáhl/a 50. bodu za Motor!</li><li>📝 Štencel Jan: oprava statistik (-1A, -1B) — beze změny počtu zápasů</li><li>📝 Nordsäter Lucas: oprava statistik (+1A, +1B) — beze změny počtu zápasů</li><li>📝 Lantoši Róbert: oprava statistik (+1A, +1B) — beze změny počtu zápasů</li></ul>
-    </details>
-    <details>
-      <summary>21.09.2026 <span class="muted small">(2)</span></summary>
-      <ul class="changes"><li>🆕 Nový hráč v tabulce: Andersen Ole Einar Engeland — debut: 2 zápas, 0G 0A, 0b</li><li>📝 Klouček Milan: oprava statistik (+5Zás) — beze změny počtu zápasů</li></ul>
-    </details>
-  </div>
+  </section>
 
+  <section class="tabsection" data-tab="sezona">
+    <h2 class="section-title">Aktuální sezóna</h2>
+    <div class="card">
+      <h2>Hráči v poli</h2>
+      <table class="tbl-skaters">
+        <thead><tr><th>#</th><th>Hráč</th><th><span class="lbl-full">Post</span><span class="lbl-short">P</span></th><th>Z</th><th>G</th><th>A</th><th>B</th><th>+/-</th><th><span class="lbl-full">TM</span><span class="lbl-short">T</span></th></tr></thead>
+        <tbody><tr><td>7</td><td>Štencel Jan</td><td>O</td><td>6</td><td>2</td><td>3</td><td><strong>5</strong></td><td>0</td><td>0</td></tr><tr><td>95</td><td>Olesen Nick Alexander</td><td>U</td><td>5</td><td>3</td><td>2</td><td><strong>5</strong></td><td>-2</td><td>4</td></tr><tr><td>42</td><td>Hoch Štěpán</td><td>U</td><td>6</td><td>1</td><td>4</td><td><strong>5</strong></td><td>2</td><td>2</td></tr><tr><td>45</td><td>Ordoš Jan</td><td>U</td><td>6</td><td>3</td><td>1</td><td><strong>4</strong></td><td>4</td><td>0</td></tr><tr><td>16</td><td>Lantoši Róbert</td><td>U</td><td>6</td><td>0</td><td>4</td><td><strong>4</strong></td><td>-4</td><td>2</td></tr><tr><td>64</td><td>Pour Jakub</td><td>U</td><td>6</td><td>3</td><td>0</td><td><strong>3</strong></td><td>1</td><td>6</td></tr><tr><td>88</td><td>Bulíř Michal</td><td>U</td><td>6</td><td>0</td><td>3</td><td><strong>3</strong></td><td>-2</td><td>0</td></tr><tr><td>12</td><td>Pýcha Pavel</td><td>O</td><td>6</td><td>0</td><td>2</td><td><strong>2</strong></td><td>0</td><td>0</td></tr><tr><td>69</td><td>Vráblík Roman</td><td>O</td><td>6</td><td>0</td><td>2</td><td><strong>2</strong></td><td>3</td><td>2</td></tr><tr><td>92</td><td>Bell Parker</td><td>U</td><td>6</td><td>2</td><td>0</td><td><strong>2</strong></td><td>-2</td><td>0</td></tr><tr><td>29</td><td>Krastenbergs Renars</td><td>U</td><td>6</td><td>0</td><td>2</td><td><strong>2</strong></td><td>-4</td><td>4</td></tr><tr><td>98</td><td>Kachyňa Ondřej</td><td>O</td><td>5</td><td>0</td><td>1</td><td><strong>1</strong></td><td>-2</td><td>2</td></tr><tr><td>8</td><td>Nordsäter Lucas</td><td>O</td><td>6</td><td>0</td><td>1</td><td><strong>1</strong></td><td>-3</td><td>2</td></tr><tr><td>14</td><td>Vála Ondřej</td><td>O</td><td>6</td><td>0</td><td>1</td><td><strong>1</strong></td><td>-5</td><td>6</td></tr><tr><td>56</td><td>Beránek Martin</td><td>U</td><td>6</td><td>1</td><td>0</td><td><strong>1</strong></td><td>-1</td><td>0</td></tr><tr><td>61</td><td>Ahl Filip</td><td>U</td><td>6</td><td>0</td><td>1</td><td><strong>1</strong></td><td>-1</td><td>2</td></tr><tr><td>20</td><td>Toman Matěj</td><td>U</td><td>6</td><td>0</td><td>1</td><td><strong>1</strong></td><td>0</td><td>2</td></tr><tr><td>79</td><td>Andersen Ole Einar Engeland</td><td>O</td><td>5</td><td>0</td><td>0</td><td><strong>0</strong></td><td>-2</td><td>0</td></tr><tr><td>84</td><td>Kundrátek Tomáš</td><td>O</td><td>2</td><td>0</td><td>0</td><td><strong>0</strong></td><td>0</td><td>0</td></tr><tr><td>37</td><td>Hejduk Marek</td><td>U</td><td>6</td><td>0</td><td>0</td><td><strong>0</strong></td><td>-1</td><td>6</td></tr><tr><td>26</td><td>Zachar Marek</td><td>U</td><td>6</td><td>0</td><td>0</td><td><strong>0</strong></td><td>-2</td><td>2</td></tr></tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>Brankáři</h2>
+      <table class="tbl-goalkeepers">
+        <thead><tr><th>#</th><th><span class="lbl-full">Brankář</span><span class="lbl-short">GK</span></th><th>Z</th><th><span class="lbl-full">Min</span><span class="lbl-short">M</span></th><th><span class="lbl-full">Stř</span><span class="lbl-short">S</span></th><th><span class="lbl-full">Ink</span><span class="lbl-short">I</span></th><th><span class="lbl-full">Zás</span><span class="lbl-short">Zá</span></th><th><span class="lbl-full">Prů</span><span class="lbl-short">Pr</span></th><th><span class="lbl-full">Úsp %</span><span class="lbl-short">Úsp</span></th><th>SO</th><th>A</th><th><span class="lbl-full">TM</span><span class="lbl-short">T</span></th></tr></thead>
+        <tbody><tr><td>35</td><td>Klouček Milan</td><td>4</td><td>242</td><td>124</td><td>10</td><td>114</td><td>2.47</td><td>91.9</td><td>1</td><td>0</td><td>0</td></tr><tr><td>2</td><td>Strmeň Jan</td><td>2</td><td>119</td><td>81</td><td>8</td><td>73</td><td>4.03</td><td>90.1</td><td>0</td><td>0</td><td>0</td></tr></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="tabsection" data-tab="bilance">
+    
   <div class="card">
     <h2>📈 Bilance výher a proher</h2>
     <p class="muted small">Výhra +1, prohra -1 (jakýmkoliv způsobem), kumulativně od 1. kola.
@@ -153,6 +193,39 @@
     </table>
   </div>
 
+  </section>
+
+  <section class="tabsection" data-tab="historie">
+    
+  <div class="card">
+    <h2>🗓️ Historie posledních 7 dní</h2>
+    
+    <details open>
+      <summary>30.09.2026 <span class="muted small">(7)</span></summary>
+      <ul class="changes"><li>🏒 Vráblík Roman: +1b (1A) → celkem 2b (0G 2A, 6 zápasů)</li><li>🏒 Kachyňa Ondřej: +1b (1A) → celkem 1b (0G 1A, 5 zápasů)</li><li>🏒 Hoch Štěpán: +1b (1A) → celkem 5b (1G 4A, 6 zápasů)</li><li>🏒 Ordoš Jan: +1b (1G) → celkem 4b (3G 1A, 6 zápasů)</li><li>🏒 Beránek Martin: +1b (1G) → celkem 1b (1G 0A, 6 zápasů)</li><li>▫️ Bez bodu odehráli zápas (15): Ahl Filip, Andersen Ole Einar Engeland, Bell Parker, Bulíř Michal, Hejduk Marek, Krastenbergs Renars, Lantoši Róbert, Nordsäter Lucas, Olesen Nick Alexander, Pour Jakub, Pýcha Pavel, Toman Matěj, Vála Ondřej, Zachar Marek, Štencel Jan</li><li>🥅 Strmeň Jan: odchytal další zápas — 90.1% úspěšnost, 4.03 průměr (2 zápasů celkem)</li></ul>
+    </details>
+    <details>
+      <summary>28.09.2026 <span class="muted small">(10)</span></summary>
+      <ul class="changes"><li>🏒 Štencel Jan: +3b (1G+2A) → celkem 5b (2G 3A, 5 zápasů)</li><li>🏒 Vála Ondřej: +1b (1A) → celkem 1b (0G 1A, 5 zápasů)</li><li>🏒 Olesen Nick Alexander: +4b (2G+2A) → celkem 5b (3G 2A, 4 zápasů)</li><li>🏒 Hoch Štěpán: +2b (2A) → celkem 4b (1G 3A, 5 zápasů)</li><li>🏒 Lantoši Róbert: +2b (2A) → celkem 4b (0G 4A, 5 zápasů)</li><li>🏒 Ordoš Jan: +2b (2G) → celkem 3b (2G 1A, 5 zápasů)</li><li>🏒 Bulíř Michal: +1b (1A) → celkem 3b (0G 3A, 5 zápasů)</li><li>▫️ Bez bodu odehráli zápas (13): Ahl Filip, Andersen Ole Einar Engeland, Bell Parker, Beránek Martin, Hejduk Marek, Kachyňa Ondřej, Krastenbergs Renars, Nordsäter Lucas, Pour Jakub, Pýcha Pavel, Toman Matěj, Vráblík Roman, Zachar Marek</li><li>🆕 Nový brankář v tabulce: Strmeň Jan — debut: 1 zápas, 88.2% úspěšnost</li><li>🎯 Ordoš Jan: dosáhl/a 50. gólu za Motor!</li></ul>
+    </details>
+    <details>
+      <summary>26.09.2026 <span class="muted small">(5)</span></summary>
+      <ul class="changes"><li>🏒 Pýcha Pavel: +1b (1A) → celkem 2b (0G 2A, 4 zápasů)</li><li>🏒 Hoch Štěpán: +1b (1G) → celkem 2b (1G 1A, 4 zápasů)</li><li>🏒 Ordoš Jan: +1b (1A) → celkem 1b (0G 1A, 4 zápasů)</li><li>▫️ Bez bodu odehráli zápas (16): Ahl Filip, Andersen Ole Einar Engeland, Bell Parker, Beránek Martin, Bulíř Michal, Hejduk Marek, Kachyňa Ondřej, Krastenbergs Renars, Lantoši Róbert, Nordsäter Lucas, Pour Jakub, Toman Matěj, Vráblík Roman, Vála Ondřej, Zachar Marek, Štencel Jan</li><li>🥅 Klouček Milan: odchytal další zápas — 91.9% úspěšnost, 2.47 průměr (4 zápasů celkem)</li></ul>
+    </details>
+    <details>
+      <summary>24.09.2026 <span class="muted small">(5)</span></summary>
+      <ul class="changes"><li>▫️ Bez bodu odehráli zápas (1): Toman Matěj</li><li>🎯 Lantoši Róbert: dosáhl/a 50. bodu za Motor!</li><li>📝 Štencel Jan: oprava statistik (-1A, -1B) — beze změny počtu zápasů</li><li>📝 Nordsäter Lucas: oprava statistik (+1A, +1B) — beze změny počtu zápasů</li><li>📝 Lantoši Róbert: oprava statistik (+1A, +1B) — beze změny počtu zápasů</li></ul>
+    </details>
+    <details>
+      <summary>21.09.2026 <span class="muted small">(2)</span></summary>
+      <ul class="changes"><li>🆕 Nový hráč v tabulce: Andersen Ole Einar Engeland — debut: 2 zápas, 0G 0A, 0b</li><li>📝 Klouček Milan: oprava statistik (+5Zás) — beze změny počtu zápasů</li></ul>
+    </details>
+  </div>
+
+  </section>
+
+  <section class="tabsection" data-tab="mesice">
+    
   <div class="card">
     <h2>📅 Měsíční přehled</h2>
     <p class="muted small">Zápas zachycený ranním během se počítá do měsíce,
@@ -165,7 +238,7 @@
       <summary>září 2026 <span class="muted small">(23 hráčů)</span></summary>
       <table>
         <thead><tr><th>Hráč</th><th>Z</th><th>G</th><th>A</th><th>B</th></tr></thead>
-        <tbody><tr><td>Olesen Nick Alexander</td><td>5</td><td>3</td><td>2</td><td><strong>5</strong></td></tr><tr><td>Štencel Jan</td><td>6</td><td>2</td><td>3</td><td><strong>5</strong></td></tr><tr><td>Hoch Štěpán</td><td>6</td><td>1</td><td>4</td><td><strong>5</strong></td></tr><tr><td>Ordoš Jan</td><td>6</td><td>3</td><td>1</td><td><strong>4</strong></td></tr><tr><td>Lantoši Róbert</td><td>6</td><td>0</td><td>4</td><td><strong>4</strong></td></tr><tr><td>Pour Jakub</td><td>6</td><td>3</td><td>0</td><td><strong>3</strong></td></tr><tr><td>Bulíř Michal</td><td>6</td><td>0</td><td>3</td><td><strong>3</strong></td></tr><tr><td>Vráblík Roman</td><td>6</td><td>0</td><td>2</td><td><strong>2</strong></td></tr><tr><td>Pýcha Pavel</td><td>6</td><td>0</td><td>2</td><td><strong>2</strong></td></tr><tr><td>Bell Parker</td><td>6</td><td>2</td><td>0</td><td><strong>2</strong></td></tr><tr><td>Krastenbergs Renars</td><td>6</td><td>0</td><td>2</td><td><strong>2</strong></td></tr><tr><td>Beránek Martin</td><td>6</td><td>1</td><td>0</td><td><strong>1</strong></td></tr><tr><td>Kachyňa Ondřej</td><td>5</td><td>0</td><td>1</td><td><strong>1</strong></td></tr><tr><td>Toman Matěj</td><td>6</td><td>0</td><td>1</td><td><strong>1</strong></td></tr><tr><td>Nordsäter Lucas</td><td>6</td><td>0</td><td>1</td><td><strong>1</strong></td></tr><tr><td>Vála Ondřej</td><td>6</td><td>0</td><td>1</td><td><strong>1</strong></td></tr><tr><td>Ahl Filip</td><td>6</td><td>0</td><td>1</td><td><strong>1</strong></td></tr><tr><td>Kundrátek Tomáš</td><td>2</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>Zachar Marek</td><td>6</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>Andersen Ole Einar Engeland</td><td>5</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>Hejduk Marek</td><td>6</td><td>0</td><td>0</td><td><strong>0</strong></td></tr></tbody>
+        <tbody><tr><td>Štencel Jan</td><td>6</td><td>2</td><td>3</td><td><strong>5</strong></td></tr><tr><td>Hoch Štěpán</td><td>6</td><td>1</td><td>4</td><td><strong>5</strong></td></tr><tr><td>Olesen Nick Alexander</td><td>5</td><td>3</td><td>2</td><td><strong>5</strong></td></tr><tr><td>Lantoši Róbert</td><td>6</td><td>0</td><td>4</td><td><strong>4</strong></td></tr><tr><td>Ordoš Jan</td><td>6</td><td>3</td><td>1</td><td><strong>4</strong></td></tr><tr><td>Pour Jakub</td><td>6</td><td>3</td><td>0</td><td><strong>3</strong></td></tr><tr><td>Bulíř Michal</td><td>6</td><td>0</td><td>3</td><td><strong>3</strong></td></tr><tr><td>Pýcha Pavel</td><td>6</td><td>0</td><td>2</td><td><strong>2</strong></td></tr><tr><td>Vráblík Roman</td><td>6</td><td>0</td><td>2</td><td><strong>2</strong></td></tr><tr><td>Bell Parker</td><td>6</td><td>2</td><td>0</td><td><strong>2</strong></td></tr><tr><td>Krastenbergs Renars</td><td>6</td><td>0</td><td>2</td><td><strong>2</strong></td></tr><tr><td>Nordsäter Lucas</td><td>6</td><td>0</td><td>1</td><td><strong>1</strong></td></tr><tr><td>Vála Ondřej</td><td>6</td><td>0</td><td>1</td><td><strong>1</strong></td></tr><tr><td>Ahl Filip</td><td>6</td><td>0</td><td>1</td><td><strong>1</strong></td></tr><tr><td>Kachyňa Ondřej</td><td>5</td><td>0</td><td>1</td><td><strong>1</strong></td></tr><tr><td>Beránek Martin</td><td>6</td><td>1</td><td>0</td><td><strong>1</strong></td></tr><tr><td>Toman Matěj</td><td>6</td><td>0</td><td>1</td><td><strong>1</strong></td></tr><tr><td>Hejduk Marek</td><td>6</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>Andersen Ole Einar Engeland</td><td>5</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>Zachar Marek</td><td>6</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>Kundrátek Tomáš</td><td>2</td><td>0</td><td>0</td><td><strong>0</strong></td></tr></tbody>
       </table>
       <table>
         <thead><tr><th>Brankář</th><th>Z</th></tr></thead>
@@ -174,22 +247,9 @@
     </details>
   </div>
 
-  <h2 class="section-title">Aktuální sezóna</h2>
-  <div class="card">
-    <h2>Hráči v poli</h2>
-    <table>
-      <thead><tr><th>#</th><th>Hráč</th><th><span class="lbl-full">Post</span><span class="lbl-short">P</span></th><th>Z</th><th>G</th><th>A</th><th>B</th><th>+/-</th><th><span class="lbl-full">TM</span><span class="lbl-short">T</span></th></tr></thead>
-      <tbody><tr><td>7</td><td>Štencel Jan</td><td>O</td><td>6</td><td>2</td><td>3</td><td><strong>5</strong></td><td>0</td><td>0</td></tr><tr><td>95</td><td>Olesen Nick Alexander</td><td>U</td><td>5</td><td>3</td><td>2</td><td><strong>5</strong></td><td>-2</td><td>4</td></tr><tr><td>42</td><td>Hoch Štěpán</td><td>U</td><td>6</td><td>1</td><td>4</td><td><strong>5</strong></td><td>2</td><td>2</td></tr><tr><td>45</td><td>Ordoš Jan</td><td>U</td><td>6</td><td>3</td><td>1</td><td><strong>4</strong></td><td>4</td><td>0</td></tr><tr><td>16</td><td>Lantoši Róbert</td><td>U</td><td>6</td><td>0</td><td>4</td><td><strong>4</strong></td><td>-4</td><td>2</td></tr><tr><td>64</td><td>Pour Jakub</td><td>U</td><td>6</td><td>3</td><td>0</td><td><strong>3</strong></td><td>1</td><td>6</td></tr><tr><td>88</td><td>Bulíř Michal</td><td>U</td><td>6</td><td>0</td><td>3</td><td><strong>3</strong></td><td>-2</td><td>0</td></tr><tr><td>12</td><td>Pýcha Pavel</td><td>O</td><td>6</td><td>0</td><td>2</td><td><strong>2</strong></td><td>0</td><td>0</td></tr><tr><td>69</td><td>Vráblík Roman</td><td>O</td><td>6</td><td>0</td><td>2</td><td><strong>2</strong></td><td>3</td><td>2</td></tr><tr><td>92</td><td>Bell Parker</td><td>U</td><td>6</td><td>2</td><td>0</td><td><strong>2</strong></td><td>-2</td><td>0</td></tr><tr><td>29</td><td>Krastenbergs Renars</td><td>U</td><td>6</td><td>0</td><td>2</td><td><strong>2</strong></td><td>-4</td><td>4</td></tr><tr><td>98</td><td>Kachyňa Ondřej</td><td>O</td><td>5</td><td>0</td><td>1</td><td><strong>1</strong></td><td>-2</td><td>2</td></tr><tr><td>8</td><td>Nordsäter Lucas</td><td>O</td><td>6</td><td>0</td><td>1</td><td><strong>1</strong></td><td>-3</td><td>2</td></tr><tr><td>14</td><td>Vála Ondřej</td><td>O</td><td>6</td><td>0</td><td>1</td><td><strong>1</strong></td><td>-5</td><td>6</td></tr><tr><td>56</td><td>Beránek Martin</td><td>U</td><td>6</td><td>1</td><td>0</td><td><strong>1</strong></td><td>-1</td><td>0</td></tr><tr><td>61</td><td>Ahl Filip</td><td>U</td><td>6</td><td>0</td><td>1</td><td><strong>1</strong></td><td>-1</td><td>2</td></tr><tr><td>20</td><td>Toman Matěj</td><td>U</td><td>6</td><td>0</td><td>1</td><td><strong>1</strong></td><td>0</td><td>2</td></tr><tr><td>79</td><td>Andersen Ole Einar Engeland</td><td>O</td><td>5</td><td>0</td><td>0</td><td><strong>0</strong></td><td>-2</td><td>0</td></tr><tr><td>84</td><td>Kundrátek Tomáš</td><td>O</td><td>2</td><td>0</td><td>0</td><td><strong>0</strong></td><td>0</td><td>0</td></tr><tr><td>37</td><td>Hejduk Marek</td><td>U</td><td>6</td><td>0</td><td>0</td><td><strong>0</strong></td><td>-1</td><td>6</td></tr><tr><td>26</td><td>Zachar Marek</td><td>U</td><td>6</td><td>0</td><td>0</td><td><strong>0</strong></td><td>-2</td><td>2</td></tr></tbody>
-    </table>
-  </div>
+  </section>
 
-  <div class="card">
-    <h2>Brankáři</h2>
-    <table>
-      <thead><tr><th>#</th><th><span class="lbl-full">Brankář</span><span class="lbl-short">GK</span></th><th>Z</th><th><span class="lbl-full">Min</span><span class="lbl-short">M</span></th><th><span class="lbl-full">Stř</span><span class="lbl-short">S</span></th><th><span class="lbl-full">Ink</span><span class="lbl-short">I</span></th><th><span class="lbl-full">Zás</span><span class="lbl-short">Zá</span></th><th><span class="lbl-full">Prů</span><span class="lbl-short">Pr</span></th><th><span class="lbl-full">Úsp %</span><span class="lbl-short">Úsp</span></th><th>SO</th><th>A</th><th><span class="lbl-full">TM</span><span class="lbl-short">T</span></th></tr></thead>
-      <tbody><tr><td>35</td><td>Klouček Milan</td><td>4</td><td>242</td><td>124</td><td>10</td><td>114</td><td>2.47</td><td>91.9</td><td>1</td><td>0</td><td>0</td></tr><tr><td>2</td><td>Strmeň Jan</td><td>2</td><td>119</td><td>81</td><td>8</td><td>73</td><td>4.03</td><td>90.1</td><td>0</td><td>0</td><td>0</td></tr></tbody>
-    </table>
-  </div>
+  <section class="tabsection" data-tab="kariera">
 
   <h2 class="section-title">Kariéra za HC Motor</h2>
   <div class="card">
@@ -227,6 +287,59 @@
     
   </div>
 
+  </section>
 </div>
+
+<nav class="tabbar" id="tabbar" aria-label="Navigace sekcí">
+  <button class="tab-btn is-active" type="button" data-tab="prehled">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+    <span>Přehled</span>
+  </button>
+  <button class="tab-btn" type="button" data-tab="sezona">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+    <span>Sezóna</span>
+  </button>
+  <button class="tab-btn" type="button" data-tab="bilance">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+    <span>Bilance</span>
+  </button>
+  <button class="tab-btn" type="button" data-tab="historie">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+    <span>Historie</span>
+  </button>
+  <button class="tab-btn" type="button" data-tab="mesice">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+    <span>Měsíce</span>
+  </button>
+  <button class="tab-btn" type="button" data-tab="kariera">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
+    <span>Kariéra</span>
+  </button>
+</nav>
+
+<script>
+(function() {
+  var buttons = document.querySelectorAll('.tab-btn');
+  var sections = document.querySelectorAll('.tabsection');
+  if (!buttons.length || !sections.length) return;
+
+  function activate(tab) {
+    buttons.forEach(function(b) { b.classList.toggle('is-active', b.getAttribute('data-tab') === tab); });
+    sections.forEach(function(s) { s.classList.toggle('is-hidden', s.getAttribute('data-tab') !== tab); });
+  }
+
+  buttons.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      activate(btn.getAttribute('data-tab'));
+      window.scrollTo({top: 0, behavior: 'instant'});
+    });
+  });
+
+  // Výchozí stav (má vliv jen pod 640px, viz .tabsection.is-hidden v CSS) —
+  // zbytek sekcí schováme, ať se po přepnutí lišty na mobilu neukazuje
+  // něco navíc, co ještě nebylo vybráno.
+  activate('prehled');
+})();
+</script>
 </body>
 </html>
