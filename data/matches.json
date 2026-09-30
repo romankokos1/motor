@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-29T12:50:31Z",
+  "generated": "2026-09-30T05:28:38Z",
   "teams": {
     "mdo": "Mladší dorost",
     "sdo": "Starší dorost",
@@ -288,10 +288,10 @@
     {
       "team": "mdo",
       "date": "2026-10-11",
-      "time": "12:00",
+      "time": "11:45",
       "home": true,
       "opponent": "Rytíři Kladno",
-      "location": "České Budějovice, Budvar aréna",
+      "location": "České Budějovice, Budvar aréna, II. LP",
       "round": 10
     },
     {
@@ -315,10 +315,10 @@
     {
       "team": "sdo",
       "date": "2026-10-16",
-      "time": "15:30",
+      "time": "16:00",
       "home": false,
       "opponent": "HC Škoda Plzeň",
-      "location": "Plzeň, LOGSPEED CZ Aréna",
+      "location": "Plzeň, LOGSPEED CZ Aréna (tréninková hala)",
       "round": null
     },
     {
@@ -368,6 +368,15 @@
     },
     {
       "team": "u20",
+      "date": "2026-10-19",
+      "time": "15:30",
+      "home": true,
+      "opponent": "HC Slavia Praha",
+      "location": "České Budějovice, Budvar aréna",
+      "round": 17
+    },
+    {
+      "team": "u20",
       "date": "2026-10-23",
       "time": "13:00",
       "home": true,
@@ -383,15 +392,6 @@
       "opponent": "Bílí Tygři Liberec",
       "location": "České Budějovice, Budvar aréna",
       "round": null
-    },
-    {
-      "team": "u20",
-      "date": "2026-10-24",
-      "time": "12:00",
-      "home": true,
-      "opponent": "HC Slavia Praha",
-      "location": "České Budějovice, Budvar aréna",
-      "round": 17
     },
     {
       "team": "mdo",
