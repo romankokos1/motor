@@ -31,9 +31,9 @@
   },
   "6": {
     "datum": "úterý 29.9.",
-    "cas": "18:00",
+    "cas": null,
     "misto": "Pardubice, enteria arena",
-    "odehrano": false
+    "odehrano": true
   },
   "7": {
     "datum": "čtvrtek 1.10.",
