@@ -1304,7 +1304,7 @@ def render_html(
 <html lang="cs">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>{esc(page_title)}</title>
 
 <!-- Přidání na plochu (PWA) -->
@@ -1325,7 +1325,10 @@ def render_html(
   body {{
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     background: var(--bg); color: var(--navy); margin: 0; padding: 24px 16px;
+    -webkit-tap-highlight-color: transparent;
   }}
+  .hide-m {{ }}
+  .tabbar {{ display: none; }}
   .wrap {{ max-width: 900px; margin: 0 auto; }}
   h1 {{ font-size: 1.5rem; margin-bottom: 4px; }}
   .updated {{ color: var(--muted); font-size: 0.85rem; margin-bottom: 4px; }}
@@ -1360,19 +1363,57 @@ def render_html(
   details[open] > summary::before {{ content: "▾ "; }}
   details .changes {{ margin-top: 6px; }}
 
-  /* kompaktnější zobrazení na výšku na mobilu */
-  @media (max-width: 600px) {{
-    body {{ padding: 14px 8px; }}
+  /* kompaktnější zobrazení na výšku na mobilu + spodní lišta se záložkami */
+  @media (max-width: 640px) {{
+    body {{
+      padding: 14px 8px;
+      padding-bottom: calc(84px + env(safe-area-inset-bottom));
+    }}
     .wrap {{ max-width: 100%; }}
     h1 {{ font-size: 1.2rem; }}
     .section-title {{ font-size: 1rem; margin: 24px 0 10px; }}
-    .card {{ padding: 12px 10px; margin-bottom: 14px; border-radius: 10px; }}
+    .card {{ padding: 12px 10px; margin-bottom: 14px; border-radius: 10px; overflow-x: auto; }}
     .card h2 {{ font-size: 0.95rem; }}
     table {{ font-size: 0.72rem; }}
     th, td {{ padding: 4px 5px; }}
     th {{ font-size: 0.62rem; }}
     .lbl-full {{ display: none; }}
     .lbl-short {{ display: inline; }}
+    .hide-m {{ display: none; }}
+
+    /* Tabulka "Hráči v poli": necháme jméno + Z/G/A/B, schováme # / post / +- / TM */
+    .tbl-skaters th:nth-child(1), .tbl-skaters td:nth-child(1),
+    .tbl-skaters th:nth-child(3), .tbl-skaters td:nth-child(3),
+    .tbl-skaters th:nth-child(8), .tbl-skaters td:nth-child(8),
+    .tbl-skaters th:nth-child(9), .tbl-skaters td:nth-child(9) {{ display: none; }}
+
+    /* Tabulka "Brankáři": necháme jméno + Z / Úsp % / SO, schováme zbytek */
+    .tbl-goalkeepers th:nth-child(1), .tbl-goalkeepers td:nth-child(1),
+    .tbl-goalkeepers th:nth-child(4), .tbl-goalkeepers td:nth-child(4),
+    .tbl-goalkeepers th:nth-child(5), .tbl-goalkeepers td:nth-child(5),
+    .tbl-goalkeepers th:nth-child(6), .tbl-goalkeepers td:nth-child(6),
+    .tbl-goalkeepers th:nth-child(7), .tbl-goalkeepers td:nth-child(7),
+    .tbl-goalkeepers th:nth-child(8), .tbl-goalkeepers td:nth-child(8),
+    .tbl-goalkeepers th:nth-child(11), .tbl-goalkeepers td:nth-child(11),
+    .tbl-goalkeepers th:nth-child(12), .tbl-goalkeepers td:nth-child(12) {{ display: none; }}
+
+    /* Sekce přepínané spodní lištou — na mobilu vidět jen ta aktivní */
+    .tabsection.is-hidden {{ display: none; }}
+
+    .tabbar {{
+      display: flex; position: fixed; left: 0; right: 0; bottom: 0; z-index: 40;
+      background: var(--card); border-top: 1px solid var(--border);
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.13);
+      padding-bottom: calc(4px + env(safe-area-inset-bottom));
+    }}
+    .tab-btn {{
+      flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: center;
+      gap: 2px; background: none; border: none; color: var(--muted);
+      font-family: inherit; padding: 6px 2px 4px; cursor: pointer;
+    }}
+    .tab-btn svg {{ width: 20px; height: 20px; flex-shrink: 0; }}
+    .tab-btn span {{ font-size: 10px; line-height: 1.1; white-space: nowrap; }}
+    .tab-btn.is-active {{ color: var(--red); }}
   }}
 </style>
 </head>
@@ -1382,29 +1423,101 @@ def render_html(
   <div class="updated">Naposledy aktualizováno: {now}</div>
   <div class="season">{esc(SEASON_LABEL)} · zdroj: <a href="{STATS_URL}">hcmotor.cz</a></div>
 
-  <div class="card">
-    <h2>Změny od minulé aktualizace</h2>
-    {changes_html}
-  </div>
-{milestones_html}{next_match_html}{schedule_html}{corrections_html}{history_html}{record_html}{home_away_html}{monthly_html}{schedule_log_html}
-  <h2 class="section-title">Aktuální sezóna</h2>
-  <div class="card">
-    <h2>Hráči v poli</h2>
-    <table>
-      <thead><tr><th>#</th><th>Hráč</th><th>{lbl("Post","P")}</th><th>Z</th><th>G</th><th>A</th><th>B</th><th>+/-</th><th>{lbl("TM","T")}</th></tr></thead>
-      <tbody>{skater_rows}</tbody>
-    </table>
-  </div>
+  <section class="tabsection" data-tab="prehled">
+    <div class="card">
+      <h2>Změny od minulé aktualizace</h2>
+      {changes_html}
+    </div>
+{milestones_html}{next_match_html}{schedule_html}{corrections_html}
+  </section>
 
-  <div class="card">
-    <h2>Brankáři</h2>
-    <table>
-      <thead><tr><th>#</th><th>{lbl("Brankář","GK")}</th><th>Z</th><th>{lbl("Min","M")}</th><th>{lbl("Stř","S")}</th><th>{lbl("Ink","I")}</th><th>{lbl("Zás","Zá")}</th><th>{lbl("Prů","Pr")}</th><th>{lbl("Úsp %","Úsp")}</th><th>SO</th><th>A</th><th>{lbl("TM","T")}</th></tr></thead>
-      <tbody>{gk_rows}</tbody>
-    </table>
-  </div>
+  <section class="tabsection" data-tab="sezona">
+    <h2 class="section-title">Aktuální sezóna</h2>
+    <div class="card">
+      <h2>Hráči v poli</h2>
+      <table class="tbl-skaters">
+        <thead><tr><th>#</th><th>Hráč</th><th>{lbl("Post","P")}</th><th>Z</th><th>G</th><th>A</th><th>B</th><th>+/-</th><th>{lbl("TM","T")}</th></tr></thead>
+        <tbody>{skater_rows}</tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>Brankáři</h2>
+      <table class="tbl-goalkeepers">
+        <thead><tr><th>#</th><th>{lbl("Brankář","GK")}</th><th>Z</th><th>{lbl("Min","M")}</th><th>{lbl("Stř","S")}</th><th>{lbl("Ink","I")}</th><th>{lbl("Zás","Zá")}</th><th>{lbl("Prů","Pr")}</th><th>{lbl("Úsp %","Úsp")}</th><th>SO</th><th>A</th><th>{lbl("TM","T")}</th></tr></thead>
+        <tbody>{gk_rows}</tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="tabsection" data-tab="bilance">
+    {record_html}{home_away_html}
+  </section>
+
+  <section class="tabsection" data-tab="historie">
+    {history_html}{schedule_log_html}
+  </section>
+
+  <section class="tabsection" data-tab="mesice">
+    {monthly_html}
+  </section>
+
+  <section class="tabsection" data-tab="kariera">
 {career_html}
+  </section>
 </div>
+
+<nav class="tabbar" id="tabbar" aria-label="Navigace sekcí">
+  <button class="tab-btn is-active" type="button" data-tab="prehled">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+    <span>Přehled</span>
+  </button>
+  <button class="tab-btn" type="button" data-tab="sezona">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+    <span>Sezóna</span>
+  </button>
+  <button class="tab-btn" type="button" data-tab="bilance">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+    <span>Bilance</span>
+  </button>
+  <button class="tab-btn" type="button" data-tab="historie">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+    <span>Historie</span>
+  </button>
+  <button class="tab-btn" type="button" data-tab="mesice">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+    <span>Měsíce</span>
+  </button>
+  <button class="tab-btn" type="button" data-tab="kariera">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
+    <span>Kariéra</span>
+  </button>
+</nav>
+
+<script>
+(function() {{
+  var buttons = document.querySelectorAll('.tab-btn');
+  var sections = document.querySelectorAll('.tabsection');
+  if (!buttons.length || !sections.length) return;
+
+  function activate(tab) {{
+    buttons.forEach(function(b) {{ b.classList.toggle('is-active', b.getAttribute('data-tab') === tab); }});
+    sections.forEach(function(s) {{ s.classList.toggle('is-hidden', s.getAttribute('data-tab') !== tab); }});
+  }}
+
+  buttons.forEach(function(btn) {{
+    btn.addEventListener('click', function() {{
+      activate(btn.getAttribute('data-tab'));
+      window.scrollTo({{top: 0, behavior: 'instant'}});
+    }});
+  }});
+
+  // Výchozí stav (má vliv jen pod 640px, viz .tabsection.is-hidden v CSS) —
+  // zbytek sekcí schováme, ať se po přepnutí lišty na mobilu neukazuje
+  // něco navíc, co ještě nebylo vybráno.
+  activate('prehled');
+}})();
+</script>
 </body>
 </html>
 """
