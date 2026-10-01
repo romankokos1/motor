@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-30T20:02:58Z",
+  "generated": "2026-10-01T08:43:08Z",
   "teams": {
     "mdo": "Mladší dorost",
     "sdo": "Starší dorost",
@@ -450,7 +450,7 @@
     {
       "team": "mdo",
       "date": "2026-11-12",
-      "time": "12:00",
+      "time": "16:00",
       "home": false,
       "opponent": "EC Red Bull Salcburk",
       "location": "Salzburg, RED BULL ACADEMY ARENA",
