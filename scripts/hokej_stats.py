@@ -1363,6 +1363,55 @@ def render_html(
   details[open] > summary::before {{ content: "▾ "; }}
   details .changes {{ margin-top: 6px; }}
 
+  /* řazení tabulek klepnutím na hlavičku */
+  th.sortable {{ cursor: pointer; user-select: none; white-space: nowrap; }}
+  th.sortable::after {{ content: "⇅"; opacity: 0.35; margin-left: 4px; font-size: 0.85em; display: inline-block; }}
+  th.sort-asc::after {{ content: "▲"; opacity: 1; color: var(--red); }}
+  th.sort-desc::after {{ content: "▼"; opacity: 1; color: var(--red); }}
+
+  /* vyhledávání hráče */
+  .search-box {{
+    display: block; width: 100%; padding: 9px 12px; margin-bottom: 14px;
+    font-size: 0.88rem; font-family: inherit; color: var(--navy);
+    background: var(--card); border: 1px solid var(--border); border-radius: 8px;
+  }}
+  .search-box:focus {{ outline: 2px solid var(--red); outline-offset: 1px; }}
+  tr.search-hidden, details.search-hidden, li.search-hidden {{ display: none; }}
+
+  /* tečka-upozornění na záložce Přehled */
+  .badge-dot {{
+    display: none; position: absolute; top: 2px; right: calc(50% - 15px);
+    width: 8px; height: 8px; border-radius: 50%; background: var(--red);
+    border: 1.5px solid var(--card);
+  }}
+  .tab-btn.has-badge .badge-dot {{ display: block; }}
+
+  /* potáhni-pro-obnovení */
+  .pull-indicator {{
+    position: fixed; top: 0; left: 0; right: 0; z-index: 55;
+    display: flex; align-items: center; justify-content: center;
+    height: 46px; margin-top: -46px; color: var(--muted); font-size: 0.78rem;
+    background: var(--bg); border-bottom: 1px solid var(--border);
+    transition: margin-top 0.15s ease, color 0.15s ease;
+  }}
+  .pull-indicator.is-ready {{ color: var(--red); font-weight: 600; }}
+
+  /* skeleton při prvním načtení */
+  .skeleton-overlay {{
+    position: fixed; inset: 0; z-index: 60; background: var(--bg);
+    padding: 24px 16px; transition: opacity 0.25s ease;
+  }}
+  .skeleton-overlay.is-hidden {{ opacity: 0; pointer-events: none; }}
+  .skeleton-block {{
+    background: linear-gradient(90deg, var(--border) 25%, #eef0f2 37%, var(--border) 63%);
+    background-size: 400% 100%; animation: skeleton-shimmer 1.4s ease infinite;
+    border-radius: 10px; margin-bottom: 16px; max-width: 900px; margin-left: auto; margin-right: auto;
+  }}
+  @keyframes skeleton-shimmer {{
+    0% {{ background-position: 100% 50%; }}
+    100% {{ background-position: 0 50%; }}
+  }}
+
   /* kompaktnější zobrazení na výšku na mobilu + spodní lišta se záložkami */
   @media (max-width: 640px) {{
     body {{
@@ -1409,6 +1458,7 @@ def render_html(
       padding-bottom: calc(4px + env(safe-area-inset-bottom));
     }}
     .tab-btn {{
+      position: relative;
       flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: center;
       gap: 2px; background: none; border: none; color: var(--muted);
       font-family: inherit; padding: 6px 2px 4px; cursor: pointer;
@@ -1420,6 +1470,14 @@ def render_html(
 </style>
 </head>
 <body>
+<div id="pull-indicator" class="pull-indicator">↓ Potáhni pro obnovení</div>
+<div id="skeleton" class="skeleton-overlay">
+  <div class="skeleton-block" style="height:22px;width:70%;"></div>
+  <div class="skeleton-block" style="height:14px;width:40%;"></div>
+  <div class="skeleton-block" style="height:90px;"></div>
+  <div class="skeleton-block" style="height:90px;"></div>
+  <div class="skeleton-block" style="height:140px;"></div>
+</div>
 <div class="wrap">
   <h1>🏒 Statistiky hráčů — HC Motor České Budějovice</h1>
   <div class="updated">Naposledy aktualizováno: {now}</div>
@@ -1457,10 +1515,12 @@ def render_html(
   </section>
 
   <section class="tabsection" data-tab="historie">
+    <input type="search" class="search-box" id="search-historie" placeholder="Hledat hráče…" autocomplete="off">
     {history_html}{schedule_log_html}
   </section>
 
   <section class="tabsection" data-tab="mesice">
+    <input type="search" class="search-box" id="search-mesice" placeholder="Hledat hráče…" autocomplete="off">
     {monthly_html}
   </section>
 
@@ -1472,6 +1532,7 @@ def render_html(
 <nav class="tabbar" id="tabbar" aria-label="Navigace sekcí">
   <button class="tab-btn is-active" type="button" data-tab="prehled">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+    <span class="badge-dot"></span>
     <span>Přehled</span>
   </button>
   <button class="tab-btn" type="button" data-tab="sezona">
@@ -1497,6 +1558,8 @@ def render_html(
 </nav>
 
 <script>
+var CURRENT_UPDATED = {json.dumps(now)};
+
 function initTabbar() {{
   try {{
     var buttons = document.querySelectorAll('.tab-btn');
@@ -1516,6 +1579,9 @@ function initTabbar() {{
       buttons[k].addEventListener('click', function() {{
         activate(this.getAttribute('data-tab'));
         window.scrollTo(0, 0);
+        if (window.navigator && typeof window.navigator.vibrate === 'function') {{
+          try {{ window.navigator.vibrate(10); }} catch (e) {{}}
+        }}
       }});
     }}
 
@@ -1527,10 +1593,185 @@ function initTabbar() {{
     if (window.console && window.console.error) {{ window.console.error('tabbar init selhal:', e); }}
   }}
 }}
-if (document.readyState === 'loading') {{
-  document.addEventListener('DOMContentLoaded', initTabbar);
-}} else {{
+
+function initBadge() {{
+  try {{
+    var btn = document.querySelector('.tab-btn[data-tab="prehled"]');
+    if (!btn) return;
+    var lastSeen = null;
+    try {{ lastSeen = window.localStorage.getItem('hcmotor_last_seen'); }} catch (e) {{}}
+    if (lastSeen && lastSeen !== CURRENT_UPDATED) {{
+      btn.classList.add('has-badge');
+    }}
+    btn.addEventListener('click', function() {{
+      btn.classList.remove('has-badge');
+      try {{ window.localStorage.setItem('hcmotor_last_seen', CURRENT_UPDATED); }} catch (e) {{}}
+    }});
+    if (!lastSeen) {{
+      try {{ window.localStorage.setItem('hcmotor_last_seen', CURRENT_UPDATED); }} catch (e) {{}}
+    }}
+  }} catch (e) {{
+    if (window.console && window.console.error) {{ window.console.error('badge init selhal:', e); }}
+  }}
+}}
+
+function initSortableTables() {{
+  try {{
+    var tables = document.querySelectorAll('table');
+    for (var t = 0; t < tables.length; t++) {{
+      (function(table) {{
+        var thead = table.querySelector('thead');
+        var tbody = table.querySelector('tbody');
+        if (!thead || !tbody) return;
+        var ths = thead.querySelectorAll('th');
+        for (var c = 0; c < ths.length; c++) {{
+          (function(th, colIndex) {{
+            th.classList.add('sortable');
+            th.addEventListener('click', function() {{
+              var rows = Array.prototype.slice.call(tbody.querySelectorAll('tr'));
+              var asc = !th.classList.contains('sort-asc');
+              for (var x = 0; x < ths.length; x++) {{
+                ths[x].classList.remove('sort-asc', 'sort-desc');
+              }}
+              th.classList.add(asc ? 'sort-asc' : 'sort-desc');
+              rows.sort(function(r1, r2) {{
+                var c1 = r1.children[colIndex], c2 = r2.children[colIndex];
+                var v1 = c1 ? c1.textContent.trim() : '';
+                var v2 = c2 ? c2.textContent.trim() : '';
+                var n1 = parseFloat(v1.replace(',', '.').replace('%', ''));
+                var n2 = parseFloat(v2.replace(',', '.').replace('%', ''));
+                var cmp;
+                if (!isNaN(n1) && !isNaN(n2)) {{
+                  cmp = n1 - n2;
+                }} else {{
+                  cmp = v1.localeCompare(v2, 'cs');
+                }}
+                return asc ? cmp : -cmp;
+              }});
+              for (var y = 0; y < rows.length; y++) {{
+                tbody.appendChild(rows[y]);
+              }}
+            }});
+          }})(ths[c], c);
+        }}
+      }})(tables[t]);
+    }}
+  }} catch (e) {{
+    if (window.console && window.console.error) {{ window.console.error('řazení tabulek selhalo:', e); }}
+  }}
+}}
+
+function normalizeText(s) {{
+  s = s.toLowerCase();
+  try {{ s = s.normalize('NFD').replace(/[\\u0300-\\u036f]/g, ''); }} catch (e) {{}}
+  return s;
+}}
+
+function initSearchBox(inputId, sectionSelector) {{
+  try {{
+    var input = document.getElementById(inputId);
+    var section = document.querySelector(sectionSelector);
+    if (!input || !section) return;
+    input.addEventListener('input', function() {{
+      var q = normalizeText(input.value.trim());
+      var rows = section.querySelectorAll('tbody tr');
+      for (var i = 0; i < rows.length; i++) {{
+        var match = !q || normalizeText(rows[i].textContent).indexOf(q) !== -1;
+        rows[i].classList.toggle('search-hidden', !match);
+      }}
+      var items = section.querySelectorAll('.changes li');
+      for (var j = 0; j < items.length; j++) {{
+        var m2 = !q || normalizeText(items[j].textContent).indexOf(q) !== -1;
+        items[j].classList.toggle('search-hidden', !m2);
+      }}
+      var detailsList = section.querySelectorAll('details');
+      for (var k = 0; k < detailsList.length; k++) {{
+        if (!q) {{ detailsList[k].classList.remove('search-hidden'); continue; }}
+        var anyVisible = detailsList[k].querySelector('tr:not(.search-hidden), li:not(.search-hidden)');
+        detailsList[k].classList.toggle('search-hidden', !anyVisible);
+      }}
+    }});
+  }} catch (e) {{
+    if (window.console && window.console.error) {{ window.console.error('vyhledávání selhalo:', e); }}
+  }}
+}}
+
+function initPullToRefresh() {{
+  try {{
+    var indicator = document.getElementById('pull-indicator');
+    if (!indicator) return;
+    var startY = null;
+    var pulling = false;
+    var threshold = 70;
+
+    document.addEventListener('touchstart', function(e) {{
+      if (window.scrollY <= 0 && e.touches.length === 1) {{
+        startY = e.touches[0].clientY;
+        pulling = true;
+      }} else {{
+        startY = null;
+        pulling = false;
+      }}
+    }}, {{ passive: true }});
+
+    document.addEventListener('touchmove', function(e) {{
+      if (!pulling || startY === null) return;
+      var delta = e.touches[0].clientY - startY;
+      if (delta <= 0) return;
+      var clamped = Math.min(delta, 100);
+      indicator.style.marginTop = (-46 + clamped) + 'px';
+      if (clamped >= threshold) {{
+        indicator.classList.add('is-ready');
+        indicator.textContent = '↑ Pusť pro obnovení';
+      }} else {{
+        indicator.classList.remove('is-ready');
+        indicator.textContent = '↓ Potáhni pro obnovení';
+      }}
+    }}, {{ passive: true }});
+
+    document.addEventListener('touchend', function() {{
+      if (!pulling) return;
+      var isReady = indicator.classList.contains('is-ready');
+      indicator.style.marginTop = '-46px';
+      indicator.classList.remove('is-ready');
+      pulling = false;
+      startY = null;
+      if (isReady) {{
+        indicator.textContent = 'Obnovuji…';
+        indicator.style.marginTop = '0px';
+        window.location.reload();
+      }}
+    }}, {{ passive: true }});
+  }} catch (e) {{
+    if (window.console && window.console.error) {{ window.console.error('pull-to-refresh selhal:', e); }}
+  }}
+}}
+
+function hideSkeleton() {{
+  try {{
+    var sk = document.getElementById('skeleton');
+    if (!sk) return;
+    sk.classList.add('is-hidden');
+    setTimeout(function() {{
+      if (sk.parentNode) {{ sk.parentNode.removeChild(sk); }}
+    }}, 300);
+  }} catch (e) {{}}
+}}
+
+function initAll() {{
   initTabbar();
+  initBadge();
+  initSortableTables();
+  initSearchBox('search-historie', '.tabsection[data-tab="historie"]');
+  initSearchBox('search-mesice', '.tabsection[data-tab="mesice"]');
+  initPullToRefresh();
+  setTimeout(hideSkeleton, 250);
+}}
+
+if (document.readyState === 'loading') {{
+  document.addEventListener('DOMContentLoaded', initAll);
+}} else {{
+  initAll();
 }}
 </script>
 </body>
