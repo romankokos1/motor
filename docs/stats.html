@@ -112,13 +112,37 @@
 
   /* kompaktnější zobrazení na výšku na mobilu + spodní lišta se záložkami */
   @media (max-width: 640px) {
-    body {
-      padding: 14px 8px;
-      padding-bottom: calc(84px + env(safe-area-inset-bottom));
-      min-height: 100vh;
-      min-height: 100dvh;
+    html, body {
+      height: 100%;
+      touch-action: manipulation;
     }
-    .wrap { max-width: 100%; }
+    body {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      height: 100dvh;
+      padding: 0;
+      overflow: hidden;
+    }
+    .wrap {
+      max-width: 100%;
+      flex: 1 1 auto;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    .app-header {
+      flex: 0 0 auto;
+      padding: 14px 8px 4px;
+      padding-top: calc(14px + env(safe-area-inset-top));
+    }
+    .app-content {
+      flex: 1 1 auto;
+      min-height: 0;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      padding: 0 8px calc(84px + env(safe-area-inset-bottom));
+    }
     h1 { font-size: 1.2rem; }
     .section-title { font-size: 1rem; margin: 24px 0 10px; }
     .card { padding: 12px 10px; margin-bottom: 14px; border-radius: 10px; overflow-x: auto; }
@@ -150,7 +174,7 @@
     .tabsection.is-hidden { display: none; }
 
     .tabbar {
-      display: flex; position: fixed; left: 0; right: 0; bottom: 0; z-index: 40;
+      display: flex; flex: 0 0 auto; z-index: 40;
       background: var(--card); border-top: 1px solid var(--border);
       box-shadow: 0 -4px 20px rgba(0,0,0,0.13);
       padding-bottom: calc(4px + env(safe-area-inset-bottom));
@@ -177,10 +201,12 @@
   <div class="skeleton-block" style="height:140px;"></div>
 </div>
 <div class="wrap">
+ <div class="app-header">
   <h1>🏒 Statistiky hráčů — HC Motor České Budějovice</h1>
-  <div class="updated">Naposledy aktualizováno: 01.10.2026 10:43</div>
+  <div class="updated">Naposledy aktualizováno: 01.10.2026 12:08</div>
   <div class="season">Tipsport extraliga 2026/2027 · zdroj: <a href="https://hcmotor.cz/stats.asp?sezona=2027">hcmotor.cz</a></div>
-
+ </div>
+ <div class="app-content" id="app-content">
   <section class="tabsection" data-tab="prehled">
     <div class="card">
       <h2>Změny od minulé aktualizace</h2>
@@ -300,7 +326,7 @@
       <summary>září 2026 <span class="muted small">(23 hráčů)</span></summary>
       <table>
         <thead><tr><th>Hráč</th><th>Z</th><th>G</th><th>A</th><th>B</th></tr></thead>
-        <tbody><tr><td>Štencel Jan</td><td>6</td><td>2</td><td>3</td><td><strong>5</strong></td></tr><tr><td>Hoch Štěpán</td><td>6</td><td>1</td><td>4</td><td><strong>5</strong></td></tr><tr><td>Olesen Nick Alexander</td><td>5</td><td>3</td><td>2</td><td><strong>5</strong></td></tr><tr><td>Ordoš Jan</td><td>6</td><td>3</td><td>1</td><td><strong>4</strong></td></tr><tr><td>Lantoši Róbert</td><td>6</td><td>0</td><td>4</td><td><strong>4</strong></td></tr><tr><td>Bulíř Michal</td><td>6</td><td>0</td><td>3</td><td><strong>3</strong></td></tr><tr><td>Pour Jakub</td><td>6</td><td>3</td><td>0</td><td><strong>3</strong></td></tr><tr><td>Vráblík Roman</td><td>6</td><td>0</td><td>2</td><td><strong>2</strong></td></tr><tr><td>Bell Parker</td><td>6</td><td>2</td><td>0</td><td><strong>2</strong></td></tr><tr><td>Krastenbergs Renars</td><td>6</td><td>0</td><td>2</td><td><strong>2</strong></td></tr><tr><td>Pýcha Pavel</td><td>6</td><td>0</td><td>2</td><td><strong>2</strong></td></tr><tr><td>Toman Matěj</td><td>6</td><td>0</td><td>1</td><td><strong>1</strong></td></tr><tr><td>Ahl Filip</td><td>6</td><td>0</td><td>1</td><td><strong>1</strong></td></tr><tr><td>Nordsäter Lucas</td><td>6</td><td>0</td><td>1</td><td><strong>1</strong></td></tr><tr><td>Vála Ondřej</td><td>6</td><td>0</td><td>1</td><td><strong>1</strong></td></tr><tr><td>Kachyňa Ondřej</td><td>5</td><td>0</td><td>1</td><td><strong>1</strong></td></tr><tr><td>Beránek Martin</td><td>6</td><td>1</td><td>0</td><td><strong>1</strong></td></tr><tr><td>Zachar Marek</td><td>6</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>Kundrátek Tomáš</td><td>2</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>Andersen Ole Einar Engeland</td><td>5</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>Hejduk Marek</td><td>6</td><td>0</td><td>0</td><td><strong>0</strong></td></tr></tbody>
+        <tbody><tr><td>Olesen Nick Alexander</td><td>5</td><td>3</td><td>2</td><td><strong>5</strong></td></tr><tr><td>Hoch Štěpán</td><td>6</td><td>1</td><td>4</td><td><strong>5</strong></td></tr><tr><td>Štencel Jan</td><td>6</td><td>2</td><td>3</td><td><strong>5</strong></td></tr><tr><td>Lantoši Róbert</td><td>6</td><td>0</td><td>4</td><td><strong>4</strong></td></tr><tr><td>Ordoš Jan</td><td>6</td><td>3</td><td>1</td><td><strong>4</strong></td></tr><tr><td>Bulíř Michal</td><td>6</td><td>0</td><td>3</td><td><strong>3</strong></td></tr><tr><td>Pour Jakub</td><td>6</td><td>3</td><td>0</td><td><strong>3</strong></td></tr><tr><td>Bell Parker</td><td>6</td><td>2</td><td>0</td><td><strong>2</strong></td></tr><tr><td>Pýcha Pavel</td><td>6</td><td>0</td><td>2</td><td><strong>2</strong></td></tr><tr><td>Krastenbergs Renars</td><td>6</td><td>0</td><td>2</td><td><strong>2</strong></td></tr><tr><td>Vráblík Roman</td><td>6</td><td>0</td><td>2</td><td><strong>2</strong></td></tr><tr><td>Vála Ondřej</td><td>6</td><td>0</td><td>1</td><td><strong>1</strong></td></tr><tr><td>Beránek Martin</td><td>6</td><td>1</td><td>0</td><td><strong>1</strong></td></tr><tr><td>Kachyňa Ondřej</td><td>5</td><td>0</td><td>1</td><td><strong>1</strong></td></tr><tr><td>Toman Matěj</td><td>6</td><td>0</td><td>1</td><td><strong>1</strong></td></tr><tr><td>Nordsäter Lucas</td><td>6</td><td>0</td><td>1</td><td><strong>1</strong></td></tr><tr><td>Ahl Filip</td><td>6</td><td>0</td><td>1</td><td><strong>1</strong></td></tr><tr><td>Hejduk Marek</td><td>6</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>Zachar Marek</td><td>6</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>Kundrátek Tomáš</td><td>2</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>Andersen Ole Einar Engeland</td><td>5</td><td>0</td><td>0</td><td><strong>0</strong></td></tr></tbody>
       </table>
       <table>
         <thead><tr><th>Brankář</th><th>Z</th></tr></thead>
@@ -350,6 +376,7 @@
   </div>
 
   </section>
+ </div>
 </div>
 
 <nav class="tabbar" id="tabbar" aria-label="Navigace sekcí">
@@ -381,7 +408,7 @@
 </nav>
 
 <script>
-var CURRENT_UPDATED = "01.10.2026 10:43";
+var CURRENT_UPDATED = "01.10.2026 12:08";
 
 function initTabbar() {
   try {
@@ -398,9 +425,12 @@ function initTabbar() {
       }
     }
 
+    var appContent = document.getElementById('app-content');
+
     for (var k = 0; k < buttons.length; k++) {
       buttons[k].addEventListener('click', function() {
         activate(this.getAttribute('data-tab'));
+        if (appContent) { appContent.scrollTop = 0; }
         window.scrollTo(0, 0);
         if (window.navigator && typeof window.navigator.vibrate === 'function') {
           try { window.navigator.vibrate(10); } catch (e) {}
@@ -526,9 +556,17 @@ function initPullToRefresh() {
     var startY = null;
     var pulling = false;
     var threshold = 70;
+    var appContent = document.getElementById('app-content');
+
+    function scrollerTop() {
+      if (appContent && getComputedStyle(appContent).overflowY === 'auto') {
+        return appContent.scrollTop;
+      }
+      return window.scrollY;
+    }
 
     document.addEventListener('touchstart', function(e) {
-      if (window.scrollY <= 0 && e.touches.length === 1) {
+      if (scrollerTop() <= 0 && e.touches.length === 1) {
         startY = e.touches[0].clientY;
         pulling = true;
       } else {
