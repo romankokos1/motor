@@ -1368,6 +1368,8 @@ def render_html(
     body {{
       padding: 14px 8px;
       padding-bottom: calc(84px + env(safe-area-inset-bottom));
+      min-height: 100vh;
+      min-height: 100dvh;
     }}
     .wrap {{ max-width: 100%; }}
     h1 {{ font-size: 1.2rem; }}
