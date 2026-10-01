@@ -1414,13 +1414,37 @@ def render_html(
 
   /* kompaktnější zobrazení na výšku na mobilu + spodní lišta se záložkami */
   @media (max-width: 640px) {{
-    body {{
-      padding: 14px 8px;
-      padding-bottom: calc(84px + env(safe-area-inset-bottom));
-      min-height: 100vh;
-      min-height: 100dvh;
+    html, body {{
+      height: 100%;
+      touch-action: manipulation;
     }}
-    .wrap {{ max-width: 100%; }}
+    body {{
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      height: 100dvh;
+      padding: 0;
+      overflow: hidden;
+    }}
+    .wrap {{
+      max-width: 100%;
+      flex: 1 1 auto;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+    }}
+    .app-header {{
+      flex: 0 0 auto;
+      padding: 14px 8px 4px;
+      padding-top: calc(14px + env(safe-area-inset-top));
+    }}
+    .app-content {{
+      flex: 1 1 auto;
+      min-height: 0;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      padding: 0 8px calc(84px + env(safe-area-inset-bottom));
+    }}
     h1 {{ font-size: 1.2rem; }}
     .section-title {{ font-size: 1rem; margin: 24px 0 10px; }}
     .card {{ padding: 12px 10px; margin-bottom: 14px; border-radius: 10px; overflow-x: auto; }}
@@ -1452,7 +1476,7 @@ def render_html(
     .tabsection.is-hidden {{ display: none; }}
 
     .tabbar {{
-      display: flex; position: fixed; left: 0; right: 0; bottom: 0; z-index: 40;
+      display: flex; flex: 0 0 auto; z-index: 40;
       background: var(--card); border-top: 1px solid var(--border);
       box-shadow: 0 -4px 20px rgba(0,0,0,0.13);
       padding-bottom: calc(4px + env(safe-area-inset-bottom));
@@ -1479,10 +1503,12 @@ def render_html(
   <div class="skeleton-block" style="height:140px;"></div>
 </div>
 <div class="wrap">
+ <div class="app-header">
   <h1>🏒 Statistiky hráčů — HC Motor České Budějovice</h1>
   <div class="updated">Naposledy aktualizováno: {now}</div>
   <div class="season">{esc(SEASON_LABEL)} · zdroj: <a href="{STATS_URL}">hcmotor.cz</a></div>
-
+ </div>
+ <div class="app-content" id="app-content">
   <section class="tabsection" data-tab="prehled">
     <div class="card">
       <h2>Změny od minulé aktualizace</h2>
@@ -1527,6 +1553,7 @@ def render_html(
   <section class="tabsection" data-tab="kariera">
 {career_html}
   </section>
+ </div>
 </div>
 
 <nav class="tabbar" id="tabbar" aria-label="Navigace sekcí">
@@ -1575,9 +1602,12 @@ function initTabbar() {{
       }}
     }}
 
+    var appContent = document.getElementById('app-content');
+
     for (var k = 0; k < buttons.length; k++) {{
       buttons[k].addEventListener('click', function() {{
         activate(this.getAttribute('data-tab'));
+        if (appContent) {{ appContent.scrollTop = 0; }}
         window.scrollTo(0, 0);
         if (window.navigator && typeof window.navigator.vibrate === 'function') {{
           try {{ window.navigator.vibrate(10); }} catch (e) {{}}
@@ -1703,9 +1733,17 @@ function initPullToRefresh() {{
     var startY = null;
     var pulling = false;
     var threshold = 70;
+    var appContent = document.getElementById('app-content');
+
+    function scrollerTop() {{
+      if (appContent && getComputedStyle(appContent).overflowY === 'auto') {{
+        return appContent.scrollTop;
+      }}
+      return window.scrollY;
+    }}
 
     document.addEventListener('touchstart', function(e) {{
-      if (window.scrollY <= 0 && e.touches.length === 1) {{
+      if (scrollerTop() <= 0 && e.touches.length === 1) {{
         startY = e.touches[0].clientY;
         pulling = true;
       }} else {{
