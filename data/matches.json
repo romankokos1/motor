@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-01T13:11:06Z",
+  "generated": "2026-10-02T08:55:17Z",
   "teams": {
     "mdo": "Mladší dorost",
     "sdo": "Starší dorost",
@@ -718,15 +718,6 @@
       "round": null
     },
     {
-      "team": "mdo",
-      "date": "2026-12-19",
-      "time": "12:00",
-      "home": false,
-      "opponent": "HC Pilsen Wolves",
-      "location": "Plzeň - Košutka, ICE ARENA Plzeň",
-      "round": 25
-    },
-    {
       "team": "sdo",
       "date": "2026-12-19",
       "time": "12:00",
@@ -743,6 +734,15 @@
       "opponent": "HC RT Torax Poruba 2011",
       "location": "Ostrava, RT TORAX ARENA",
       "round": 32
+    },
+    {
+      "team": "mdo",
+      "date": "2026-12-19",
+      "time": "12:25",
+      "home": false,
+      "opponent": "HC Pilsen Wolves",
+      "location": "Plzeň - Košutka, ICE ARENA Plzeň",
+      "round": 25
     },
     {
       "team": "mdo",
