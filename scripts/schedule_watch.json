@@ -37,9 +37,9 @@
   },
   "7": {
     "datum": "čtvrtek 1.10.",
-    "cas": "18:30",
+    "cas": null,
     "misto": "Praha, O2 arena",
-    "odehrano": false
+    "odehrano": true
   },
   "8": {
     "datum": "pondělí 5.10.",

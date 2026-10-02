@@ -2,5 +2,143 @@
   "2026-09": {
     "skaters": {},
     "goalkeepers": {}
+  },
+  "2026-10": {
+    "skaters": {
+      "Štencel Jan": {
+        "z": 6,
+        "g": 2,
+        "a": 3,
+        "b": 5
+      },
+      "Pýcha Pavel": {
+        "z": 6,
+        "g": 0,
+        "a": 2,
+        "b": 2
+      },
+      "Vráblík Roman": {
+        "z": 6,
+        "g": 0,
+        "a": 2,
+        "b": 2
+      },
+      "Kachyňa Ondřej": {
+        "z": 5,
+        "g": 0,
+        "a": 1,
+        "b": 1
+      },
+      "Nordsäter Lucas": {
+        "z": 6,
+        "g": 0,
+        "a": 1,
+        "b": 1
+      },
+      "Vála Ondřej": {
+        "z": 6,
+        "g": 0,
+        "a": 1,
+        "b": 1
+      },
+      "Andersen Ole Einar Engeland": {
+        "z": 5,
+        "g": 0,
+        "a": 0,
+        "b": 0
+      },
+      "Kundrátek Tomáš": {
+        "z": 2,
+        "g": 0,
+        "a": 0,
+        "b": 0
+      },
+      "Olesen Nick Alexander": {
+        "z": 5,
+        "g": 3,
+        "a": 2,
+        "b": 5
+      },
+      "Hoch Štěpán": {
+        "z": 6,
+        "g": 1,
+        "a": 4,
+        "b": 5
+      },
+      "Ordoš Jan": {
+        "z": 6,
+        "g": 3,
+        "a": 1,
+        "b": 4
+      },
+      "Lantoši Róbert": {
+        "z": 6,
+        "g": 0,
+        "a": 4,
+        "b": 4
+      },
+      "Pour Jakub": {
+        "z": 6,
+        "g": 3,
+        "a": 0,
+        "b": 3
+      },
+      "Bulíř Michal": {
+        "z": 6,
+        "g": 0,
+        "a": 3,
+        "b": 3
+      },
+      "Bell Parker": {
+        "z": 6,
+        "g": 2,
+        "a": 0,
+        "b": 2
+      },
+      "Krastenbergs Renars": {
+        "z": 6,
+        "g": 0,
+        "a": 2,
+        "b": 2
+      },
+      "Beránek Martin": {
+        "z": 6,
+        "g": 1,
+        "a": 0,
+        "b": 1
+      },
+      "Ahl Filip": {
+        "z": 6,
+        "g": 0,
+        "a": 1,
+        "b": 1
+      },
+      "Toman Matěj": {
+        "z": 6,
+        "g": 0,
+        "a": 1,
+        "b": 1
+      },
+      "Hejduk Marek": {
+        "z": 6,
+        "g": 0,
+        "a": 0,
+        "b": 0
+      },
+      "Zachar Marek": {
+        "z": 6,
+        "g": 0,
+        "a": 0,
+        "b": 0
+      }
+    },
+    "goalkeepers": {
+      "Klouček Milan": {
+        "z": 4
+      },
+      "Strmeň Jan": {
+        "z": 2
+      }
+    }
   }
 }
