@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-02T12:32:16Z",
+  "generated": "2026-10-03T11:37:41Z",
   "teams": {
     "mdo": "Mladší dorost",
     "sdo": "Starší dorost",
@@ -331,15 +331,6 @@
       "round": 14
     },
     {
-      "team": "u20",
-      "date": "2026-10-17",
-      "time": "12:00",
-      "home": false,
-      "opponent": "HC Verva Litvínov",
-      "location": "Litvínov, Zimní stadion Ivana Hlinky",
-      "round": 15
-    },
-    {
       "team": "mdo",
       "date": "2026-10-17",
       "time": "12:40",
@@ -356,6 +347,15 @@
       "opponent": "BYD Energie Karlovy Vary",
       "location": "Karlovy Vary, Mattoni Arena, tréninková plocha",
       "round": null
+    },
+    {
+      "team": "u20",
+      "date": "2026-10-17",
+      "time": "13:00",
+      "home": false,
+      "opponent": "HC Verva Litvínov",
+      "location": "Litvínov, Zimní stadion Ivana Hlinky",
+      "round": 15
     },
     {
       "team": "mdo",
@@ -414,7 +414,7 @@
     {
       "team": "mdo",
       "date": "2026-10-25",
-      "time": "12:00",
+      "time": "12:15",
       "home": false,
       "opponent": "HC Verva Litvínov",
       "location": "Litvínov, Zimní stadion Ivana Hlinky",
