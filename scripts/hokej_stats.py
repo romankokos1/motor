@@ -988,7 +988,7 @@ OFFENCE_CODES = {
     "SEK": "sekání",
     "VYSH": "vysoká hůl",
     "HAK": "hákování",
-    "ZHK": "hákování",
+    "ZHK": "zásah do hlavy nebo krku",
     "DRZP": "držení protihráče",
     "DRZH": "držení hokejky",
     "NBRB": "nedovolené bránění brankáře",
