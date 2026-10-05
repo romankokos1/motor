@@ -958,6 +958,262 @@ def build_record_svg(games: list) -> str:
 """
 
 
+# --- Oficiální zápis o utkání (hokejovyzapis.cz / hokej.cz) ---
+#
+# hokej.cz má u klubu rozpis zápasů, kde každý řádek nese
+# data-href="/zapas/<ID>" — a tohle ID je STEJNÉ jako parametr
+# hokejczId v adrese oficiálního zápisu:
+#   https://hokejovyzapis.cz/pdf/print/cs-html/?hokejczId=<ID>
+#
+# Struktura zápisu je trochu zvláštní: tabulka "tab-team" má jeden
+# řádek na jednoho hráče soupisky (č., jméno, pozice), ale sloupce
+# gólů (čas/S/A1/A2/situace) a trestů (čas/č./min/důvod/od/do) v TÉŽE
+# tabulce NEJSOU vázané na hráče z toho řádku — jsou to dva samostatné
+# chronologické seznamy (góly týmu, tresty týmu), které se do řádků
+# soupisky jen "naskládaly" kvůli tisku. Střelec/nahrávač/trestaný
+# hráč se identifikují číslem dresu, které se pak dohledá zpátky v
+# soupisce té samé tabulky.
+HOKEJCZ_SCHEDULE_URL = "https://www.hokej.cz/klub/banes-motor-c-budejovice/1721/zapasy"
+HOKEJOVYZAPIS_URL_TMPL = "https://hokejovyzapis.cz/pdf/print/cs-html/?hokejczId={id}"
+ZAPIS_STATE_FILE = SCRIPT_DIR / "zapis_state.json"
+ZAPIS_GAMES_SHOWN = 5  # kolik posledních zápasů se drží/zobrazuje
+
+# Zkratky důvodů trestů — odhad podle obvyklých kódů ČSLH. Nejsou
+# oficiálně ověřené, takže klidně oprav, pokud některá sedí špatně;
+# neznámý kód se prostě zobrazí tak, jak je.
+OFFENCE_CODES = {
+    "PMH": "příliš mnoho hráčů na ledě",
+    "HRUB": "hrubost",
+    "SEK": "sekání",
+    "VYSH": "vysoká hůl",
+    "HAK": "hákování",
+    "DRZP": "držení protihráče",
+    "DRZH": "držení hokejky",
+    "NBRB": "nedovolené bránění brankáře",
+    "FAUL": "faul",
+    "KOP": "kopnutí",
+    "NDOV": "nedovolené bránění",
+    "KROS": "krosček",
+    "BUTC": "vražení na mantinel",
+    "SPER": "napíchnutí",
+    "SIAK": "simulování",
+}
+
+
+def fetch_hokejcz_matches() -> list:
+    """
+    Rozparsuje rozpis zápasů klubu na hokej.cz — pro každý zápas vrátí
+    {"id": str, "den": int, "mesic": int, "domaci": str, "hoste": str}.
+    Používá se k dohledání hokejczId pro konkrétní kolo (podle data a
+    jmen týmů), protože hcmotor.cz samo žádné takové ID nemá.
+    """
+    soup = fetch(HOKEJCZ_SCHEDULE_URL)
+    matches = []
+    for row in soup.select("tr.js-preview__link[data-href]"):
+        href = row.get("data-href", "")
+        m = re.search(r"/zapas/(\d+)", href)
+        if not m:
+            continue
+        match_id = m.group(1)
+
+        names = row.select("span.preview__name--long")
+        if len(names) < 2:
+            continue
+        domaci = names[0].get_text(strip=True)
+        hoste = names[1].get_text(strip=True)
+
+        date_text = row.get_text(" ", strip=True)
+        dm = re.search(r"(\d{1,2})\.\s*(\d{1,2})\.", date_text)
+        if not dm:
+            continue
+        den, mesic = int(dm.group(1)), int(dm.group(2))
+
+        matches.append({"id": match_id, "den": den, "mesic": mesic, "domaci": domaci, "hoste": hoste})
+    return matches
+
+
+def find_hokejcz_id(game: dict, hokejcz_matches: list) -> str | None:
+    """Najde hokejczId pro dané kolo (dict z parse_schedule_page) podle
+    data. Jména týmů se záměrně neporovnávají — hokej.cz a hcmotor.cz
+    pro stejný klub často používají jiný název (sponzorské jméno vs.
+    tradiční), zatímco HOKEJCZ_SCHEDULE_URL je už sám o sobě rozpis
+    JEN Motoru, takže shoda v datu je dost (Motor nehraje dva zápasy
+    týž den). Vrací None, pokud se nic nenajde."""
+    dm = re.search(r"(\d{1,2})\.\s*(\d{1,2})\.", game.get("datum", ""))
+    if not dm:
+        return None
+    den, mesic = int(dm.group(1)), int(dm.group(2))
+
+    for m in hokejcz_matches:
+        if m["den"] == den and m["mesic"] == mesic:
+            return m["id"]
+    return None
+
+
+def _zapis_time_to_seconds(t: str) -> int:
+    mm, _, ss = t.partition(":")
+    try:
+        return int(mm) * 60 + int(ss)
+    except ValueError:
+        return 0
+
+
+def _parse_zapis_team_table(table) -> dict:
+    """Rozparsuje jednu tabulku 'tab-team' (jeden tým) ze zápisu.
+    Vrátí {"nazev": str, "goly": [...], "tresty": [...]}."""
+    header = table.select_one("td.team_name")
+    nazev = header.get_text(" ", strip=True) if header else ""
+    nazev = re.sub(r"\s+\d+\s*$", "", nazev).strip()  # pryč s číslem oddílu na konci
+
+    rows = table.select("tr.values")
+
+    roster = {}
+    for r in rows:
+        no = _text(r.select_one("td.value_no"))
+        name = r.select_one("td.value_name") or r.select_one("td.value_name_not_attended")
+        if no and name:
+            roster[no] = _text(name)
+
+    goly = []
+    tresty = []
+    for r in rows:
+        time_tds = r.select("td.value_time")
+        goal_time = _text(time_tds[0]) if len(time_tds) > 0 else ""
+        scorer_no = _text(r.select_one("td.value_g"))
+        if goal_time and scorer_no:
+            a1_no = _text(r.select_one("td.value_a1"))
+            a2_no = _text(r.select_one("td.value_a2"))
+            goly.append({
+                "cas": goal_time,
+                "vteriny": _zapis_time_to_seconds(goal_time),
+                "tym": nazev,
+                "strelec": roster.get(scorer_no, f"č. {scorer_no}"),
+                "asistence": [roster.get(n, f"č. {n}") for n in (a1_no, a2_no) if n],
+                "situace": _text(r.select_one("td.value_gs")),
+            })
+
+        offence = _text(r.select_one("td.value_offence"))
+        start = _text(r.select_one("td.value_start"))
+        if offence and start:
+            player_no = _text(r.select_one("td.value_no2"))
+            end = _text(r.select_one("td.value_end"))
+            minuty = _text(r.select_one("td.value_min"))
+            if player_no == "HL":
+                hrac = "lavička (HL)"
+            else:
+                hrac = roster.get(player_no, f"č. {player_no}" if player_no else "?")
+            tresty.append({
+                "cas": start,
+                "vteriny": _zapis_time_to_seconds(start),
+                "tym": nazev,
+                "hrac": hrac,
+                "min": minuty,
+                "duvod_kod": offence,
+                "duvod": OFFENCE_CODES.get(offence, offence),
+                "od": start,
+                "do": end,
+            })
+
+    return {"nazev": nazev, "goly": goly, "tresty": tresty}
+
+
+def fetch_zapis(hokejcz_id: str) -> dict | None:
+    """Stáhne a rozparsuje oficiální zápis o utkání. Vrací None, pokud
+    zápis ještě není k dispozici / nejde rozparsovat (např. zápas se
+    ještě nehrál)."""
+    soup = fetch(HOKEJOVYZAPIS_URL_TMPL.format(id=hokejcz_id))
+    tables = soup.select("table.tab-team")
+    if len(tables) < 2:
+        return None
+
+    domaci = _parse_zapis_team_table(tables[0])
+    hoste = _parse_zapis_team_table(tables[1])
+
+    datum = _text(soup.select_one("td.value_date"))
+    zacatek = _text(soup.select_one("td.value_start"))
+    konec = _text(soup.select_one("td.value_end"))
+    divaci = _text(soup.select_one("td.value_spectators"))
+    misto = _text(soup.select_one("td.value_venue"))
+
+    if not konec:
+        # Zápas ještě neskončil (nebo zápis není kompletní) — nemá
+        # smysl ho zpracovávat jako odehraný.
+        return None
+
+    goly = sorted(domaci["goly"] + hoste["goly"], key=lambda g: g["vteriny"])
+    tresty = sorted(domaci["tresty"] + hoste["tresty"], key=lambda t: t["vteriny"])
+
+    skore_domaci = sum(1 for g in goly if g["tym"] == domaci["nazev"])
+    skore_hoste = sum(1 for g in goly if g["tym"] == hoste["nazev"])
+
+    return {
+        "hokejcz_id": hokejcz_id,
+        "domaci": domaci["nazev"],
+        "hoste": hoste["nazev"],
+        "skore_domaci": skore_domaci,
+        "skore_hoste": skore_hoste,
+        "datum": datum,
+        "zacatek": zacatek,
+        "konec": konec,
+        "divaci": divaci,
+        "misto": misto,
+        "goly": goly,
+        "tresty": tresty,
+    }
+
+
+def load_zapis_state() -> dict:
+    if ZAPIS_STATE_FILE.exists():
+        return json.loads(ZAPIS_STATE_FILE.read_text(encoding="utf-8"))
+    return {"zpracovana_kola": [], "zapasy": []}
+
+
+def save_zapis_state(state: dict) -> None:
+    ZAPIS_STATE_FILE.write_text(
+        json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
+
+
+def update_zapis_state(state: dict, games: list) -> dict:
+    """Zkusí dohledat a stáhnout oficiální zápis pro poslední odehrané
+    kolo, které ještě nemáme zpracované. Běží jen pro NEJVÝŠE jedno
+    nové kolo za spuštění — stačí, dožene se to za pár dní, a šetří se
+    tím zbytečné dotazy na hokej.cz/hokejovyzapis.cz při každém běhu.
+    Chyby (web nedostupný, zápis ještě neexistuje, změna struktury)
+    se potichu přeskočí — tahle funkce nikdy nesmí shodit celý běh
+    statistik.
+    """
+    zpracovana = set(state.get("zpracovana_kola", []))
+    odehrane = sorted(
+        (g for g in games if g.get("odehrano")), key=lambda g: g["kolo"], reverse=True
+    )
+    nove = [g for g in odehrane if g["kolo"] not in zpracovana]
+    if not nove:
+        return state
+
+    game = nove[0]
+    try:
+        hokejcz_matches = fetch_hokejcz_matches()
+        hokejcz_id = find_hokejcz_id(game, hokejcz_matches)
+        if not hokejcz_id:
+            print(f"Zápis: nepodařilo se dohledat hokejczId pro {game['kolo']}. kolo.")
+            return state
+        zapis = fetch_zapis(hokejcz_id)
+        if not zapis:
+            print(f"Zápis pro {game['kolo']}. kolo zatím není kompletní, zkusím příště.")
+            return state
+        zapis["kolo"] = game["kolo"]
+        zapasy = state.get("zapasy", [])
+        zapasy.append(zapis)
+        zapasy = sorted(zapasy, key=lambda z: z["kolo"], reverse=True)[:ZAPIS_GAMES_SHOWN]
+        state["zapasy"] = zapasy
+        state["zpracovana_kola"] = sorted(zpracovana | {game["kolo"]})
+        print(f"Zápis: staženo a zpracováno {game['kolo']}. kolo (ID {hokejcz_id}).")
+    except Exception as exc:  # oficiální zápis nesmí shodit běh statistik
+        print(f"Varování: nepodařilo se stáhnout oficiální zápis ({exc}).")
+    return state
+
+
 def render_html(
     new: dict,
     changes: list,
@@ -972,6 +1228,7 @@ def render_html(
     home_away: dict | None = None,
     league_points: int = 0,
     streaks: dict | None = None,
+    zapis_games: list | None = None,
 ) -> str:
     now = datetime.now(ZoneInfo("Europe/Prague")).strftime("%d.%m.%Y %H:%M")
 
@@ -1161,6 +1418,43 @@ def render_html(
 """
     else:
         monthly_html = ""
+
+    zapis_games = zapis_games or []
+    if zapis_games:
+        game_blocks = []
+        for i, z in enumerate(zapis_games):
+            timeline_items = []
+            for g in sorted(z["goly"] + z["tresty"], key=lambda e: e["vteriny"]):
+                if "strelec" in g:
+                    asist = f" ({', '.join(g['asistence'])})" if g["asistence"] else ""
+                    timeline_items.append(
+                        f'<li>🥅 <strong>{g["cas"]}</strong> — {esc(g["tym"])}: '
+                        f'{esc(g["strelec"])}{esc(asist)} '
+                        f'<span class="muted small">{esc(g["situace"])}</span></li>'
+                    )
+                else:
+                    timeline_items.append(
+                        f'<li>🟨 <strong>{g["od"]}–{g["do"]}</strong> — {esc(g["tym"])}: '
+                        f'{esc(g["hrac"])}, {esc(g["min"])} min '
+                        f'<span class="muted small">({esc(g["duvod"])})</span></li>'
+                    )
+            game_blocks.append(f"""
+    <details{" open" if i == 0 else ""}>
+      <summary>{z["kolo"]}. kolo: {esc(z["domaci"])} {z["skore_domaci"]}:{z["skore_hoste"]} {esc(z["hoste"])}
+        <span class="muted small">({esc(z["datum"])}, {esc(z["divaci"])} diváků)</span></summary>
+      <ul class="changes">{"".join(timeline_items) or "<li class='muted'>Bez gólů a trestů.</li>"}</ul>
+    </details>""")
+        zapas_html = f"""
+  <div class="card">
+    <h2>🏒 Poslední zápasy — průběh</h2>
+    <p class="muted small">Časy a čísla hráčů podle oficiálního zápisu o utkání
+    (hokejovyzapis.cz); překlad zkratek trestů je odhad, může se stát,
+    že některá sedí špatně.</p>
+    {"".join(game_blocks)}
+  </div>
+"""
+    else:
+        zapas_html = ""
 
     skater_rows = "".join(
         f"<tr><td>{esc(s['cislo'])}</td><td>{esc(s['jmeno'])}</td><td>{esc(s['post'])}</td>"
@@ -1517,6 +1811,10 @@ def render_html(
 {milestones_html}{next_match_html}{schedule_html}{corrections_html}
   </section>
 
+  <section class="tabsection" data-tab="zapas">
+    {zapas_html or '<div class="card"><p class="muted">Zatím žádný zpracovaný zápis odehraného zápasu.</p></div>'}
+  </section>
+
   <section class="tabsection" data-tab="sezona">
     <h2 class="section-title">Aktuální sezóna</h2>
     <div class="card">
@@ -1561,6 +1859,10 @@ def render_html(
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
     <span class="badge-dot"></span>
     <span>Přehled</span>
+  </button>
+  <button class="tab-btn" type="button" data-tab="zapas">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/></svg>
+    <span>Zápas</span>
   </button>
   <button class="tab-btn" type="button" data-tab="sezona">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
@@ -1824,6 +2126,7 @@ def main() -> None:
     month_boundaries = load_month_boundaries()
     schedule_watch = load_schedule_watch()
     schedule_log = load_schedule_log()
+    zapis_state = load_zapis_state()
 
     soup = fetch(STATS_URL)
     new_state = parse_stats_page(soup)
@@ -1867,12 +2170,16 @@ def main() -> None:
     league_points = build_league_points(games) if games else 0
     streaks = build_streaks(games) if games else {}
 
+    if games:
+        zapis_state = update_zapis_state(zapis_state, games)
+
     DOCS_DIR.mkdir(exist_ok=True)
     OUTPUT_HTML.write_text(
         render_html(
             new_state, changes, baseline, corrections, history, monthly,
             schedule_changes, record_svg, schedule_log,
             next_match, home_away, league_points, streaks,
+            zapis_state.get("zapasy", []),
         ),
         encoding="utf-8",
     )
@@ -1883,6 +2190,7 @@ def main() -> None:
     if games:
         save_schedule_watch(schedule_watch)
     save_schedule_log(schedule_log)
+    save_zapis_state(zapis_state)
     this_month = monthly.get(month_key, {"skaters": {}, "goalkeepers": {}})
     print(f"Hotovo. Hráčů v poli: {len(new_state['skaters'])}, "
           f"brankářů: {len(new_state['goalkeepers'])}. Změn: {len(changes)}, "
