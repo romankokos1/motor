@@ -978,18 +978,23 @@ HOKEJOVYZAPIS_URL_TMPL = "https://hokejovyzapis.cz/pdf/print/cs-html/?hokejczId=
 ZAPIS_STATE_FILE = SCRIPT_DIR / "zapis_state.json"
 ZAPIS_GAMES_SHOWN = 5  # kolik posledních zápasů se drží/zobrazuje
 
-# Zkratky důvodů trestů — odhad podle obvyklých kódů ČSLH. Nejsou
-# oficiálně ověřené, takže klidně oprav, pokud některá sedí špatně;
-# neznámý kód se prostě zobrazí tak, jak je.
+# Zkratky důvodů trestů — některé potvrzené přímo Gafferem (NROZ, PODR,
+# ZHK, NBR), zbytek je odhad podle obvyklých kódů ČSLH a NENÍ oficiálně
+# ověřený, takže klidně oprav, pokud některá sedí špatně; neznámý kód
+# se prostě zobrazí tak, jak je.
 OFFENCE_CODES = {
     "PMH": "příliš mnoho hráčů na ledě",
     "HRUB": "hrubost",
     "SEK": "sekání",
     "VYSH": "vysoká hůl",
     "HAK": "hákování",
+    "ZHK": "hákování",
     "DRZP": "držení protihráče",
     "DRZH": "držení hokejky",
     "NBRB": "nedovolené bránění brankáře",
+    "NBR": "nedovolené bránění",
+    "NROZ": "napadení rozhodčího",
+    "PODR": "podražení",
     "FAUL": "faul",
     "KOP": "kopnutí",
     "NDOV": "nedovolené bránění",
