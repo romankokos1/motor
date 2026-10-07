@@ -1,5 +1,12 @@
 [
   {
+    "date": "2026-10-07",
+    "changes": [
+      "🆕 Nový hráč v tabulce: Andersen Ole Einar Engeland — debut: 5 zápas, 0G 1A, 1b"
+    ],
+    "corrections": []
+  },
+  {
     "date": "2026-10-05",
     "changes": [
       "🏒 Štencel Jan: +2b (1G+1A) → celkem 8b (3G 5A, 8 zápasů)",
@@ -85,15 +92,6 @@
       "📝 Štencel Jan: oprava statistik (-1A, -1B) — beze změny počtu zápasů",
       "📝 Nordsäter Lucas: oprava statistik (+1A, +1B) — beze změny počtu zápasů",
       "📝 Lantoši Róbert: oprava statistik (+1A, +1B) — beze změny počtu zápasů"
-    ]
-  },
-  {
-    "date": "2026-09-21",
-    "changes": [
-      "🆕 Nový hráč v tabulce: Andersen Ole Einar Engeland — debut: 2 zápas, 0G 0A, 0b"
-    ],
-    "corrections": [
-      "📝 Klouček Milan: oprava statistik (+5Zás) — beze změny počtu zápasů"
     ]
   }
 ]
