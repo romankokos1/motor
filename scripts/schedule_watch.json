@@ -49,9 +49,9 @@
   },
   "9": {
     "datum": "čtvrtek 8.10.",
-    "cas": "17:30",
+    "cas": null,
     "misto": "Plzeň, LOGSPEED CZ Aréna",
-    "odehrano": false
+    "odehrano": true
   },
   "10": {
     "datum": "neděle 11.10.",

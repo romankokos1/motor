@@ -1,5 +1,17 @@
 [
   {
+    "date": "2026-10-09",
+    "changes": [
+      "🏒 Vála Ondřej: +1b (1A) → celkem 3b (0G 3A, 9 zápasů)",
+      "🏒 Ordoš Jan: +1b (1G) → celkem 5b (4G 1A, 9 zápasů)",
+      "🆕 Nový hráč v tabulce: Lev Jakub — debut: 1 zápas, 0G 0A, 0b",
+      "▫️ Bez bodu odehráli zápas (17): Ahl Filip, Bell Parker, Beránek Martin, Bulíř Michal, Hoch Štěpán, Kachyňa Ondřej, Koláček Josef, Lantoši Róbert, Nedorost Václav, Nordsäter Lucas, Olesen Nick Alexander, Pour Jakub, Pýcha Pavel, Toman Matěj, Vráblík Roman, Zachar Marek, Štencel Jan",
+      "🆕 Nový brankář v tabulce: Mařík Matyáš — debut: 1 zápas, 85.7% úspěšnost",
+      "🥅 Strmeň Jan: odchytal další zápas — 92.3% úspěšnost, 2.90 průměr (5 zápasů celkem)"
+    ],
+    "corrections": []
+  },
+  {
     "date": "2026-10-07",
     "changes": [
       "🆕 Nový hráč v tabulce: Andersen Ole Einar Engeland — debut: 5 zápas, 0G 1A, 1b"
@@ -81,17 +93,5 @@
       "🥅 Klouček Milan: odchytal další zápas — 91.9% úspěšnost, 2.47 průměr (4 zápasů celkem)"
     ],
     "corrections": []
-  },
-  {
-    "date": "2026-09-24",
-    "changes": [
-      "▫️ Bez bodu odehráli zápas (1): Toman Matěj",
-      "🎯 Lantoši Róbert: dosáhl/a 50. bodu za Motor!"
-    ],
-    "corrections": [
-      "📝 Štencel Jan: oprava statistik (-1A, -1B) — beze změny počtu zápasů",
-      "📝 Nordsäter Lucas: oprava statistik (+1A, +1B) — beze změny počtu zápasů",
-      "📝 Lantoši Róbert: oprava statistik (+1A, +1B) — beze změny počtu zápasů"
-    ]
   }
 ]
