@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-13T14:09:19Z",
+  "generated": "2026-10-14T11:49:41Z",
   "teams": {
     "mdo": "Mladší dorost",
     "sdo": "Starší dorost",
@@ -538,15 +538,6 @@
       "round": 17
     },
     {
-      "team": "sdo",
-      "date": "2026-11-21",
-      "time": "12:00",
-      "home": false,
-      "opponent": "HC Dynamo Pardubice",
-      "location": "Pardubice, enteria arena",
-      "round": null
-    },
-    {
       "team": "u20",
       "date": "2026-11-21",
       "time": "12:00",
@@ -554,6 +545,15 @@
       "opponent": "HC Kometa Brno",
       "location": "Brno, Winning Group Arena",
       "round": 24
+    },
+    {
+      "team": "sdo",
+      "date": "2026-11-21",
+      "time": "18:00",
+      "home": false,
+      "opponent": "HC Dynamo Pardubice",
+      "location": "Pardubice, enteria arena",
+      "round": null
     },
     {
       "team": "mdo",
