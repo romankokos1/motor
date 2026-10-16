@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-15T13:22:35Z",
+  "generated": "2026-10-16T11:21:13Z",
   "teams": {
     "mdo": "Mladší dorost",
     "sdo": "Starší dorost",
@@ -513,10 +513,10 @@
     {
       "team": "sdo",
       "date": "2026-11-20",
-      "time": "15:30",
+      "time": "15:00",
       "home": false,
       "opponent": "Mountfield Hradec Králové",
-      "location": "Hradec Králové, ČPP ARÉNA",
+      "location": "Hradec Králové, ČPP ARÉNA - malá hala",
       "round": null
     },
     {
