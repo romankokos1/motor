@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-16T11:21:13Z",
+  "generated": "2026-10-17T10:41:24Z",
   "teams": {
     "mdo": "Mladší dorost",
     "sdo": "Starší dorost",
@@ -475,15 +475,6 @@
       "round": 20
     },
     {
-      "team": "mdo",
-      "date": "2026-11-14",
-      "time": "12:00",
-      "home": false,
-      "opponent": "HC Škoda Plzeň",
-      "location": "Plzeň, LOGSPEED CZ Aréna",
-      "round": 15
-    },
-    {
       "team": "sdo",
       "date": "2026-11-14",
       "time": "12:00",
@@ -500,6 +491,15 @@
       "opponent": "BK Mladá Boleslav",
       "location": "České Budějovice, Budvar aréna",
       "round": 21
+    },
+    {
+      "team": "mdo",
+      "date": "2026-11-14",
+      "time": "15:30",
+      "home": false,
+      "opponent": "HC Škoda Plzeň",
+      "location": "Plzeň, LOGSPEED CZ Aréna (tréninková hala)",
+      "round": 15
     },
     {
       "team": "u20",
