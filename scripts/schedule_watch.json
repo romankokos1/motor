@@ -61,9 +61,9 @@
   },
   "11": {
     "datum": "pátek 16.10.",
-    "cas": "17:30",
+    "cas": null,
     "misto": "Ostrava, OSTRAVAR ARÉNA",
-    "odehrano": false
+    "odehrano": true
   },
   "12": {
     "datum": "neděle 18.10.",
