@@ -47,8 +47,10 @@ SEED_IDS = {"Štencel Jan": "/hrac/jan-stencel/13684"}
 # Které soutěže se berou. Výchozí = extraliga (základní část i play off/out
 # se jmenují "...extralig..."), bez juniorských/dorosteneckých extraligových
 # soutěží. Chceš-li přidat Chance ligu apod., uprav tady.
-COMP_RE = re.compile(r"extralig", re.I)
-COMP_EXCLUDE_RE = re.compile(r"junior|dorost|9\. tříd|U\d\d|\bml\.|\bst\.", re.I)
+# Play off extraligy se v minulosti jmenovalo podle sponzora ("Generali play off",
+# "Česká pojišťovna play off") — bez slova "extraliga", proto druhá alternativa.
+COMP_RE = re.compile(r"extralig|^(Generali\s+)?(Česká pojišťovna\s+)?play\s*-?\s*off", re.I)
+COMP_EXCLUDE_RE = re.compile(r"junior|dorost|9\. tříd|U\d\d|\bml\.|\bst\.|baráž", re.I)
 PLAYOFF_RE = re.compile(r"play\s*-?\s*(off|out)|baráž", re.I)
 
 DELAY = 1.0          # pauza mezi požadavky (s)
@@ -181,12 +183,45 @@ def parse_player_page(soup: BeautifulSoup) -> dict:
     if vals:
         parent = soup.select_one(".person-info-stats-title").find_parent()
         txt = " ".join(parent.parent.get_text(" ", strip=True).split()) if parent and parent.parent else ""
-        def grab(lbl):
-            m = re.search(re.escape(lbl) + r"\s+(-?\d+)", txt)
-            return int(m.group(1)) if m else None
-        box = {"z": grab("Zápasy"), "g": grab("Góly"), "a": grab("Asistence"),
-               "b": grab("Body"), "pm": grab("+/-"), "tm": grab("TM"), "text": txt[:160]}
+        box = box_from_text(txt)
     return {"sezony": sezony, "vybrana": vybrana, "radky": radky, "box": box}
+
+
+def box_from_text(txt: str) -> dict | None:
+    """Box Zápasy/Góly/Asistence/Body/+-/TM z textu hlavičky hráče."""
+    if not txt:
+        return None
+    def grab(lbl):
+        m = re.search(re.escape(lbl) + r"\s+(-?\d+)", txt)
+        return int(m.group(1)) if m else None
+    return {"z": grab("Zápasy"), "g": grab("Góly"), "a": grab("Asistence"),
+            "b": grab("Body"), "pm": grab("+/-"), "tm": grab("TM"), "text": txt[:160]}
+
+
+def import_raw(state: dict, raw: dict, ids: dict) -> int:
+    """Načte soubor z bilance-stahovatko.js (stažený v prohlížeči) do stavu."""
+    cesta_na_jmeno = {v: k for k, v in ids.items()}
+    n = 0
+    for path, e in raw.items():
+        name = cesta_na_jmeno.get(path)
+        if not name:
+            continue  # brankář / hráč mimo seznam
+        entry = state["hraci"].setdefault(name, {"url": path})
+        entry["url"] = path
+        entry["nejnovejsi"] = e.get("nejnovejsi")
+        sezony = {}
+        for s, v in e["sezony"].items():
+            rows = []
+            for r in v["radky"]:
+                if comp_wanted(r["comp"]):
+                    r["season"] = int(s)
+                    rows.append(r)
+            sezony[s] = {"radky": rows, "raw": len(v["radky"]),
+                         "box": box_from_text(v.get("boxText", "")) if s == e.get("nejnovejsi") else None}
+        entry["sezony"] = sezony
+        entry["stazeno"] = datetime.now(timezone.utc).isoformat(timespec="seconds")
+        n += 1
+    return n
 
 
 def _toi(t: str) -> int:
@@ -320,15 +355,20 @@ def build_kontrola(name: str, entry: dict, baseline: dict) -> dict:
 
     newest = entry.get("nejnovejsi")
     cur = sezony.get(newest) if newest else None
-    if cur and cur.get("box") and cur["box"].get("z") is not None:
-        s = _sum(cur["radky"])
-        box = cur["box"]
-        rozdily = [f"{k.upper()}: řádky {s[k]} × box {box[k]}" for k in ("z", "g", "a", "b", "pm", "tm")
-                   if box.get(k) is not None and s[k] != box[k]]
+    box = cur.get("box") if cur else None
+    box_comp = re.split(r"\s+\d{4}-\d{4}", (box or {}).get("text", ""))[0] if box else ""
+    if box and box.get("z") is not None and not comp_wanted(box_comp):
+        info.append(f"box aktuální sezóny je za soutěž „{box_comp}“, ne za extraligu — kontrola přeskočena")
+    elif box and box.get("z") is not None:
+        s_ = _sum(cur["radky"])
+        rozdily = [f"{k.upper()}: řádky {s_[k]} × box {box[k]}" for k in ("z", "g", "a", "b", "pm")
+                   if box.get(k) is not None and s_[k] != box[k]]
         if rozdily:
             problemy.append(f"aktuální sezóna {newest} nesedí s boxem na stránce hráče ({'; '.join(rozdily)})")
         else:
-            info.append(f"sezóna {newest} sedí s boxem ({s['z']} Z, {s['b']} B)")
+            info.append(f"sezóna {newest} sedí s boxem ({s_['z']} Z, {s_['b']} B)")
+        if box.get("tm") is not None and s_["tm"] != box["tm"]:
+            info.append(f"TM se liší (řádky {s_['tm']} × box {box['tm']}) — jen informativně")
     elif newest:
         info.append("box aktuální sezóny nenalezen — kontrola přeskočena")
 
@@ -365,9 +405,23 @@ def build_output(state: dict, baseline: dict) -> dict:
 
 
 def main() -> None:
+    import sys
     baseline = load_baseline()
     jmena = [n for n, v in baseline.items() if v.get("typ") == "skater"]
     state = load_state()
+    if "--import" in sys.argv:
+        raw = json.loads(Path(sys.argv[sys.argv.index("--import") + 1]).read_text(encoding="utf-8"))
+        print(f"Import: {import_raw(state, raw, load_ids())} hráčů ze souboru.")
+        save_state(state)
+        out = build_output(state, baseline)
+        out["nenalezeno"] = [n for n in jmena if n not in state["hraci"]]
+        OUTPUT_JSON.parent.mkdir(exist_ok=True)
+        OUTPUT_JSON.write_text(json.dumps(out, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+        for n, k in out["kontrola"].items():
+            for p in k["problemy"]:
+                print(f"  ⚠ {n}: {p}")
+        print(f"Hotovo: {len(out['hraci'])} hráčů, kontrola OK u {sum(k['ok'] for k in out['kontrola'].values())}.")
+        return
     try:
         tokens = roster_tokens()
         print(f"Soupiska: {len(tokens)} odkazů na hráče, token "
