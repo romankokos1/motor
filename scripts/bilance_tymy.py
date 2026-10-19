@@ -424,6 +424,7 @@ def build_output(state: dict, baseline: dict, live: dict | None = None) -> dict:
         kontrola[name] = k
     return {"vygenerovano": datetime.now(timezone.utc).isoformat(timespec="seconds"),
             "hraci": hraci, "kontrola": kontrola, "korekce": live.get("korekce", []),
+            "cisla": {**CISLA_VYCHOZI, **live.get("cisla", {})},
             "neprirazeno": live.get("neprirazeno", [])}
 
 
@@ -443,6 +444,18 @@ TEAM_CODES = [
     (r"třinec|oceláři", "TRI"), (r"zlín|berani", "ZLN"), (r"chomutov|piráti", "CHM"),
     (r"jihlava|dukla", "JIH"), (r"budějovice|motor", "CEB"),
 ]
+# Čísla dresů pro dlaždice na stránce (výchozí; při denním běhu se přepíšou
+# aktuálními čísly z hcmotor.cz)
+CISLA_VYCHOZI = {
+    "Štencel Jan": 7, "Nordsäter Lucas": 8, "Pýcha Pavel": 12, "Nedorost Václav": 13,
+    "Vála Ondřej": 14, "Vráblík Roman": 69, "Andersen Ole Einar Engeland": 79,
+    "Kundrátek Tomáš": 84, "Kachyňa Ondřej": 98, "Chlubna Tomáš": 10, "Novák Pavel": 11,
+    "Lantoši Róbert": 16, "Toman Matěj": 20, "Koláček Josef": 22, "Zachar Marek": 26,
+    "Humeník Matyáš": 27, "Krastenbergs Renars": 29, "Lev Jakub": 29, "Hejduk Marek": 37,
+    "Hoch Štěpán": 42, "Ordoš Jan": 45, "Drančák Samuel": 46, "Beránek Martin": 56,
+    "Ahl Filip": 61, "Pour Jakub": 64, "Bulíř Michal": 88, "Parker Bell": 92, "Bell Parker": 92,
+    "Olesen Nick Alexander": 95,
+}
 LIVE_FIELDS = ("z", "g", "a", "b", "pm", "tm")
 
 
@@ -502,6 +515,7 @@ def zpracuj_beh(old_state: dict, new_state: dict, games: list) -> None:
     baseline = load_baseline()
     old, new = _skater_totals(old_state), _skater_totals(new_state)
     live["hcmotor"] = new
+    live["cisla"] = {x["jmeno"]: x.get("cislo") for x in new_state.get("skaters", {}).values() if x.get("cislo")}
 
     omax = official_max_dt(state)
     hotove = set(live["zpracovano"])
