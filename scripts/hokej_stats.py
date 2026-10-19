@@ -1653,8 +1653,13 @@ def render_html(
     else:
         on_ice_html = ""
 
+    def bil_link(jmeno: str) -> str:
+        from urllib.parse import quote
+        return (f'<a class="bil" href="bilance-proti-tymum.html#hrac={quote(jmeno)}" '
+                f'title="Bilance proti týmům" aria-label="Bilance hráče proti týmům">⇄</a>')
+
     skater_rows = "".join(
-        f"<tr><td>{esc(s['cislo'])}</td><td>{esc(s['jmeno'])}</td><td>{esc(s['post'])}</td>"
+        f"<tr><td>{esc(s['cislo'])}</td><td>{esc(s['jmeno'])}{bil_link(s['jmeno'])}</td><td>{esc(s['post'])}</td>"
         f"<td>{s['z']}</td><td>{s['g']}</td><td>{s['a']}</td>"
         f"<td><strong>{s['b']}</strong></td><td>{s['pm']}</td><td>{s['tm']}</td></tr>"
         for s in skaters
@@ -1687,7 +1692,7 @@ def render_html(
 
     def skater_career_rows_html(rows: list) -> str:
         return "".join(
-            f"<tr{row_class(r)}><td>{esc(r['jmeno'])}</td><td>{esc(r['post'])}</td>"
+            f"<tr{row_class(r)}><td>{esc(r['jmeno'])}{bil_link(r['jmeno'])}</td><td>{esc(r['post'])}</td>"
             f"<td>{r['z']}</td><td>{r['g']}</td><td>{r['a']}</td>"
             f"<td><strong>{r['b']}</strong></td></tr>"
             for r in rows
@@ -1965,6 +1970,8 @@ def render_html(
 
     /* Sekce přepínané spodní lištou — na mobilu vidět jen ta aktivní */
     .tabsection.is-hidden {{ display: none; }}
+    a.bil {{ text-decoration: none; margin-left: 6px; opacity: .55; font-size: .9em; }}
+    a.bil:hover {{ opacity: 1; }}
 
     .tabbar {{
       display: flex; flex: 0 0 auto; z-index: 40;
@@ -1997,7 +2004,7 @@ def render_html(
  <div class="app-header">
   <h1>🏒 Statistiky hráčů — HC Motor České Budějovice</h1>
   <div class="updated">Naposledy aktualizováno: {now}</div>
-  <div class="season">{esc(SEASON_LABEL)} · zdroj: <a href="{STATS_URL}">hcmotor.cz</a></div>
+  <div class="season">{esc(SEASON_LABEL)} · zdroj: <a href="{STATS_URL}">hcmotor.cz</a> · <a href="bilance-proti-tymum.html">Bilance proti týmům →</a></div>
  </div>
  <div class="app-content" id="app-content">
   <section class="tabsection" data-tab="prehled">
