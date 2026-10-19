@@ -1,0 +1,38 @@
+name: Import bilance
+
+# Spustí se samo, když do repa nahraješ scripts/bilance_raw.json
+# (soubor stažený skriptem bilance-stahovatko.js v prohlížeči).
+on:
+  push:
+    paths:
+      - "scripts/bilance_raw.json"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install requests beautifulsoup4
+      - name: Zpracovat nahraný soubor
+        run: |
+          if [ -f scripts/bilance_raw.json ]; then
+            python scripts/bilance_tymy.py --import scripts/bilance_raw.json
+            rm scripts/bilance_raw.json
+          else
+            echo "scripts/bilance_raw.json neexistuje, není co importovat."
+          fi
+      - name: Uložit změny
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A scripts docs
+          git diff --cached --quiet || git commit -m "Aktualizace bilance proti týmům"
+          git pull --rebase
+          git push
