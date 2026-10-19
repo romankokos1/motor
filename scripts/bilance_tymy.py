@@ -36,6 +36,7 @@ REPO_ROOT = SCRIPT_DIR.parent
 BASELINE_FILE = SCRIPT_DIR / "players_baseline.json"
 IDS_FILE = SCRIPT_DIR / "bilance_hraci.json"      # ručně vedené {jméno: "/hrac/slug/id"}
 STATE_FILE = SCRIPT_DIR / "bilance_state.json"
+RUCNE_FILE = SCRIPT_DIR / "bilance_rucne.json"   # ruční určení týmu u nejednoznačných zápasů {"Jméno|YYYY-MM-DD": "KÓD"}
 LIVE_FILE = SCRIPT_DIR / "bilance_live.json"      # řádky doplněné automaticky z hcmotor.cz
 CURRENT_SEASON = 2026                              # sezóna 2026/27 (rok začátku)
 OUTPUT_JSON = REPO_ROOT / "docs" / "bilance_data.json"
@@ -399,9 +400,11 @@ def build_kontrola(name: str, entry: dict, baseline: dict) -> dict:
 def build_output(state: dict, baseline: dict, live: dict | None = None) -> dict:
     live = live if live is not None else load_live()
     omax = official_max_dt(state)
+    rucne = json.loads(RUCNE_FILE.read_text(encoding="utf-8")) if RUCNE_FILE.exists() else {}
     hraci, kontrola = {}, {}
     for name, entry in sorted(state["hraci"].items()):
-        rows = [r for s in entry.get("sezony", {}).values() for r in s["radky"]]
+        rows = [dict(r, **({"fix": rucne[f"{name}|{r['dt']}"]} if f"{name}|{r['dt']}" in rucne else {}))
+                for s in entry.get("sezony", {}).values() for r in s["radky"]]
         zive = [r for r in live.get("radky", {}).get(name, []) if r["dt"] > omax]
         hraci[name] = sorted(rows + zive, key=lambda r: r["dt"])
         k = build_kontrola(name, entry, baseline)
