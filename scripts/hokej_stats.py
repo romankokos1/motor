@@ -21,6 +21,7 @@ Stránku pak zobrazuje GitHub Pages.
 """
 
 import json
+import time
 import re
 from datetime import datetime, timedelta
 from pathlib import Path
@@ -976,7 +977,9 @@ def build_record_svg(games: list) -> str:
 HOKEJCZ_SCHEDULE_URL = "https://www.hokej.cz/klub/banes-motor-c-budejovice/1721/zapasy"
 HOKEJOVYZAPIS_URL_TMPL = "https://hokejovyzapis.cz/pdf/print/cs-html/?hokejczId={id}"
 ZAPIS_STATE_FILE = SCRIPT_DIR / "zapis_state.json"
-ZAPIS_GAMES_SHOWN = 5  # kolik posledních zápasů se drží/zobrazuje
+ZAPIS_GAMES_SHOWN = 5  # kolik posledních zápasů se zobrazuje v záložce Zápas
+ZAPIS_VERZE = 2  # 2 = zápis obsahuje i hráče na ledě při gólech
+ZAPIS_MAX_PER_RUN = 80  # strop stažených zápisů za jeden běh (zpětné doplnění)
 
 # Zkratky důvodů trestů — některé potvrzené přímo Gafferem (NROZ, PODR,
 # ZHK, NBR), zbytek je odhad podle obvyklých kódů ČSLH a NENÍ oficiálně
@@ -1063,9 +1066,25 @@ def _zapis_time_to_seconds(t: str) -> int:
         return 0
 
 
+def _norm_name(name: str) -> str:
+    """'KLOUČEK Milan' -> 'Klouček Milan' (stejný tvar jako na hcmotor.cz).
+    Příjmení je v zápisu psané velkými písmeny a jde první."""
+    out, surname = [], True
+    for tok in name.split():
+        if surname and tok.isupper():
+            out.append("-".join(p.capitalize() for p in tok.split("-")))
+        else:
+            surname = False
+            out.append(tok)
+    return " ".join(out)
+
+
 def _parse_zapis_team_table(table) -> dict:
     """Rozparsuje jednu tabulku 'tab-team' (jeden tým) ze zápisu.
-    Vrátí {"nazev": str, "goly": [...], "tresty": [...]}."""
+    Vrátí {"nazev", "soupiska": {cislo: (jmeno, post)}, "goly", "tresty"}.
+    U gólů jsou zatím jen čísla hráčů na ledě (_p = vlastní tým,
+    _n = soupeř) — na jména je převede až fetch_zapis, protože _n patří
+    do soupisky druhého týmu."""
     header = table.select_one("td.team_name")
     nazev = header.get_text(" ", strip=True) if header else ""
     nazev = re.sub(r"\s+\d+\s*$", "", nazev).strip()  # pryč s číslem oddílu na konci
@@ -1077,7 +1096,10 @@ def _parse_zapis_team_table(table) -> dict:
         no = _text(r.select_one("td.value_no"))
         name = r.select_one("td.value_name") or r.select_one("td.value_name_not_attended")
         if no and name:
-            roster[no] = _text(name)
+            roster[no] = (_norm_name(_text(name)), _text(r.select_one("td.value_pos")))
+
+    def rn(no):
+        return roster[no][0] if no in roster else f"č. {no}"
 
     goly = []
     tresty = []
@@ -1092,9 +1114,11 @@ def _parse_zapis_team_table(table) -> dict:
                 "cas": goal_time,
                 "vteriny": _zapis_time_to_seconds(goal_time),
                 "tym": nazev,
-                "strelec": roster.get(scorer_no, f"č. {scorer_no}"),
-                "asistence": [roster.get(n, f"č. {n}") for n in (a1_no, a2_no) if n],
+                "strelec": rn(scorer_no),
+                "asistence": [rn(n) for n in (a1_no, a2_no) if n],
                 "situace": _text(r.select_one("td.value_gs")),
+                "_p": [_text(r.select_one(f"td.value_p{k}")) for k in range(1, 7)],
+                "_n": [_text(r.select_one(f"td.value_n{k}")) for k in range(1, 7)],
             })
 
         offence = _text(r.select_one("td.value_offence"))
@@ -1106,7 +1130,7 @@ def _parse_zapis_team_table(table) -> dict:
             if player_no == "HL":
                 hrac = "lavička (HL)"
             else:
-                hrac = roster.get(player_no, f"č. {player_no}" if player_no else "?")
+                hrac = rn(player_no) if player_no else "?"
             tresty.append({
                 "cas": start,
                 "vteriny": _zapis_time_to_seconds(start),
@@ -1119,7 +1143,15 @@ def _parse_zapis_team_table(table) -> dict:
                 "do": end,
             })
 
-    return {"nazev": nazev, "goly": goly, "tresty": tresty}
+    return {"nazev": nazev, "soupiska": roster, "goly": goly, "tresty": tresty}
+
+
+def _resolve_on_ice(goly: list, own: dict, opp: dict) -> None:
+    """Přepíše čísla na ledě (_p/_n) na jména; brankáři se vynechají
+    (na ledě je počítat nechceme, +/- i GF/GA se vedou za hráče v poli)."""
+    for g in goly:
+        g["na_ledu_za"] = [own[n][0] for n in g.pop("_p") if n in own and own[n][1] != "GK"]
+        g["na_ledu_proti"] = [opp[n][0] for n in g.pop("_n") if n in opp and opp[n][1] != "GK"]
 
 
 def fetch_zapis(hokejcz_id: str) -> dict | None:
@@ -1145,6 +1177,8 @@ def fetch_zapis(hokejcz_id: str) -> dict | None:
         # smysl ho zpracovávat jako odehraný.
         return None
 
+    _resolve_on_ice(domaci["goly"], domaci["soupiska"], hoste["soupiska"])
+    _resolve_on_ice(hoste["goly"], hoste["soupiska"], domaci["soupiska"])
     goly = sorted(domaci["goly"] + hoste["goly"], key=lambda g: g["vteriny"])
     tresty = sorted(domaci["tresty"] + hoste["tresty"], key=lambda t: t["vteriny"])
 
@@ -1152,6 +1186,7 @@ def fetch_zapis(hokejcz_id: str) -> dict | None:
     skore_hoste = sum(1 for g in goly if g["tym"] == hoste["nazev"])
 
     return {
+        "verze": ZAPIS_VERZE,
         "hokejcz_id": hokejcz_id,
         "domaci": domaci["nazev"],
         "hoste": hoste["nazev"],
@@ -1175,48 +1210,123 @@ def load_zapis_state() -> dict:
 
 def save_zapis_state(state: dict) -> None:
     ZAPIS_STATE_FILE.write_text(
-        json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8"
+        json.dumps(state, ensure_ascii=False, separators=(",", ":")), encoding="utf-8"
     )
 
 
 def update_zapis_state(state: dict, games: list) -> dict:
-    """Zkusí dohledat a stáhnout oficiální zápis pro poslední odehrané
-    kolo, které ještě nemáme zpracované. Běží jen pro NEJVÝŠE jedno
-    nové kolo za spuštění — stačí, dožene se to za pár dní, a šetří se
-    tím zbytečné dotazy na hokej.cz/hokejovyzapis.cz při každém běhu.
-    Chyby (web nedostupný, zápis ještě neexistuje, změna struktury)
-    se potichu přeskočí — tahle funkce nikdy nesmí shodit celý běh
-    statistik.
-    """
-    zpracovana = set(state.get("zpracovana_kola", []))
-    odehrane = sorted(
-        (g for g in games if g.get("odehrano")), key=lambda g: g["kolo"], reverse=True
+    """Stáhne oficiální zápisy ke VŠEM odehraným kolům, která ještě nemáme
+    ve aktuální verzi (ZAPIS_VERZE) — tzn. i zpětné doplnění celé dosavadní
+    sezóny a přepsání starých záznamů bez dat o hráčích na ledě. Rozpis na
+    hokej.cz se stahuje jednou na běh. Chyby (web nedostupný, zápis ještě
+    není kompletní, změna struktury) se potichu přeskočí — tahle funkce
+    nikdy nesmí shodit celý běh statistik."""
+    zapasy = {z["kolo"]: z for z in state.get("zapasy", [])}
+    chybi = sorted(
+        (g for g in games if g.get("odehrano")
+         and zapasy.get(g["kolo"], {}).get("verze") != ZAPIS_VERZE),
+        key=lambda g: g["kolo"],
     )
-    nove = [g for g in odehrane if g["kolo"] not in zpracovana]
-    if not nove:
+    if not chybi:
         return state
-
-    game = nove[0]
     try:
         hokejcz_matches = fetch_hokejcz_matches()
-        hokejcz_id = find_hokejcz_id(game, hokejcz_matches)
-        if not hokejcz_id:
-            print(f"Zápis: nepodařilo se dohledat hokejczId pro {game['kolo']}. kolo.")
-            return state
-        zapis = fetch_zapis(hokejcz_id)
-        if not zapis:
-            print(f"Zápis pro {game['kolo']}. kolo zatím není kompletní, zkusím příště.")
-            return state
-        zapis["kolo"] = game["kolo"]
-        zapasy = state.get("zapasy", [])
-        zapasy.append(zapis)
-        zapasy = sorted(zapasy, key=lambda z: z["kolo"], reverse=True)[:ZAPIS_GAMES_SHOWN]
-        state["zapasy"] = zapasy
-        state["zpracovana_kola"] = sorted(zpracovana | {game["kolo"]})
-        print(f"Zápis: staženo a zpracováno {game['kolo']}. kolo (ID {hokejcz_id}).")
-    except Exception as exc:  # oficiální zápis nesmí shodit běh statistik
-        print(f"Varování: nepodařilo se stáhnout oficiální zápis ({exc}).")
+    except Exception as exc:
+        print(f"Varování: nepodařilo se načíst rozpis na hokej.cz ({exc}).")
+        return state
+
+    stazeno = 0
+    for game in chybi[:ZAPIS_MAX_PER_RUN]:
+        try:
+            hokejcz_id = find_hokejcz_id(game, hokejcz_matches)
+            if not hokejcz_id:
+                print(f"Zápis: nepodařilo se dohledat hokejczId pro {game['kolo']}. kolo.")
+                continue
+            zapis = fetch_zapis(hokejcz_id)
+            if not zapis:
+                print(f"Zápis pro {game['kolo']}. kolo zatím není kompletní, zkusím příště.")
+                continue
+            zapis["kolo"] = game["kolo"]
+            zapasy[game["kolo"]] = zapis
+            stazeno += 1
+            time.sleep(0.5)
+        except Exception as exc:  # jeden vadný zápis nesmí zastavit ostatní
+            print(f"Varování: zápis {game['kolo']}. kola se nepodařilo zpracovat ({exc}).")
+    state["zapasy"] = [zapasy[k] for k in sorted(zapasy)]
+    state["zpracovana_kola"] = sorted(zapasy)
+    print(f"Zápisy: staženo {stazeno}, celkem uloženo {len(zapasy)}.")
     return state
+
+
+def _is_motor(team: str) -> bool:
+    return CLUB_NAME.lower() in team.lower()
+
+
+def _penalty_incidents(tresty: list) -> list:
+    """Spojí navazující tresty téhož hráče za totéž provinění (např. 5 min
+    + 20 min ZHK, kdy druhý začíná přesně tam, kde první končí) do jednoho
+    incidentu — počítá se pak jako jeden přestupek, minuty se sečtou."""
+    out = []
+    for t in sorted(tresty, key=lambda x: x["vteriny"]):
+        prev = out[-1] if out else None
+        if (prev and prev["tym"] == t["tym"] and prev["hrac"] == t["hrac"]
+                and prev["duvod_kod"] == t["duvod_kod"] and prev["do"] == t["od"]):
+            prev["min"] = int(prev["min"] or 0) + int(t["min"] or 0)
+            prev["do"] = t["do"]
+        else:
+            out.append({**t, "min": int(t["min"]) if str(t["min"]).isdigit() else 0})
+    return out
+
+
+def build_discipline(zapasy: list) -> dict:
+    """{'hraci': {jmeno: {kod: {'n': počet, 'min': minuty}}},
+        'tym': {'motor': {kod: {...}}, 'souper': {kod: {...}}}, 'zapasu': N}"""
+    hraci, motor, souper = {}, {}, {}
+    for z in zapasy:
+        for t in _penalty_incidents(z["tresty"]):
+            kod = t["duvod_kod"]
+            bucket = motor if _is_motor(t["tym"]) else souper
+            e = bucket.setdefault(kod, {"n": 0, "min": 0})
+            e["n"] += 1
+            e["min"] += t["min"]
+            if _is_motor(t["tym"]) and t["hrac"] != "lavička (HL)":
+                h = hraci.setdefault(t["hrac"], {}).setdefault(kod, {"n": 0, "min": 0})
+                h["n"] += 1
+                h["min"] += t["min"]
+    return {"hraci": hraci, "tym": {"motor": motor, "souper": souper}, "zapasu": len(zapasy)}
+
+
+def build_on_ice(zapasy: list) -> dict:
+    """Gólů pro/proti, když byl hráč Motoru na ledě (bez brankářů).
+    {jmeno: {'gf','ga','gf_ev','ga_ev','gf_pp','ga_pp','gf_sh','ga_sh'}}
+    EV = stejný počet hráčů (situace a==b), PP = Motor v přesilovce,
+    SH = Motor v oslabení. Gól s prázdnou klecí apod. se bere podle čísel
+    ze zápisu, jak jsou."""
+    out = {}
+    for z in zapasy:
+        for g in z["goly"]:
+            if "na_ledu_za" not in g:
+                continue  # záznam ve staré verzi — doplní se při dalším běhu
+            motor_gol = _is_motor(g["tym"])
+            hraci = g["na_ledu_za"] if motor_gol else g["na_ledu_proti"]
+            m = re.match(r"(\d+)/(\d+)", g.get("situace", ""))
+            if m:
+                a, b = int(m.group(1)), int(m.group(2))  # střelecký tým / soupeř
+                if a == b:
+                    typ = "ev"
+                elif a > b:
+                    typ = "pp" if motor_gol else "sh"   # střelec v přesilovce
+                else:
+                    typ = "sh" if motor_gol else "pp"
+            else:
+                typ = "ev"
+            for h in hraci:
+                e = out.setdefault(h, {k: 0 for k in
+                    ("gf", "ga", "gf_ev", "ga_ev", "gf_pp", "ga_pp", "gf_sh", "ga_sh")})
+                d = "gf" if motor_gol else "ga"
+                e[d] += 1
+                e[f"{d}_{typ}"] += 1
+    return out
 
 
 def render_html(
@@ -1424,7 +1534,8 @@ def render_html(
     else:
         monthly_html = ""
 
-    zapis_games = zapis_games or []
+    zapis_all = zapis_games or []
+    zapis_games = sorted(zapis_all, key=lambda z: z["kolo"], reverse=True)[:ZAPIS_GAMES_SHOWN]
     if zapis_games:
         game_blocks = []
         for i, z in enumerate(zapis_games):
@@ -1460,6 +1571,87 @@ def render_html(
 """
     else:
         zapas_html = ""
+
+    disc = build_discipline(zapis_all)
+    on_ice = build_on_ice(zapis_all)
+    on_ice_games = sum(1 for z in zapis_all if any("na_ledu_za" in g for g in z["goly"]))
+
+    def _kody(d: dict) -> list:
+        return sorted(d, key=lambda k: (-d[k]["min"], k))
+
+    if disc["hraci"]:
+        all_codes = _kody({k: {"min": sum(h.get(k, {}).get("min", 0) for h in disc["hraci"].values())}
+                           for h in disc["hraci"].values() for k in h})
+        head = "".join(
+            f'<th title="{esc(OFFENCE_CODES.get(k, k))}">{esc(k)}</th>' for k in all_codes
+        )
+        rows = []
+        for jm, h in sorted(disc["hraci"].items(),
+                            key=lambda kv: (-sum(v["min"] for v in kv[1].values()), kv[0])):
+            tot_n = sum(v["n"] for v in h.values())
+            tot_m = sum(v["min"] for v in h.values())
+            cells = "".join(
+                f"<td>{h[k]['n']}</td>" if k in h else "<td class='muted'>-</td>" for k in all_codes
+            )
+            rows.append(f"<tr><td>{esc(jm)}</td><td><strong>{tot_m}</strong></td><td>{tot_n}</td>{cells}</tr>")
+        legend = ", ".join(f"<strong>{esc(k)}</strong> {esc(OFFENCE_CODES.get(k, k))}" for k in all_codes)
+        team_rows = []
+        for k in _kody({**disc["tym"]["motor"], **disc["tym"]["souper"]}):
+            mo = disc["tym"]["motor"].get(k, {"n": 0, "min": 0})
+            so = disc["tym"]["souper"].get(k, {"n": 0, "min": 0})
+            team_rows.append(
+                f"<tr><td>{esc(OFFENCE_CODES.get(k, k))} <span class='muted small'>({esc(k)})</span></td>"
+                f"<td>{mo['n']}</td><td>{mo['min']}</td><td>{so['n']}</td><td>{so['min']}</td></tr>"
+            )
+        discipline_html = f"""
+    <div class="card">
+      <h2>🟨 Disciplína podle typu</h2>
+      <p class="muted small">Počet provinění hráčů Motoru podle oficiálních zápisů
+      ({disc['zapasu']} zápasů). Navazující tresty za totéž (např. 5 + 20 min) se
+      počítají jako jedno provinění. Význam kódů je pod tabulkou, řadit jde klepnutím
+      na sloupec.</p>
+      <table class="tbl-disc">
+        <thead><tr><th>Hráč</th><th>TM</th><th>Σ</th>{head}</tr></thead>
+        <tbody>{"".join(rows)}</tbody>
+      </table>
+      <p class="muted small">{legend}</p>
+    </div>
+    <div class="card">
+      <h2>⚖️ Tresty: Motor vs. soupeři</h2>
+      <table class="tbl-disc-team">
+        <thead><tr><th>Provinění</th><th>Motor ×</th><th>Motor min</th><th>Soupeři ×</th><th>Soupeři min</th></tr></thead>
+        <tbody>{"".join(team_rows)}</tbody>
+      </table>
+    </div>"""
+    else:
+        discipline_html = ""
+
+    if on_ice:
+        oi_rows = []
+        for jm, e in sorted(on_ice.items(), key=lambda kv: (-(kv[1]["gf"] - kv[1]["ga"]), kv[0])):
+            diff = e["gf"] - e["ga"]
+            diff_s = f"+{diff}" if diff > 0 else str(diff)
+            oi_rows.append(
+                f"<tr><td>{esc(jm)}</td><td>{e['gf']}</td><td>{e['ga']}</td><td><strong>{diff_s}</strong></td>"
+                f"<td>{e['gf_ev']}</td><td>{e['ga_ev']}</td>"
+                f"<td>{e['gf_pp']}</td><td>{e['ga_pp']}</td>"
+                f"<td>{e['gf_sh']}</td><td>{e['ga_sh']}</td></tr>"
+            )
+        on_ice_html = f"""
+    <div class="card">
+      <h2>🧊 Na ledě: góly pro / proti</h2>
+      <p class="muted small">Kolik gólů padlo, když byl hráč Motoru na ledě
+      (z oficiálních zápisů, {on_ice_games} zápasů; brankáři se nepočítají).
+      GF = vstřelené, GA = obdržené, EV = při stejném počtu hráčů,
+      PP = Motor v přesilovce, SH = Motor v oslabení. Součet za celou
+      sezónu se může lišit od +/- na hcmotor.cz, pokud chybí některý zápas.</p>
+      <table class="tbl-onice">
+        <thead><tr><th>Hráč</th><th>GF</th><th>GA</th><th>+/-</th><th>GF EV</th><th>GA EV</th><th>GF PP</th><th>GA PP</th><th>GF SH</th><th>GA SH</th></tr></thead>
+        <tbody>{"".join(oi_rows)}</tbody>
+      </table>
+    </div>"""
+    else:
+        on_ice_html = ""
 
     skater_rows = "".join(
         f"<tr><td>{esc(s['cislo'])}</td><td>{esc(s['jmeno'])}</td><td>{esc(s['post'])}</td>"
@@ -1837,6 +2029,7 @@ def render_html(
         <tbody>{gk_rows}</tbody>
       </table>
     </div>
+    {on_ice_html}{discipline_html}
   </section>
 
   <section class="tabsection" data-tab="bilance">
