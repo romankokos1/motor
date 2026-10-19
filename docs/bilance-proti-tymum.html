@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bilance hráče proti týmům</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0f1115;--card:#171a21;--bd:#2a2f3a;--tx:#e6e8ec;--mu:#8b93a3;--ac:#e5484d;--ok:#3fb950;--warn:#d29922}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.45 'IBM Plex Sans',system-ui,sans-serif;padding:16px}
+.wrap{max-width:1000px;margin:0 auto}
+h1{font-size:1.25rem;margin:0 0 4px}h2{font-size:1rem;margin:0 0 8px}
+.mu{color:var(--mu)}.sm{font-size:.8rem}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:14px;margin:12px 0;overflow-x:auto}
+input,select,textarea,button{font:inherit;color:var(--tx);background:#0f1115;border:1px solid var(--bd);border-radius:6px;padding:7px 10px}
+textarea{width:100%;min-height:110px;font-family:'IBM Plex Mono',monospace;font-size:.78rem}
+button{cursor:pointer;background:var(--ac);border-color:var(--ac);color:#fff;font-weight:600}
+button.sec{background:transparent;color:var(--tx);border-color:var(--bd)}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:8px 0}
+table{border-collapse:collapse;width:100%;font-family:'IBM Plex Mono',monospace;font-size:.82rem}
+th,td{text-align:right;padding:5px 8px;border-bottom:1px solid var(--bd);white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+th{color:var(--mu);font-weight:400;cursor:pointer;user-select:none}
+tr.tot td{font-weight:600;border-top:2px solid var(--bd)}
+.warn{color:var(--warn)}.pos{color:var(--ok)}.neg{color:var(--ac)}
+.tabs{display:flex;gap:6px}.tabs button{background:transparent;color:var(--mu);border-color:var(--bd)}
+.tabs button.on{background:var(--ac);color:#fff;border-color:var(--ac)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>🏒 Bilance hráče proti týmům</h1>
+<p class="mu sm">Vlož tabulku zápasů hráče z hokej.cz (záložka zápasy, po sezonách), nástroj sám odvodí, za koho hrál a proti komu. Vše zůstává jen v tomto prohlížeči (localStorage).</p>
+
+<details class="card" id="kontrola" style="display:none"></details>
+
+<details class="card">
+  <summary><b>Ruční doplnění hráče</b> <span class="mu sm">(jen v tomto prohlížeči)</span></summary>
+  <div class="row"><input id="name" placeholder="Jméno hráče (např. Štencel Jan)" size="30">
+  <button id="add">Přidat / doplnit</button></div>
+  <textarea id="paste" placeholder="Sem vlož řádky tabulky (datum, kolo, soutěž, zápas, skóre, G, A, B, +-, TM, TOI). Lze vložit víc sezón najednou, nebo opakovaně – duplicitní zápasy se přeskočí."></textarea>
+  <div id="msg" class="sm mu"></div>
+</details>
+
+<div class="card">
+  <div class="tabs">
+    <button id="tabP" class="on">Podle hráče</button>
+    <button id="tabT">Podle soupeře</button>
+  </div>
+  <div class="row">
+    <select id="player"></select>
+    <select id="opp" style="display:none"></select>
+    <select id="season"></select>
+    <select id="comp"></select>
+    <button class="sec" id="del">Smazat hráče</button>
+    <button class="sec" id="exp">Export</button>
+    <button class="sec" id="imp">Import</button>
+  </div>
+  <div id="out"></div>
+  <p id="note" class="sm warn"></p>
+</div>
+</div>
+
+<script>
+(function(){
+var KEY='bilanceProtiTymum.v1', db={};
+try{db=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){db={}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(db))}catch(e){}}
+var $=function(i){return document.getElementById(i)};
+var mode='P',EMB={},KONTR={},META={};
+function A(){var o={},k;for(k in db)o[k]=db[k];for(k in EMB)o[k]=EMB[k];return o}
+
+function seasonOf(d){return d.m>=7?d.y:d.y-1}
+function parseRows(txt){
+  var out=[],bad=0;
+  txt.split(/\r?\n/).forEach(function(line){
+    var c=line.split('\t'); if(c.length<9)c=line.trim().split(/\s{2,}/);
+    var m=(c[0]||'').trim().match(/^(\d{1,2})\.(\d{1,2})\.(\d{4})$/);
+    if(!m){if(line.trim()&&!/datum/i.test(line))bad++;return}
+    var teams=(c[3]||'').split(/\s*[–—-]\s*/);
+    if(teams.length!==2){bad++;return}
+    var sk=(c[4]||'').trim().match(/(\d+)\s*:\s*(\d+)/);
+    var n=function(i){var v=parseInt(String(c[i]||'0').replace('−','-'),10);return isNaN(v)?0:v};
+    var toi=(c[10]||'').trim().match(/(\d+):(\d+)/);
+    var d={y:+m[3],m:+m[2],d:+m[1]};
+    out.push({dt:m[3]+'-'+('0'+m[2]).slice(-2)+'-'+('0'+m[1]).slice(-2),season:seasonOf(d),
+      kolo:(c[1]||'').trim(),comp:(c[2]||'').trim(),a:teams[0].trim(),b:teams[1].trim(),
+      sa:sk?+sk[1]:null,sb:sk?+sk[2]:null,ot:/\s(P|N|SN)\s*$/.test(c[4]||''),
+      g:n(5),as:n(6),p:n(7),pm:n(8),tm:n(9),toi:toi?+toi[1]*60+ +toi[2]:0});
+  });
+  return {rows:out,bad:bad};
+}
+
+// odvodí tým hráče: běh po sobě jdoucích zápasů sdílí společný tým
+function inferTeams(rows){
+  var bySeason={};
+  rows.forEach(function(r){r.team=null;r.amb=false;(bySeason[r.season+'|'+r.comp]=bySeason[r.season+'|'+r.comp]||[]).push(r)});
+  Object.keys(bySeason).forEach(function(k){
+    var g=bySeason[k].sort(function(x,y){return x.dt<y.dt?-1:1}),run=[],cand=null;
+    function flush(){
+      if(!run.length)return;
+      var t=cand&&cand.length===1?cand[0]:null;
+      run.forEach(function(r){r.team=t;r.amb=!t});
+      run=[];cand=null;
+    }
+    g.forEach(function(r){
+      var s=[r.a,r.b];
+      if(cand===null){cand=s;run=[r];return}
+      var inter=cand.filter(function(x){return s.indexOf(x)>-1});
+      if(inter.length){cand=inter;run.push(r)}else{flush();cand=s;run=[r]}
+    });
+    flush();
+  });
+}
+function opp(r){return r.team?(r.team===r.a?r.b:r.a):null}
+function won(r){ if(r.sa==null||!r.team)return null; var mine=r.team===r.a?r.sa:r.sb,th=r.team===r.a?r.sb:r.sa; return mine>th}
+
+$('add').onclick=function(){
+  var nm=$('name').value.trim(); if(!nm){$('msg').textContent='Doplň jméno hráče.';return}
+  var p=parseRows($('paste').value); if(!p.rows.length){$('msg').textContent='Nenašel jsem žádné řádky zápasů (očekávám tabulátory a datum jako 18.10.2026).';return}
+  var cur=db[nm]=db[nm]||[],have={},added=0;
+  cur.forEach(function(r){have[r.dt+r.a+r.b]=1});
+  p.rows.forEach(function(r){var k=r.dt+r.a+r.b;if(!have[k]){have[k]=1;cur.push(r);added++}});
+  save();$('paste').value='';
+  $('msg').textContent='Přidáno '+added+' zápasů ('+(p.rows.length-added)+' duplicit přeskočeno'+(p.bad?', '+p.bad+' řádků nerozpoznáno':'')+').';
+  refresh(nm);
+};
+$('del').onclick=function(){var n=$('player').value;if(n&&EMB[n]){alert('Tohle je hráč z automaticky stahovaných dat, smazat jde jen ručně vložené.');return}if(n&&confirm('Smazat '+n+'?')){delete db[n];save();refresh()}};
+$('exp').onclick=function(){var t=JSON.stringify(db);try{navigator.clipboard.writeText(t);$('msg').textContent='Export zkopírován do schránky.'}catch(e){prompt('Zkopíruj:',t)}};
+$('imp').onclick=function(){var t=prompt('Vlož exportovaný JSON:');if(!t)return;try{var o=JSON.parse(t);for(var k in o)db[k]=o[k];save();refresh()}catch(e){alert('Neplatný JSON')}};
+$('tabP').onclick=function(){mode='P';$('tabP').className='on';$('tabT').className='';refresh()};
+$('tabT').onclick=function(){mode='T';$('tabT').className='on';$('tabP').className='';refresh()};
+['player','opp','season','comp'].forEach(function(i){$(i).onchange=render});
+
+function fill(sel,vals,keep,all){
+  var h=(all?'<option value="">'+all+'</option>':'')+vals.map(function(v){return '<option>'+v+'</option>'}).join('');
+  sel.innerHTML=h; if(keep!=null&&((keep===''&&all)||vals.indexOf(keep)>-1))sel.value=keep;
+}
+function refresh(sel){
+  var names=Object.keys(A()).sort(),keep=sel||$('player').value;
+  fill($('player'),names,keep);
+  var seasons={},comps={};
+  var AA=A();names.forEach(function(n){AA[n].forEach(function(r){seasons[r.season]=1;comps[r.comp]=1})});
+  fill($('season'),Object.keys(seasons).sort().reverse().map(Number).map(String),$('season').value,'Všechny sezóny');
+  fill($('comp'),Object.keys(comps).sort(),$('comp').value,'Všechny soutěže');
+  var teams={};names.forEach(function(n){var r=AA[n].map(function(x){return Object.assign({},x)});inferTeams(r);r.forEach(function(x){var o=opp(x);if(o)teams[o]=1})});
+  fill($('opp'),Object.keys(teams).sort(),$('opp').value);
+  $('player').style.display=mode==='P'?'':'none';$('opp').style.display=mode==='T'?'':'none';
+  render();
+}
+function filt(n){
+  var rows=A()[n].map(function(x){return Object.assign({},x)});inferTeams(rows);
+  var s=$('season').value,c=$('comp').value;
+  return rows.filter(function(r){return (!s||String(r.season)===s)&&(!c||r.comp===c)});
+}
+function agg(rows){
+  var t={z:0,g:0,a:0,b:0,pm:0,tm:0,toi:0,w:0,l:0};
+  rows.forEach(function(r){t.z++;t.g+=r.g;t.a+=r.as;t.b+=r.p;t.pm+=r.pm;t.tm+=r.tm;t.toi+=r.toi;var w=won(r);if(w===true)t.w++;else if(w===false)t.l++});
+  return t;
+}
+function fmtPm(v){return '<span class="'+(v>0?'pos':v<0?'neg':'')+'">'+(v>0?'+'+v:v)+'</span>'}
+function fmtToi(s,z){if(!z||!s)return '–';var a=Math.round(s/z);return Math.floor(a/60)+':'+('0'+a%60).slice(-2)}
+function rowHtml(label,t,cls){
+  return '<tr class="'+(cls||'')+'"><td>'+label+'</td><td>'+t.z+'</td><td>'+t.g+'</td><td>'+t.a+'</td><td><b>'+t.b+'</b></td><td>'+(t.z?(t.b/t.z).toFixed(2):'–')+'</td><td>'+fmtPm(t.pm)+'</td><td>'+t.tm+'</td><td>'+fmtToi(t.toi,t.z)+'</td><td>'+t.w+'–'+t.l+'</td></tr>';
+}
+var HEAD='<thead><tr><th>{0}</th><th>Z</th><th>G</th><th>A</th><th>B</th><th>B/Z</th><th>+/-</th><th>TM</th><th>TOI Ø</th><th>V–P</th></tr></thead>';
+var sortKey=null,sortDir=-1;
+function render(){
+  var out=$('out'),note=[],names=Object.keys(A());
+  if(!names.length){out.innerHTML='<p class="mu">Zatím žádná data.</p>';$('note').textContent='';return}
+  var groups={},label,hd;
+  if(mode==='P'){
+    var n=$('player').value;if(!n||!A()[n]){out.innerHTML='';return}
+    var rows=filt(n),amb=rows.filter(function(r){return r.amb});
+    rows.forEach(function(r){var o=opp(r);if(o)(groups[o]=groups[o]||[]).push(r)});
+    hd=HEAD.replace('{0}','Soupeř');
+    if(amb.length)note.push(amb.length+' zápasů se nepodařilo jednoznačně přiřadit k týmu hráče (např. '+amb[0].a+' – '+amb[0].b+', '+amb[0].dt+') a do soupeřů se nepočítají.');
+    var all=agg(rows);
+  }else{
+    var o=$('opp').value;if(!o){out.innerHTML='';return}
+    names.forEach(function(nm){var rs=filt(nm).filter(function(r){return opp(r)===o});if(rs.length)groups[nm]=rs});
+    hd=HEAD.replace('{0}','Hráč (proti '+o+')');
+    var all=null;
+  }
+  var data=Object.keys(groups).map(function(k){return {k:k,t:agg(groups[k])}});
+  var keyMap={Z:'z',G:'g',A:'a',B:'b','B/Z':'bz','+/-':'pm',TM:'tm'};
+  data.sort(function(x,y){
+    if(sortKey==='bz')return sortDir*((x.t.b/x.t.z)-(y.t.b/y.t.z));
+    if(sortKey)return sortDir*(x.t[sortKey]-y.t[sortKey]);
+    return (y.t.b-x.t.b)||(y.t.z-x.t.z)||(x.k<y.k?-1:1);
+  });
+  var h='<table>'+hd+'<tbody>'+data.map(function(d){return rowHtml(d.k,d.t)}).join('')+(all?rowHtml('Celkem',all,'tot'):'')+'</tbody></table>';
+  out.innerHTML=h;
+  var ths=out.querySelectorAll('th');
+  for(var i=1;i<ths.length;i++)(function(th){th.onclick=function(){var k=keyMap[th.textContent];if(!k)return;sortDir=sortKey===k?-sortDir:-1;sortKey=k;render()}})(ths[i]);
+  $('note').textContent=note.join(' ');
+}
+function kontrolaHtml(){
+  var n=Object.keys(KONTR).sort();if(!n.length){$('kontrola').style.display='none';return}
+  var bad=n.filter(function(k){return !KONTR[k].ok}).length;
+  var h='<summary><b>Kontrola součtů</b> — '+(bad?'<span class="warn">'+bad+' z '+n.length+' hráčů vyžaduje pozornost</span>':'<span class="pos">vše sedí ('+n.length+' hráčů)</span>')+(META.vygenerovano?' <span class="mu sm">· data z '+META.vygenerovano.replace('T',' ').slice(0,16)+' UTC</span>':'')+'</summary>';
+  h+='<table><thead><tr><th>Hráč</th><th>Sezón</th><th>Zápasů</th><th>Stav</th></tr></thead><tbody>';
+  n.forEach(function(k){var c=KONTR[k];h+='<tr><td>'+k+'</td><td>'+c.sezon+'</td><td>'+c.zapasu+'</td><td style="text-align:left;white-space:normal">'+(c.ok?'<span class="pos">✓</span> ':'<span class="warn">⚠</span> ')+c.problemy.concat(c.ok?c.info:[]).join(' · ')+'</td></tr>'});
+  h+='</tbody></table>';
+  if(META.nenalezeno&&META.nenalezeno.length)h+='<p class="warn sm">Nenalezen odkaz na hokej.cz: '+META.nenalezeno.join(', ')+'</p>';
+  $('kontrola').innerHTML=h;$('kontrola').style.display='';
+}
+refresh();
+try{fetch('bilance_data.json',{cache:'no-cache'}).then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(d){
+  EMB=d.hraci||{};KONTR=d.kontrola||{};META={vygenerovano:d.vygenerovano,nenalezeno:d.nenalezeno};
+  kontrolaHtml();refresh();
+}).catch(function(e){console.error("DATA",e&&e.stack||e)})}catch(e){}
+})();
+</script>
+</body>
+</html>
