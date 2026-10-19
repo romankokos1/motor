@@ -276,7 +276,7 @@ $('exp').onclick=function(){var t=JSON.stringify(db);try{navigator.clipboard.wri
 $('imp').onclick=function(){var t=prompt('Vlož exportovaný JSON:');if(!t)return;try{var o=JSON.parse(t);for(var k in o)db[k]=o[k];save();refresh()}catch(e){alert('Neplatný JSON')}};
 $('tabP').onclick=function(){mode='P';$('tabP').className='on';$('tabT').className='';sortKey=null;refresh()};
 $('tabT').onclick=function(){mode='T';$('tabT').className='on';$('tabP').className='';sortKey=null;refresh()};
-['player','opp','season','comp','club'].forEach(function(i){$(i).onchange=function(){render();if(i==='club'){pristiHtml();rekordyHtml()}}});
+['player','opp','season','comp','club'].forEach(function(i){$(i).onchange=function(){render();if(i==='club'){pristiHtml();rekordyHtml(true)}}});
 
 function fill(sel,vals,keep,all){
   var h=(all?'<option value="">'+all+'</option>':'')+vals.map(function(v){return '<option value="'+v+'">'+(sel.id==='opp'?teamName(v):v)+'</option>'}).join('');
@@ -393,6 +393,7 @@ function render(){
   var ths=out.querySelectorAll('th');
   for(var i=0;i<ths.length;i++)(function(th){th.onclick=function(){var k=th.getAttribute('data-k');sortDir=sortKey===k?-sortDir:(k==='k'?1:-1);sortKey=k;render()}})(ths[i]);
   $('note').textContent=note.join(' ');
+  try{rekordyHtml()}catch(e){console.error(e)}
 }
 function kontrolaHtml(){
   var n=Object.keys(KONTR).sort();if(!n.length){$('kontrola').style.display='none';return}
@@ -452,40 +453,49 @@ function pristiHtml(){
   if(none.length)h+='<p class="small muted">Bez zápasu proti nim v datech: '+none.join(', ')+'.</p>';
   el.innerHTML=h;el.style.display='';bindLinks(el);
 }
-function rekordyHtml(){
-  var el=$('rekordy'),pairs=allPairs();
+var rekKey='';
+function rekordyHtml(force){
+  var el=$('rekordy'),T=(mode==='T'&&$('opp').value)||'',pairs=allPairs();
+  var key=[T,$('club').value,pairs.length].join('|');
+  if(!force&&key===rekKey&&el.innerHTML)return;rekKey=key;
+  if(T)pairs=pairs.filter(function(x){return x.o===T});
   if(!pairs.length){el.style.display='none';return}
+  var nm=T?(TEAMS[T]||T):'',mz=T?3:8,mpm=T?3:5,mser=T?2:3;
   function top(arr,n){var c={},o=[];arr.forEach(function(x){c[x.n]=(c[x.n]||0)+1;if(c[x.n]<=2&&o.length<n)o.push(x)});return o}  // max. 2 záznamy na hráče, ať nevyhrává jen nejdelší kariéra
-  function pl(x,extra){return {l:plink(x.n)+' <span class="s">proti</span> <b>'+x.o+'</b>',s:extra||'',v:null}}
-  var bodu=top(pairs.slice().sort(function(a,b){return (b.t.b-a.t.b)||(a.t.z-b.t.z)}),5).map(function(x){var i=pl(x,x.t.g+'+'+x.t.a+' v '+x.t.z+' z.');i.v=x.t.b+' b';return i});
-  var goly=top(pairs.filter(function(x){return x.t.g>0}).sort(function(a,b){return (b.t.g-a.t.g)||(a.t.z-b.t.z)}),5).map(function(x){var i=pl(x,'v '+x.t.z+' z.');i.v=x.t.g+' G';return i});
-  var prum=top(pairs.filter(function(x){return x.t.z>=8}).sort(function(a,b){return b.t.b/b.t.z-a.t.b/a.t.z}),5).map(function(x){var i=pl(x,x.t.b+' b v '+x.t.z+' z.');i.v=(x.t.b/x.t.z).toFixed(2);return i});
-  var pmBest=top(pairs.filter(function(x){return x.t.z>=5}).sort(function(a,b){return b.t.pm-a.t.pm}),5).map(function(x){var i=pl(x,'v '+x.t.z+' z.');i.v=fmtPm(x.t.pm);return i});
-  var pmWorst=top(pairs.filter(function(x){return x.t.z>=5}).sort(function(a,b){return a.t.pm-b.t.pm}),5).map(function(x){var i=pl(x,'v '+x.t.z+' z.');i.v=fmtPm(x.t.pm);return i});
-  // série zápasů s bodem proti stejnému soupeři
+  function pl(x,extra){return {l:plink(x.n)+(T?'':' <span class="s">proti</span> <b>'+x.o+'</b>'),s:extra||'',v:null}}
+  var N=T?8:5;
+  var bodu=top(pairs.slice().sort(function(a,b){return (b.t.b-a.t.b)||(a.t.z-b.t.z)}),N).map(function(x){var i=pl(x,x.t.g+'+'+x.t.a+' v '+x.t.z+' z.');i.v=x.t.b+' b';return i});
+  var goly=top(pairs.filter(function(x){return x.t.g>0}).sort(function(a,b){return (b.t.g-a.t.g)||(a.t.z-b.t.z)}),N).map(function(x){var i=pl(x,'v '+x.t.z+' z.');i.v=x.t.g+' G';return i});
+  var prum=top(pairs.filter(function(x){return x.t.z>=mz}).sort(function(a,b){return b.t.b/b.t.z-a.t.b/a.t.z}),N).map(function(x){var i=pl(x,x.t.b+' b v '+x.t.z+' z.');i.v=(x.t.b/x.t.z).toFixed(2);return i});
+  var pmBest=top(pairs.filter(function(x){return x.t.z>=mpm}).sort(function(a,b){return b.t.pm-a.t.pm}),N).map(function(x){var i=pl(x,'v '+x.t.z+' z.');i.v=fmtPm(x.t.pm);return i});
+  var pmWorst=top(pairs.filter(function(x){return x.t.z>=mpm}).sort(function(a,b){return a.t.pm-b.t.pm}),N).map(function(x){var i=pl(x,'v '+x.t.z+' z.');i.v=fmtPm(x.t.pm);return i});
   var ser=pairs.map(function(x){
     var best=0,cur=0;x.rows.forEach(function(r){if(r.p>0){cur++;if(cur>best)best=cur}else cur=0});
-    return {x:x,best:best,active:cur>0&&cur===best,cur:cur};
-  }).filter(function(s){return s.best>=3}).sort(function(a,b){return (b.best-a.best)||((b.active?1:0)-(a.active?1:0))}).slice(0,5)
-    .map(function(s){var i=pl(s.x,s.active?'<span class="badge">trvá</span>':'');i.v=s.best+' z. v řadě';return i});
-  // aktuální série s bodem (proti komukoli)
-  var AA=A(),cs=[];
-  Object.keys(AA).forEach(function(n){
-    var rs=AA[n].slice().sort(function(a,b){return a.dt<b.dt?-1:a.dt>b.dt?1:0}),c=0;
-    for(var i=rs.length-1;i>=0&&rs[i].p>0;i--)c++;
-    if(c>=3)cs.push({n:n,c:c});
-  });
-  cs.sort(function(a,b){return b.c-a.c});
-  var aktu=cs.slice(0,5).map(function(x){return {l:plink(x.n),s:'',v:x.c+' z. v řadě'}});
-  var h='<summary>Rekordy a zajímavosti</summary><div class="cols">'
-   +'<div><h3>Nejvíc bodů proti jednomu týmu</h3>'+listHtml(bodu)+'</div>'
-   +'<div><h3>Nejvíc gólů proti jednomu týmu</h3>'+listHtml(goly)+'</div>'
-   +'<div><h3>Nejlepší průměr b/zápas (min. 8 zápasů)</h3>'+listHtml(prum)+'</div>'
-   +'<div><h3>Nejdelší série zápasů s bodem proti jednomu týmu</h3>'+listHtml(ser)+'</div>'
-   +'<div><h3>Nejlepší +/- proti týmu (min. 5 zápasů)</h3>'+listHtml(pmBest)+'</div>'
-   +'<div><h3>Nejhorší +/- proti týmu (min. 5 zápasů)</h3>'+listHtml(pmWorst)+'</div>'
-   +'<div><h3>Aktuální série s bodem (proti komukoli)</h3>'+listHtml(aktu)+'</div></div>'
-   +'<p class="small muted" style="margin-top:12px">Extraliga vč. play off. Zápasy, u kterých nešlo určit tým hráče, se nepočítají.</p>';
+    return {x:x,best:best,active:cur>0&&cur===best};
+  }).filter(function(q){return q.best>=mser}).sort(function(a,b){return (b.best-a.best)||((b.active?1:0)-(a.active?1:0))}).slice(0,N)
+    .map(function(q){var i=pl(q.x,q.active?'<span class="badge">trvá</span>':'');i.v=q.best+' z. v řadě';return i});
+  var dry=T?pairs.filter(function(x){return x.t.z>=4&&x.t.b===0}).sort(function(a,b){return b.t.z-a.t.z}).map(function(x){return plink(x.n)+' ('+x.t.z+')'}):[];
+  var oT=T?'proti týmu':'proti jednomu týmu';
+  var h='<summary>Rekordy a zajímavosti'+(T?' — '+nm:'')+'</summary><div class="cols">'
+   +'<div><h3>Nejvíc bodů '+oT+'</h3>'+listHtml(bodu)+'</div>'
+   +'<div><h3>Nejvíc gólů '+oT+'</h3>'+listHtml(goly)+'</div>'
+   +'<div><h3>Nejlepší průměr b/zápas (min. '+mz+' zápasy)</h3>'+listHtml(prum)+'</div>'
+   +'<div><h3>Nejdelší série zápasů s bodem '+oT+'</h3>'+listHtml(ser)+'</div>'
+   +'<div><h3>Nejlepší +/- '+oT+' (min. '+mpm+' zápasy)</h3>'+listHtml(pmBest)+'</div>'
+   +'<div><h3>Nejhorší +/- '+oT+' (min. '+mpm+' zápasy)</h3>'+listHtml(pmWorst)+'</div>';
+  if(!T){
+    var AA=A(),cs=[];
+    Object.keys(AA).forEach(function(n){
+      var rs=AA[n].slice().sort(function(a,b){return a.dt<b.dt?-1:a.dt>b.dt?1:0}),c=0;
+      for(var i=rs.length-1;i>=0&&rs[i].p>0;i--)c++;
+      if(c>=3)cs.push({n:n,c:c});
+    });
+    cs.sort(function(a,b){return b.c-a.c});
+    h+='<div><h3>Aktuální série s bodem (proti komukoli)</h3>'+listHtml(cs.slice(0,5).map(function(x){return {l:plink(x.n),s:'',v:x.c+' z. v řadě'}}))+'</div>';
+  }
+  h+='</div>';
+  if(dry.length)h+='<p class="small muted" style="margin-top:12px">Bez bodu v zápasech s týmem '+nm+' (min. 4 zápasy): '+dry.join(', ')+'.</p>';
+  h+='<p class="small muted" style="margin-top:12px">Extraliga vč. play off'+(T?'':' · po výběru soupeře v pohledu „Podle soupeře“ se zobrazí zajímavosti jen o něm')+'. Zápasy, u kterých nešlo určit tým hráče, se nepočítají.</p>';
   el.innerHTML=h;el.style.display='';bindLinks(el);
 }
 function fromHash(){
@@ -497,7 +507,7 @@ refresh();
 try{fetch('bilance_data.json',{cache:'no-cache'}).then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(d){
   EMB=d.hraci||{};KONTR=d.kontrola||{};CISLA=d.cisla||{};META={vygenerovano:d.vygenerovano,nenalezeno:d.nenalezeno,korekce:d.korekce,pristi:d.pristi};
   if(d.vygenerovano){var t=new Date(d.vygenerovano);$('updated').textContent='Extraliga vč. play off · data z hokej.cz k '+t.getDate()+'. '+(t.getMonth()+1)+'. '+t.getFullYear()}
-  kontrolaHtml();refresh();pristiHtml();rekordyHtml();fromHash();
+  kontrolaHtml();refresh();pristiHtml();rekordyHtml(true);fromHash();
 }).catch(function(e){console.error("DATA",e&&e.stack||e)})}catch(e){}
 })();
 </script>
