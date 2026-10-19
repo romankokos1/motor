@@ -344,6 +344,7 @@ def main() -> None:
             continue
         save_state(state)
 
+    save_state(state)
     OUTPUT_JSON.parent.mkdir(exist_ok=True)
     out = build_output(state, baseline)
     out["nenalezeno"] = nenalezeno
@@ -353,6 +354,8 @@ def main() -> None:
     for n, k in out["kontrola"].items():
         for p in k["problemy"]:
             print(f"  ⚠ {n}: {p}")
+    if not out["hraci"]:
+        raise SystemExit("Nepodařilo se stáhnout žádného hráče — viz chyby výše.")
 
 
 if __name__ == "__main__":
