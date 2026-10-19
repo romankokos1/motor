@@ -36,6 +36,8 @@ REPO_ROOT = SCRIPT_DIR.parent
 BASELINE_FILE = SCRIPT_DIR / "players_baseline.json"
 IDS_FILE = SCRIPT_DIR / "bilance_hraci.json"      # ručně vedené {jméno: "/hrac/slug/id"}
 STATE_FILE = SCRIPT_DIR / "bilance_state.json"
+LIVE_FILE = SCRIPT_DIR / "bilance_live.json"      # řádky doplněné automaticky z hcmotor.cz
+CURRENT_SEASON = 2026                              # sezóna 2026/27 (rok začátku)
 OUTPUT_JSON = REPO_ROOT / "docs" / "bilance_data.json"
 
 BASE = "https://www.hokej.cz"
@@ -218,7 +220,7 @@ def import_raw(state: dict, raw: dict, ids: dict) -> int:
                     rows.append(r)
             sezony[s] = {"radky": rows, "raw": len(v["radky"]),
                          "box": box_from_text(v.get("boxText", "")) if s == e.get("nejnovejsi") else None}
-        entry["sezony"] = sezony
+        entry.setdefault("sezony", {}).update(sezony)  # slučuje: dřívější sezóny zůstanou
         entry["stazeno"] = datetime.now(timezone.utc).isoformat(timespec="seconds")
         n += 1
     return n
@@ -394,14 +396,168 @@ def build_kontrola(name: str, entry: dict, baseline: dict) -> dict:
             "sezon": len([1 for v in sezony.values() if v["radky"]]), "zapasu": len(all_rows)}
 
 
-def build_output(state: dict, baseline: dict) -> dict:
+def build_output(state: dict, baseline: dict, live: dict | None = None) -> dict:
+    live = live if live is not None else load_live()
+    omax = official_max_dt(state)
     hraci, kontrola = {}, {}
     for name, entry in sorted(state["hraci"].items()):
         rows = [r for s in entry.get("sezony", {}).values() for r in s["radky"]]
-        hraci[name] = sorted(rows, key=lambda r: r["dt"])
-        kontrola[name] = build_kontrola(name, entry, baseline)
+        zive = [r for r in live.get("radky", {}).get(name, []) if r["dt"] > omax]
+        hraci[name] = sorted(rows + zive, key=lambda r: r["dt"])
+        k = build_kontrola(name, entry, baseline)
+        cur = [r for r in hraci[name] if r.get("season") == CURRENT_SEASON]
+        hc = live.get("hcmotor", {}).get(name)
+        if hc and cur:
+            s_ = _sum(cur)
+            rozdily = [f"{x.upper()}: stránka {s_[x]} × hcmotor {hc[x]}" for x in ("z", "g", "a", "b", "pm") if s_[x] != hc[x]]
+            if rozdily:
+                k["problemy"].append("součet aktuální sezóny (hokej.cz + doplněné zápasy) nesedí s hcmotor.cz ("
+                                     + "; ".join(rozdily) + ") — nejspíš oprava statistik, při příštím importu z hokej.cz se srovná")
+                k["ok"] = False
+            else:
+                k["info"].append("aktuální sezóna sedí s hcmotor.cz")
+        if zive:
+            k["info"].append(f"{len(zive)} zápasů doplněno automaticky z hcmotor.cz (bez TOI)")
+        kontrola[name] = k
     return {"vygenerovano": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-            "hraci": hraci, "kontrola": kontrola}
+            "hraci": hraci, "kontrola": kontrola, "korekce": live.get("korekce", []),
+            "neprirazeno": live.get("neprirazeno", [])}
+
+
+# ---------------------------------------------------------------- živé doplňování
+# Mezi ručními importy z hokej.cz se nové zápasy doplňují automaticky z dat,
+# která už denní běh hokej_stats.py stahuje z hcmotor.cz: rozdíl sezónních
+# součtů hráče proti včerejšku = jeho řádek za nově odehraný zápas (soupeř
+# a datum z rozpisu). TOI chybí (zůstane prázdné). Až se příště nahrají
+# oficiální data z hokej.cz, živé řádky za zápasy, které už v nich jsou,
+# se zahodí a platí oficiální. Pozdější opravy statistik (změna bez
+# nového zápasu) se přičtou k poslednímu živému řádku hráče.
+TEAM_CODES = [
+    (r"kladno|rytíři", "KLA"), (r"vítkovice|ostrava", "VIT"), (r"liberec|tygři", "LIB"),
+    (r"plzeň|škoda", "PLZ"), (r"kometa|brno", "KOM"), (r"sparta", "SPA"),
+    (r"pardubice|dynamo", "PCE"), (r"litvínov|verva", "LIT"), (r"karlovy vary|energie", "KVA"),
+    (r"olomouc|mora", "OLO"), (r"hradec|mountfield", "MHK"), (r"boleslav", "MBL"),
+    (r"třinec|oceláři", "TRI"), (r"zlín|berani", "ZLN"), (r"chomutov|piráti", "CHM"),
+    (r"jihlava|dukla", "JIH"), (r"budějovice|motor", "CEB"),
+]
+LIVE_FIELDS = ("z", "g", "a", "b", "pm", "tm")
+
+
+def team_code(name: str) -> str:
+    for rx, code in TEAM_CODES:
+        if re.search(rx, name, re.I):
+            return code
+    print(f"Bilance: neznámý tým '{name}', kód odvozen z názvu — doplň do TEAM_CODES.")
+    return _ascii(name)[:3].upper() or "???"
+
+
+def _game_date(datum: str) -> str | None:
+    m = re.search(r"(\d{1,2})\.\s*(\d{1,2})\.", datum or "")
+    if not m:
+        return None
+    den, mesic = int(m.group(1)), int(m.group(2))
+    rok = CURRENT_SEASON if mesic >= 7 else CURRENT_SEASON + 1
+    return f"{rok}-{mesic:02d}-{den:02d}"
+
+
+def load_live() -> dict:
+    empty = {"sezona": CURRENT_SEASON, "radky": {}, "zpracovano": [], "korekce": [],
+             "neprirazeno": [], "hcmotor": {}}
+    if LIVE_FILE.exists():
+        data = json.loads(LIVE_FILE.read_text(encoding="utf-8"))
+        if data.get("sezona") == CURRENT_SEASON:
+            for k, v in empty.items():
+                data.setdefault(k, v)
+            return data
+    return empty
+
+
+def save_live(live: dict) -> None:
+    LIVE_FILE.write_text(json.dumps(live, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+
+
+def official_max_dt(state: dict) -> str:
+    """Datum posledního oficiálního (z hokej.cz) zápasu aktuální sezóny."""
+    best = "0000-00-00"
+    for e in state.get("hraci", {}).values():
+        for r in e.get("sezony", {}).get(str(CURRENT_SEASON), {}).get("radky", []):
+            best = max(best, r["dt"])
+    return best
+
+
+def _skater_totals(st: dict) -> dict:
+    return {s["jmeno"]: {k: s.get(k, 0) for k in LIVE_FIELDS} for s in st.get("skaters", {}).values()}
+
+
+def zpracuj_beh(old_state: dict, new_state: dict, games: list) -> None:
+    """Volá denní běh hokej_stats.py po stažení nových statistik."""
+    state = load_state()
+    if not state["hraci"] or not old_state.get("skaters"):
+        print("Bilance živě: není s čím porovnávat (chybí import nebo předchozí stav).")
+        return
+    live = load_live()
+    baseline = load_baseline()
+    old, new = _skater_totals(old_state), _skater_totals(new_state)
+    live["hcmotor"] = new
+
+    omax = official_max_dt(state)
+    hotove = set(live["zpracovano"])
+    pending = []
+    for g in sorted((g for g in games if g.get("odehrano")), key=lambda g: g["kolo"]):
+        dt = _game_date(g["datum"])
+        if dt and dt > omax and g["kolo"] not in hotove:
+            pending.append((g, dt))
+
+    deltas = {}
+    for name, t in new.items():
+        if name not in state["hraci"] or name not in old:
+            continue
+        d = {k: t[k] - old[name][k] for k in LIVE_FIELDS}
+        if any(d.values()):
+            deltas[name] = d
+
+    pouzito = set()
+    for name, d in deltas.items():
+        if d["z"] > 0:
+            if not pending:
+                live["neprirazeno"].append({"jmeno": name, **d, "poznamka": "nový zápas, ale v rozpisu žádný nezpracovaný"})
+                continue
+            vyber = pending[-d["z"]:]
+            for i, (g, dt) in enumerate(vyber):
+                posledni = i == len(vyber) - 1
+                sk = re.match(r"(\d+)\s*:\s*(\d+)", g.get("vysledek") or "")
+                live["radky"].setdefault(name, []).append({
+                    "dt": dt, "kolo": f"{g['kolo']}.", "comp": "Tipsport extraliga",
+                    "a": team_code(g["domaci"]), "b": team_code(g["hoste"]),
+                    "sa": int(sk.group(1)) if sk else None, "sb": int(sk.group(2)) if sk else None,
+                    "ot": bool(re.search(r"p", g.get("vysledek") or "")),
+                    "g": d["g"] if posledni else 0, "as": d["a"] if posledni else 0,
+                    "p": d["b"] if posledni else 0, "pm": d["pm"] if posledni else 0,
+                    "tm": d["tm"] if posledni else 0, "toi": 0, "zid": None,
+                    "season": CURRENT_SEASON, "zivy": True,
+                    **({"odhad": True} if d["z"] > 1 else {}),
+                })
+                pouzito.add(g["kolo"])
+        else:
+            # oprava statistik bez nového zápasu → přičíst k poslednímu živému řádku
+            radky = live["radky"].get(name)
+            if radky:
+                r = radky[-1]
+                r["g"] += d["g"]; r["as"] += d["a"]; r["p"] += d["b"]; r["pm"] += d["pm"]; r["tm"] += d["tm"]
+                r["korigovano"] = True
+            else:
+                live["korekce"].append({"jmeno": name, **d, "datum": datetime.now(timezone.utc).date().isoformat()})
+    if pouzito:
+        live["zpracovano"] = sorted(hotove | {g["kolo"] for g, _ in pending if g["kolo"] <= max(pouzito)})
+    live["korekce"] = live["korekce"][-50:]
+    live["neprirazeno"] = live["neprirazeno"][-50:]
+    save_live(live)
+
+    out = build_output(state, baseline, live)
+    OUTPUT_JSON.parent.mkdir(exist_ok=True)
+    OUTPUT_JSON.write_text(json.dumps(out, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    print(f"Bilance živě: nových zápasů {len(pouzito)}, změn u {len(deltas)} hráčů, "
+          f"kontrola OK u {sum(k['ok'] for k in out['kontrola'].values())}/{len(out['kontrola'])}.")
 
 
 def main() -> None:
