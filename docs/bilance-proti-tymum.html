@@ -96,7 +96,7 @@ function parseRows(txt){
 // odvodí tým hráče: běh po sobě jdoucích zápasů sdílí společný tým
 function inferTeams(rows){
   var bySeason={};
-  rows.forEach(function(r){r.team=null;r.amb=false;(bySeason[r.season+'|'+r.comp]=bySeason[r.season+'|'+r.comp]||[]).push(r)});
+  rows.forEach(function(r){r.team=null;r.amb=false;(bySeason[r.season]=bySeason[r.season]||[]).push(r)});
   Object.keys(bySeason).forEach(function(k){
     var g=bySeason[k].sort(function(x,y){return x.dt<y.dt?-1:1}),run=[],cand=null;
     function flush(){
