@@ -156,7 +156,7 @@ var KEY='bilanceProtiTymum.v1', db={};
 try{db=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){db={}}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(db))}catch(e){}}
 var $=function(i){return document.getElementById(i)};
-var mode='P',EMB={},KONTR={},META={},sortKey=null,sortDir=-1;
+var CUR=0,mode='P',EMB={},KONTR={},META={},sortKey=null,sortDir=-1;
 function A(){var o={},k;for(k in db)o[k]=db[k];for(k in EMB)o[k]=EMB[k];return o}
 
 var TEAMS={CEB:'České Budějovice',KLA:'Kladno',VIT:'Vítkovice',LIB:'Liberec',PLZ:'Plzeň',KOM:'Kometa Brno',SPA:'Sparta',PCE:'Pardubice',LIT:'Litvínov',KVA:'Karlovy Vary',OLO:'Olomouc',MHK:'Hradec Králové',MBL:'Mladá Boleslav',TRI:'Třinec',ZLN:'Zlín',CHM:'Chomutov',JIH:'Jihlava',ZNO:'Znojmo'};
@@ -204,6 +204,12 @@ function inferTeams(rows){
     });
     flush();
   });
+  // ruční určení týmu (bilance_rucne.json) a pravidlo: nejednoznačný zápas
+  // aktuální sezóny proti CEB hrál hráč Motoru za Motor
+  rows.forEach(function(r){
+    if(r.fix&&(r.fix===r.a||r.fix===r.b)){r.team=r.fix;r.amb=false}
+    else if(r.amb&&r.season===CUR&&(r.a==='CEB'||r.b==='CEB')){r.team='CEB';r.amb=false}
+  });
 }
 function opp(r){return r.team?(r.team===r.a?r.b:r.a):null}
 function won(r){ if(r.sa==null||!r.team)return null; var mine=r.team===r.a?r.sa:r.sb,th=r.team===r.a?r.sb:r.sa; return mine>th}
@@ -235,6 +241,7 @@ function refresh(sel){
   fill($('player'),names,keep);
   var seasons={},comps={};
   names.forEach(function(n){AA[n].forEach(function(r){seasons[r.season]=1;comps[r.comp]=1})});
+  CUR=0;for(var cs in seasons)CUR=Math.max(CUR,+cs);
   var keepS=$('season').value;
   var sv=Object.keys(seasons).map(Number).sort(function(a,b){return b-a}).map(String);
   $('season').innerHTML='<option value="">Všechny sezóny</option>'+sv.map(function(v){return '<option value="'+v+'">'+seasonLabel(v)+'</option>'}).join('');
@@ -278,11 +285,12 @@ function render(){
   if(!names.length){out.innerHTML='<p class="muted">Zatím žádná data.</p>';$('tiles').innerHTML='';return}
   if(mode==='P'){
     var n=$('player').value;if(!n||!A()[n]){out.innerHTML='';return}
-    var rows=filt(n),amb=rows.filter(function(r){return r.amb});
+    var rows=filt(n),amb=rows.filter(function(r){return r.amb}),zivych=rows.filter(function(r){return r.zivy}).length;
     rows.forEach(function(r){var o=opp(r);if(o)(groups[o]=groups[o]||[]).push(r)});
     first='Soupeř';all=agg(rows);
     $('tblTitle').textContent=n+' — proti jednotlivým týmům';
-    if(amb.length)note.push(amb.length+' zápasů se nepodařilo jednoznačně přiřadit k týmu hráče (např. '+amb[0].a+' – '+amb[0].b+', '+amb[0].dt+') a do soupeřů se nepočítají.');
+    if(amb.length)note.push(amb.length+' zápasů se nepodařilo jednoznačně přiřadit k týmu hráče ('+amb.slice(0,3).map(function(r){return r.dt+' '+r.a+'–'+r.b}).join(', ')+') a do soupeřů se nepočítají — určit jde ručně v scripts/bilance_rucne.json.');
+    if(zivych)note.push(zivych+' zápasů doplněno automaticky z hcmotor.cz (bez TOI) — po dalším importu z hokej.cz se nahradí oficiálními daty.');
     tiles=tile(all.z,'Zápasů')+tile(all.g+'+'+all.a,'G + A')+tile(all.b,'Bodů')+tile(all.z?(all.b/all.z).toFixed(2):'–','B / zápas')+tile((all.pm>0?'+':'')+all.pm,'+/-');
   }else{
     var o=$('opp').value;if(!o){out.innerHTML='';return}
@@ -312,12 +320,13 @@ function kontrolaHtml(){
   h+='<div class="tblwrap"><table><thead><tr><th>Hráč</th><th>Sezón</th><th>Zápasů</th><th style="text-align:left">Stav</th></tr></thead><tbody>';
   n.forEach(function(k){var c=KONTR[k];h+='<tr><td>'+k+'</td><td>'+c.sezon+'</td><td>'+c.zapasu+'</td><td>'+(c.ok?'<span class="pos">✓</span> ':'<span class="warn">⚠</span> ')+c.problemy.concat(c.ok?c.info:[]).join(' · ')+'</td></tr>'});
   h+='</tbody></table></div><p class="small muted">Ověřuje se B = G + A, součet aktuální sezóny proti boxu na hokej.cz a kariéra před touto sezónou proti baseline.</p>';
+  if(META.korekce&&META.korekce.length)h+='<p class="small muted">Opravy statistik bez přiřazeného zápasu: '+META.korekce.map(function(k){return k.jmeno+' ('+k.datum+': '+(k.g?k.g+' G ':'')+(k.a?k.a+' A ':'')+(k.pm?k.pm+' +/-':'')+')'}).join(', ')+'. Srovná se po dalším importu.</p>';
   if(META.nenalezeno&&META.nenalezeno.length)h+='<p class="warn small">Nenalezen odkaz na hokej.cz: '+META.nenalezeno.join(', ')+'</p>';
   $('kontrola').innerHTML=h;$('kontrola').style.display='';
 }
 refresh();
 try{fetch('bilance_data.json',{cache:'no-cache'}).then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(d){
-  EMB=d.hraci||{};KONTR=d.kontrola||{};META={vygenerovano:d.vygenerovano,nenalezeno:d.nenalezeno};
+  EMB=d.hraci||{};KONTR=d.kontrola||{};META={vygenerovano:d.vygenerovano,nenalezeno:d.nenalezeno,korekce:d.korekce};
   if(d.vygenerovano){var t=new Date(d.vygenerovano);$('updated').textContent='Extraliga vč. play off · data z hokej.cz k '+t.getDate()+'. '+(t.getMonth()+1)+'. '+t.getFullYear()}
   kontrolaHtml();refresh();
 }).catch(function(e){console.error("DATA",e&&e.stack||e)})}catch(e){}
