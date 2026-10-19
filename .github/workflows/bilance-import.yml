@@ -32,7 +32,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add -A scripts docs
+          git add -A scripts docs scripts/bilance_live.json docs/bilance_data.json
           git diff --cached --quiet || git commit -m "Aktualizace bilance proti týmům"
           git pull --rebase
           git push
