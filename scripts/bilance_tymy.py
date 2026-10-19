@@ -60,11 +60,49 @@ HEADERS = {
 
 
 # ---------------------------------------------------------------- utility
-def fetch(url: str) -> BeautifulSoup:
+SESSION = requests.Session()
+SESSION.headers.update(HEADERS)
+SESSION.headers.update({
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+    "Accept-Language": "cs,en;q=0.8",
+})
+ROSTER_URL = BASE + CLUB_PAGES[0]
+
+
+def fetch(url: str, referer: str | None = None) -> BeautifulSoup:
     time.sleep(DELAY)
-    r = requests.get(url, headers=HEADERS, timeout=30)
-    r.raise_for_status()
+    r = SESSION.get(url, headers={"Referer": referer or ROSTER_URL}, timeout=30)
+    if r.status_code != 200:
+        # krátká diagnostika (WAF/Cloudflare se obvykle prozradí hlavičkami)
+        raise RuntimeError(
+            f"HTTP {r.status_code} server={r.headers.get('server')} "
+            f"cf-ray={r.headers.get('cf-ray')} tělo={r.text[:120]!r}")
     return BeautifulSoup(r.text, "html.parser")
+
+
+def player_url(path: str, token: str | None, season: str | None = None) -> str:
+    """URL stránky zápasů hráče. Odkazy na hokej.cz nesou parametr ?t=…
+    (token ze stránky soupisky), bez kterého server vrací 403."""
+    q = []
+    if token:
+        q.append(f"t={token}")
+    if season:
+        q.append(f"season={season}")
+    return f"{BASE}{path}/match" + ("?" + "&".join(q) if q else "")
+
+
+def roster_tokens() -> dict:
+    """{'/hrac/slug/id': 't-token'} z odkazů v tabulkách soupisky."""
+    out = {}
+    soup = fetch(ROSTER_URL, referer=BASE + "/")
+    for a in soup.select('table.table-soupiska a[href*="/hrac/"]'):
+        href = a.get("href", "")
+        m = re.search(r"(/hrac/[a-z0-9\-]+/\d+)(?:\?(.*))?$", href)
+        if not m:
+            continue
+        tm = re.search(r"(?:^|&)t=([A-Za-z0-9]+)", m.group(2) or "")
+        out[m.group(1)] = tm.group(1) if tm else None
+    return out
 
 
 def _ascii(s: str) -> str:
@@ -218,10 +256,10 @@ def save_state(state: dict) -> None:
     STATE_FILE.write_text(json.dumps(state, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
 
 
-def scrape_player(name: str, path: str, entry: dict) -> dict:
+def scrape_player(name: str, path: str, entry: dict, token: str | None = None) -> dict:
     """Doplní entry["sezony"][rok] = {"radky": [...], "raw": N, "box": ...}."""
     sezony = entry.setdefault("sezony", {})
-    first = parse_player_page(fetch(f"{BASE}{path}/match"))
+    first = parse_player_page(fetch(player_url(path, token)))
     available = [s for s in first["sezony"] if s and s.isdigit()] or []
     available.sort(key=int, reverse=True)
     if not available:
@@ -237,7 +275,7 @@ def scrape_player(name: str, path: str, entry: dict) -> dict:
                 break
             continue
         try:
-            page = parse_player_page(fetch(f"{BASE}{path}/match?season={s}"))
+            page = parse_player_page(fetch(player_url(path, token, s)))
         except Exception as exc:
             print(f"  {name} {s}: chyba ({exc})")
             sezony[s] = {"radky": [], "raw": -1, "chyba": str(exc)}
@@ -268,6 +306,9 @@ def build_kontrola(name: str, entry: dict, baseline: dict) -> dict:
     sezony = entry.get("sezony", {})
     problemy, info = [], []
     all_rows = [r for s in sezony.values() for r in s["radky"]]
+
+    if not all_rows:
+        problemy.append("žádná data (stažení selhalo nebo hráč nemá extraligové zápasy)")
 
     zle = [r for r in all_rows if r["p"] != r["g"] + r["as"]]
     if zle:
@@ -327,6 +368,13 @@ def main() -> None:
     baseline = load_baseline()
     jmena = [n for n, v in baseline.items() if v.get("typ") == "skater"]
     state = load_state()
+    try:
+        tokens = roster_tokens()
+        print(f"Soupiska: {len(tokens)} odkazů na hráče, token "
+              f"{'nalezen' if any(tokens.values()) else 'NENALEZEN'}.")
+    except Exception as exc:
+        print(f"Soupiska se nepodařilo načíst ({exc}).")
+        tokens = {}
     ids = discover_player_urls(jmena, load_ids())
     nenalezeno = [n for n in jmena if n not in ids]
 
@@ -338,7 +386,7 @@ def main() -> None:
         entry = state["hraci"].setdefault(name, {"url": path})
         entry["url"] = path
         try:
-            scrape_player(name, path, entry)
+            scrape_player(name, path, entry, tokens.get(path))
         except Exception as exc:
             print(f"  CHYBA: {exc}")
             continue
@@ -354,7 +402,7 @@ def main() -> None:
     for n, k in out["kontrola"].items():
         for p in k["problemy"]:
             print(f"  ⚠ {n}: {p}")
-    if not out["hraci"]:
+    if not any(out["hraci"].values()):
         raise SystemExit("Nepodařilo se stáhnout žádného hráče — viz chyby výše.")
 
 
