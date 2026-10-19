@@ -39,10 +39,8 @@ STATE_FILE = SCRIPT_DIR / "bilance_state.json"
 OUTPUT_JSON = REPO_ROOT / "docs" / "bilance_data.json"
 
 BASE = "https://www.hokej.cz"
-CLUB_PAGES = [  # kde se hledají odkazy na hráče Motoru (zkouší se všechny)
-    "/klub/banes-motor-c-budejovice/1721",
+CLUB_PAGES = [  # kde se hledají odkazy na hráče Motoru
     "/klub/banes-motor-c-budejovice/1721/soupiska",
-    "/klub/banes-motor-c-budejovice/1721/hraci",
 ]
 SEED_IDS = {"Štencel Jan": "/hrac/jan-stencel/13684"}
 
@@ -189,7 +187,8 @@ def discover_player_urls(names: list, known: dict) -> dict:
         except Exception as exc:
             print(f"Klub {page}: nedostupné ({exc})")
             continue
-        for a in soup.select('a[href*="/hrac/"]'):
+        # jen tabulky soupisky — jinde na stránce jsou odkazy na cizí hráče
+        for a in soup.select('table.table-soupiska a[href*="/hrac/"]'):
             m = re.search(r"(/hrac/([a-z0-9\-]+)/(\d+))", a.get("href", ""))
             if m:
                 links[m.group(1)] = (m.group(2), a.get_text(" ", strip=True))
