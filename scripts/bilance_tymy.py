@@ -412,18 +412,33 @@ def build_output(state: dict, baseline: dict, live: dict | None = None) -> dict:
         hc = live.get("hcmotor", {}).get(name)
         if hc and cur:
             s_ = _sum(cur)
-            rozdily = [f"{x.upper()}: stránka {s_[x]} × hcmotor {hc[x]}" for x in ("z", "g", "a", "b", "pm") if s_[x] != hc[x]]
+            rozdily = [f"{x.upper()}: stránka {s_[x]} × hcmotor {hc[x]}" for x in ("z", "g", "a", "b") if s_[x] != hc[x]]
             if rozdily:
                 k["problemy"].append("součet aktuální sezóny (hokej.cz + doplněné zápasy) nesedí s hcmotor.cz ("
                                      + "; ".join(rozdily) + ") — nejspíš oprava statistik, při příštím importu z hokej.cz se srovná")
                 k["ok"] = False
             else:
-                k["info"].append("aktuální sezóna sedí s hcmotor.cz")
+                k["info"].append("zápasy, góly, asistence a body sedí s hcmotor.cz")
+            if s_["pm"] != hc["pm"]:
+                # +/- se počítá na každém webu trochu jinak (např. gól bez brankáře),
+                # rozdíl o 1–2 je běžný; platí hokej.cz — jen informativně
+                k["info"].append(f"+/- se liší (hokej.cz {s_['pm']} × hcmotor {hc['pm']}) — jiné počítání webů, platí hokej.cz")
         if zive:
             k["info"].append(f"{len(zive)} zápasů doplněno automaticky z hcmotor.cz (bez TOI)")
         kontrola[name] = k
+    # opravy bez přiřazeného zápasu, které už jsou v datech z hokej.cz (součet
+    # hráče v aktuální sezóně se shoduje s hcmotor.cz), nejsou čeho se bát — vynechat
+    cekajici = []
+    for k in live.get("korekce", []):
+        cur = [r for r in hraci.get(k["jmeno"], []) if r.get("season") == CURRENT_SEASON]
+        hc = live.get("hcmotor", {}).get(k["jmeno"])
+        if hc and cur:
+            s_ = _sum(cur)
+            if all(s_[x] == hc[x] for x in LIVE_FIELDS if k.get(x)):
+                continue
+        cekajici.append(k)
     return {"vygenerovano": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-            "hraci": hraci, "kontrola": kontrola, "korekce": live.get("korekce", []),
+            "hraci": hraci, "kontrola": kontrola, "korekce": cekajici,
             "cisla": {**CISLA_VYCHOZI, **live.get("cisla", {})},
             "neprirazeno": live.get("neprirazeno", [])}
 
