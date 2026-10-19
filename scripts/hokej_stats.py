@@ -2371,6 +2371,15 @@ def main() -> None:
     if games:
         zapis_state = update_zapis_state(zapis_state, games)
 
+    if games:
+        # Živé doplnění stránky "Bilance proti týmům" (docs/bilance-proti-tymum.html)
+        # o právě odehrané zápasy — jen z dat, která už máme. Nesmí shodit běh.
+        try:
+            import bilance_tymy
+            bilance_tymy.zpracuj_beh(old_state, new_state, games)
+        except Exception as exc:
+            print(f"Varování: živé doplnění bilance se nepodařilo ({exc}).")
+
     DOCS_DIR.mkdir(exist_ok=True)
     OUTPUT_HTML.write_text(
         render_html(
