@@ -439,6 +439,7 @@ def build_output(state: dict, baseline: dict, live: dict | None = None) -> dict:
         cekajici.append(k)
     return {"vygenerovano": datetime.now(timezone.utc).isoformat(timespec="seconds"),
             "hraci": hraci, "kontrola": kontrola, "korekce": cekajici,
+            "pristi": live.get("pristi"),
             "cisla": {**CISLA_VYCHOZI, **live.get("cisla", {})},
             "neprirazeno": live.get("neprirazeno", [])}
 
@@ -520,6 +521,17 @@ def _skater_totals(st: dict) -> dict:
     return {s["jmeno"]: {k: s.get(k, 0) for k in LIVE_FIELDS} for s in st.get("skaters", {}).values()}
 
 
+def _pristi_zapas(games: list) -> dict | None:
+    """Nejbližší neodehraný zápas Motoru (pro zápasovou nápovědu na stránce)."""
+    budouci = [g for g in games if not g.get("odehrano")]
+    if not budouci:
+        return None
+    g = min(budouci, key=lambda x: x["kolo"])
+    doma = bool(re.search(r"budějovice|motor", g["domaci"], re.I))
+    return {"kolo": g["kolo"], "soupez": team_code(g["hoste"] if doma else g["domaci"]),
+            "doma": doma, "datum": _game_date(g.get("datum")), "cas": g.get("cas")}
+
+
 def zpracuj_beh(old_state: dict, new_state: dict, games: list) -> None:
     """Volá denní běh hokej_stats.py po stažení nových statistik."""
     state = load_state()
@@ -528,6 +540,7 @@ def zpracuj_beh(old_state: dict, new_state: dict, games: list) -> None:
         return
     live = load_live()
     baseline = load_baseline()
+    live["pristi"] = _pristi_zapas(games)
     old, new = _skater_totals(old_state), _skater_totals(new_state)
     live["hcmotor"] = new
     live["cisla"] = {x["jmeno"]: x.get("cislo") for x in new_state.get("skaters", {}).values() if x.get("cislo")}
