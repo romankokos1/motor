@@ -1,5 +1,19 @@
 [
   {
+    "date": "2026-10-19",
+    "changes": [
+      "🏒 Lantoši Róbert: +2b (2A) → celkem 12b (2G 10A, 12 zápasů)",
+      "🏒 Olesen Nick Alexander: +1b (1G) → celkem 9b (6G 3A, 11 zápasů)",
+      "🏒 Ahl Filip: +1b (1A) → celkem 6b (2G 4A, 12 zápasů)",
+      "🏒 Beránek Martin: +1b (1A) → celkem 3b (2G 1A, 12 zápasů)",
+      "🏒 Koláček Josef: +1b (1G) → celkem 1b (1G 0A, 4 zápasů)",
+      "▫️ Bez bodu odehráli zápas (14): Bulíř Michal, Hejduk Marek, Hoch Štěpán, Kundrátek Tomáš, Nedorost Václav, Nordsäter Lucas, Ordoš Jan, Pour Jakub, Pýcha Pavel, Toman Matěj, Vráblík Roman, Vála Ondřej, Zachar Marek, Štencel Jan",
+      "🥅 Mařík Matyáš: odchytal další zápas — 90.7% úspěšnost, 2.62 průměr (4 zápasů celkem)",
+      "🎯 Štencel Jan: dosáhl/a 300. zápasu za Motor!"
+    ],
+    "corrections": []
+  },
+  {
     "date": "2026-10-17",
     "changes": [
       "🏒 Štencel Jan: +2b (1G+1A) → celkem 11b (4G 7A, 11 zápasů)",
@@ -88,18 +102,5 @@
       "📝 Andersen Ole Einar Engeland: oprava statistik (+1A, +1B) — beze změny počtu zápasů",
       "📝 Klouček Milan: oprava statistik (-3Zás) — beze změny počtu zápasů"
     ]
-  },
-  {
-    "date": "2026-09-30",
-    "changes": [
-      "🏒 Vráblík Roman: +1b (1A) → celkem 2b (0G 2A, 6 zápasů)",
-      "🏒 Kachyňa Ondřej: +1b (1A) → celkem 1b (0G 1A, 5 zápasů)",
-      "🏒 Hoch Štěpán: +1b (1A) → celkem 5b (1G 4A, 6 zápasů)",
-      "🏒 Ordoš Jan: +1b (1G) → celkem 4b (3G 1A, 6 zápasů)",
-      "🏒 Beránek Martin: +1b (1G) → celkem 1b (1G 0A, 6 zápasů)",
-      "▫️ Bez bodu odehráli zápas (15): Ahl Filip, Andersen Ole Einar Engeland, Bell Parker, Bulíř Michal, Hejduk Marek, Krastenbergs Renars, Lantoši Róbert, Nordsäter Lucas, Olesen Nick Alexander, Pour Jakub, Pýcha Pavel, Toman Matěj, Vála Ondřej, Zachar Marek, Štencel Jan",
-      "🥅 Strmeň Jan: odchytal další zápas — 90.1% úspěšnost, 4.03 průměr (2 zápasů celkem)"
-    ],
-    "corrections": []
   }
 ]

@@ -67,9 +67,9 @@
   },
   "12": {
     "datum": "neděle 18.10.",
-    "cas": "17:00",
+    "cas": null,
     "misto": "České Budějovice, Budvar aréna",
-    "odehrano": false
+    "odehrano": true
   },
   "13": {
     "datum": "pátek 23.10.",
