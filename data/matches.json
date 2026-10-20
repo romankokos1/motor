@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-19T13:10:41Z",
+  "generated": "2026-10-20T11:33:51Z",
   "teams": {
     "mdo": "Mladší dorost",
     "sdo": "Starší dorost",
@@ -423,10 +423,10 @@
     {
       "team": "u20",
       "date": "2026-10-30",
-      "time": "15:30",
+      "time": "17:00",
       "home": false,
       "opponent": "Mountfield Hradec Králové",
-      "location": "Hradec Králové, ČPP ARÉNA",
+      "location": "Hradec Králové, ČPP ARÉNA - malá hala",
       "round": 18
     },
     {
@@ -477,20 +477,11 @@
     {
       "team": "sdo",
       "date": "2026-11-14",
-      "time": "12:00",
+      "time": "12:30",
       "home": true,
       "opponent": "HC Vítkovice Ridera",
       "location": "České Budějovice, Budvar aréna",
       "round": null
-    },
-    {
-      "team": "u20",
-      "date": "2026-11-14",
-      "time": "12:00",
-      "home": true,
-      "opponent": "BK Mladá Boleslav",
-      "location": "České Budějovice, Budvar aréna",
-      "round": 21
     },
     {
       "team": "mdo",
@@ -500,6 +491,15 @@
       "opponent": "HC Škoda Plzeň",
       "location": "Plzeň, LOGSPEED CZ Aréna (tréninková hala)",
       "round": 15
+    },
+    {
+      "team": "u20",
+      "date": "2026-11-14",
+      "time": "16:00",
+      "home": true,
+      "opponent": "BK Mladá Boleslav",
+      "location": "České Budějovice, Budvar aréna",
+      "round": 21
     },
     {
       "team": "u20",
@@ -538,15 +538,6 @@
       "round": 17
     },
     {
-      "team": "u20",
-      "date": "2026-11-21",
-      "time": "12:00",
-      "home": false,
-      "opponent": "HC Kometa Brno",
-      "location": "Brno, Winning Group Arena",
-      "round": 24
-    },
-    {
       "team": "sdo",
       "date": "2026-11-21",
       "time": "18:00",
@@ -565,6 +556,15 @@
       "round": 18
     },
     {
+      "team": "u20",
+      "date": "2026-11-23",
+      "time": "18:00",
+      "home": false,
+      "opponent": "HC Kometa Brno",
+      "location": "Brno, Winning Group Arena",
+      "round": 24
+    },
+    {
       "team": "sdo",
       "date": "2026-11-27",
       "time": "15:30",
@@ -576,7 +576,7 @@
     {
       "team": "u20",
       "date": "2026-11-27",
-      "time": "15:30",
+      "time": "16:29",
       "home": true,
       "opponent": "Rytíři Kladno",
       "location": "České Budějovice, Budvar aréna",
@@ -603,7 +603,7 @@
     {
       "team": "u20",
       "date": "2026-11-28",
-      "time": "12:00",
+      "time": "12:30",
       "home": true,
       "opponent": "HC Sparta Praha",
       "location": "České Budějovice, Budvar aréna",
