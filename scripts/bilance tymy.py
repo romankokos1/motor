@@ -464,11 +464,29 @@ def uprav_podle_zapisu(name: str, rows: list, hc: dict | None, zapis: dict) -> t
     zmeneno = set()
     for i, pole, x in ((0, "g", "g"), (1, "as", "a"), (2, "pm", "pm"), (3, "tm", "tm")):
         cur = [r for r in rows if r.get("season") == CURRENT_SEASON]
+        s_vse = sum(r[pole] for r in cur)
+        # 1) součet nesedí s hcmotor.cz → góly/asistence (bez pravidel počítání) hledat
+        #    mezi všemi zápasy sezóny, které mají zápis, i mezi oficiálními řádky
+        if s_vse != hc[x] and x in ("g", "a"):
+            kand = [(r, _zapis_k_radku(r, by_dt, by_kolo)) for r in cur]
+            kand = [(r, z) for r, z in kand if z is not None]
+            zmeny = [(r, z["hraci"].get(name, [0, 0, 0, 0])[i]) for r, z in kand
+                     if z["hraci"].get(name, [0, 0, 0, 0])[i] != r[pole]]
+            if zmeny and s_vse + sum(n - r[pole] for r, n in zmeny) == hc[x]:
+                for r, n in zmeny:
+                    idx = next(k for k, q in enumerate(rows) if q is r)
+                    rows[idx] = q = dict(r)
+                    q[pole] = n
+                    q["korigovano"] = True
+                    q.pop("odhad", None)
+                zmeneno.add(x)
+                continue
+        # 2) živé řádky (z hcmotor.cz po rozdílech) rozdělit přesně podle zápisů
         zive = [(r, _zapis_k_radku(r, by_dt, by_kolo)) for r in cur if r.get("zivy")]
         zive = [(r, z) for r, z in zive if z is not None]
         if not zive:
             continue
-        cil = sum(r[pole] for r in cur) - sum(r[pole] for r, _ in zive)   # zbytek (oficiální řádky)
+        cil = s_vse - sum(r[pole] for r, _ in zive)   # zbytek (oficiální řádky)
         zsum = sum(z["hraci"].get(name, [0, 0, 0, 0])[i] for _, z in zive)
         if cil + zsum != hc[x]:
             continue   # zápisy a hcmotor.cz se neshodují — nesahat
@@ -482,10 +500,10 @@ def uprav_podle_zapisu(name: str, rows: list, hc: dict | None, zapis: dict) -> t
             r.pop("odhad", None)
     if zmeneno:
         for k, r in enumerate(rows):
-            if r.get("zivy") and r.get("season") == CURRENT_SEASON and r["p"] != r["g"] + r["as"]:
+            if (r.get("zivy") or r.get("korigovano")) and r.get("season") == CURRENT_SEASON and r["p"] != r["g"] + r["as"]:
                 rows[k] = r = dict(r); r["p"] = r["g"] + r["as"]
         nazvy = {"g": "góly", "a": "asistence", "pm": "+/-", "tm": "TM"}
-        return rows, ["doplněné zápasy upřesněny podle oficiálních zápisů (" +
+        return rows, ["zápasy upřesněny podle oficiálních zápisů (" +
                       ", ".join(nazvy[x] for x in ("g", "a", "pm", "tm") if x in zmeneno) + ")"]
     return rows, []
 
@@ -510,7 +528,7 @@ def build_output(state: dict, baseline: dict, live: dict | None = None) -> dict:
         k["info"].extend(zinfo)
         cur = [r for r in hraci[name] if r.get("season") == CURRENT_SEASON]
         dotcene = {x for kk in live.get("korekce", []) if kk["jmeno"] == name
-                   for x in LIVE_FIELDS if x != "z" and kk.get(x)}
+                   for x in LIVE_FIELDS if x != "z" and kk.get(x)} | {"g", "a", "b"}
         if hc and cur and dotcene:
             cur_sorted = sorted(cur, key=lambda r: r["dt"])
             s0 = _sum(cur_sorted)
