@@ -747,6 +747,11 @@ def main() -> None:
     state = load_state()
     if "--import" in sys.argv:
         raw = json.loads(Path(sys.argv[sys.argv.index("--import") + 1]).read_text(encoding="utf-8"))
+        zapasy_ids = raw.pop("_zapasy", None)
+        if zapasy_ids:
+            (SCRIPT_DIR / "hokejcz_zapasy.json").write_text(
+                json.dumps(zapasy_ids, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+            print(f"Uložena ID {len(zapasy_ids)} zápasů pro stahování zápisů.")
         print(f"Import: {import_raw(state, raw, load_ids())} hráčů ze souboru.")
         save_state(state)
         out = build_output(state, baseline)
