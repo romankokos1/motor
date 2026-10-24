@@ -9,7 +9,28 @@
   :root {
     --red: #c8102e; --navy: #0b1f3a; --bg: #f4f5f7; --card: #ffffff;
     --muted: #6b7280; --border: #e5e7eb; --green: #15803d; --warn: #b45309;
+    --zebra: #fafbfc; --hm0: #eef0f3; --ontip: #0b1f3a; --pillon: #0b1f3a;
+    color-scheme: light;
   }
+  :root[data-theme="dark"] {
+    --red: #ef4a63; --navy: #e7ecf5; --bg: #0c121c; --card: #151d2b;
+    --muted: #94a3b8; --border: #263246; --green: #4ade80; --warn: #fbbf24;
+    --zebra: #182131; --hm0: #1e2838; --ontip: #263246; --pillon: #c8102e;
+    color-scheme: dark;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --red: #ef4a63; --navy: #e7ecf5; --bg: #0c121c; --card: #151d2b;
+      --muted: #94a3b8; --border: #263246; --green: #4ade80; --warn: #fbbf24;
+      --zebra: #182131; --hm0: #1e2838; --ontip: #263246; --pillon: #c8102e;
+      color-scheme: dark;
+    }
+  }
+  .theme-btn { float: right; border: 1px solid var(--border); background: var(--card); color: var(--navy); border-radius: 999px; width: 34px; height: 34px; font-size: 1rem; cursor: pointer; line-height: 1; }
+  .tdot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 7px; vertical-align: baseline; background: var(--tc, var(--muted)); box-shadow: 0 0 0 2px var(--card), 0 0 0 3px var(--tc, transparent); }
+  .chip { border-left: 4px solid var(--tc, var(--border)); }
+  .chip.on { border-left-color: rgba(255,255,255,.55); }
+
   * { box-sizing: border-box; }
   body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -54,7 +75,7 @@
     border: 1px solid var(--border); background: var(--card); color: var(--muted); font: inherit;
     font-size: 0.78rem; font-weight: 600; border-radius: 999px; padding: 5px 12px; cursor: pointer;
   }
-  .pickmode button.on { background: var(--navy); color: #fff; border-color: var(--navy); }
+  .pickmode button.on { background: var(--pillon); color: #fff; border-color: var(--pillon); }
   .chips { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 6px; margin-bottom: 4px; }
   .chip {
     border: 1px solid var(--border); background: var(--card); color: var(--navy); font: inherit;
@@ -84,7 +105,7 @@
   td.opp .full { color: var(--muted); font-size: 0.78rem; margin-left: 6px; }
   td.pts { font-weight: 700; }
   tr.tot td { font-weight: 700; border-top: 2px solid var(--navy); border-bottom: none; background: var(--bg); }
-  tbody tr:nth-child(even):not(.tot) td { background: #fafbfc; }
+  tbody tr:nth-child(even):not(.tot) td { background: var(--zebra); }
 
   details > summary { cursor: pointer; font-weight: 600; list-style: none; }
   details > summary::-webkit-details-marker { display: none; }
@@ -141,7 +162,7 @@
   @keyframes hmIn { from { opacity: 0; transform: scale(.7); } to { opacity: var(--o, 1); transform: none; } }
   .legend { display: flex; align-items: center; gap: 8px; font-size: 0.72rem; color: var(--muted); margin-top: 10px; flex-wrap: wrap; }
   .legend i { display: inline-block; width: 120px; height: 10px; border-radius: 5px; }
-  #tip { position: fixed; z-index: 50; pointer-events: none; background: var(--navy); color: #fff; font-size: 0.76rem; line-height: 1.35; padding: 7px 10px; border-radius: 8px; max-width: 240px; opacity: 0; transition: opacity .12s; box-shadow: 0 4px 14px rgba(0,0,0,.25); }
+  #tip { position: fixed; z-index: 50; pointer-events: none; background: var(--ontip); color: #fff; font-size: 0.76rem; line-height: 1.35; padding: 7px 10px; border-radius: 8px; max-width: 240px; opacity: 0; transition: opacity .12s; box-shadow: 0 4px 14px rgba(0,0,0,.25); }
   #tip b { display: block; font-size: 0.82rem; }
 
   /* karta hráče */
@@ -173,6 +194,7 @@
 <div id="tip"></div>
 <div class="wrap">
   <h1>🏒 Bilance hráče proti týmům</h1>
+  <button class="theme-btn" id="themeBtn" type="button" title="Světlý / tmavý režim" aria-label="Světlý / tmavý režim">◐</button>
   <div class="updated"><span id="updated">Extraliga vč. play off · data z hokej.cz</span> · <a href="stats.html" style="color:inherit">← Statistiky hráčů</a></div>
 
   <div class="card" id="pristi" style="display:none"></div>
@@ -258,7 +280,9 @@ var prow=[],prowAll=[],CUR=0,CISLA={},pick='tiles',mode='P',EMB={},KONTR={},META
 function A(){var o={},k;for(k in db)o[k]=db[k];for(k in EMB)o[k]=EMB[k];return o}
 
 var TEAMS={CEB:'České Budějovice',KLA:'Kladno',VIT:'Vítkovice',LIB:'Liberec',PLZ:'Plzeň',KOM:'Kometa Brno',SPA:'Sparta',PCE:'Pardubice',LIT:'Litvínov',KVA:'Karlovy Vary',OLO:'Olomouc',MHK:'Hradec Králové',MBL:'Mladá Boleslav',TRI:'Třinec',ZLN:'Zlín',CHM:'Chomutov',JIH:'Jihlava',ZNO:'Znojmo'};
-function teamCell(c){return '<b>'+c+'</b>'+(TEAMS[c]?'<span class="full">'+TEAMS[c]+'</span>':'')}
+var TEAMCOL={CEB:'#c8102e',KLA:'#1d4ea1',VIT:'#2563b8',LIB:'#1e7fc4',PLZ:'#1b5fa8',KOM:'#b3261e',SPA:'#9b1b30',PCE:'#d92b2b',LIT:'#e0262c',KVA:'#c0392b',OLO:'#2b6cb0',MHK:'#e8590c',MBL:'#d4a017',TRI:'#c8102e',ZLN:'#e11d48',CHM:'#d1242a',JIH:'#e6a700',ZNO:'#6b7280'};
+function tdot(c){return '<i class="tdot" style="--tc:'+(TEAMCOL[c]||'#94a3b8')+'"></i>'}
+function teamCell(c){return tdot(c)+'<b>'+c+'</b>'+(TEAMS[c]?'<span class="full">'+TEAMS[c]+'</span>':'')}
 function teamName(c){return TEAMS[c]?c+' – '+TEAMS[c]:c}
 
 function seasonOf(d){return d.m>=7?d.y:d.y-1}
@@ -350,7 +374,7 @@ function chipsHtml(){
     names.forEach(function(n){h+='<button type="button" class="chip'+(n===cur?' on':'')+'" data-v="'+n+'" title="'+n+'"><span class="no">'+(CISLA[n]!=null?'#'+CISLA[n]:'&nbsp;')+'</span><b>'+surname(n)+'</b></button>'});
   }else{
     cur=$('opp').value;
-    Array.prototype.forEach.call($('opp').options,function(o){var c=o.value;h+='<button type="button" class="chip'+(c===cur?' on':'')+'" data-v="'+c+'"><span class="no">'+c+'</span><b>'+(TEAMS[c]||c)+'</b></button>'});
+    Array.prototype.forEach.call($('opp').options,function(o){var c=o.value;h+='<button type="button" class="chip'+(c===cur?' on':'')+'" style="--tc:'+(TEAMCOL[c]||'#94a3b8')+'" data-v="'+c+'"><span class="no">'+c+'</span><b>'+(TEAMS[c]||c)+'</b></button>'});
   }
   $('chips').innerHTML=h;
   var bs=$('chips').querySelectorAll('.chip');
@@ -366,6 +390,14 @@ function applyPick(){
   $('player').style.display=(!tiles&&mode==='P')?'':'none';
   $('opp').style.display=(!tiles&&mode==='T')?'':'none';
 }
+(function(){
+  var root=document.documentElement,mq=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)');
+  function cur(){var t=root.getAttribute('data-theme');return t||(mq&&mq.matches?'dark':'light')}
+  function paint(){var d=cur()==='dark';$('themeBtn').textContent=d?'☀':'☾';var m=document.querySelector('meta[name=theme-color]');if(m)m.setAttribute('content',d?'#0c121c':'#c8102e')}
+  try{var sv=localStorage.getItem('bilanceTheme');if(sv==='dark'||sv==='light')root.setAttribute('data-theme',sv)}catch(e){}
+  $('themeBtn').onclick=function(){var n=cur()==='dark'?'light':'dark';root.setAttribute('data-theme',n);try{localStorage.setItem('bilanceTheme',n)}catch(e){}paint()};
+  paint();
+})();
 $('pmTiles').onclick=function(){pick='tiles';try{localStorage.setItem('bilancePick',pick)}catch(e){}applyPick();render()};
 $('pmSel').onclick=function(){pick='sel';try{localStorage.setItem('bilancePick',pick)}catch(e){}applyPick();render()};
 function seasonLabel(s){return s+'/'+String(+s+1).slice(2)}
@@ -624,9 +656,9 @@ function hv(t,m){return m==='bz'?(t.z?t.b/t.z:0):t[m]}
 function hfmt(v,m){if(m==='bz')return v.toFixed(2).replace(/^0/,'');if(m==='pm')return v>0?'+'+v:String(v);return String(v)}
 function heatColor(v,m,max){
   if(m==='pm'){var a=max?Math.min(1,Math.abs(v)/max):0;
-    return v===0?{bg:'#eef0f3',fg:'#6b7280'}:{bg:(v>0?'rgba(21,128,61,':'rgba(200,16,46,')+(0.12+0.78*a).toFixed(2)+')',fg:a>0.55?'#fff':'#0b1f3a'}}
+    return v===0?{bg:'var(--hm0)',fg:'var(--muted)'}:{bg:(v>0?'rgba(21,128,61,':'rgba(200,16,46,')+(0.12+0.78*a).toFixed(2)+')',fg:a>0.55?'#fff':'var(--navy)'}}
   var a2=max?Math.min(1,v/max):0;
-  return {bg:'rgba(200,16,46,'+(v<=0?0.05:0.1+0.82*a2).toFixed(2)+')',fg:a2>0.55?'#fff':'#0b1f3a'};
+  return {bg:'rgba(200,16,46,'+(v<=0?0.05:0.1+0.82*a2).toFixed(2)+')',fg:a2>0.55?'#fff':'var(--navy)'};
 }
 function heatHtml(){
   var el=$('heat'),names=Object.keys(A());
@@ -814,7 +846,8 @@ function teamSvg(o,M){
   var bodu=plA.reduce(function(a,x){return a+x.t.b},0);
   function sh(n){var q=n.split(' ');return q[0]+(q[1]?' '+q[1].charAt(0)+'.':'')}
   var s='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 830" width="600" height="830" '+F+'>';
-  s+='<rect width="600" height="830" fill="#ffffff"/><rect width="600" height="176" fill="#0b1f3a"/><rect y="170" width="600" height="6" fill="#c8102e"/>';
+  var tc=TEAMCOL[o]||'#c8102e';
+  s+='<rect width="600" height="830" fill="#ffffff"/><rect width="600" height="176" fill="#0b1f3a"/><rect y="170" width="600" height="6" fill="'+tc+'"/><circle cx="548" cy="52" r="14" fill="'+tc+'" stroke="#fff" stroke-width="3"/>';
   s+='<text x="572" y="160" text-anchor="end" font-size="120" font-weight="800" fill="#ffffff" fill-opacity="0.12">'+xe(o)+'</text>';
   s+='<text x="36" y="54" font-size="17" font-weight="600" fill="#ffffff" fill-opacity="0.8" letter-spacing="1.5">HC MOTOR PROTI</text>';
   s+='<text x="36" y="106" font-size="'+(nm.length>13?36:46)+'" font-weight="800" fill="#ffffff">'+xe(nm)+'</text>';
