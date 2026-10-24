@@ -577,6 +577,69 @@ def build_output(state: dict, baseline: dict, live: dict | None = None) -> dict:
             "neprirazeno": live.get("neprirazeno", [])}
 
 
+
+# ---------------------------------------------------------------- stránky jednotlivých hráčů
+# Pro každého hráče se při každém běhu vygeneruje samostatná stránka docs/h/<jméno>-<kód>.html,
+# která obsahuje JEN jeho data (bez odkazů na ostatní). Hodí se k poslání hráči.
+# Kód v názvu je krátký hash se solí z scripts/bilance_salt.txt (vznikne sám při prvním běhu).
+TEMPLATE_FILE = REPO_ROOT / "docs" / "bilance-proti-tymum.html"
+HRACI_DIR = REPO_ROOT / "docs" / "h"
+SALT_FILE = SCRIPT_DIR / "bilance_salt.txt"
+
+
+def _slug(name: str) -> str:
+    t = unicodedata.normalize("NFD", name)
+    t = "".join(c for c in t if not unicodedata.combining(c)).lower()
+    return re.sub(r"[^a-z0-9]+", "-", t).strip("-")
+
+
+def _salt() -> str:
+    if SALT_FILE.exists():
+        return SALT_FILE.read_text(encoding="utf-8").strip()
+    import secrets
+    s = secrets.token_hex(8)
+    SALT_FILE.write_text(s, encoding="utf-8")
+    return s
+
+
+def hraci_stranky(out: dict) -> dict:
+    """Vygeneruje stránky hráčů a vrátí {jméno: 'h/soubor.html'}. Chybí-li šablona
+    (nebo je stará bez podpory vložených dat), nic nevytváří."""
+    import hashlib
+    if not TEMPLATE_FILE.exists():
+        return {}
+    sablona = TEMPLATE_FILE.read_text(encoding="utf-8")
+    if "BILANCE_EMBED" not in sablona or "</head>" not in sablona:
+        print("Stránky hráčů: šablona docs/bilance-proti-tymum.html je stará — přeskočeno.")
+        return {}
+    salt = _salt()
+    HRACI_DIR.mkdir(parents=True, exist_ok=True)
+    odkazy = {}
+    for name, rows in out["hraci"].items():
+        if not rows:
+            continue
+        kod = hashlib.sha256((salt + name).encode("utf-8")).hexdigest()[:8]
+        soubor = f"{_slug(name)}-{kod}.html"
+        data = {"vygenerovano": out["vygenerovano"], "hraci": {name: rows},
+                "cisla": {name: out["cisla"].get(name)} if out["cisla"].get(name) else {}}
+        js = json.dumps(data, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
+        html = sablona.replace("</head>",
+            '<meta name="robots" content="noindex,nofollow">\n'
+            f"<script>window.BILANCE_EMBED={js};</script>\n</head>", 1)
+        (HRACI_DIR / soubor).write_text(html, encoding="utf-8")
+        odkazy[name] = f"h/{soubor}"
+    for f in HRACI_DIR.glob("*.html"):   # smazat stránky hráčů, kteří už v datech nejsou
+        if f"h/{f.name}" not in odkazy.values():
+            f.unlink()
+    return odkazy
+
+
+def uloz_vystup(out: dict) -> None:
+    """Zapíše docs/bilance_data.json a stránky hráčů."""
+    out["odkazy"] = hraci_stranky(out)
+    OUTPUT_JSON.parent.mkdir(exist_ok=True)
+    OUTPUT_JSON.write_text(json.dumps(out, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+
 # ---------------------------------------------------------------- živé doplňování
 # Mezi ručními importy z hokej.cz se nové zápasy doplňují automaticky z dat,
 # která už denní běh hokej_stats.py stahuje z hcmotor.cz: rozdíl sezónních
@@ -734,8 +797,7 @@ def zpracuj_beh(old_state: dict, new_state: dict, games: list, zapis_state: dict
     save_live(live)
 
     out = build_output(state, baseline, live)
-    OUTPUT_JSON.parent.mkdir(exist_ok=True)
-    OUTPUT_JSON.write_text(json.dumps(out, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    uloz_vystup(out)
     print(f"Bilance živě: nových zápasů {len(pouzito)}, změn u {len(deltas)} hráčů, "
           f"kontrola OK u {sum(k['ok'] for k in out['kontrola'].values())}/{len(out['kontrola'])}.")
 
@@ -756,8 +818,7 @@ def main() -> None:
         save_state(state)
         out = build_output(state, baseline)
         out["nenalezeno"] = [n for n in jmena if n not in state["hraci"]]
-        OUTPUT_JSON.parent.mkdir(exist_ok=True)
-        OUTPUT_JSON.write_text(json.dumps(out, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+        uloz_vystup(out)
         for n, k in out["kontrola"].items():
             for p in k["problemy"]:
                 print(f"  ⚠ {n}: {p}")
@@ -788,10 +849,9 @@ def main() -> None:
         save_state(state)
 
     save_state(state)
-    OUTPUT_JSON.parent.mkdir(exist_ok=True)
     out = build_output(state, baseline)
     out["nenalezeno"] = nenalezeno
-    OUTPUT_JSON.write_text(json.dumps(out, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    uloz_vystup(out)
     ok = sum(1 for k in out["kontrola"].values() if k["ok"])
     print(f"Hotovo: {len(out['hraci'])} hráčů, kontrola OK u {ok}, nenalezeno {len(nenalezeno)}.")
     for n, k in out["kontrola"].items():
