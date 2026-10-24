@@ -975,6 +975,7 @@ def build_record_svg(games: list) -> str:
 # hráč se identifikují číslem dresu, které se pak dohledá zpátky v
 # soupisce té samé tabulky.
 HOKEJCZ_SCHEDULE_URL = "https://www.hokej.cz/klub/banes-motor-c-budejovice/1721/zapasy"
+HOKEJCZ_IDS_FILE = SCRIPT_DIR / "hokejcz_zapasy.json"  # ID zápasů dodaná stahovátkem (hokej.cz blokuje GitHub)
 HOKEJOVYZAPIS_URL_TMPL = "https://hokejovyzapis.cz/pdf/print/cs-html/?hokejczId={id}"
 ZAPIS_STATE_FILE = SCRIPT_DIR / "zapis_state.json"
 ZAPIS_GAMES_SHOWN = 5  # kolik posledních zápasů se zobrazuje v záložce Zápas
@@ -1015,7 +1016,14 @@ def fetch_hokejcz_matches() -> list:
     Používá se k dohledání hokejczId pro konkrétní kolo (podle data a
     jmen týmů), protože hcmotor.cz samo žádné takové ID nemá.
     """
-    soup = fetch(HOKEJCZ_SCHEDULE_URL)
+    try:
+        soup = fetch(HOKEJCZ_SCHEDULE_URL)
+    except Exception as exc:
+        if HOKEJCZ_IDS_FILE.exists():
+            matches = json.loads(HOKEJCZ_IDS_FILE.read_text(encoding="utf-8"))
+            print(f"Rozpis na hokej.cz nedostupný ({exc}); používám uložená ID zápasů ({len(matches)}).")
+            return matches
+        raise
     matches = []
     for row in soup.select("tr.js-preview__link[data-href]"):
         href = row.get("data-href", "")
@@ -2383,7 +2391,7 @@ def main() -> None:
         # o právě odehrané zápasy — jen z dat, která už máme. Nesmí shodit běh.
         try:
             import bilance_tymy
-            bilance_tymy.zpracuj_beh(old_state, new_state, games)
+            bilance_tymy.zpracuj_beh(old_state, new_state, games, zapis_state)
         except Exception as exc:
             print(f"Varování: živé doplnění bilance se nepodařilo ({exc}).")
 
