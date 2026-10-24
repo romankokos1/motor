@@ -1,5 +1,24 @@
 [
   {
+    "date": "2026-10-24",
+    "changes": [
+      "🏒 Štencel Jan: +1b (1A) → celkem 12b (4G 8A, 13 zápasů)",
+      "🏒 Nedorost Václav: +1b (1A) → celkem 1b (0G 1A, 7 zápasů)",
+      "🏒 Lantoši Róbert: +3b (3A) → celkem 13b (2G 11A, 13 zápasů)",
+      "🏒 Olesen Nick Alexander: +1b (1G) → celkem 10b (7G 3A, 12 zápasů)",
+      "🏒 Hoch Štěpán: +1b (1A) → celkem 10b (1G 9A, 13 zápasů)",
+      "🏒 Ahl Filip: +1b (1G) → celkem 7b (3G 4A, 13 zápasů)",
+      "🏒 Koláček Josef: +3b (2G+1A) → celkem 4b (3G 1A, 5 zápasů)",
+      "🏒 Beránek Martin: +1b (1A) → celkem 4b (2G 2A, 13 zápasů)",
+      "🏒 Krastenbergs Renars: +1b (1G) → celkem 3b (1G 2A, 9 zápasů)",
+      "🏒 Toman Matěj: +1b (1G) → celkem 3b (1G 2A, 13 zápasů)",
+      "▫️ Bez bodu odehráli zápas (10): Bulíř Michal, Hejduk Marek, Kundrátek Tomáš, Nordsäter Lucas, Ordoš Jan, Pour Jakub, Pýcha Pavel, Vráblík Roman, Vála Ondřej, Zachar Marek",
+      "🥅 Klouček Milan: odchytal další zápas — 92.9% úspěšnost, 2.42 průměr (6 zápasů celkem)",
+      "🎯 Štencel Jan: dosáhl/a 250. bodu v Extralize!"
+    ],
+    "corrections": []
+  },
+  {
     "date": "2026-10-23",
     "changes": [],
     "corrections": [
@@ -77,24 +96,6 @@
     "date": "2026-10-07",
     "changes": [
       "🆕 Nový hráč v tabulce: Andersen Ole Einar Engeland — debut: 5 zápas, 0G 1A, 1b"
-    ],
-    "corrections": []
-  },
-  {
-    "date": "2026-10-05",
-    "changes": [
-      "🏒 Štencel Jan: +2b (1G+1A) → celkem 8b (3G 5A, 8 zápasů)",
-      "🏒 Vála Ondřej: +1b (1A) → celkem 2b (0G 2A, 8 zápasů)",
-      "🏒 Lantoši Róbert: +3b (1G+2A) → celkem 8b (1G 7A, 8 zápasů)",
-      "🏒 Olesen Nick Alexander: +1b (1G) → celkem 7b (5G 2A, 7 zápasů)",
-      "🏒 Hoch Štěpán: +1b (1A) → celkem 6b (1G 5A, 8 zápasů)",
-      "🏒 Pour Jakub: +1b (1G) → celkem 4b (4G 0A, 8 zápasů)",
-      "🏒 Ahl Filip: +2b (2A) → celkem 4b (1G 3A, 8 zápasů)",
-      "🏒 Bulíř Michal: +1b (1A) → celkem 4b (0G 4A, 8 zápasů)",
-      "🏒 Bell Parker: +1b (1G) → celkem 3b (3G 0A, 8 zápasů)",
-      "🆕 Nový hráč v tabulce: Koláček Josef — debut: 1 zápas, 0G 0A, 0b",
-      "▫️ Bez bodu odehráli zápas (10): Beránek Martin, Hejduk Marek, Kachyňa Ondřej, Nedorost Václav, Nordsäter Lucas, Ordoš Jan, Pýcha Pavel, Toman Matěj, Vráblík Roman, Zachar Marek",
-      "🥅 Strmeň Jan: odchytal další zápas — 92.0% úspěšnost, 3.01 průměr (4 zápasů celkem)"
     ],
     "corrections": []
   }

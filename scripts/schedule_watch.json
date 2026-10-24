@@ -73,9 +73,9 @@
   },
   "13": {
     "datum": "pátek 23.10.",
-    "cas": "17:00",
+    "cas": null,
     "misto": "Třinec, WERK ARENA",
-    "odehrano": false
+    "odehrano": true
   },
   "14": {
     "datum": "neděle 25.10.",
