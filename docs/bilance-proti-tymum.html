@@ -239,7 +239,7 @@
 
 <script>
 (function(){
-if(/(^|[#&])solo=1/.test(location.hash))document.documentElement.className+=' solo';
+if(window.BILANCE_EMBED||/(^|[#&])solo=1/.test(location.hash))document.documentElement.className+=' solo';
 var KEY='bilanceProtiTymum.v1', db={};
 try{db=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){db={}}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(db))}catch(e){}}
@@ -784,7 +784,8 @@ function savePng(n,rows){
 
 function sdilej(btn,solo){
   var n=$('player').value;if(!n)return;
-  var url=location.href.split('#')[0]+'#hrac='+encodeURIComponent(n)+(solo?'&solo=1':'');
+  var base=location.href.split('#')[0],rel=META.odkazy&&META.odkazy[n];
+  var url=solo&&rel?new URL(rel,base).href:base+'#hrac='+encodeURIComponent(n)+(solo?'&solo=1':'');
   function ok(){var t=btn.textContent;btn.textContent='✓ Zkopírováno';setTimeout(function(){btn.textContent=t},1800)}
   if(navigator.share&&/Mobi|Android|iPhone|iPad/i.test(navigator.userAgent)){navigator.share({title:n+' — bilance proti týmům',url:url}).catch(function(){});return}
   try{navigator.clipboard.writeText(url).then(ok,function(){prompt('Zkopíruj odkaz:',url)})}catch(e){prompt('Zkopíruj odkaz:',url)}
@@ -797,11 +798,17 @@ function fromHash(){
   if(A()[n]){openPlayer(n);if(/(^|[#&])solo=1/.test(location.hash)){document.title=n+' — bilance proti týmům';try{window.scrollTo(0,0)}catch(e){}}}
 }
 refresh();
-try{fetch('bilance_data.json',{cache:'no-cache'}).then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(d){
-  EMB=d.hraci||{};KONTR=d.kontrola||{};CISLA=d.cisla||{};META={vygenerovano:d.vygenerovano,nenalezeno:d.nenalezeno,korekce:d.korekce,pristi:d.pristi};
+function applyData(d){
+  EMB=d.hraci||{};KONTR=d.kontrola||{};CISLA=d.cisla||{};META={vygenerovano:d.vygenerovano,nenalezeno:d.nenalezeno,korekce:d.korekce,pristi:d.pristi,odkazy:d.odkazy||{}};
   if(d.vygenerovano){var t=new Date(d.vygenerovano);$('updated').textContent='Extraliga vč. play off · data z hokej.cz k '+t.getDate()+'. '+(t.getMonth()+1)+'. '+t.getFullYear()}
-  kontrolaHtml();refresh();pristiHtml();rekordyHtml(true);fromHash();
-}).catch(function(e){console.error("DATA",e&&e.stack||e)})}catch(e){}
+  kontrolaHtml();refresh();pristiHtml();rekordyHtml(true);
+  if(window.BILANCE_EMBED){var n0=Object.keys(EMB)[0];if(n0){openPlayer(n0);document.title=n0+' — bilance proti týmům';try{window.scrollTo(0,0)}catch(e){}}}
+  else fromHash();
+}
+try{
+  if(window.BILANCE_EMBED){applyData(window.BILANCE_EMBED)}
+  else fetch('bilance_data.json',{cache:'no-cache'}).then(function(r){if(!r.ok)throw 0;return r.json()}).then(applyData)
+  .catch(function(e){console.error("DATA",e&&e.stack||e)})}catch(e){}
 })();
 </script>
 </body>
