@@ -144,6 +144,10 @@
   .pc-wrap { display: flex; flex-direction: column; align-items: center; gap: 12px; }
   .pc-wrap svg { width: 100%; max-width: 520px; height: auto; border-radius: 22px; box-shadow: 0 8px 28px rgba(11,31,58,.18); }
 
+  /* režim jen pro jednoho hráče (odkaz s #hrac=Jméno&solo=1) */
+  .solo .seg, .solo .f-main, .solo .pickmode, .solo #chips, .solo #pristi, .solo #rekordy, .solo #heat,
+  .solo #kontrola, .solo #manual, .solo .updated a, .solo #linkBtn, .solo #linkSolo { display: none !important; }
+
   @media (max-width: 640px) {
     body { padding: 14px 8px calc(24px + env(safe-area-inset-bottom)); }
     h1 { font-size: 1.2rem; }
@@ -207,6 +211,7 @@
   <div class="card" id="tblCard">
     <h2 id="tblTitle" style="display:inline-block;margin-right:10px">Soupeři</h2>
     <button type="button" class="btn sec" id="linkBtn" style="padding:5px 11px;font-size:.78rem;vertical-align:middle">🔗 Odkaz na hráče</button>
+    <button type="button" class="btn sec" id="linkSolo" style="padding:5px 11px;font-size:.78rem;vertical-align:middle" title="Odkaz, který ukáže jen tohoto hráče">🔒 Odkaz jen pro něj</button>
     <div class="tblwrap" id="out"></div>
     <p id="note" class="small warn"></p>
     <p class="small muted">Řadit jde klepnutím na hlavičku sloupce. Tým hráče se odvozuje z po sobě jdoucích zápasů v sezóně.</p>
@@ -218,7 +223,7 @@
 
   <details class="card kontrola" id="kontrola" style="display:none"></details>
 
-  <details class="card">
+  <details class="card" id="manual">
     <summary>Ruční doplnění hráče <span class="muted small">(jen v tomto prohlížeči)</span></summary>
     <input type="text" id="name" placeholder="Jméno hráče (např. Štencel Jan)">
     <textarea id="paste" placeholder="Sem vlož řádky tabulky zápasů z hokej.cz (datum, kolo, soutěž, zápas, skóre, G, A, B, +-, TM, TOI)."></textarea>
@@ -234,6 +239,7 @@
 
 <script>
 (function(){
+if(/(^|[#&])solo=1/.test(location.hash))document.documentElement.className+=' solo';
 var KEY='bilanceProtiTymum.v1', db={};
 try{db=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){db={}}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(db))}catch(e){}}
@@ -400,7 +406,7 @@ function tile(v,l){return '<div class="tile"><b>'+v+'</b><span>'+l+'</span></div
 
 function setView(){
   var H=mode==='H';
-  $('linkBtn').style.display=mode==='P'?'':'none';
+  $('linkBtn').style.display=$('linkSolo').style.display=mode==='P'?'':'none';
   document.querySelector('.f-main').style.display=H?'none':'';
   document.querySelector('.pickmode').style.display=H?'none':'';
   $('chips').style.display=(H||pick!=='tiles')?'none':'';
@@ -776,17 +782,19 @@ function savePng(n,rows){
   img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);
 }
 
-$('linkBtn').onclick=function(){
+function sdilej(btn,solo){
   var n=$('player').value;if(!n)return;
-  var url=location.href.split('#')[0]+'#hrac='+encodeURIComponent(n),b=$('linkBtn');
-  function ok(){var t=b.textContent;b.textContent='✓ Zkopírováno';setTimeout(function(){b.textContent=t},1800)}
+  var url=location.href.split('#')[0]+'#hrac='+encodeURIComponent(n)+(solo?'&solo=1':'');
+  function ok(){var t=btn.textContent;btn.textContent='✓ Zkopírováno';setTimeout(function(){btn.textContent=t},1800)}
   if(navigator.share&&/Mobi|Android|iPhone|iPad/i.test(navigator.userAgent)){navigator.share({title:n+' — bilance proti týmům',url:url}).catch(function(){});return}
   try{navigator.clipboard.writeText(url).then(ok,function(){prompt('Zkopíruj odkaz:',url)})}catch(e){prompt('Zkopíruj odkaz:',url)}
-};
+}
+$('linkBtn').onclick=function(){sdilej($('linkBtn'),false)};
+$('linkSolo').onclick=function(){sdilej($('linkSolo'),true)};
 function fromHash(){
   var m=(location.hash||'').match(/hrac=([^&]+)/);if(!m)return;
   var n;try{n=decodeURIComponent(m[1])}catch(e){return}
-  if(A()[n])openPlayer(n);
+  if(A()[n]){openPlayer(n);if(/(^|[#&])solo=1/.test(location.hash)){document.title=n+' — bilance proti týmům';try{window.scrollTo(0,0)}catch(e){}}}
 }
 refresh();
 try{fetch('bilance_data.json',{cache:'no-cache'}).then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(d){
