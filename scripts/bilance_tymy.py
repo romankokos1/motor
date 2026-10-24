@@ -397,6 +397,117 @@ def build_kontrola(name: str, entry: dict, baseline: dict) -> dict:
             "sezon": len([1 for v in sezony.values() if v["radky"]]), "zapasu": len(all_rows)}
 
 
+# ---------------------------------------------------------------- upřesnění podle zápisů
+# Oficiální zápisy (hokejovyzapis.cz) denní běh stejně stahuje pro záložku Zápas.
+# Z nich se pro každý zápas a hráče Motoru spočítá přesně: góly, asistence, +/- a
+# trestné minuty. Řádky doplněné z hcmotor.cz (rozdíl součtů proti včerejšku) se
+# pak upřesní a opravy statistik, které hcmotor.cz dělá zpětně, se přiřadí ke
+# správnému zápasu. Změna se uplatní jen tehdy, když součet podle zápisů souhlasí
+# s tím, co říká hcmotor.cz — jinak se nesahá na nic (nebo zůstává odhad).
+def _je_motor(tym: str) -> bool:
+    return "české budějovice" in (tym or "").lower()
+
+
+def _zapis_dt(datum: str | None) -> str | None:
+    m = re.search(r"(\d{1,2})\.\s*(\d{1,2})\.\s*(\d{4})", datum or "")
+    return f"{int(m.group(3)):04d}-{int(m.group(2)):02d}-{int(m.group(1)):02d}" if m else None
+
+
+def zapis_kompakt(zapasy: list) -> dict:
+    """{klíč (datum nebo 'kolo<N>'): {"kolo": N, "dt": datum, "hraci": {jméno: [G, A, +/-, TM]}}}
+    — jen nenulové hodnoty. +/-: góly Motoru mimo přesilovku Motoru jsou +1, góly soupeře
+    mimo přesilovku soupeře jsou -1 (hráčům na ledě)."""
+    out = {}
+    for z in zapasy:
+        h: dict = {}
+
+        def add(jmeno, i, v):
+            e = h.setdefault(jmeno, [0, 0, 0, 0])
+            e[i] += v
+
+        for g in z.get("goly", []):
+            motor = _je_motor(g.get("tym"))
+            if motor:
+                add(g["strelec"], 0, 1)
+                for a in g.get("asistence", []):
+                    add(a, 1, 1)
+            m = re.match(r"(\d+)/(\d+)", g.get("situace") or "")
+            a_, b_ = (int(m.group(1)), int(m.group(2))) if m else (5, 5)
+            if a_ <= b_:   # střelec není v přesilovce
+                for p in g.get("na_ledu_za" if motor else "na_ledu_proti", []):
+                    add(p, 2, 1 if motor else -1)
+        for t in z.get("tresty", []):
+            if _je_motor(t.get("tym")):
+                add(t["hrac"], 3, sum(int(x) for x in re.findall(r"\d+", str(t.get("min") or ""))))
+        dt = _zapis_dt(z.get("datum"))
+        out[dt or f"kolo{z.get('kolo')}"] = {
+            "kolo": z.get("kolo"), "dt": dt,
+            "hraci": {n: v for n, v in h.items() if any(v)}}
+    return out
+
+
+def _zapis_k_radku(r: dict, by_dt: dict, by_kolo: dict):
+    if r["dt"] in by_dt:
+        return by_dt[r["dt"]]
+    if r.get("zivy"):
+        return by_kolo.get(str(r.get("kolo", "")).rstrip("."))
+    return None
+
+
+def uprav_podle_zapisu(name: str, rows: list, hc: dict | None, zapis: dict) -> tuple:
+    """Upřesní živé řádky hráče v aktuální sezóně podle zápisů. Vrací (rows, info)."""
+    if not hc or not zapis:
+        return rows, []
+    by_dt = {v["dt"]: v for v in zapis.values() if v.get("dt")}
+    by_kolo = {str(v["kolo"]): v for v in zapis.values() if v.get("kolo") is not None}
+    rows = list(rows)
+    zmeneno = set()
+    for i, pole, x in ((0, "g", "g"), (1, "as", "a"), (2, "pm", "pm"), (3, "tm", "tm")):
+        cur = [r for r in rows if r.get("season") == CURRENT_SEASON]
+        s_vse = sum(r[pole] for r in cur)
+        # 1) součet nesedí s hcmotor.cz → góly/asistence (bez pravidel počítání) hledat
+        #    mezi všemi zápasy sezóny, které mají zápis, i mezi oficiálními řádky
+        if s_vse != hc[x] and x in ("g", "a"):
+            kand = [(r, _zapis_k_radku(r, by_dt, by_kolo)) for r in cur]
+            kand = [(r, z) for r, z in kand if z is not None]
+            zmeny = [(r, z["hraci"].get(name, [0, 0, 0, 0])[i]) for r, z in kand
+                     if z["hraci"].get(name, [0, 0, 0, 0])[i] != r[pole]]
+            if zmeny and s_vse + sum(n - r[pole] for r, n in zmeny) == hc[x]:
+                for r, n in zmeny:
+                    idx = next(k for k, q in enumerate(rows) if q is r)
+                    rows[idx] = q = dict(r)
+                    q[pole] = n
+                    q["korigovano"] = True
+                    q.pop("odhad", None)
+                zmeneno.add(x)
+                continue
+        # 2) živé řádky (z hcmotor.cz po rozdílech) rozdělit přesně podle zápisů
+        zive = [(r, _zapis_k_radku(r, by_dt, by_kolo)) for r in cur if r.get("zivy")]
+        zive = [(r, z) for r, z in zive if z is not None]
+        if not zive:
+            continue
+        cil = s_vse - sum(r[pole] for r, _ in zive)   # zbytek (oficiální řádky)
+        zsum = sum(z["hraci"].get(name, [0, 0, 0, 0])[i] for _, z in zive)
+        if cil + zsum != hc[x]:
+            continue   # zápisy a hcmotor.cz se neshodují — nesahat
+        for r, z in zive:
+            nova = z["hraci"].get(name, [0, 0, 0, 0])[i]
+            if r[pole] != nova:
+                idx = next(k for k, q in enumerate(rows) if q is r)
+                rows[idx] = r = dict(r)
+                r[pole] = nova
+                zmeneno.add(x)
+            r.pop("odhad", None)
+    if zmeneno:
+        for k, r in enumerate(rows):
+            if (r.get("zivy") or r.get("korigovano")) and r.get("season") == CURRENT_SEASON and r["p"] != r["g"] + r["as"]:
+                rows[k] = r = dict(r); r["p"] = r["g"] + r["as"]
+        nazvy = {"g": "góly", "a": "asistence", "pm": "+/-", "tm": "TM"}
+        return rows, ["zápasy upřesněny podle oficiálních zápisů (" +
+                      ", ".join(nazvy[x] for x in ("g", "a", "pm", "tm") if x in zmeneno) + ")"]
+    return rows, []
+
+
 def build_output(state: dict, baseline: dict, live: dict | None = None) -> dict:
     live = live if live is not None else load_live()
     omax = official_max_dt(state)
@@ -410,6 +521,30 @@ def build_output(state: dict, baseline: dict, live: dict | None = None) -> dict:
         k = build_kontrola(name, entry, baseline)
         cur = [r for r in hraci[name] if r.get("season") == CURRENT_SEASON]
         hc = live.get("hcmotor", {}).get(name)
+        # opravy statistik z hcmotor.cz, které nejdou přiřadit ke konkrétnímu zápasu,
+        # se promítnou do součtů: rozdíl proti hcmotor.cz se přičte k poslednímu
+        # zápasu hráče v aktuální sezóně (kdo přesně se opravil, ví až hokej.cz)
+        hraci[name], zinfo = uprav_podle_zapisu(name, hraci[name], hc, live.get("zapis", {}))
+        k["info"].extend(zinfo)
+        cur = [r for r in hraci[name] if r.get("season") == CURRENT_SEASON]
+        dotcene = {x for kk in live.get("korekce", []) if kk["jmeno"] == name
+                   for x in LIVE_FIELDS if x != "z" and kk.get(x)} | {"g", "a", "b"}
+        if hc and cur and dotcene:
+            cur_sorted = sorted(cur, key=lambda r: r["dt"])
+            s0 = _sum(cur_sorted)
+            pole = {"g": "g", "a": "as", "b": "p", "pm": "pm", "tm": "tm"}
+            diff = {x: hc[x] - s0[x] for x in dotcene if x in pole and hc[x] != s0[x]}
+            if diff:
+                posledni = cur_sorted[-1]
+                nova = dict(posledni)
+                for x, d_ in diff.items():
+                    nova[pole[x]] += d_
+                nova["korigovano"] = True
+                hraci[name] = [nova if r is posledni else r for r in hraci[name]]
+                cur = [nova if r is posledni else r for r in cur]
+                popis = ", ".join(f"{d_:+d} {x.upper() if x != 'pm' else '+/-'}" for x, d_ in diff.items())
+                k["info"].append(f"oprava statistik z hcmotor.cz ({popis}) přičtena k poslednímu zápasu "
+                                 f"({posledni['dt']}) — přesné přiřazení přijde s importem z hokej.cz")
         if hc and cur:
             s_ = _sum(cur)
             rozdily = [f"{x.upper()}: stránka {s_[x]} × hcmotor {hc[x]}" for x in ("z", "g", "a", "b") if s_[x] != hc[x]]
@@ -433,9 +568,7 @@ def build_output(state: dict, baseline: dict, live: dict | None = None) -> dict:
         cur = [r for r in hraci.get(k["jmeno"], []) if r.get("season") == CURRENT_SEASON]
         hc = live.get("hcmotor", {}).get(k["jmeno"])
         if hc and cur:
-            s_ = _sum(cur)
-            if all(s_[x] == hc[x] for x in LIVE_FIELDS if k.get(x)):
-                continue
+            continue   # promítnuto do součtů výše, nebo už je v datech z hokej.cz
         cekajici.append(k)
     return {"vygenerovano": datetime.now(timezone.utc).isoformat(timespec="seconds"),
             "hraci": hraci, "kontrola": kontrola, "korekce": cekajici,
@@ -493,7 +626,7 @@ def _game_date(datum: str) -> str | None:
 
 
 def load_live() -> dict:
-    empty = {"sezona": CURRENT_SEASON, "radky": {}, "zpracovano": [], "korekce": [],
+    empty = {"sezona": CURRENT_SEASON, "radky": {}, "zpracovano": [], "korekce": [], "zapis": {},
              "neprirazeno": [], "hcmotor": {}}
     if LIVE_FILE.exists():
         data = json.loads(LIVE_FILE.read_text(encoding="utf-8"))
@@ -532,7 +665,7 @@ def _pristi_zapas(games: list) -> dict | None:
             "doma": doma, "datum": _game_date(g.get("datum")), "cas": g.get("cas")}
 
 
-def zpracuj_beh(old_state: dict, new_state: dict, games: list) -> None:
+def zpracuj_beh(old_state: dict, new_state: dict, games: list, zapis_state: dict | None = None) -> None:
     """Volá denní běh hokej_stats.py po stažení nových statistik."""
     state = load_state()
     if not state["hraci"] or not old_state.get("skaters"):
@@ -541,6 +674,8 @@ def zpracuj_beh(old_state: dict, new_state: dict, games: list) -> None:
     live = load_live()
     baseline = load_baseline()
     live["pristi"] = _pristi_zapas(games)
+    if zapis_state and zapis_state.get("zapasy"):
+        live["zapis"] = {**live.get("zapis", {}), **zapis_kompakt(zapis_state["zapasy"])}
     old, new = _skater_totals(old_state), _skater_totals(new_state)
     live["hcmotor"] = new
     live["cisla"] = {x["jmeno"]: x.get("cislo") for x in new_state.get("skaters", {}).values() if x.get("cislo")}
