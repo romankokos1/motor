@@ -205,7 +205,8 @@
   <div class="card" id="heat" style="display:none"></div>
 
   <div class="card" id="tblCard">
-    <h2 id="tblTitle">Soupeři</h2>
+    <h2 id="tblTitle" style="display:inline-block;margin-right:10px">Soupeři</h2>
+    <button type="button" class="btn sec" id="linkBtn" style="padding:5px 11px;font-size:.78rem;vertical-align:middle">🔗 Odkaz na hráče</button>
     <div class="tblwrap" id="out"></div>
     <p id="note" class="small warn"></p>
     <p class="small muted">Řadit jde klepnutím na hlavičku sloupce. Tým hráče se odvozuje z po sobě jdoucích zápasů v sezóně.</p>
@@ -399,6 +400,7 @@ function tile(v,l){return '<div class="tile"><b>'+v+'</b><span>'+l+'</span></div
 
 function setView(){
   var H=mode==='H';
+  $('linkBtn').style.display=mode==='P'?'':'none';
   document.querySelector('.f-main').style.display=H?'none':'';
   document.querySelector('.pickmode').style.display=H?'none':'';
   $('chips').style.display=(H||pick!=='tiles')?'none':'';
@@ -773,6 +775,14 @@ function savePng(n,rows){
   img.onerror=function(){alert('Export obrázku se nepodařil.')};
   img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);
 }
+
+$('linkBtn').onclick=function(){
+  var n=$('player').value;if(!n)return;
+  var url=location.href.split('#')[0]+'#hrac='+encodeURIComponent(n),b=$('linkBtn');
+  function ok(){var t=b.textContent;b.textContent='✓ Zkopírováno';setTimeout(function(){b.textContent=t},1800)}
+  if(navigator.share&&/Mobi|Android|iPhone|iPad/i.test(navigator.userAgent)){navigator.share({title:n+' — bilance proti týmům',url:url}).catch(function(){});return}
+  try{navigator.clipboard.writeText(url).then(ok,function(){prompt('Zkopíruj odkaz:',url)})}catch(e){prompt('Zkopíruj odkaz:',url)}
+};
 function fromHash(){
   var m=(location.hash||'').match(/hrac=([^&]+)/);if(!m)return;
   var n;try{n=decodeURIComponent(m[1])}catch(e){return}
