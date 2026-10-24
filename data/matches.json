@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-23T11:36:10Z",
+  "generated": "2026-10-24T10:56:44Z",
   "teams": {
     "mdo": "Mladší dorost",
     "sdo": "Starší dorost",
@@ -567,7 +567,7 @@
     {
       "team": "sdo",
       "date": "2026-11-27",
-      "time": "15:30",
+      "time": "12:00",
       "home": false,
       "opponent": "HC Verva Litvínov",
       "location": "Litvínov, Zimní stadion Ivana Hlinky",
