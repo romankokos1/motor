@@ -814,6 +814,174 @@
     .fx-kenburns .photo img{animation:none;}
   }
 
+  /* ===== NOVÁ DIMENZE ===== */
+  .photo .warhol, .photo .dexp, .photo .mosaic, .photo .bubble, .photo .beams,
+  .photo .smoke, .photo .kaleido, .photo .shards{display:none;}
+
+  /* 57 — pop-art 2×2 */
+  .fx-warhol .photo img{opacity:0;}
+  .fx-warhol .photo .warhol{
+    display:grid; position:absolute; inset:0; z-index:1;
+    grid-template-columns:1fr 1fr; grid-template-rows:1fr 1fr;
+  }
+  .warhol i{background:var(--img) center 10%/cover no-repeat;}
+  .warhol i:nth-child(1){filter:url(#pop1);}
+  .warhol i:nth-child(2){filter:url(#pop2);}
+  .warhol i:nth-child(3){filter:url(#pop3);}
+  .warhol i:nth-child(4){filter:url(#pop4);}
+
+  /* 58 — dvojexpozice */
+  .fx-dexp .photo{background:#e9edf0;}
+  .fx-dexp .photo img{filter:grayscale(1) contrast(1.15) brightness(1.05);}
+  .fx-dexp .photo .dexp{
+    display:block; position:absolute; inset:0; z-index:1; pointer-events:none;
+    background:var(--img) no-repeat;
+    background-size:250% auto;
+    background-position:50% 6%;
+    filter:grayscale(1) contrast(1.3);
+    mix-blend-mode:screen;
+    opacity:.6;
+    -webkit-mask-image:linear-gradient(to bottom, #000 30%, transparent 85%);
+    mask-image:linear-gradient(to bottom, #000 30%, transparent 85%);
+  }
+  .fx-dexp .photo .tone{display:block; z-index:2; background:var(--pos); mix-blend-mode:color; opacity:.35;}
+
+  /* 59 — fotomozaika */
+  .fx-mosaic .photo .mosaic{
+    display:grid; position:absolute; inset:0; z-index:1;
+    grid-template-columns:repeat(8, 1fr); grid-template-rows:repeat(8, 1fr);
+  }
+  .mosaic i{background-size:cover; background-position:center 12%; filter:grayscale(1) contrast(1.1);}
+  .fx-mosaic .photo img{position:relative; z-index:2; mix-blend-mode:hard-light; opacity:.88; transition:opacity .5s;}
+  .fx-mosaic .tile:hover .photo img{opacity:.18;}
+
+  /* 60 — pamětní mince */
+  .fx-coin .photo{background:radial-gradient(circle at 50% 40%, #2a2f36, #0b0e12); padding:10%;}
+  .fx-coin .photo::before{
+    content:""; position:absolute; inset:7%; border-radius:50%; z-index:0;
+    background:conic-gradient(from 30deg, #7a5a1c, #f6dc8a, #a77b28, #fff1c1, #8a6420, #e9c46a, #7a5a1c);
+    box-shadow:0 12px 28px rgba(0,0,0,.6), inset 0 0 0 1px rgba(255,255,255,.3);
+  }
+  .fx-coin .photo img{position:relative; z-index:1; border-radius:50%; object-position:center 10%; filter:url(#coin);}
+
+  /* 61 — neon */
+  .fx-neon .photo{background:#05060a;}
+  .fx-neon .photo img{filter:url(#neon) drop-shadow(0 0 2px var(--pos)) drop-shadow(0 0 9px var(--pos));}
+  .fx-neon .photo .under{
+    display:block; position:absolute; inset:0; z-index:-1; pointer-events:none;
+    background:var(--img) top center/cover no-repeat;
+    filter:grayscale(1) brightness(.6); opacity:.14;
+  }
+
+  /* 62 — komiks */
+  .fx-comic .tile{background:#fffbe6; border:3px solid #111;}
+  .fx-comic .photo{background:#fffbe6;}
+  .fx-comic .photo img{filter:url(#comic);}
+  .fx-comic .photo::after{
+    content:""; position:absolute; inset:0; z-index:1; pointer-events:none;
+    background:radial-gradient(circle, rgba(0,0,0,.35) 30%, transparent 32%) 0 0/6px 6px;
+    mix-blend-mode:multiply;
+  }
+  .fx-comic .name{color:#111; font:800 17px/1.05 var(--cond); text-transform:uppercase;}
+  .fx-comic .meta{color:#111;}
+  .fx-comic .photo .bubble{
+    display:block; position:absolute; top:6%; right:6%; z-index:3;
+    background:#fff; color:#111;
+    border:2px solid #111; border-radius:50% / 45%;
+    padding:3cqw 5cqw;
+    font:800 italic 7cqw/1 var(--cond); text-transform:uppercase;
+    transform:rotate(-6deg);
+    box-shadow:3px 3px 0 #111;
+  }
+  .bubble::before, .bubble::after{content:""; position:absolute; border-style:solid;}
+  .bubble::before{left:20%; top:100%; border-width:2.8cqw 2.8cqw 0 0; border-color:#111 transparent transparent transparent;}
+  .bubble::after{left:calc(20% + 2px); top:calc(100% - 3px); border-width:2.1cqw 2.1cqw 0 0; border-color:#fff transparent transparent transparent;}
+
+  /* 63 — nástup s reflektory a dýmem */
+  .fx-stage .photo{background:#05070b;}
+  .fx-stage .photo img{filter:contrast(1.15) brightness(.8) saturate(.9);}
+  .fx-stage .photo .beams{display:block; position:absolute; inset:0; z-index:1; pointer-events:none; mix-blend-mode:screen;}
+  .beams::before, .beams::after{
+    content:""; position:absolute; top:-20%; width:70%; height:140%;
+    transform-origin:50% 0;
+    clip-path:polygon(44% 0, 56% 0, 100% 100%, 0 100%);
+    filter:blur(6px);
+  }
+  .beams::before{left:-15%; background:linear-gradient(to bottom, rgba(255,250,235,.6), rgba(255,250,235,0) 85%); animation:beamL 7s ease-in-out infinite alternate;}
+  .beams::after{right:-15%; background:linear-gradient(to bottom, color-mix(in srgb, var(--pos) 60%, transparent), transparent 85%); animation:beamR 9s ease-in-out infinite alternate;}
+  @keyframes beamL{from{transform:rotate(-24deg);} to{transform:rotate(6deg);}}
+  @keyframes beamR{from{transform:rotate(22deg);} to{transform:rotate(-8deg);}}
+  .fx-stage .photo .smoke{
+    display:block; position:absolute; left:-10%; right:-10%; bottom:-5%; height:65%; z-index:2; pointer-events:none;
+    background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='360' height='360'%3E%3Cfilter id='s'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.012' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23s)'/%3E%3C/svg%3E") 0 0/360px 360px;
+    filter:grayscale(1) brightness(1.6) contrast(1.4) blur(3px);
+    mix-blend-mode:screen;
+    opacity:.75;
+    -webkit-mask-image:linear-gradient(to top, #000 15%, transparent 100%);
+    mask-image:linear-gradient(to top, #000 15%, transparent 100%);
+    animation:smoke 26s linear infinite;
+  }
+  @keyframes smoke{to{background-position:360px 0;}}
+
+  /* 64 — kaleidoskop */
+  .fx-kaleido .photo{background:#000;}
+  .fx-kaleido .photo img{opacity:0;}
+  .fx-kaleido .photo .kaleido{display:block; position:absolute; inset:-21%; z-index:1; animation:kspin 60s linear infinite;}
+  .kaleido i{
+    position:absolute; inset:0;
+    background:var(--img) no-repeat;
+    background-size:140% auto;
+    background-position:50% 20%;
+    clip-path:polygon(50% 50%, 100% 50%, 100% 0%);
+    transition:background-position 1.4s ease;
+  }
+  .kaleido i:nth-child(2){transform:rotate(-90deg) scaleY(-1);}
+  .kaleido i:nth-child(3){transform:rotate(-90deg);}
+  .kaleido i:nth-child(4){transform:rotate(-180deg) scaleY(-1);}
+  .kaleido i:nth-child(5){transform:rotate(-180deg);}
+  .kaleido i:nth-child(6){transform:rotate(-270deg) scaleY(-1);}
+  .kaleido i:nth-child(7){transform:rotate(-270deg);}
+  .kaleido i:nth-child(8){transform:rotate(-360deg) scaleY(-1);}
+  .fx-kaleido .tile:hover .kaleido i{background-position:50% 60%;}
+  @keyframes kspin{to{transform:rotate(360deg);}}
+
+  /* 65 — vlnění */
+  .fx-water .photo::after{
+    content:""; position:absolute; inset:0; z-index:1; pointer-events:none;
+    background:linear-gradient(to bottom, transparent 50%, rgba(30,120,170,.35));
+  }
+  .fx-water .tile:hover .photo img{filter:url(#water) saturate(1.1);}
+
+  /* 66 — puk do plexiskla */
+  .fx-plexi .photo{background:#0b0e12;}
+  .fx-plexi .photo img{opacity:0;}
+  .fx-plexi .photo .shards{display:block; position:absolute; inset:0; z-index:1;}
+  .shards i{
+    position:absolute; inset:0;
+    background:var(--img) top center/cover no-repeat;
+    clip-path:var(--clip);
+    transform:translate(var(--tx), var(--ty)) rotate(var(--rr));
+    filter:brightness(var(--br));
+    transition:transform .5s cubic-bezier(.2,.8,.2,1), filter .5s;
+  }
+  .fx-plexi .photo::after{
+    content:""; position:absolute; inset:0; z-index:2; pointer-events:none;
+    background:var(--cracks) center/100% 100% no-repeat;
+    filter:drop-shadow(0 0 1px rgba(0,0,0,.7));
+    transition:opacity .5s;
+  }
+  .fx-plexi .photo::before{
+    content:""; position:absolute; inset:0; z-index:2; pointer-events:none;
+    background:radial-gradient(circle at 62% 38%, rgba(255,255,255,.6), transparent 12%);
+    transition:opacity .5s;
+  }
+  .fx-plexi .tile:hover .shards i{transform:none; filter:none;}
+  .fx-plexi .tile:hover .photo::after, .fx-plexi .tile:hover .photo::before{opacity:0;}
+
+  @media (prefers-reduced-motion:reduce){
+    .beams::before, .beams::after, .fx-stage .photo .smoke, .fx-kaleido .photo .kaleido{animation:none;}
+  }
+
   /* kombinátor */
   .combo{
     display:none;
@@ -976,6 +1144,53 @@
     <feDisplacementMap in="SourceGraphic" in2="noise" scale="22" xChannelSelector="R" yChannelSelector="G" result="warp"/>
     <feGaussianBlur in="warp" stdDeviation="1.2" result="soft"/>
     <feColorMatrix in="soft" type="matrix" values=".6 .2 .2 0 .08  .15 .7 .2 0 .12  .1 .2 .8 0 .2  0 0 0 1 0"/>
+  </filter>
+  <filter id="pop1" color-interpolation-filters="sRGB">
+    <feColorMatrix type="saturate" values="0"/>
+    <feComponentTransfer><feFuncR type="linear" slope="1.5" intercept="-0.22"/><feFuncG type="linear" slope="1.5" intercept="-0.22"/><feFuncB type="linear" slope="1.5" intercept="-0.22"/></feComponentTransfer>
+    <feComponentTransfer><feFuncR type="discrete" tableValues="0.1 1 1"/><feFuncG type="discrete" tableValues="0.08 0.24 0.88"/><feFuncB type="discrete" tableValues="0.4 0.65 0.3"/></feComponentTransfer>
+  </filter>
+  <filter id="pop2" color-interpolation-filters="sRGB">
+    <feColorMatrix type="saturate" values="0"/>
+    <feComponentTransfer><feFuncR type="linear" slope="1.5" intercept="-0.22"/><feFuncG type="linear" slope="1.5" intercept="-0.22"/><feFuncB type="linear" slope="1.5" intercept="-0.22"/></feComponentTransfer>
+    <feComponentTransfer><feFuncR type="discrete" tableValues="0.04 1 0.5"/><feFuncG type="discrete" tableValues="0.24 0.48 0.94"/><feFuncB type="discrete" tableValues="0.18 0 1"/></feComponentTransfer>
+  </filter>
+  <filter id="pop3" color-interpolation-filters="sRGB">
+    <feColorMatrix type="saturate" values="0"/>
+    <feComponentTransfer><feFuncR type="linear" slope="1.5" intercept="-0.22"/><feFuncG type="linear" slope="1.5" intercept="-0.22"/><feFuncB type="linear" slope="1.5" intercept="-0.22"/></feComponentTransfer>
+    <feComponentTransfer><feFuncR type="discrete" tableValues="0.23 0.3 0.98"/><feFuncG type="discrete" tableValues="0.05 0.79 0.97"/><feFuncB type="discrete" tableValues="0.64 0.94 0.44"/></feComponentTransfer>
+  </filter>
+  <filter id="pop4" color-interpolation-filters="sRGB">
+    <feColorMatrix type="saturate" values="0"/>
+    <feComponentTransfer><feFuncR type="linear" slope="1.5" intercept="-0.22"/><feFuncG type="linear" slope="1.5" intercept="-0.22"/><feFuncB type="linear" slope="1.5" intercept="-0.22"/></feComponentTransfer>
+    <feComponentTransfer><feFuncR type="discrete" tableValues="0.48 0.97 0.95"/><feFuncG type="discrete" tableValues="0.03 0.72 0.95"/><feFuncB type="discrete" tableValues="0.16 0 0.95"/></feComponentTransfer>
+  </filter>
+  <filter id="coin" color-interpolation-filters="sRGB">
+    <feColorMatrix type="luminanceToAlpha" result="lum"/>
+    <feGaussianBlur in="lum" stdDeviation="0.8" result="h"/>
+    <feDiffuseLighting in="h" surfaceScale="5" diffuseConstant="1.05" lighting-color="#e8b84e" result="diff"><feDistantLight azimuth="225" elevation="50"/></feDiffuseLighting>
+    <feSpecularLighting in="h" surfaceScale="5" specularConstant="0.8" specularExponent="18" lighting-color="#fff4d0" result="spec"><feDistantLight azimuth="225" elevation="50"/></feSpecularLighting>
+    <feComposite in="spec" in2="diff" operator="arithmetic" k1="0" k2="1" k3="1" k4="0"/>
+  </filter>
+  <filter id="neon" color-interpolation-filters="sRGB">
+    <feColorMatrix type="saturate" values="0"/>
+    <feGaussianBlur stdDeviation="0.6"/>
+    <feConvolveMatrix order="3" kernelMatrix="-1 -1 -1  -1 8 -1  -1 -1 -1" preserveAlpha="true"/>
+    <feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  4 4 4 0 -0.35"/>
+  </filter>
+  <filter id="comic" color-interpolation-filters="sRGB">
+    <feColorMatrix in="SourceGraphic" type="saturate" values="1.7" result="sat"/>
+    <feComponentTransfer in="sat" result="flat"><feFuncR type="discrete" tableValues="0 0.55 1"/><feFuncG type="discrete" tableValues="0 0.55 1"/><feFuncB type="discrete" tableValues="0 0.55 1"/></feComponentTransfer>
+    <feColorMatrix in="SourceGraphic" type="saturate" values="0" result="gray"/>
+    <feConvolveMatrix in="gray" order="3" kernelMatrix="-1 -1 -1  -1 8 -1  -1 -1 -1" preserveAlpha="true" result="edge"/>
+    <feColorMatrix in="edge" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  5 5 5 0 -0.6" result="ink"/>
+    <feComposite in="ink" in2="flat" operator="over"/>
+  </filter>
+  <filter id="water" x="-5%" y="-5%" width="110%" height="110%">
+    <feTurbulence type="turbulence" baseFrequency="0.012 0.05" numOctaves="2" seed="4" result="t">
+      <animate attributeName="baseFrequency" dur="7s" values="0.012 0.05;0.016 0.07;0.012 0.05" repeatCount="indefinite"/>
+    </feTurbulence>
+    <feDisplacementMap in="SourceGraphic" in2="t" scale="16" xChannelSelector="R" yChannelSelector="B"/>
   </filter>
 </svg>
 
@@ -2018,6 +2233,280 @@ photo.style.setProperty('--fy', (e.clientY - r.top) / r.height * 100 + '%');`},
 tile.style.setProperty('--kbd', '-' + (i * 2.3 % 14) + 's');
 tile.style.setProperty('--kbx', i % 2 ? '3%' : '-3%');`},
 
+  // ===== nová dimenze =====
+  {id:"warhol", grp:"Nová dimenze", name:"Pop-art 2×2",
+   desc:"Čtyři kopie portrétu, každá v jiné křiklavé trojbarevné kombinaci, jako Warholovy portréty Marilyn Monroe. Každý čtverec má vlastní SVG filtr, který převede jas na tři ploché barvy. Ikonické na plakát nebo obálku.",
+   code:`<!-- v .photo: <div class="warhol"><i></i><i></i><i></i><i></i></div> -->
+
+<svg width="0" height="0" style="position:absolute">
+  <filter id="pop1" color-interpolation-filters="sRGB">
+    <feColorMatrix type="saturate" values="0"/>
+    <!-- víc kontrastu -->
+    <feComponentTransfer>
+      <feFuncR type="linear" slope="1.5" intercept="-0.22"/>
+      <feFuncG type="linear" slope="1.5" intercept="-0.22"/>
+      <feFuncB type="linear" slope="1.5" intercept="-0.22"/>
+    </feComponentTransfer>
+    <!-- 3 ploché barvy: stíny navy, střed růžová, světla žlutá -->
+    <feComponentTransfer>
+      <feFuncR type="discrete" tableValues="0.1 1 1"/>
+      <feFuncG type="discrete" tableValues="0.08 0.24 0.88"/>
+      <feFuncB type="discrete" tableValues="0.4 0.65 0.3"/>
+    </feComponentTransfer>
+  </filter>
+  <!-- pop2–pop4 stejně, jen jiné tableValues -->
+</svg>
+
+.tile .photo img{ opacity:0; }
+.warhol{ position:absolute; inset:0; display:grid; grid-template-columns:1fr 1fr; grid-template-rows:1fr 1fr; }
+.warhol i{ background:var(--img) center 10%/cover no-repeat; }
+.warhol i:nth-child(1){ filter:url(#pop1); }
+.warhol i:nth-child(2){ filter:url(#pop2); }
+.warhol i:nth-child(3){ filter:url(#pop3); }
+.warhol i:nth-child(4){ filter:url(#pop4); }`},
+  {id:"dexp", grp:"Nová dimenze", name:"Dvojexpozice",
+   desc:"Technika filmových plakátů: přes celou postavu je prolnutý obří detail obličeje stejného hráče, jako by se fotka exponovala dvakrát. Celé to sjednotí tónování do barvy pozice. Působí výpravně a umělecky.",
+   code:`<!-- v .photo navíc: <div class="dexp"></div> a <div class="tone"></div> -->
+
+.tile .photo{ position:relative; isolation:isolate; background:#e9edf0; }
+.tile .photo img{ filter:grayscale(1) contrast(1.15) brightness(1.05); }
+/* druhá expozice: obličej 2,5× zvětšený */
+.tile .photo .dexp{
+  position:absolute; inset:0;
+  background:var(--img) no-repeat;
+  background-size:250% auto;
+  background-position:50% 6%;
+  filter:grayscale(1) contrast(1.3);
+  mix-blend-mode:screen;          /* sečte světla obou expozic */
+  opacity:.6;
+  -webkit-mask-image:linear-gradient(to bottom, #000 30%, transparent 85%);
+  mask-image:linear-gradient(to bottom, #000 30%, transparent 85%);
+}
+/* tónování do barvy pozice */
+.tile .photo .tone{
+  position:absolute; inset:0;
+  background:var(--pos);
+  mix-blend-mode:color;
+  opacity:.35;
+}`},
+  {id:"mosaic", grp:"Nová dimenze", name:"Fotomozaika ze spoluhráčů",
+   desc:"Portrét každého hráče je poskládaný ze 64 malých fotek jeho spoluhráčů. Z dálky vidíš jeho, zblízka celý tým. Po najetí myší se hlavní fotka ztlumí a mozaika vystoupí. Tým jako jeden celek, ideální na plakát k sezóně.",
+   code:`<!-- v .photo navíc: <div class="mosaic"> s 64× <i> -->
+
+.mosaic{
+  position:absolute; inset:0;
+  display:grid; grid-template-columns:repeat(8,1fr); grid-template-rows:repeat(8,1fr);
+}
+.mosaic i{ background-size:cover; background-position:center 12%; filter:grayscale(1) contrast(1.1); }
+
+/* hlavní fotka nad mozaikou, hard-light převezme její světla a stíny */
+.tile .photo img{
+  position:relative; z-index:2;
+  mix-blend-mode:hard-light;
+  opacity:.88;
+  transition:opacity .5s;
+}
+.tile:hover .photo img{ opacity:.18; }   /* zblízka spoluhráči */
+
+// JS: naplnit mřížku adresami fotek ostatních hráčů
+const srcs = vsechnyImg.map(im => im.src);
+let html = '';
+for (let k = 0; k < 64; k++){
+  html += '<i style="background-image:url(\'' + srcs[(k * 5 + j * 3) % srcs.length] + '\')"></i>';
+}
+mosaic.innerHTML = html;`},
+  {id:"coin", grp:"Nová dimenze", name:"Pamětní mince",
+   desc:"Portrét vyražený do zlaté mince. SVG světelné filtry berou jas fotky jako výšku reliéfu a nasvítí ho zlatým světlem s lesklými odlesky. K tomu kovový okraj. Na výročí, rekordy nebo síň slávy.",
+   code:`<svg width="0" height="0" style="position:absolute">
+  <filter id="coin" color-interpolation-filters="sRGB">
+    <!-- jas → výška reliéfu -->
+    <feColorMatrix type="luminanceToAlpha" result="lum"/>
+    <feGaussianBlur in="lum" stdDeviation="0.8" result="h"/>
+    <!-- matné zlaté světlo zleva shora -->
+    <feDiffuseLighting in="h" surfaceScale="5" diffuseConstant="1.05" lighting-color="#e8b84e" result="diff">
+      <feDistantLight azimuth="225" elevation="50"/>
+    </feDiffuseLighting>
+    <!-- lesklé odlesky -->
+    <feSpecularLighting in="h" surfaceScale="5" specularConstant="0.8" specularExponent="18" lighting-color="#fff4d0" result="spec">
+      <feDistantLight azimuth="225" elevation="50"/>
+    </feSpecularLighting>
+    <feComposite in="spec" in2="diff" operator="arithmetic" k1="0" k2="1" k3="1" k4="0"/>
+  </filter>
+</svg>
+
+.tile .photo{ position:relative; padding:10%; background:radial-gradient(circle at 50% 40%, #2a2f36, #0b0e12); }
+/* kovový okraj mince */
+.tile .photo::before{
+  content:""; position:absolute; inset:7%; border-radius:50%;
+  background:conic-gradient(from 30deg, #7a5a1c, #f6dc8a, #a77b28, #fff1c1, #8a6420, #e9c46a, #7a5a1c);
+  box-shadow:0 12px 28px rgba(0,0,0,.6);
+}
+.tile .photo img{ position:relative; border-radius:50%; object-position:center 10%; filter:url(#coin); }`},
+  {id:"neon", grp:"Nová dimenze", name:"Neonový obrys",
+   desc:"Z fotky zbydou jen obrysy a ty svítí jako neonová trubice: bílé jádro a záře v barvě pozice. Hodí se na tmavé pozadí, upoutávku na noční zápas nebo do sociálních sítí.",
+   code:`<svg width="0" height="0" style="position:absolute">
+  <filter id="neon" color-interpolation-filters="sRGB">
+    <feColorMatrix type="saturate" values="0"/>
+    <feGaussianBlur stdDeviation="0.6"/>
+    <!-- hrany -->
+    <feConvolveMatrix order="3" kernelMatrix="-1 -1 -1  -1 8 -1  -1 -1 -1" preserveAlpha="true"/>
+    <!-- bílá barva, průhlednost podle síly hrany -->
+    <feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  4 4 4 0 -0.35"/>
+  </filter>
+</svg>
+
+.tile .photo{ background:#05060a; }
+.tile .photo img{
+  /* dva stíny = vnitřní a vnější záře v barvě pozice */
+  filter:url(#neon) drop-shadow(0 0 2px var(--pos)) drop-shadow(0 0 9px var(--pos));
+}`},
+  {id:"comic", grp:"Nová dimenze", name:"Komiks",
+   desc:"Ploché syté barvy, černé tahy tuší, tiskový rastr a bublina s hláškou podle pozice: brankář „Chytám!“, obránce „Stop!“, útočník „Góól!“. Jeden SVG filtr dělá barvy i obrysy najednou.",
+   code:`<svg width="0" height="0" style="position:absolute">
+  <filter id="comic" color-interpolation-filters="sRGB">
+    <!-- 1) syté ploché barvy -->
+    <feColorMatrix in="SourceGraphic" type="saturate" values="1.7" result="sat"/>
+    <feComponentTransfer in="sat" result="flat">
+      <feFuncR type="discrete" tableValues="0 0.55 1"/>
+      <feFuncG type="discrete" tableValues="0 0.55 1"/>
+      <feFuncB type="discrete" tableValues="0 0.55 1"/>
+    </feComponentTransfer>
+    <!-- 2) černé obrysy z hran -->
+    <feColorMatrix in="SourceGraphic" type="saturate" values="0" result="gray"/>
+    <feConvolveMatrix in="gray" order="3" kernelMatrix="-1 -1 -1  -1 8 -1  -1 -1 -1" preserveAlpha="true" result="edge"/>
+    <feColorMatrix in="edge" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  5 5 5 0 -0.6" result="ink"/>
+    <!-- 3) tuš přes barvy -->
+    <feComposite in="ink" in2="flat" operator="over"/>
+  </filter>
+</svg>
+
+.tile .photo img{ filter:url(#comic); }
+/* tiskový rastr */
+.tile .photo::after{
+  content:""; position:absolute; inset:0;
+  background:radial-gradient(circle, rgba(0,0,0,.35) 30%, transparent 32%) 0 0/6px 6px;
+  mix-blend-mode:multiply;
+}
+/* bublina: <div class="bubble">Góól!</div> */
+.bubble{
+  position:absolute; top:6%; right:6%;
+  background:#fff; color:#111;
+  border:2px solid #111; border-radius:50% / 45%;
+  padding:3cqw 5cqw;
+  font:800 italic 7cqw/1 'Barlow Condensed', sans-serif; text-transform:uppercase;
+  transform:rotate(-6deg);
+  box-shadow:3px 3px 0 #111;
+}`},
+  {id:"stage", grp:"Nová dimenze", name:"Nástup s reflektory",
+   desc:"Hráč jako při představování před zápasem: ze tmy ho hledají dva pohyblivé reflektory (jeden bílý, druhý v barvě pozice) a u nohou se valí dým. Všechno je animované CSS bez videa, takže to stačí pustit na obrazovku v hale.",
+   code:`<!-- v .photo navíc: <div class="beams"></div><div class="smoke"></div> -->
+
+.tile .photo{ background:#05070b; }
+.tile .photo img{ filter:contrast(1.15) brightness(.8) saturate(.9); }
+
+/* dva reflektory, každý se kývá jiným tempem */
+.beams{ position:absolute; inset:0; mix-blend-mode:screen; }
+.beams::before, .beams::after{
+  content:""; position:absolute; top:-20%; width:70%; height:140%;
+  transform-origin:50% 0;
+  clip-path:polygon(44% 0, 56% 0, 100% 100%, 0 100%);   /* kužel světla */
+  filter:blur(6px);
+}
+.beams::before{ left:-15%; background:linear-gradient(to bottom, rgba(255,250,235,.6), transparent 85%); animation:beamL 7s ease-in-out infinite alternate; }
+.beams::after { right:-15%; background:linear-gradient(to bottom, color-mix(in srgb, var(--pos) 60%, transparent), transparent 85%); animation:beamR 9s ease-in-out infinite alternate; }
+@keyframes beamL{ from{transform:rotate(-24deg)} to{transform:rotate(6deg)} }
+@keyframes beamR{ from{transform:rotate(22deg)}  to{transform:rotate(-8deg)} }
+
+/* dým: SVG šum, který pomalu plyne do strany */
+.smoke{
+  position:absolute; left:-10%; right:-10%; bottom:-5%; height:65%;
+  background:url("data:image/svg+xml,…feTurbulence baseFrequency='.012'…") 0 0/360px 360px;
+  filter:grayscale(1) brightness(1.6) contrast(1.4) blur(3px);
+  mix-blend-mode:screen; opacity:.75;
+  mask-image:linear-gradient(to top, #000 15%, transparent 100%);
+  animation:smoke 26s linear infinite;
+}
+@keyframes smoke{ to{ background-position:360px 0; } }`},
+  {id:"kaleido", grp:"Nová dimenze", name:"Kaleidoskop",
+   desc:"Fotka rozřezaná na osm klínů, které se střídavě zrcadlí a pomalu točí. Vznikne nekonečný symetrický vzor z barev dresu a obličeje. Po najetí myší se vzor přeskládá. Čistě abstraktní, na pozadí nebo do videa.",
+   code:`<!-- v .photo: <div class="kaleido"> s 8× <i> -->
+
+.kaleido{
+  position:absolute; inset:-21%;            /* větší, aby při otáčení nebyly vidět rohy */
+  animation:kspin 60s linear infinite;
+}
+.kaleido i{
+  position:absolute; inset:0;
+  background:var(--img) no-repeat;
+  background-size:140% auto;
+  background-position:50% 20%;
+  clip-path:polygon(50% 50%, 100% 50%, 100% 0%);   /* klín 45° */
+  transition:background-position 1.4s ease;
+}
+/* každý další klín pootočený a každý druhý zrcadlený */
+.kaleido i:nth-child(2){ transform:rotate(-90deg) scaleY(-1); }
+.kaleido i:nth-child(3){ transform:rotate(-90deg); }
+.kaleido i:nth-child(4){ transform:rotate(-180deg) scaleY(-1); }
+.kaleido i:nth-child(5){ transform:rotate(-180deg); }
+.kaleido i:nth-child(6){ transform:rotate(-270deg) scaleY(-1); }
+.kaleido i:nth-child(7){ transform:rotate(-270deg); }
+.kaleido i:nth-child(8){ transform:rotate(-360deg) scaleY(-1); }
+.tile:hover .kaleido i{ background-position:50% 60%; }
+@keyframes kspin{ to{ transform:rotate(360deg); } }`},
+  {id:"water", grp:"Nová dimenze", name:"Vlnění vody",
+   desc:"Po najetí myší se fotka rozvlní jako odraz na hladině. Šum v SVG filtru se animuje přímo v prohlížeči, takže vlny pořád plynou a neopakují se. V klidu je dole jen jemný modrý nádech.",
+   code:`<svg width="0" height="0" style="position:absolute">
+  <filter id="water" x="-5%" y="-5%" width="110%" height="110%">
+    <feTurbulence type="turbulence" baseFrequency="0.012 0.05" numOctaves="2" seed="4" result="t">
+      <!-- šum se pořád mění = vlny plynou -->
+      <animate attributeName="baseFrequency" dur="7s"
+               values="0.012 0.05;0.016 0.07;0.012 0.05" repeatCount="indefinite"/>
+    </feTurbulence>
+    <feDisplacementMap in="SourceGraphic" in2="t" scale="16" xChannelSelector="R" yChannelSelector="B"/>
+  </filter>
+</svg>
+
+/* filtr jen po najetí: animovaný šum je náročný, na 31 fotkách naráz by se stránka sekala */
+.tile:hover .photo img{ filter:url(#water) saturate(1.1); }
+.tile .photo::after{
+  content:""; position:absolute; inset:0;
+  background:linear-gradient(to bottom, transparent 50%, rgba(30,120,170,.35));
+}`},
+  {id:"plexi", grp:"Nová dimenze", name:"Puk do plexiskla",
+   desc:"Čistě hokejový efekt: hráč za plexisklem, do kterého právě narazil puk. Kolem místa zásahu se sklo roztříští na osm střepů, každý trochu posunutý a jinak nasvícený, a přes ně vedou praskliny. Po najetí myší se sklo zase scelí.",
+   code:`<!-- v .photo: <div class="shards"> s 8× <i> = 8 trojúhelníků od místa zásahu k okrajům -->
+
+.shards i{
+  position:absolute; inset:0;
+  background:var(--img) top center/cover no-repeat;
+  clip-path:var(--clip);        /* např. polygon(62% 38%, 100% 0%, 100% 55%) */
+  transform:translate(var(--tx), var(--ty)) rotate(var(--rr));   /* střep odskočí od zásahu */
+  filter:brightness(var(--br));
+  transition:transform .5s cubic-bezier(.2,.8,.2,1), filter .5s;
+}
+/* praskliny: SVG s čarami vygenerované skriptem */
+.tile .photo::after{
+  content:""; position:absolute; inset:0;
+  background:var(--cracks) center/100% 100% no-repeat;
+  filter:drop-shadow(0 0 1px rgba(0,0,0,.7));
+}
+/* záblesk v místě zásahu */
+.tile .photo::before{
+  content:""; position:absolute; inset:0;
+  background:radial-gradient(circle at 62% 38%, rgba(255,255,255,.6), transparent 12%);
+}
+.tile:hover .shards i{ transform:none; filter:none; }
+
+// JS: střep = trojúhelník zásah → bod okraje → další bod okraje
+const IMPACT = [62, 38];
+const RIM = [[0,0],[40,0],[100,0],[100,55],[100,100],[45,100],[0,100],[0,45]];
+RIM.forEach((a, k) => {
+  const b = RIM[(k + 1) % RIM.length];
+  piece.style.setProperty('--clip',
+    'polygon(' + IMPACT[0] + '% ' + IMPACT[1] + '%, ' + a[0] + '% ' + a[1] + '%, ' + b[0] + '% ' + b[1] + '%)');
+  // --tx/--ty = směr od zásahu k těžišti střepu × 3,5 px
+});`},
+
   // ===== kombinátor =====
   {id:"combo", grp:"Výběr pro plachtu", name:"Kombinátor",
    desc:"Spoj libovolnou úpravu fotky s grafikou karty a podívej se, jak spolu fungují. S tlačítkem Celá soupiska uvidíš výsledek na všech hráčích, jako na skutečné plachtě. Kód dole obsahuje obě části.",
@@ -2035,6 +2524,60 @@ function candidateUrls(p){
   (p.altFirst || []).forEach(af => urls.push(`https://hcmotor.cz/foto/hraci/${SEASON}/${last}_${af}.jpg`));
   urls.push(`https://hcmotor.cz/foto/hraci/${SEASON}/${first}_${last}.jpg`);
   return urls;
+}
+
+// --- plexisklo: střepy a praskliny kolem místa zásahu ---
+const IMPACT = [62, 38];
+const RIM = [[0,0],[40,0],[100,0],[100,55],[100,100],[45,100],[0,100],[0,45]];
+const SHARDS = RIM.map((a, k) => {
+  const b = RIM[(k + 1) % RIM.length];
+  const cx = (IMPACT[0] + a[0] + b[0]) / 3, cy = (IMPACT[1] + a[1] + b[1]) / 3;
+  const len = Math.hypot(cx - IMPACT[0], cy - IMPACT[1]) || 1;
+  return {
+    clip: `polygon(${IMPACT[0]}% ${IMPACT[1]}%, ${a[0]}% ${a[1]}%, ${b[0]}% ${b[1]}%)`,
+    tx: ((cx - IMPACT[0]) / len * 3.5).toFixed(1),
+    ty: ((cy - IMPACT[1]) / len * 3.5).toFixed(1),
+  };
+});
+(function crackLayer(){
+  let seed = 7;
+  const rnd = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
+  const [ix, iy] = IMPACT;
+  let paths = '';
+  RIM.forEach(([x, y]) => {               // paprsky od zásahu k okrajům
+    let d = `M${ix} ${iy}`;
+    for (let t = 1; t <= 3; t++){
+      const f = t / 3;
+      const jx = t < 3 ? (rnd() - .5) * 6 : 0, jy = t < 3 ? (rnd() - .5) * 6 : 0;
+      d += ` L${(ix + (x - ix) * f + jx).toFixed(1)} ${(iy + (y - iy) * f + jy).toFixed(1)}`;
+    }
+    paths += `<path d='${d}'/>`;
+  });
+  [7, 16].forEach(rad => {                // zubaté kruhy kolem zásahu
+    let d = '';
+    for (let k = 0; k <= 12; k++){
+      const ang = k / 12 * Math.PI * 2, r = rad * (0.75 + rnd() * .5);
+      d += (k ? ' L' : 'M') + (ix + Math.cos(ang) * r).toFixed(1) + ' ' + (iy + Math.sin(ang) * r).toFixed(1);
+    }
+    paths += `<path d='${d}'/>`;
+  });
+  const svgTxt = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'>`
+    + `<g fill='none' stroke='white' stroke-opacity='.85' stroke-width='1.2' vector-effect='non-scaling-stroke' stroke-linejoin='round'>${paths}</g></svg>`;
+  document.documentElement.style.setProperty('--cracks', `url("data:image/svg+xml,${encodeURIComponent(svgTxt)}")`);
+})();
+
+// --- fotomozaika: mřížka ze spoluhráčů ---
+function makeMosaic(retry = 0){
+  const srcs = imgs.map(im => im.dataset.orig).filter(Boolean);
+  photos.forEach((ph, j) => {
+    const m = ph.querySelector('.mosaic');
+    if (!m || !srcs.length || m.dataset.n == srcs.length) return;
+    m.dataset.n = srcs.length;
+    let html = '';
+    for (let k = 0; k < 64; k++) html += `<i style="background-image:url('${srcs[(k * 5 + j * 3) % srcs.length]}')"></i>`;
+    m.innerHTML = html;
+  });
+  if (srcs.length < imgs.length && retry < 6) setTimeout(() => { if (current.id === 'mosaic') makeMosaic(retry + 1); }, 1200);
 }
 
 // ukázková čísla pro efekt „Detail po najetí“ (nejsou skutečná)
@@ -2080,7 +2623,7 @@ function buildTile(p, i){
     s.className = 'strip ' + c;
     photo.appendChild(s);
   });
-  ['tone','sharp','orig-layer','split-line','holo','depth','under','clear','torch','palette'].forEach(c => {
+  ['tone','sharp','orig-layer','split-line','holo','depth','under','clear','torch','palette','dexp','mosaic','beams','smoke'].forEach(c => {
     const d = document.createElement('div');
     d.className = c;
     photo.appendChild(d);
@@ -2105,6 +2648,28 @@ function buildTile(p, i){
     cubes.appendChild(cell);
   }
   photo.appendChild(cubes);
+  // pop-art 2×2, kaleidoskop 8 klínů
+  [['warhol', 4], ['kaleido', 8]].forEach(([cls, n]) => {
+    const w = document.createElement('div');
+    w.className = cls;
+    w.innerHTML = '<i></i>'.repeat(n);
+    photo.appendChild(w);
+  });
+  // komiksová bublina
+  const bubble = document.createElement('div');
+  bubble.className = 'bubble';
+  bubble.textContent = {G:'Chytám!', D:'Stop!', F:'Góól!'}[p.pos];
+  photo.appendChild(bubble);
+  // střepy plexiskla
+  const shards = document.createElement('div');
+  shards.className = 'shards';
+  SHARDS.forEach((sh, k) => {
+    const piece = document.createElement('i');
+    const h = ((i + 3) * 53 + k * 29) % 100 / 100;
+    piece.style.cssText = `--clip:${sh.clip};--tx:${sh.tx}px;--ty:${sh.ty}px;--rr:${((h - .5) * 3.2).toFixed(2)}deg;--br:${(.85 + h * .27).toFixed(2)}`;
+    shards.appendChild(piece);
+  });
+  photo.appendChild(shards);
   // Ken Burns: každý hráč jinak
   tile.style.setProperty('--kbd', `-${((i * 2.3) % 14).toFixed(1)}s`);
   tile.style.setProperty('--kbx', i % 2 ? '3%' : '-3%');
@@ -2382,6 +2947,7 @@ function leaveFx(id){
   }
 }
 function enterFx(id){
+  if (id === 'mosaic') makeMosaic();
   if (id === 'ascii') photos.forEach((ph, j) => makeAscii(ph, imgs[j]));
   if (id === 'palette') photos.forEach((ph, j) => makePalette(ph, imgs[j], tiles[j]));
   document.getElementById('pixctl').classList.toggle('show', id === 'pixel');
