@@ -6,7 +6,7 @@
 <title>Úpravy fotek hráčů</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,500;0,600;0,700;0,800;1,800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   /* Rozvržení: vlevo seznam efektů, vpravo popis → mřížka fotek → CSS kód. Stejný svět jako plachta hráčů. */
   :root{
@@ -23,6 +23,9 @@
     --code-bg:#0a0c0f;
     --sans:'IBM Plex Sans', system-ui, sans-serif;
     --mono:'IBM Plex Mono', ui-monospace, Consolas, monospace;
+    --cond:'Barlow Condensed', 'Arial Narrow', sans-serif;
+    --gold:#e8c35a;
+    --ink:#080b0f;
     color-scheme:dark;
   }
   *{box-sizing:border-box;}
@@ -139,6 +142,7 @@
     object-position:top center;
     display:block;
   }
+  .tile:focus-visible{outline:2px solid var(--accent); outline-offset:2px;}
   .tile .noimg{font-family:var(--mono); font-size:10px; color:var(--muted); text-align:center; padding:8px;}
   .tile .label{padding:8px 8px 10px; text-align:center;}
   .tile .name{font-size:13px; font-weight:600; line-height:1.2;}
@@ -370,6 +374,163 @@
     opacity:var(--lens,0);
   }
 
+  /* ===== PROFESIONÁLNÍ ===== */
+  .tile .photo{container-type:inline-size;}
+  .photo .ov, .photo .ov-stats{display:none;}
+  .ov-first, .ov-last{display:block;}
+
+  /* 27 — TV vizitka */
+  .fx-lower .label{display:none;}
+  .fx-lower .photo img{object-position:center 8%;}
+  .fx-lower .photo::before{
+    content:""; position:absolute; inset:0; z-index:1; pointer-events:none;
+    background:linear-gradient(to top, rgba(8,11,15,.55), transparent 45%);
+  }
+  .fx-lower .ov{
+    display:flex; align-items:stretch;
+    position:absolute; left:0; bottom:9%; max-width:88%; z-index:3;
+    font-family:var(--cond); text-transform:uppercase; color:#fff;
+    box-shadow:0 6px 20px rgba(0,0,0,.35);
+  }
+  .fx-lower .ov-num{
+    display:flex; align-items:center;
+    background:var(--pos); color:var(--ink);
+    font-weight:800; font-size:11cqw; padding:0 3cqw;
+    font-variant-numeric:tabular-nums;
+  }
+  .fx-lower .ov-name{
+    background:rgba(8,11,15,.9);
+    padding:1.6cqw 4cqw 1.8cqw 3cqw;
+    border-bottom:.8cqw solid var(--pos);
+  }
+  .fx-lower .ov-first{font-weight:500; font-size:5.2cqw; letter-spacing:.06em; opacity:.75;}
+  .fx-lower .ov-last{font-weight:800; font-size:9cqw; line-height:.95;}
+  .fx-lower .ov-pos{display:none;}
+
+  /* 28 — matchday karta */
+  .fx-match .tile{background:var(--ink);}
+  .fx-match .label{display:none;}
+  .fx-match .tile .photo{aspect-ratio:4/5;}
+  .fx-match .photo img{object-position:center 8%;}
+  .fx-match .photo::before{
+    content:""; position:absolute; left:0; right:0; bottom:0; height:38%; z-index:1;
+    background:var(--pos);
+    clip-path:polygon(0 30%, 100% 0, 100% 100%, 0 100%);
+  }
+  .fx-match .photo::after{
+    content:""; position:absolute; left:0; right:0; bottom:0; height:38%; z-index:2;
+    background:rgba(8,11,15,.94);
+    clip-path:polygon(0 42%, 100% 12%, 100% 100%, 0 100%);
+  }
+  .fx-match .ov{
+    display:grid; position:absolute; left:5cqw; right:5cqw; bottom:4cqw; z-index:3;
+    grid-template-columns:auto 1fr;
+    grid-template-areas:"num name" "num pos";
+    column-gap:3.5cqw; align-items:end;
+    font-family:var(--cond); text-transform:uppercase; color:#fff;
+  }
+  .fx-match .ov-num{grid-area:num; font-weight:800; font-style:italic; font-size:21cqw; line-height:.8; color:var(--pos);}
+  .fx-match .ov-name{grid-area:name;}
+  .fx-match .ov-first{font-weight:600; font-size:5cqw; letter-spacing:.08em; opacity:.7;}
+  .fx-match .ov-last{font-weight:800; font-size:9.5cqw; line-height:.9;}
+  .fx-match .ov-pos{grid-area:pos; font-weight:600; font-size:4.2cqw; letter-spacing:.14em; color:var(--pos); margin-top:1cqw;}
+
+  /* 29 — obrysové číslo */
+  .fx-outline .photo img{filter:grayscale(1) contrast(1.15) brightness(.95); object-position:center 10%;}
+  .fx-outline .photo::after{
+    content:""; position:absolute; inset:0; z-index:1; pointer-events:none;
+    background:linear-gradient(to top, rgba(8,11,15,.5), transparent 40%);
+  }
+  .fx-outline .ov{display:block;}
+  .fx-outline .ov-name, .fx-outline .ov-pos{display:none;}
+  .fx-outline .ov-num{
+    position:absolute; top:1cqw; right:4cqw; z-index:3;
+    font:800 italic 36cqw/1 var(--cond);
+    color:transparent;
+    -webkit-text-stroke:1.5px rgba(255,255,255,.85);
+  }
+  .fx-outline .label{text-align:left; padding:10px 12px 12px; border-top:3px solid var(--pos);}
+  .fx-outline .name{font:700 19px/1.05 var(--cond); text-transform:uppercase; letter-spacing:.02em;}
+  .fx-outline .meta{text-transform:uppercase; letter-spacing:.1em;}
+
+  /* 30 — filmový grading */
+  .fx-grade .photo img{filter:url(#grade) contrast(1.06) saturate(1.1);}
+  .fx-grade .photo::after{
+    content:""; position:absolute; inset:0; pointer-events:none;
+    background:radial-gradient(ellipse at 50% 35%, transparent 55%, rgba(5,10,18,.45) 100%);
+  }
+
+  /* 31 — matné sklo */
+  .fx-glass .label{display:none;}
+  .fx-glass .photo img{object-position:center 8%;}
+  .fx-glass .ov{
+    display:flex; align-items:center; justify-content:space-between; gap:3cqw;
+    position:absolute; left:4cqw; right:4cqw; bottom:4cqw; z-index:3;
+    padding:2.6cqw 3.6cqw;
+    background:rgba(20,24,30,.32);
+    -webkit-backdrop-filter:blur(12px) saturate(1.4);
+    backdrop-filter:blur(12px) saturate(1.4);
+    border:1px solid rgba(255,255,255,.18);
+    border-radius:10px;
+    color:#fff;
+  }
+  .fx-glass .ov-first{font-size:5cqw; opacity:.75; line-height:1.2;}
+  .fx-glass .ov-last{font-size:7.6cqw; font-weight:700; line-height:1.1;}
+  .fx-glass .ov-num{font:700 11cqw/1 var(--cond); order:2;}
+  .fx-glass .ov-pos{display:none;}
+
+  /* 32 — detail po najetí */
+  .fx-detail .ov{
+    display:flex; flex-direction:column; justify-content:flex-end; gap:2.5cqw;
+    position:absolute; inset:0; z-index:3; padding:5cqw;
+    background:linear-gradient(to top, rgba(8,11,15,.96) 45%, rgba(8,11,15,.55) 75%, transparent);
+    color:#fff;
+    transform:translateY(101%);
+    transition:transform .35s cubic-bezier(.2,.8,.2,1);
+  }
+  .fx-detail .tile:hover .ov, .fx-detail .tile:focus-within .ov{transform:none;}
+  .fx-detail .ov-num{font:800 italic 9cqw/1 var(--cond); color:var(--pos);}
+  .fx-detail .ov-first{display:none;}
+  .fx-detail .ov-last{font:800 11cqw/.9 var(--cond); text-transform:uppercase;}
+  .fx-detail .ov-pos{display:none;}
+  .fx-detail .ov-stats{
+    display:grid; grid-template-columns:repeat(4, 1fr); gap:1.5cqw;
+    border-top:1px solid rgba(255,255,255,.18); padding-top:2.5cqw;
+  }
+  .ov-stats div{display:flex; flex-direction:column;}
+  .ov-stats b{font:700 8cqw/1 var(--cond); font-variant-numeric:tabular-nums;}
+  .ov-stats span{font:500 3.6cqw/1.3 var(--mono); opacity:.65; text-transform:uppercase;}
+  .ov-stats em{grid-column:1/-1; font:400 3.2cqw/1 var(--mono); opacity:.45; font-style:normal;}
+
+  /* 33 — hráč zápasu */
+  .fx-motm .tile{filter:grayscale(1) brightness(.5); transition:filter .3s, transform .3s, box-shadow .3s; cursor:pointer;}
+  .fx-motm .tile.motm{
+    filter:none; z-index:1;
+    border-color:var(--gold);
+    box-shadow:0 0 0 2px var(--gold), 0 14px 40px rgba(232,195,90,.22);
+    transform:scale(1.04);
+  }
+  .fx-motm .tile.motm::after{
+    content:"Hráč zápasu";
+    position:absolute; top:8px; left:8px; z-index:4;
+    background:var(--gold); color:var(--ink);
+    font:700 12px/1 var(--cond); text-transform:uppercase; letter-spacing:.1em;
+    padding:5px 8px 4px;
+  }
+
+  /* 34 — nástup sestavy */
+  .fx-entry .tile{transition:opacity .45s, transform .6s cubic-bezier(.2,.8,.2,1);}
+  .fx-entry .tile.pre{opacity:0; transform:translateY(18px);}
+  .fx-entry .photo img{clip-path:inset(0 0 0 0); transition:clip-path .7s cubic-bezier(.7,0,.2,1) .12s;}
+  .fx-entry .tile.pre .photo img{clip-path:inset(0 100% 0 0);}
+  .fx-entry .photo::before{
+    content:""; position:absolute; top:0; bottom:0; left:0; width:100%; z-index:2; pointer-events:none;
+    background:var(--pos);
+    transform-origin:right; transform:scaleX(0);
+    transition:transform .5s cubic-bezier(.7,0,.2,1) .35s;
+  }
+  .fx-entry .tile.pre .photo::before{transform-origin:left; transform:scaleX(1); transition:none;}
+
   /* ovládání pixel artu */
   .pixctl{
     display:none;
@@ -475,6 +636,13 @@
       <feFuncR type="table" tableValues="0 0.25 0.8 1 1 1"/>
       <feFuncG type="table" tableValues="0 0 0.1 0.45 0.85 1"/>
       <feFuncB type="table" tableValues="0.15 0.55 0.45 0 0.1 0.9"/>
+    </feComponentTransfer>
+  </filter>
+  <filter id="grade" color-interpolation-filters="sRGB">
+    <feComponentTransfer>
+      <feFuncR type="table" tableValues="0.02 0.24 0.56 0.86 1"/>
+      <feFuncG type="table" tableValues="0.07 0.27 0.53 0.8 0.96"/>
+      <feFuncB type="table" tableValues="0.13 0.33 0.5 0.7 0.84"/>
     </feComponentTransfer>
   </filter>
 </svg>
@@ -909,6 +1077,169 @@ photo.style.setProperty('--cy', cy + 'px');
 photo.style.setProperty('--lbs', \`\${w*Z}px \${h*Z}px\`);
 photo.style.setProperty('--lbp', \`\${cx - u*w*Z}px \${cy - v*h*Z}px\`);
 photo.style.setProperty('--lens', 1);`},
+
+  // ===== profesionální =====
+  {id:"lower", grp:"Profesionální", name:"TV vizitka",
+   desc:"Jmenovka jako v televizní grafice: barevný blok s číslem, pod ním tmavý pruh s příjmením verzálkami a linkou v barvě pozice. Úzké písmo Barlow Condensed se do sportovní grafiky hodí, protože se na řádek vejdou i dlouhá jména.",
+   code:`<!-- v .photo -->
+<div class="ov">
+  <span class="ov-num">84</span>
+  <span class="ov-name"><span class="ov-first">Tomáš</span><span class="ov-last">Kundrátek</span></span>
+</div>
+
+/* fonts.googleapis.com: Barlow Condensed 500, 800 */
+.tile .photo{ position:relative; container-type:inline-size; }   /* cqw = % šířky fotky */
+.tile .photo::before{
+  content:""; position:absolute; inset:0;
+  background:linear-gradient(to top, rgba(8,11,15,.55), transparent 45%);
+}
+.ov{
+  display:flex; position:absolute; left:0; bottom:9%; max-width:88%;
+  font-family:'Barlow Condensed', sans-serif; text-transform:uppercase; color:#fff;
+  box-shadow:0 6px 20px rgba(0,0,0,.35);
+}
+.ov-num{ display:flex; align-items:center; background:var(--pos); color:#080b0f;
+  font-weight:800; font-size:11cqw; padding:0 3cqw; }
+.ov-name{ background:rgba(8,11,15,.9); padding:1.6cqw 4cqw 1.8cqw 3cqw; border-bottom:.8cqw solid var(--pos); }
+.ov-first{ display:block; font-weight:500; font-size:5.2cqw; letter-spacing:.06em; opacity:.75; }
+.ov-last{ display:block; font-weight:800; font-size:9cqw; line-height:.95; }`},
+  {id:"match", grp:"Profesionální", name:"Matchday karta",
+   desc:"Formát na soupisku nebo sociální sítě: fotka na výšku 4:5, šikmý panel ve dvou vrstvách a velké kurzivní číslo v barvě pozice. Všechny rozměry jsou v cqw, takže karta vypadá stejně v náhledu i v plné velikosti.",
+   code:`.tile .photo{ position:relative; aspect-ratio:4/5; container-type:inline-size; }
+/* barevný a tmavý šikmý panel */
+.tile .photo::before,
+.tile .photo::after{ content:""; position:absolute; left:0; right:0; bottom:0; height:38%; }
+.tile .photo::before{ background:var(--pos);          clip-path:polygon(0 30%, 100% 0,   100% 100%, 0 100%); }
+.tile .photo::after { background:rgba(8,11,15,.94);   clip-path:polygon(0 42%, 100% 12%, 100% 100%, 0 100%); }
+
+.ov{
+  display:grid; position:absolute; left:5cqw; right:5cqw; bottom:4cqw; z-index:3;
+  grid-template-columns:auto 1fr;
+  grid-template-areas:"num name" "num pos";
+  column-gap:3.5cqw; align-items:end;
+  font-family:'Barlow Condensed', sans-serif; text-transform:uppercase; color:#fff;
+}
+.ov-num { grid-area:num; font-weight:800; font-style:italic; font-size:21cqw; line-height:.8; color:var(--pos); }
+.ov-name{ grid-area:name; }
+.ov-first{ display:block; font-weight:600; font-size:5cqw; letter-spacing:.08em; opacity:.7; }
+.ov-last { display:block; font-weight:800; font-size:9.5cqw; line-height:.9; }
+.ov-pos { grid-area:pos; font-weight:600; font-size:4.2cqw; letter-spacing:.14em; color:var(--pos); }`},
+  {id:"outline", grp:"Profesionální", name:"Obrysové číslo",
+   desc:"Časopisecký profil: kontrastní černobílá fotka, číslo dresu jen jako obrys v rohu a jméno verzálkami pod linkou v barvě pozice. Střídmé a čitelné, dobře vyjde i v tisku.",
+   code:`.tile .photo img{ filter:grayscale(1) contrast(1.15) brightness(.95); object-position:center 10%; }
+.ov-num{
+  position:absolute; top:1cqw; right:4cqw;
+  font:800 italic 36cqw/1 'Barlow Condensed', sans-serif;
+  color:transparent;
+  -webkit-text-stroke:1.5px rgba(255,255,255,.85);   /* jen obrys */
+}
+.tile .label{ text-align:left; padding:10px 12px 12px; border-top:3px solid var(--pos); }
+.tile .name{ font:700 19px/1.05 'Barlow Condensed', sans-serif; text-transform:uppercase; }
+.tile .meta{ text-transform:uppercase; letter-spacing:.1em; }`},
+  {id:"grade", grp:"Profesionální", name:"Filmový grading",
+   desc:"Barevné ladění jako ve filmu: stíny se posunou do studené modrozelené, světla a pleť do teplé. Fotky z různých focení tím dostanou jeden společný styl, jemněji než u duotónu. K tomu lehká vinětace.",
+   code:`<svg width="0" height="0" style="position:absolute">
+  <filter id="grade" color-interpolation-filters="sRGB">
+    <feComponentTransfer>
+      <!-- stíny: modrá výš než červená; světla: červená výš než modrá -->
+      <feFuncR type="table" tableValues="0.02 0.24 0.56 0.86 1"/>
+      <feFuncG type="table" tableValues="0.07 0.27 0.53 0.8 0.96"/>
+      <feFuncB type="table" tableValues="0.13 0.33 0.5 0.7 0.84"/>
+    </feComponentTransfer>
+  </filter>
+</svg>
+
+.tile .photo img{ filter:url(#grade) contrast(1.06) saturate(1.1); }
+.tile .photo::after{
+  content:""; position:absolute; inset:0;
+  background:radial-gradient(ellipse at 50% 35%, transparent 55%, rgba(5,10,18,.45) 100%);
+}`},
+  {id:"glass", grp:"Profesionální", name:"Matné sklo",
+   desc:"Jmenovka z matného skla přímo na fotce: backdrop-filter rozmaže, co je pod ní, takže text je čitelný na světlém i tmavém dresu. Moderní vzhled, jaký používají aplikace a klubové weby.",
+   code:`.ov{
+  display:flex; align-items:center; justify-content:space-between; gap:3cqw;
+  position:absolute; left:4cqw; right:4cqw; bottom:4cqw;
+  padding:2.6cqw 3.6cqw;
+  background:rgba(20,24,30,.32);
+  -webkit-backdrop-filter:blur(12px) saturate(1.4);
+  backdrop-filter:blur(12px) saturate(1.4);       /* rozmaže fotku pod jmenovkou */
+  border:1px solid rgba(255,255,255,.18);
+  border-radius:10px;
+  color:#fff;
+}
+.ov-first{ display:block; font-size:5cqw; opacity:.75; }
+.ov-last { display:block; font-size:7.6cqw; font-weight:700; }
+.ov-num  { order:2; font:700 11cqw/1 'Barlow Condensed', sans-serif; }`},
+  {id:"detail", grp:"Profesionální", name:"Detail po najetí",
+   desc:"Po najetí myší (nebo tabulátorem) vyjede zespodu panel se statistikami. Brankáři mají jiné sloupce než hráči v poli. Čísla tady jsou jen ukázková, v plachtě by se napojila na data ze statistik.",
+   code:`<!-- v .ov -->
+<div class="ov-stats">
+  <div><b>18</b><span>Z</span></div>
+  <div><b>4</b><span>G</span></div>
+  <div><b>7</b><span>A</span></div>
+  <div><b>11</b><span>B</span></div>
+</div>
+
+.ov{
+  position:absolute; inset:0; padding:5cqw;
+  display:flex; flex-direction:column; justify-content:flex-end; gap:2.5cqw;
+  background:linear-gradient(to top, rgba(8,11,15,.96) 45%, rgba(8,11,15,.55) 75%, transparent);
+  color:#fff;
+  transform:translateY(101%);                       /* schované pod fotkou */
+  transition:transform .35s cubic-bezier(.2,.8,.2,1);
+}
+.tile:hover .ov,
+.tile:focus-within .ov{ transform:none; }           /* tile má tabindex="0" */
+.ov-stats{ display:grid; grid-template-columns:repeat(4,1fr); border-top:1px solid rgba(255,255,255,.18); padding-top:2.5cqw; }
+.ov-stats b{ display:block; font:700 8cqw/1 'Barlow Condensed', sans-serif; }
+.ov-stats span{ font-size:3.6cqw; opacity:.65; text-transform:uppercase; }`},
+  {id:"motm", grp:"Profesionální", name:"Hráč zápasu",
+   desc:"Jeden hráč zvýrazněný zlatým rámečkem a štítkem, ostatní ztlumení do šeda. Kliknutím vybereš jiného. Hodí se na pozápasovou grafiku nebo anketu fanoušků.",
+   code:`.sheet.motm-mode .tile{
+  filter:grayscale(1) brightness(.5);
+  transition:filter .3s, transform .3s, box-shadow .3s;
+}
+.sheet.motm-mode .tile.motm{
+  filter:none;
+  border-color:#e8c35a;
+  box-shadow:0 0 0 2px #e8c35a, 0 14px 40px rgba(232,195,90,.22);
+  transform:scale(1.04);
+  z-index:1;
+}
+.tile.motm::after{
+  content:"Hráč zápasu";
+  position:absolute; top:8px; left:8px;
+  background:#e8c35a; color:#080b0f;
+  font:700 12px/1 'Barlow Condensed', sans-serif;
+  text-transform:uppercase; letter-spacing:.1em;
+  padding:5px 8px 4px;
+}
+
+// JS
+tile.addEventListener('click', () => {
+  tiles.forEach(t => t.classList.toggle('motm', t === tile));
+});`},
+  {id:"entry", grp:"Profesionální", name:"Nástup sestavy",
+   desc:"Karty naskakují jedna po druhé a přes každou fotku přejede barevná clona v barvě pozice, jako při představování sestavy v televizi. Animaci přehraješ znovu dalším kliknutím na tuto položku.",
+   code:`.tile{ transition:opacity .45s, transform .6s cubic-bezier(.2,.8,.2,1); }
+.tile.pre{ opacity:0; transform:translateY(18px); }
+
+/* fotka se odkryje zleva */
+.tile .photo img{ clip-path:inset(0 0 0 0); transition:clip-path .7s cubic-bezier(.7,0,.2,1) .12s; }
+.tile.pre .photo img{ clip-path:inset(0 100% 0 0); }
+
+/* barevná clona, která odjede doprava */
+.tile .photo::before{
+  content:""; position:absolute; inset:0;
+  background:var(--pos);
+  transform-origin:right; transform:scaleX(0);
+  transition:transform .5s cubic-bezier(.7,0,.2,1) .35s;
+}
+.tile.pre .photo::before{ transform-origin:left; transform:scaleX(1); transition:none; }
+
+// JS: všem dát .pre a postupně ho odebírat
+tiles.forEach(t => t.classList.add('pre'));
+tiles.forEach((t, i) => setTimeout(() => t.classList.remove('pre'), 120 + i * 110));`},
 ];
 
 // --- fotky ---
@@ -919,6 +1250,19 @@ function candidateUrls(p){
     `https://hcmotor.cz/foto/hraci/${SEASON}/${last}_${first}.jpg`,
     `https://hcmotor.cz/foto/hraci/${SEASON}/${first}_${last}.jpg`,
   ];
+}
+
+// ukázková čísla pro efekt „Detail po najetí“ (nejsou skutečná)
+function exampleStats(p, i){
+  const r = k => ((p.num * 37 + i * 11 + k * 17) % 100) / 100;
+  if (p.pos === 'G') return [
+    ['Z', 8 + Math.round(r(1) * 20)],
+    ['Úsp.', (89.5 + r(2) * 3.5).toFixed(1).replace('.', ',')],
+    ['Prům.', (2 + r(3) * 1.4).toFixed(2).replace('.', ',')],
+    ['Nuly', Math.round(r(4) * 3)],
+  ];
+  const g = Math.round(r(1) * (p.pos === 'F' ? 9 : 3)), a = Math.round(r(2) * 10);
+  return [['Z', 10 + Math.round(r(3) * 16)], ['G', g], ['A', a], ['B', g + a]];
 }
 
 const sheet = document.getElementById('sheet');
@@ -942,6 +1286,15 @@ players.forEach((p, i) => {
     s.className = 'strip ' + c;
     photo.appendChild(s);
   });
+  const ov = document.createElement('div');
+  ov.className = 'ov';
+  const st = exampleStats(p, i);
+  ov.innerHTML = `<span class="ov-num">${p.num}</span>`
+    + `<span class="ov-name"><span class="ov-first">${p.first}</span><span class="ov-last">${p.last}</span></span>`
+    + `<span class="ov-pos">${posLabel[p.pos]}</span>`
+    + `<div class="ov-stats">${st.map(([k,v]) => `<div><b>${v}</b><span>${k}</span></div>`).join('')}<em>ukázková čísla</em></div>`;
+  photo.appendChild(ov);
+  tile.tabIndex = 0;
   tile.appendChild(photo);
   const label = document.createElement('div');
   label.className = 'label';
@@ -988,6 +1341,10 @@ players.forEach((p, i) => {
   });
 
   tile.addEventListener('click', () => {
+    if (current.id === 'motm'){
+      tiles.forEach(t => t.classList.toggle('motm', t === tile));
+      return;
+    }
     if (current.id !== 'tune') return;
     sel = i;
     syncTuner();
@@ -1066,6 +1423,7 @@ document.getElementById('pixn').addEventListener('input', e => {
 
 function leaveFx(id){
   if (id === 'pixel') clearPixel();
+  if (id === 'entry') tiles.forEach(t => t.classList.remove('pre'));
   if (id === 'loupe') photos.forEach(ph => ph.style.removeProperty('--lens'));
   if (id === 'auto'){
     imgs.forEach(img => {
@@ -1078,6 +1436,12 @@ function leaveFx(id){
 }
 function enterFx(id){
   document.getElementById('pixctl').classList.toggle('show', id === 'pixel');
+  if (id === 'motm' && !tiles.some(t => t.classList.contains('motm'))) tiles[5].classList.add('motm');
+  if (id === 'entry'){
+    tiles.forEach(t => t.classList.add('pre'));
+    void sheet.offsetWidth;
+    tiles.forEach((t, j) => setTimeout(() => t.classList.remove('pre'), 120 + j * 110));
+  }
   if (id === 'pixel') photos.forEach(drawPixel);
   if (id === 'auto'){
     imgs.forEach(img => {
