@@ -79,9 +79,9 @@
   },
   "14": {
     "datum": "neděle 25.10.",
-    "cas": "16:00",
+    "cas": null,
     "misto": "Mladá Boleslav, ŠKOENERGO Aréna",
-    "odehrano": false
+    "odehrano": true
   },
   "15": {
     "datum": "úterý 27.10.",
