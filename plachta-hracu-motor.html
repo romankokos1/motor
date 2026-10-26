@@ -602,6 +602,218 @@
   .cmpgroup input[type=range]{width:120px; accent-color:var(--accent);}
   .cmpgroup input[hidden]{display:none;}
 
+  /* ===== REVOLUČNÍ ===== */
+  .photo .holo, .photo .depth, .photo .under, .photo .clear, .photo .textp,
+  .photo .ascii, .photo .palette, .photo .cubes, .photo .torch, .tile .back{display:none;}
+
+  /* 45 — holografická karta */
+  .fx-holo .tile{
+    transform:perspective(700px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));
+    transition:transform .15s ease-out;
+  }
+  .fx-holo .photo img{filter:contrast(1.08) saturate(1.1);}
+  .fx-holo .photo .holo{
+    display:block; position:absolute; inset:0; z-index:2; pointer-events:none;
+    background:repeating-linear-gradient(115deg,
+      #ff3c78 0%, #ffd23c 7%, #3cffa0 14%, #3cc8ff 21%, #b43cff 28%, #ff3c78 35%);
+    background-size:300% 300%;
+    background-position:var(--mx,50%) var(--my,50%);
+    mix-blend-mode:color-dodge;
+    opacity:calc(.16 + var(--glare,0) * .34);
+    transition:opacity .25s;
+  }
+  .fx-holo .photo .holo::after{
+    content:""; position:absolute; inset:0;
+    background:radial-gradient(circle at var(--mx,50%) var(--my,50%), rgba(255,255,255,.55), transparent 45%);
+    mix-blend-mode:overlay;
+    opacity:var(--glare,0);
+  }
+
+  /* 46 — parallax 2.5D */
+  .fx-parallax .tile{
+    transform:perspective(900px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));
+    transition:transform .2s ease-out;
+  }
+  .fx-parallax .photo img{
+    transform:scale(1.2) translate(calc(var(--dx,0) * -12px), calc(var(--dy,0) * -12px));
+    filter:blur(2.5px) brightness(.75) saturate(.9);
+    transition:transform .2s ease-out;
+  }
+  .fx-parallax .photo .depth{
+    display:block; position:absolute; inset:-6%; z-index:1; pointer-events:none;
+    background:var(--img) top center/cover no-repeat;
+    -webkit-mask-image:radial-gradient(ellipse 36% 46% at 50% 38%, #000 60%, transparent 100%);
+    mask-image:radial-gradient(ellipse 36% 46% at 50% 38%, #000 60%, transparent 100%);
+    transform:translate(calc(var(--dx,0) * 8px), calc(var(--dy,0) * 8px));
+    transition:transform .2s ease-out;
+  }
+
+  /* 47 — videokostka */
+  .fx-led .photo{background:#000;}
+  .fx-led .photo img{
+    filter:saturate(1.6) contrast(1.25) brightness(1.2);
+    -webkit-mask-image:radial-gradient(circle, #000 0 42%, transparent 58%);
+    -webkit-mask-size:5px 5px;
+    mask-image:radial-gradient(circle, #000 0 42%, transparent 58%);
+    mask-size:5px 5px;
+  }
+  .fx-led .photo .under{
+    display:block; position:absolute; inset:0; z-index:-1; pointer-events:none;
+    background:var(--img) top center/cover no-repeat;
+    filter:blur(5px) saturate(1.7) brightness(.8);
+    opacity:.5;
+  }
+  .fx-led .photo::after{
+    content:""; position:absolute; inset:0; z-index:1; pointer-events:none;
+    background:
+      repeating-linear-gradient(to bottom, rgba(0,0,0,.18) 0 1px, transparent 1px 10px),
+      radial-gradient(ellipse at 50% 45%, transparent 55%, rgba(0,0,0,.55) 100%);
+  }
+
+  /* 48 — za ledem */
+  .fx-ice .photo{background:#cfe0ea;}
+  .fx-ice .photo img{filter:url(#ice);}
+  .fx-ice .photo .clear{
+    display:block; position:absolute; inset:0; z-index:1; pointer-events:none;
+    background:var(--img) top center/cover no-repeat;
+    opacity:0; transition:opacity .9s ease;
+  }
+  .fx-ice .photo::after{
+    content:""; position:absolute; inset:0; z-index:2; pointer-events:none;
+    background:
+      repeating-linear-gradient(72deg, transparent 0 18px, rgba(255,255,255,.2) 18px 19px),
+      repeating-linear-gradient(-28deg, transparent 0 31px, rgba(255,255,255,.14) 31px 32px),
+      radial-gradient(ellipse at 30% 15%, rgba(255,255,255,.45), transparent 60%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    mix-blend-mode:screen;
+    opacity:.55;
+    transition:opacity .9s ease;
+  }
+  .fx-ice .tile:hover .photo .clear{opacity:1;}
+  .fx-ice .tile:hover .photo::after{opacity:0;}
+
+  /* 49 — textový portrét */
+  .fx-textp .photo{background:#06080b;}
+  .fx-textp .photo img{opacity:.07; filter:grayscale(1);}
+  .fx-textp .photo .textp{
+    display:block; position:absolute; inset:0; z-index:1; overflow:hidden; margin:0;
+    font:700 3.4cqw/.92 var(--cond);
+    text-transform:uppercase; letter-spacing:.01em;
+    word-break:break-all; text-align:justify;
+    color:transparent;
+    background:var(--img) top center/cover no-repeat;
+    -webkit-background-clip:text; background-clip:text;
+    filter:contrast(1.25) brightness(1.25) saturate(1.15);
+  }
+
+  /* 50 — ASCII portrét */
+  .fx-ascii .photo img{opacity:0;}
+  .fx-ascii .photo .ascii{
+    display:block; position:absolute; inset:0; z-index:1; margin:0; overflow:hidden;
+    background:#05070a;
+    color:var(--pos);
+    font-family:var(--mono);
+    font-size:calc(100cqw / 36);
+    line-height:calc(100cqw / 33);
+    letter-spacing:0;
+    white-space:pre;
+    text-shadow:0 0 4px color-mix(in srgb, var(--pos) 60%, transparent);
+  }
+
+  /* 51 — paleta z fotky */
+  .fx-palette .tile{
+    background:color-mix(in srgb, var(--dom, var(--panel)) 38%, var(--panel));
+    transition:background .5s;
+  }
+  .fx-palette .photo .palette{
+    display:flex; position:absolute; left:0; right:0; bottom:0; height:16%; z-index:3;
+  }
+  .palette div{flex:1; display:flex; align-items:flex-end; padding:0 0 1.2cqw 1.4cqw;}
+  .palette span{font:500 2.6cqw/1 var(--mono); letter-spacing:.02em;}
+  .palette .msg{flex:1; align-items:center; justify-content:center; padding:0; background:rgba(0,0,0,.6); font:400 3cqw/1.2 var(--mono); color:var(--muted);}
+
+  /* 52 — rozpad do kostek */
+  .fx-cubes .photo{background:var(--ink);}
+  .fx-cubes .photo img{opacity:0;}
+  .fx-cubes .photo .cubes{
+    display:grid; position:absolute; inset:0; z-index:1;
+    grid-template-columns:repeat(6, 1fr); grid-template-rows:repeat(6, 1fr);
+  }
+  .cubes i{
+    display:block;
+    background:var(--img) no-repeat;
+    background-size:100cqw auto;
+    background-position:calc(var(--c) * -100cqw / 6) calc(var(--r) * -100cqw / 6);
+    transition:transform .45s cubic-bezier(.2,.8,.2,1), filter .45s;
+    transition-delay:calc((var(--r) + var(--c)) * 25ms);
+  }
+  .fx-cubes .tile:hover .cubes i{
+    transform:scale(.8) rotate(var(--rot));
+    filter:brightness(calc(.7 + var(--lum) * .6));
+  }
+
+  /* 53 — otočná karta */
+  .fx-flip .tile{
+    overflow:visible;
+    transform-style:preserve-3d;
+    transform:perspective(900px) rotateY(0deg);
+    transition:transform .6s cubic-bezier(.3,.7,.2,1);
+    cursor:pointer;
+  }
+  .fx-flip .tile.flipped{transform:perspective(900px) rotateY(180deg);}
+  .fx-flip .tile > .photo, .fx-flip .tile > .label{-webkit-backface-visibility:hidden; backface-visibility:hidden;}
+  .fx-flip .tile .photo{border-radius:12px 12px 0 0;}
+  .fx-flip .photo::after{
+    content:"↻ otoč"; position:absolute; top:8px; right:8px; z-index:2;
+    font:500 11px/1 var(--mono); color:#fff;
+    background:rgba(8,11,15,.6); padding:5px 8px; border-radius:20px;
+  }
+  .fx-flip .tile .back{
+    display:flex; flex-direction:column; justify-content:space-between; gap:10px;
+    position:absolute; inset:0; padding:14px;
+    container-type:inline-size;
+    background:linear-gradient(160deg, color-mix(in srgb, var(--pos) 30%, var(--panel)) 0%, var(--panel) 62%);
+    border:1px solid var(--border); border-radius:12px;
+    transform:rotateY(180deg);
+    -webkit-backface-visibility:hidden; backface-visibility:hidden;
+  }
+  .b-top{display:flex; gap:4cqw; align-items:center;}
+  .b-avatar{flex:none; width:28cqw; aspect-ratio:1; border-radius:50%; background:var(--panel-2) var(--img) center 12%/cover no-repeat; box-shadow:0 0 0 2px var(--pos);}
+  .b-num{font:800 italic 10cqw/1 var(--cond); color:var(--pos);}
+  .b-name{font:700 7.5cqw/1.02 var(--cond); text-transform:uppercase;}
+  .b-pos{margin-top:1cqw; font:500 3.6cqw/1 var(--mono); color:var(--muted); text-transform:uppercase; letter-spacing:.08em;}
+  .b-stats{display:grid; grid-template-columns:1fr 1fr; gap:3cqw;}
+  .b-stats div{background:rgba(255,255,255,.05); border-radius:8px; padding:3cqw 3.5cqw;}
+  .b-stats b{display:block; font:800 11cqw/1 var(--cond); font-variant-numeric:tabular-nums;}
+  .b-stats span{font:500 3.4cqw/1.3 var(--mono); color:var(--muted); text-transform:uppercase;}
+  .b-note{font:400 3.2cqw/1 var(--mono); color:var(--muted);}
+
+  /* 54 — baterka */
+  .fx-torch .photo img{filter:grayscale(1) brightness(.32) contrast(1.1);}
+  .fx-torch .photo .torch{
+    display:block; position:absolute; inset:0; z-index:1; pointer-events:none;
+    background:var(--img) top center/cover no-repeat;
+    -webkit-mask-image:radial-gradient(circle 30cqw at var(--fx,50%) var(--fy,28%), #000 35%, transparent 100%);
+    mask-image:radial-gradient(circle 30cqw at var(--fx,50%) var(--fy,28%), #000 35%, transparent 100%);
+    filter:contrast(1.08) saturate(1.15);
+  }
+
+  /* 55 — Ken Burns */
+  @keyframes kenburns{
+    from{transform:scale(1.03) translate(0, 0);}
+    to{transform:scale(1.24) translate(var(--kbx, -3%), 2%);}
+  }
+  .fx-kenburns .photo img{
+    transform-origin:50% 22%;
+    animation:kenburns 14s ease-in-out infinite alternate;
+    animation-delay:var(--kbd, 0s);
+    filter:contrast(1.05) saturate(1.05);
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    .fx-kenburns .photo img{animation:none;}
+  }
+
   /* kombinátor */
   .combo{
     display:none;
@@ -758,6 +970,12 @@
       <feFuncG type="table" tableValues="0 0.07 0.28 0.62 0.88 1"/>
       <feFuncB type="table" tableValues="0 0.07 0.28 0.62 0.88 1"/>
     </feComponentTransfer>
+  </filter>
+  <filter id="ice" x="-5%" y="-5%" width="110%" height="110%" color-interpolation-filters="sRGB">
+    <feTurbulence type="fractalNoise" baseFrequency="0.035 0.06" numOctaves="3" seed="7" result="noise"/>
+    <feDisplacementMap in="SourceGraphic" in2="noise" scale="22" xChannelSelector="R" yChannelSelector="G" result="warp"/>
+    <feGaussianBlur in="warp" stdDeviation="1.2" result="soft"/>
+    <feColorMatrix in="soft" type="matrix" values=".6 .2 .2 0 .08  .15 .7 .2 0 .12  .1 .2 .8 0 .2  0 0 0 1 0"/>
   </filter>
 </svg>
 
@@ -1523,6 +1741,283 @@ tiles.forEach((t, i) => setTimeout(() => t.classList.remove('pre'), 120 + i * 11
   .tile .photo::after{ background:radial-gradient(circle at 30% 12%, rgba(255,244,228,.45), transparent 55%); }
 }`},
 
+  // ===== revoluční =====
+  {id:"holo", grp:"Revoluční", name:"Holografická karta",
+   desc:"Prémiová sběratelská karta s duhovou holografickou fólií. Při pohybu myší se karta naklání, duha po ní přelévá a přejíždí bílý odlesk. V klidu fólie jen jemně prosvítá.",
+   code:`<!-- v .photo navíc: <div class="holo"></div> -->
+
+.tile{
+  transform:perspective(700px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));
+  transition:transform .15s ease-out;
+}
+.tile .photo .holo{
+  position:absolute; inset:0; pointer-events:none;
+  background:repeating-linear-gradient(115deg,
+    #ff3c78 0%, #ffd23c 7%, #3cffa0 14%, #3cc8ff 21%, #b43cff 28%, #ff3c78 35%);
+  background-size:300% 300%;
+  background-position:var(--mx,50%) var(--my,50%);   /* duha jede za kurzorem */
+  mix-blend-mode:color-dodge;                        /* rozzáří jen světlá místa */
+  opacity:calc(.16 + var(--glare,0) * .34);
+}
+.tile .photo .holo::after{
+  content:""; position:absolute; inset:0;
+  background:radial-gradient(circle at var(--mx,50%) var(--my,50%), rgba(255,255,255,.55), transparent 45%);
+  mix-blend-mode:overlay;
+  opacity:var(--glare,0);
+}
+
+// JS: stejný pointermove jako u 3D náklonu (efekt 16), náklon 16°`},
+  {id:"parallax", grp:"Revoluční", name:"Parallax 2.5D",
+   desc:"Z ploché fotky vznikne prostorová scéna. Rozmazané pozadí se při pohybu myši posouvá jedním směrem a ostrý ovál s hráčem druhým, takže hráč jako by vystoupil z karty. Pro sociální sítě i web.",
+   code:`<!-- v .photo navíc: <div class="depth"></div>, na dlaždici --img:url(…) -->
+
+/* pozadí: rozmazané, jede proti kurzoru */
+.tile .photo img{
+  transform:scale(1.2) translate(calc(var(--dx,0) * -12px), calc(var(--dy,0) * -12px));
+  filter:blur(2.5px) brightness(.75) saturate(.9);
+  transition:transform .2s ease-out;
+}
+/* popředí: ostrý hráč, jede s kurzorem */
+.tile .photo .depth{
+  position:absolute; inset:-6%;
+  background:var(--img) top center/cover no-repeat;
+  -webkit-mask-image:radial-gradient(ellipse 36% 46% at 50% 38%, #000 60%, transparent 100%);
+  mask-image:radial-gradient(ellipse 36% 46% at 50% 38%, #000 60%, transparent 100%);
+  transform:translate(calc(var(--dx,0) * 8px), calc(var(--dy,0) * 8px));
+  transition:transform .2s ease-out;
+}
+
+// JS (pointermove na dlaždici): --dx a --dy od -1 do 1
+tile.style.setProperty('--dx', (px - .5) * 2);
+tile.style.setProperty('--dy', (py - .5) * 2);`},
+  {id:"led", grp:"Revoluční", name:"Videokostka",
+   desc:"Fotka jako na stadionové LED obrazovce: obraz složený ze svítících bodů, mezi nimi záře a jemné řádky panelů. Udělá to maska z opakujících se teček, žádný obrázek navíc. Ideální na gól nebo hráče zápasu.",
+   code:`<!-- v .photo navíc: <div class="under"></div>, na dlaždici --img:url(…) -->
+
+.tile .photo{ background:#000; isolation:isolate; }
+.tile .photo img{
+  filter:saturate(1.6) contrast(1.25) brightness(1.2);
+  /* mřížka LED bodů: každých 5 px jedna tečka */
+  -webkit-mask-image:radial-gradient(circle, #000 0 42%, transparent 58%);
+  -webkit-mask-size:5px 5px;
+  mask-image:radial-gradient(circle, #000 0 42%, transparent 58%);
+  mask-size:5px 5px;
+}
+/* záře mezi body */
+.tile .photo .under{
+  position:absolute; inset:0; z-index:-1;
+  background:var(--img) top center/cover no-repeat;
+  filter:blur(5px) saturate(1.7) brightness(.8);
+  opacity:.5;
+}
+/* spáry panelů a vinětace */
+.tile .photo::after{
+  content:""; position:absolute; inset:0;
+  background:
+    repeating-linear-gradient(to bottom, rgba(0,0,0,.18) 0 1px, transparent 1px 10px),
+    radial-gradient(ellipse at 50% 45%, transparent 55%, rgba(0,0,0,.55) 100%);
+}`},
+  {id:"ice", grp:"Revoluční", name:"Za ledem",
+   desc:"Hráč zamrzlý pod ledovou plochou: obraz je zkřivený, namodralý a poškrábaný od bruslí. Když na něj najedeš myší, led roztaje a ukáže čistou fotku. Křivení dělá SVG filtr ze šumu.",
+   code:`<svg width="0" height="0" style="position:absolute">
+  <filter id="ice" x="-5%" y="-5%" width="110%" height="110%" color-interpolation-filters="sRGB">
+    <feTurbulence type="fractalNoise" baseFrequency="0.035 0.06" numOctaves="3" seed="7" result="noise"/>
+    <!-- šum posouvá pixely = křivení jako přes led; scale = síla -->
+    <feDisplacementMap in="SourceGraphic" in2="noise" scale="22" xChannelSelector="R" yChannelSelector="G" result="warp"/>
+    <feGaussianBlur in="warp" stdDeviation="1.2" result="soft"/>
+    <!-- studený nádech -->
+    <feColorMatrix in="soft" type="matrix" values=".6 .2 .2 0 .08  .15 .7 .2 0 .12  .1 .2 .8 0 .2  0 0 0 1 0"/>
+  </filter>
+</svg>
+
+<!-- v .photo navíc: <div class="clear"></div> = čistá fotka pro rozmrznutí -->
+
+.tile .photo img{ filter:url(#ice); }
+.tile .photo .clear{
+  position:absolute; inset:0;
+  background:var(--img) top center/cover no-repeat;
+  opacity:0; transition:opacity .9s ease;
+}
+/* škrábance od bruslí + odlesk */
+.tile .photo::after{
+  content:""; position:absolute; inset:0;
+  background:
+    repeating-linear-gradient(72deg, transparent 0 18px, rgba(255,255,255,.2) 18px 19px),
+    repeating-linear-gradient(-28deg, transparent 0 31px, rgba(255,255,255,.14) 31px 32px),
+    radial-gradient(ellipse at 30% 15%, rgba(255,255,255,.45), transparent 60%);
+  mix-blend-mode:screen;
+  opacity:.55; transition:opacity .9s ease;
+}
+.tile:hover .photo .clear{ opacity:1; }
+.tile:hover .photo::after{ opacity:0; }`},
+  {id:"textp", grp:"Revoluční", name:"Textový portrét",
+   desc:"Portrét poskládaný z hráčova příjmení a čísla opakovaného stokrát za sebou. Každé písmeno má barvu fotky, která je pod ním. Z dálky je to fotka, zblízka text. Silné na plakát nebo do tisku.",
+   code:`<!-- v .photo: <div class="textp">KUNDRÁTEK 84 KUNDRÁTEK 84 … (cca 1700 znaků)</div> -->
+
+.tile .photo{ position:relative; container-type:inline-size; background:#06080b; }
+.tile .photo img{ opacity:.07; filter:grayscale(1); }
+.tile .photo .textp{
+  position:absolute; inset:0; overflow:hidden;
+  font:700 3.4cqw/.92 'Barlow Condensed', sans-serif;  /* menší písmo = jemnější portrét */
+  text-transform:uppercase;
+  word-break:break-all; text-align:justify;
+  color:transparent;
+  background:var(--img) top center/cover no-repeat;
+  -webkit-background-clip:text; background-clip:text;   /* fotka jen v písmenech */
+  filter:contrast(1.25) brightness(1.25) saturate(1.15);
+}
+
+// JS: naplnit text
+const word = p.last.toUpperCase() + ' ' + p.num + ' ';
+textp.textContent = word.repeat(Math.ceil(1700 / word.length));`},
+  {id:"ascii", grp:"Revoluční", name:"ASCII portrét",
+   desc:"Fotka převedená na znaky . : - = + * # % @ podle jasu, v barvě pozice, jako na terminálu. Tady už se doopravdy čtou pixely, proto fotka jde přes wsrv.nl, který čtení povoluje. Bez něj by prohlížeč cizí fotku přečíst nedovolil.",
+   code:`// fotka přes wsrv.nl, který posílá CORS hlavičku → canvas jde přečíst
+const im = new Image();
+im.crossOrigin = 'anonymous';
+im.src = 'https://wsrv.nl/?url=' + encodeURIComponent(src) + '&w=240&h=240&fit=cover&a=top';
+
+im.onload = () => {
+  const C = 60, R = 33;              // 60 sloupců, 33 řádků (znak je vyšší než širší)
+  const cv = document.createElement('canvas');
+  cv.width = C; cv.height = R;
+  const ctx = cv.getContext('2d');
+  ctx.drawImage(im, 0, 0, C, R);
+  const d = ctx.getImageData(0, 0, C, R).data;
+
+  const ramp = ' .:-=+*#%@';         // od tmavé po světlou
+  let out = '';
+  for (let y = 0; y < R; y++){
+    for (let x = 0; x < C; x++){
+      const k = (y * C + x) * 4;
+      const l = (0.3*d[k] + 0.59*d[k+1] + 0.11*d[k+2]) / 255;
+      out += ramp[Math.min(ramp.length - 1, Math.floor(l * ramp.length))];
+    }
+    out += '\\n';
+  }
+  pre.textContent = out;
+};
+
+/* <pre class="ascii"> přes fotku */
+.ascii{
+  position:absolute; inset:0; margin:0;
+  font-family:'IBM Plex Mono', monospace;
+  font-size:calc(100cqw / 36);      /* 60 znaků × 0,6 em = 36 */
+  line-height:calc(100cqw / 33);
+  color:var(--pos); background:#05070a;
+  white-space:pre;
+}`},
+  {id:"palette", grp:"Revoluční", name:"Paleta z fotky",
+   desc:"Skript najde pět hlavních barev každé fotky, ukáže je jako vzorník s kódy a dlaždici podbarví tou nejvýraznější. Každý hráč tak má vlastní barevný svět, jako u designových portfolií. Také čte pixely přes wsrv.nl.",
+   code:`// stejné načtení přes wsrv.nl jako u ASCII, fotka 60×60 px
+const d = ctx.getImageData(0, 0, 60, 60).data;
+
+// 1) podobné barvy do košů (8 úrovní na kanál)
+const bins = new Map();
+for (let k = 0; k < d.length; k += 4){
+  const key = (d[k] >> 5) << 6 | (d[k+1] >> 5) << 3 | (d[k+2] >> 5);
+  const b = bins.get(key) || {r:0, g:0, b:0, n:0};
+  b.r += d[k]; b.g += d[k+1]; b.b += d[k+2]; b.n++;
+  bins.set(key, b);
+}
+
+// 2) nejčastější koše, které se od sebe dost liší
+const cols = [...bins.values()]
+  .map(b => ({r:b.r/b.n, g:b.g/b.n, b:b.b/b.n, n:b.n}))
+  .sort((a, b) => b.n - a.n);
+const pick = [];
+for (const c of cols){
+  if (pick.every(q => Math.hypot(q.r-c.r, q.g-c.g, q.b-c.b) > 60)) pick.push(c);
+  if (pick.length === 5) break;
+}
+
+// 3) nejsytější z nich podbarví dlaždici
+tile.style.setProperty('--dom', hex(nejsytejsi));
+
+.tile{ background:color-mix(in srgb, var(--dom) 38%, #161a1f); transition:background .5s; }`},
+  {id:"cubes", grp:"Revoluční", name:"Rozpad do kostek",
+   desc:"Fotka je složená z 36 kostiček. Po najetí myší se ve vlně od levého horního rohu rozestoupí, každá se trochu pootočí a jinak rozsvítí. Po odjetí se zase složí. Žádný obrázek se nekrájí, každá kostka ukazuje jen jiný výřez stejné fotky.",
+   code:`<!-- v .photo: <div class="cubes"> a v něm 36× <i style="--r:0;--c:0;--rot:-7deg;--lum:.4"> -->
+
+.tile .photo{ container-type:inline-size; }
+.tile .photo img{ opacity:0; }
+.cubes{
+  position:absolute; inset:0;
+  display:grid; grid-template-columns:repeat(6,1fr); grid-template-rows:repeat(6,1fr);
+}
+.cubes i{
+  background:var(--img) no-repeat;
+  background-size:100cqw auto;   /* celá fotka v šířce dlaždice */
+  background-position:calc(var(--c) * -100cqw / 6) calc(var(--r) * -100cqw / 6);  /* výřez kostky */
+  transition:transform .45s cubic-bezier(.2,.8,.2,1), filter .45s;
+  transition-delay:calc((var(--r) + var(--c)) * 25ms);   /* vlna po úhlopříčce */
+}
+.tile:hover .cubes i{
+  transform:scale(.8) rotate(var(--rot));
+  filter:brightness(calc(.7 + var(--lum) * .6));
+}`},
+  {id:"flip", grp:"Revoluční", name:"Otočná karta",
+   desc:"Klikni na kartu a otočí se ve 3D jako sběratelská kartička. Na zadní straně je kulatý portrét, číslo, jméno a statistiky. Na rozdíl od detailu po najetí funguje stejně na mobilu i na počítači.",
+   code:`<!-- v .tile navíc: <div class="back">…portrét, jméno, statistiky…</div> -->
+
+.tile{
+  position:relative;
+  transform-style:preserve-3d;
+  transform:perspective(900px) rotateY(0deg);
+  transition:transform .6s cubic-bezier(.3,.7,.2,1);
+  overflow:visible;                 /* overflow:hidden by 3D zploštil */
+}
+.tile.flipped{ transform:perspective(900px) rotateY(180deg); }
+.tile > .photo, .tile > .label{ backface-visibility:hidden; }   /* líc */
+.tile .photo{ border-radius:12px 12px 0 0; }
+.tile .back{                                                    /* rub */
+  position:absolute; inset:0; padding:14px;
+  display:flex; flex-direction:column; justify-content:space-between;
+  background:linear-gradient(160deg, color-mix(in srgb, var(--pos) 30%, #161a1f), #161a1f 62%);
+  border-radius:12px;
+  transform:rotateY(180deg);
+  backface-visibility:hidden;
+}
+
+// JS
+tile.addEventListener('click', () => tile.classList.toggle('flipped'));`},
+  {id:"torch", grp:"Revoluční", name:"Baterka",
+   desc:"Fotka je potemnělá a černobílá a kolem kurzoru svítí kruh, ve kterém je barevná. V klidu svítí na obličej. Dobré pro tipovačku typu „Kdo je to?“: nejdřív posvítíš jen na kus dresu.",
+   code:`<!-- v .photo navíc: <div class="torch"></div>, na dlaždici --img:url(…) -->
+
+.tile .photo{ container-type:inline-size; }
+.tile .photo img{ filter:grayscale(1) brightness(.32) contrast(1.1); }
+.tile .photo .torch{
+  position:absolute; inset:0; pointer-events:none;
+  background:var(--img) top center/cover no-repeat;
+  /* měkký kruh světla, 30 % šířky fotky */
+  -webkit-mask-image:radial-gradient(circle 30cqw at var(--fx,50%) var(--fy,28%), #000 35%, transparent 100%);
+  mask-image:radial-gradient(circle 30cqw at var(--fx,50%) var(--fy,28%), #000 35%, transparent 100%);
+}
+
+// JS (pointermove na .photo)
+const r = photo.getBoundingClientRect();
+photo.style.setProperty('--fx', (e.clientX - r.left) / r.width * 100 + '%');
+photo.style.setProperty('--fy', (e.clientY - r.top) / r.height * 100 + '%');`},
+  {id:"kenburns", grp:"Revoluční", name:"Živá fotka (Ken Burns)",
+   desc:"Pomalé přibližování a posun jako v dokumentech. Každý hráč se hýbe jiným směrem a v jiné fázi, takže plachta na obrazovce nepůsobí jako jedna synchronní animace, ale jako živá stěna. Na velkou obrazovku v hale nebo na úvod webu.",
+   code:`@keyframes kenburns{
+  from{ transform:scale(1.03) translate(0, 0); }
+  to  { transform:scale(1.24) translate(var(--kbx, -3%), 2%); }
+}
+.tile .photo img{
+  transform-origin:50% 22%;                        /* přibližuje se k obličeji */
+  animation:kenburns 14s ease-in-out infinite alternate;
+  animation-delay:var(--kbd, 0s);                  /* každý v jiné fázi */
+}
+@media (prefers-reduced-motion:reduce){
+  .tile .photo img{ animation:none; }
+}
+
+// JS: každému hráči jiný směr a fázi
+tile.style.setProperty('--kbd', '-' + (i * 2.3 % 14) + 's');
+tile.style.setProperty('--kbx', i % 2 ? '3%' : '-3%');`},
+
   // ===== kombinátor =====
   {id:"combo", grp:"Výběr pro plachtu", name:"Kombinátor",
    desc:"Spoj libovolnou úpravu fotky s grafikou karty a podívej se, jak spolu fungují. S tlačítkem Celá soupiska uvidíš výsledek na všech hráčích, jako na skutečné plachtě. Kód dole obsahuje obě části.",
@@ -1585,11 +2080,34 @@ function buildTile(p, i){
     s.className = 'strip ' + c;
     photo.appendChild(s);
   });
-  ['tone','sharp','orig-layer','split-line'].forEach(c => {
+  ['tone','sharp','orig-layer','split-line','holo','depth','under','clear','torch','palette'].forEach(c => {
     const d = document.createElement('div');
     d.className = c;
     photo.appendChild(d);
   });
+  // textový portrét: příjmení a číslo dokola
+  const textp = document.createElement('div');
+  textp.className = 'textp';
+  const word = `${p.last.toUpperCase()} ${numTxt} `;
+  textp.textContent = word.repeat(Math.ceil(1700 / word.length));
+  photo.appendChild(textp);
+  // ASCII
+  const ascii = document.createElement('pre');
+  ascii.className = 'ascii';
+  photo.appendChild(ascii);
+  // kostky 6×6
+  const cubes = document.createElement('div');
+  cubes.className = 'cubes';
+  for (let r = 0; r < 6; r++) for (let c = 0; c < 6; c++){
+    const cell = document.createElement('i');
+    const h = ((i + 1) * 97 + r * 31 + c * 17) % 100 / 100;
+    cell.style.cssText = `--r:${r};--c:${c};--rot:${Math.round((h - .5) * 24)}deg;--lum:${h.toFixed(2)}`;
+    cubes.appendChild(cell);
+  }
+  photo.appendChild(cubes);
+  // Ken Burns: každý hráč jinak
+  tile.style.setProperty('--kbd', `-${((i * 2.3) % 14).toFixed(1)}s`);
+  tile.style.setProperty('--kbx', i % 2 ? '3%' : '-3%');
   const ov = document.createElement('div');
   ov.className = 'ov';
   const st = exampleStats(p, i);
@@ -1604,6 +2122,14 @@ function buildTile(p, i){
   label.className = 'label';
   label.innerHTML = `<div class="name">${p.name}</div><div class="meta">${p.num ? '#' + p.num + ' · ' : ''}${posLabel[p.pos]}</div>`;
   tile.appendChild(label);
+  const back = document.createElement('div');
+  back.className = 'back';
+  back.innerHTML = `<div class="b-top"><div class="b-avatar"></div><div>`
+    + `${numTxt !== '' ? `<div class="b-num">#${numTxt}</div>` : ''}`
+    + `<div class="b-name">${p.name}</div><div class="b-pos">${posLabel[p.pos]}</div></div></div>`
+    + `<div class="b-stats">${st.map(([k,v]) => `<div><b>${v}</b><span>${k}</span></div>`).join('')}</div>`
+    + `<div class="b-note">ukázková čísla · klikni zpět</div>`;
+  tile.appendChild(back);
   sheet.appendChild(tile);
   tiles.push(tile);
 
@@ -1626,22 +2152,31 @@ function buildTile(p, i){
   };
   img.src = urls[0];
 
+  const TILT = {tilt:14, holo:16, parallax:6};
   tile.addEventListener('pointermove', e => {
-    if (current.id === 'tilt'){
+    const id = current.id;
+    if (id in TILT){
       const r = tile.getBoundingClientRect();
       const px = (e.clientX - r.left) / r.width;
       const py = (e.clientY - r.top) / r.height;
-      tile.style.setProperty('--ry', (px - .5) * 14 + 'deg');
-      tile.style.setProperty('--rx', (.5 - py) * 14 + 'deg');
+      tile.style.setProperty('--ry', (px - .5) * TILT[id] + 'deg');
+      tile.style.setProperty('--rx', (.5 - py) * TILT[id] + 'deg');
       tile.style.setProperty('--mx', px * 100 + '%');
       tile.style.setProperty('--my', py * 100 + '%');
+      tile.style.setProperty('--dx', ((px - .5) * 2).toFixed(3));
+      tile.style.setProperty('--dy', ((py - .5) * 2).toFixed(3));
       tile.style.setProperty('--glare', 1);
     }
-    if (current.id === 'loupe') moveLoupe(e, photo, img);
+    if (id === 'torch'){
+      const r = photo.getBoundingClientRect();
+      photo.style.setProperty('--fx', (e.clientX - r.left) / r.width * 100 + '%');
+      photo.style.setProperty('--fy', (e.clientY - r.top) / r.height * 100 + '%');
+    }
+    if (id === 'loupe') moveLoupe(e, photo, img);
   });
   tile.addEventListener('pointerleave', () => {
-    ['--rx','--ry','--glare'].forEach(v => tile.style.removeProperty(v));
-    photo.style.removeProperty('--lens');
+    ['--rx','--ry','--glare','--dx','--dy'].forEach(v => tile.style.removeProperty(v));
+    ['--lens','--fx','--fy'].forEach(v => photo.style.removeProperty(v));
   });
 
   tile.addEventListener('click', () => {
@@ -1649,6 +2184,7 @@ function buildTile(p, i){
       tiles.forEach(t => t.classList.toggle('motm', t === tile));
       return;
     }
+    if (current.id === 'flip'){ tile.classList.toggle('flipped'); return; }
     if (current.id !== 'tune') return;
     sel = i;
     syncTuner();
@@ -1706,6 +2242,89 @@ function fillSelect(id, list, val, onChange){
 function proxyUrl(src){
   return 'https://wsrv.nl/?url=' + encodeURIComponent(src) + '&w=400&h=400&fit=cover&a=attention';
 }
+// --- čtení pixelů přes wsrv.nl (posílá CORS hlavičku, takže canvas není „zamčený“) ---
+function corsImage(src, size, cb, fail){
+  const im = new Image();
+  im.crossOrigin = 'anonymous';
+  im.onload = () => cb(im);
+  im.onerror = fail;
+  im.src = `https://wsrv.nl/?url=${encodeURIComponent(src)}&w=${size}&h=${size}&fit=cover&a=top`;
+}
+function whenLoaded(img, fn, tries = 0){
+  if (img.dataset.orig) return fn();
+  if (tries < 15) setTimeout(() => whenLoaded(img, fn, tries + 1), 400);
+}
+
+const ASCII_RAMP = ' .:-=+*#%@';
+function makeAscii(photo, img){
+  const pre = photo.querySelector('.ascii');
+  if (!pre || pre.dataset.done) return;
+  pre.textContent = '\n  načítám…';
+  whenLoaded(img, () => corsImage(img.dataset.orig, 240, im => {
+    try {
+      const C = 60, R = 33;                     // znaky mají poměr cca 0,55, proto méně řádků
+      const cv = document.createElement('canvas');
+      cv.width = C; cv.height = R;
+      const ctx = cv.getContext('2d');
+      ctx.drawImage(im, 0, 0, C, R);
+      const d = ctx.getImageData(0, 0, C, R).data;
+      const lum = [];
+      for (let k = 0; k < d.length; k += 4) lum.push(0.3 * d[k] + 0.59 * d[k+1] + 0.11 * d[k+2]);
+      const lo = Math.min(...lum), hi = Math.max(...lum), span = Math.max(1, hi - lo);
+      let out = '';
+      for (let y = 0; y < R; y++){
+        for (let x = 0; x < C; x++){
+          const t = (lum[y * C + x] - lo) / span;
+          out += ASCII_RAMP[Math.min(ASCII_RAMP.length - 1, Math.floor(t * ASCII_RAMP.length))];
+        }
+        out += '\n';
+      }
+      pre.textContent = out;
+      pre.dataset.done = '1';
+    } catch (e){ pre.textContent = '\n  pixely nejdou přečíst'; }
+  }, () => { pre.textContent = '\n  wsrv.nl nedostupný'; }));
+}
+
+function makePalette(photo, img, tile){
+  const box = photo.querySelector('.palette');
+  if (!box || box.dataset.done) return;
+  box.innerHTML = '<div class="msg">načítám…</div>';
+  whenLoaded(img, () => corsImage(img.dataset.orig, 60, im => {
+    try {
+      const cv = document.createElement('canvas');
+      cv.width = cv.height = 60;
+      const ctx = cv.getContext('2d');
+      ctx.drawImage(im, 0, 0, 60, 60);
+      const d = ctx.getImageData(0, 0, 60, 60).data;
+      // seskupení podobných barev do košů 8×8×8
+      const bins = new Map();
+      for (let k = 0; k < d.length; k += 4){
+        const key = (d[k] >> 5) << 6 | (d[k+1] >> 5) << 3 | (d[k+2] >> 5);
+        const b = bins.get(key) || {r:0, g:0, b:0, n:0};
+        b.r += d[k]; b.g += d[k+1]; b.b += d[k+2]; b.n++;
+        bins.set(key, b);
+      }
+      const cols = [...bins.values()]
+        .map(b => ({r:b.r / b.n, g:b.g / b.n, b:b.b / b.n, n:b.n}))
+        .sort((a, b) => b.n - a.n);
+      const pick = [];
+      for (const c of cols){
+        if (pick.every(q => Math.hypot(q.r - c.r, q.g - c.g, q.b - c.b) > 60)) pick.push(c);
+        if (pick.length === 5) break;
+      }
+      const hex = c => '#' + [c.r, c.g, c.b].map(v => Math.round(v).toString(16).padStart(2, '0')).join('');
+      const sat = c => { const mx = Math.max(c.r, c.g, c.b), mn = Math.min(c.r, c.g, c.b); return mx ? (mx - mn) / mx : 0; };
+      const dom = pick.slice().sort((a, b) => sat(b) * Math.sqrt(b.n) - sat(a) * Math.sqrt(a.n))[0];
+      tile.style.setProperty('--dom', hex(dom));
+      box.innerHTML = pick.map(c => {
+        const light = 0.3 * c.r + 0.59 * c.g + 0.11 * c.b > 140;
+        return `<div style="background:${hex(c)}"><span style="color:${light ? '#0b0f14' : '#fff'}">${hex(c)}</span></div>`;
+      }).join('');
+      box.dataset.done = '1';
+    } catch (e){ box.innerHTML = '<div class="msg">pixely nejdou přečíst</div>'; }
+  }, () => { box.innerHTML = '<div class="msg">wsrv.nl nedostupný</div>'; }));
+}
+
 // lupa: přepočet z kurzoru na bod v obrázku (respektuje object-fit:cover + top)
 function moveLoupe(e, photo, img){
   if (!img.naturalWidth || !img.isConnected) return;
@@ -1751,6 +2370,7 @@ document.getElementById('pixn').addEventListener('input', e => {
 function leaveFx(id){
   if (id === 'pixel') clearPixel();
   if (id === 'entry') tiles.forEach(t => t.classList.remove('pre'));
+  if (id === 'flip') tiles.forEach(t => t.classList.remove('flipped'));
   if (id === 'loupe') photos.forEach(ph => ph.style.removeProperty('--lens'));
   if (id === 'auto'){
     imgs.forEach(img => {
@@ -1762,6 +2382,8 @@ function leaveFx(id){
   }
 }
 function enterFx(id){
+  if (id === 'ascii') photos.forEach((ph, j) => makeAscii(ph, imgs[j]));
+  if (id === 'palette') photos.forEach((ph, j) => makePalette(ph, imgs[j], tiles[j]));
   document.getElementById('pixctl').classList.toggle('show', id === 'pixel');
   if (id === 'motm' && !tiles.some(t => t.classList.contains('motm'))) tiles[5].classList.add('motm');
   if (id === 'entry'){
