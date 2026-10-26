@@ -1,5 +1,5 @@
 {
- "aktualizovano": "2026-10-26T22:05:09+00:00",
+ "aktualizovano": "2026-10-26T22:31:29+00:00",
  "sezona": "2027",
  "hraci": [
   {
@@ -21,16 +21,15 @@
    "oblicej_zdroj": "detekce",
    "soubory": {
     "vyrez": "vyrez/kloucek-milan.webp",
-    "vyrez_400": "vyrez/kloucek-milan-400.webp",
     "portret_jpg": "portret/kloucek-milan.jpg",
     "portret_webp": "portret/kloucek-milan.webp"
    },
    "varovani": [
-    "výřez se zvětšuje 1.7×, může být měkký",
-    "portrét se zvětšuje 2.1×, může být měkký",
+    "výřez se zvětšuje 1.4×, může být měkký",
+    "portrét se zvětšuje 1.4×, může být měkký",
     "originál má jen 280×280 px, na velký tisk nestačí"
    ],
-   "verze": "1f0b9d43ca3c"
+   "verze": "917ac6be4441"
   },
   {
    "slug": "marik-matyas",
@@ -51,16 +50,15 @@
    "oblicej_zdroj": "detekce",
    "soubory": {
     "vyrez": "vyrez/marik-matyas.webp",
-    "vyrez_400": "vyrez/marik-matyas-400.webp",
     "portret_jpg": "portret/marik-matyas.jpg",
     "portret_webp": "portret/marik-matyas.webp"
    },
    "varovani": [
-    "výřez se zvětšuje 1.7×, může být měkký",
-    "portrét se zvětšuje 2.1×, může být měkký",
+    "výřez se zvětšuje 1.4×, může být měkký",
+    "portrét se zvětšuje 1.4×, může být měkký",
     "originál má jen 280×280 px, na velký tisk nestačí"
    ],
-   "verze": "4622110084bd"
+   "verze": "5bffffb8439d"
   },
   {
    "slug": "strmen-jan",
@@ -81,16 +79,14 @@
    "oblicej_zdroj": "detekce",
    "soubory": {
     "vyrez": "vyrez/strmen-jan.webp",
-    "vyrez_400": "vyrez/strmen-jan-400.webp",
     "portret_jpg": "portret/strmen-jan.jpg",
     "portret_webp": "portret/strmen-jan.webp"
    },
    "varovani": [
-    "výřez se zvětšuje 1.5×, může být měkký",
-    "portrét se zvětšuje 2.1×, může být měkký",
+    "portrét se zvětšuje 1.4×, může být měkký",
     "originál má jen 280×329 px, na velký tisk nestačí"
    ],
-   "verze": "d67ea535c0fb"
+   "verze": "e783351f7110"
   },
   {
    "slug": "andersen-ole-einar-engeland",
@@ -111,16 +107,15 @@
    "oblicej_zdroj": "detekce",
    "soubory": {
     "vyrez": "vyrez/andersen-ole-einar-engeland.webp",
-    "vyrez_400": "vyrez/andersen-ole-einar-engeland-400.webp",
     "portret_jpg": "portret/andersen-ole-einar-engeland.jpg",
     "portret_webp": "portret/andersen-ole-einar-engeland.webp"
    },
    "varovani": [
-    "výřez se zvětšuje 1.6×, může být měkký",
-    "portrét se zvětšuje 2.1×, může být měkký",
+    "výřez se zvětšuje 1.4×, může být měkký",
+    "portrét se zvětšuje 1.4×, může být měkký",
     "originál má jen 280×280 px, na velký tisk nestačí"
    ],
-   "verze": "a70780ec262f"
+   "verze": "68a75aa266db"
   },
   {
    "slug": "kachyna-ondrej",
@@ -141,16 +136,15 @@
    "oblicej_zdroj": "detekce",
    "soubory": {
     "vyrez": "vyrez/kachyna-ondrej.webp",
-    "vyrez_400": "vyrez/kachyna-ondrej-400.webp",
     "portret_jpg": "portret/kachyna-ondrej.jpg",
     "portret_webp": "portret/kachyna-ondrej.webp"
    },
    "varovani": [
-    "výřez se zvětšuje 1.7×, může být měkký",
-    "portrét se zvětšuje 2.1×, může být měkký",
+    "výřez se zvětšuje 1.4×, může být měkký",
+    "portrét se zvětšuje 1.4×, může být měkký",
     "originál má jen 280×280 px, na velký tisk nestačí"
    ],
-   "verze": "1c700c14bb55"
+   "verze": "c1369a862629"
   },
   {
    "slug": "kundratek-tomas",
@@ -171,16 +165,15 @@
    "oblicej_zdroj": "detekce",
    "soubory": {
     "vyrez": "vyrez/kundratek-tomas.webp",
-    "vyrez_400": "vyrez/kundratek-tomas-400.webp",
     "portret_jpg": "portret/kundratek-tomas.jpg",
     "portret_webp": "portret/kundratek-tomas.webp"
    },
    "varovani": [
-    "výřez se zvětšuje 1.6×, může být měkký",
-    "portrét se zvětšuje 2.1×, může být měkký",
+    "výřez se zvětšuje 1.4×, může být měkký",
+    "portrét se zvětšuje 1.4×, může být měkký",
     "originál má jen 280×280 px, na velký tisk nestačí"
    ],
-   "verze": "f22926806647"
+   "verze": "9f75e785551f"
   },
   {
    "slug": "nedorost-vaclav",
@@ -201,16 +194,15 @@
    "oblicej_zdroj": "detekce",
    "soubory": {
     "vyrez": "vyrez/nedorost-vaclav.webp",
-    "vyrez_400": "vyrez/nedorost-vaclav-400.webp",
     "portret_jpg": "portret/nedorost-vaclav.jpg",
     "portret_webp": "portret/nedorost-vaclav.webp"
    },
    "varovani": [
-    "výřez se zvětšuje 1.7×, může být měkký",
-    "portrét se zvětšuje 2.1×, může být měkký",
+    "výřez se zvětšuje 1.5×, může být měkký",
+    "portrét se zvětšuje 1.4×, může být měkký",
     "originál má jen 280×280 px, na velký tisk nestačí"
    ],
-   "verze": "82efb8399f78"
+   "verze": "f137730e084b"
   },
   {
    "slug": "nordsater-lucas",
@@ -231,16 +223,15 @@
    "oblicej_zdroj": "detekce",
    "soubory": {
     "vyrez": "vyrez/nordsater-lucas.webp",
-    "vyrez_400": "vyrez/nordsater-lucas-400.webp",
     "portret_jpg": "portret/nordsater-lucas.jpg",
     "portret_webp": "portret/nordsater-lucas.webp"
    },
    "varovani": [
-    "výřez se zvětšuje 1.8×, může být měkký",
-    "portrét se zvětšuje 2.1×, může být měkký",
+    "výřez se zvětšuje 1.5×, může být měkký",
+    "portrét se zvětšuje 1.4×, může být měkký",
     "originál má jen 280×280 px, na velký tisk nestačí"
    ],
-   "verze": "6bb7ae71f1d9"
+   "verze": "a2f2936e70cc"
   },
   {
    "slug": "pycha-pavel",
@@ -261,16 +252,15 @@
    "oblicej_zdroj": "detekce",
    "soubory": {
     "vyrez": "vyrez/pycha-pavel.webp",
-    "vyrez_400": "vyrez/pycha-pavel-400.webp",
     "portret_jpg": "portret/pycha-pavel.jpg",
     "portret_webp": "portret/pycha-pavel.webp"
    },
    "varovani": [
-    "výřez se zvětšuje 1.7×, může být měkký",
-    "portrét se zvětšuje 2.1×, může být měkký",
+    "výřez se zvětšuje 1.5×, může být měkký",
+    "portrét se zvětšuje 1.4×, může být měkký",
     "originál má jen 280×280 px, na velký tisk nestačí"
    ],
-   "verze": "38987ee3a8c0"
+   "verze": "1c6c01d20147"
   },
   {
    "slug": "stencel-jan",
@@ -291,16 +281,15 @@
    "oblicej_zdroj": "detekce",
    "soubory": {
     "vyrez": "vyrez/stencel-jan.webp",
-    "vyrez_400": "vyrez/stencel-jan-400.webp",
     "portret_jpg": "portret/stencel-jan.jpg",
     "portret_webp": "portret/stencel-jan.webp"
    },
    "varovani": [
-    "výřez se zvětšuje 1.6×, může být měkký",
-    "portrét se zvětšuje 2.1×, může být měkký",
+    "výřez se zvětšuje 1.4×, může být měkký",
+    "portrét se zvětšuje 1.4×, může být měkký",
     "originál má jen 280×280 px, na velký tisk nestačí"
    ],
-   "verze": "4c065a2865b7"
+   "verze": "6b1e8907f251"
   },
   {
    "slug": "vala-ondrej",
@@ -321,16 +310,15 @@
    "oblicej_zdroj": "detekce",
    "soubory": {
     "vyrez": "vyrez/vala-ondrej.webp",
-    "vyrez_400": "vyrez/vala-ondrej-400.webp",
     "portret_jpg": "portret/vala-ondrej.jpg",
     "portret_webp": "portret/vala-ondrej.webp"
    },
    "varovani": [
-    "výřez se zvětšuje 1.6×, může být měkký",
-    "portrét se zvětšuje 2.1×, může být měkký",
+    "výřez se zvětšuje 1.4×, může být měkký",
+    "portrét se zvětšuje 1.4×, může být měkký",
     "originál má jen 280×280 px, na velký tisk nestačí"
    ],
-   "verze": "983764ceea08"
+   "verze": "8656d6bfee57"
   },
   {
    "slug": "vrablik-roman",
@@ -351,16 +339,15 @@
    "oblicej_zdroj": "detekce",
    "soubory": {
     "vyrez": "vyrez/vrablik-roman.webp",
-    "vyrez_400": "vyrez/vrablik-roman-400.webp",
     "portret_jpg": "portret/vrablik-roman.jpg",
     "portret_webp": "portret/vrablik-roman.webp"
    },
    "varovani": [
-    "výřez se zvětšuje 1.7×, může být měkký",
-    "portrét se zvětšuje 2.1×, může být měkký",
+    "výřez se zvětšuje 1.5×, může být měkký",
+    "portrét se zvětšuje 1.4×, může být měkký",
     "originál má jen 280×280 px, na velký tisk nestačí"
    ],
-   "verze": "5d1e1235f341"
+   "verze": "571638d32280"
   },
   {
    "slug": "ahl-filip",
@@ -381,16 +368,15 @@
    "oblicej_zdroj": "detekce",
    "soubory": {
     "vyrez": "vyrez/ahl-filip.webp",
-    "vyrez_400": "vyrez/ahl-filip-400.webp",
     "portret_jpg": "portret/ahl-filip.jpg",
     "portret_webp": "portret/ahl-filip.webp"
    },
    "varovani": [
-    "výřez se zvětšuje 1.7×, může být měkký",
-    "portrét se zvětšuje 2.1×, může být měkký",
+    "výřez se zvětšuje 1.5×, může být měkký",
+    "portrét se zvětšuje 1.4×, může být měkký",
     "originál má jen 280×280 px, na velký tisk nestačí"
    ],
-   "verze": "0a25e26865c6"
+   "verze": "a749d9b7c281"
   },
   {
    "slug": "bell-parker",
@@ -411,16 +397,15 @@
    "oblicej_zdroj": "detekce",
    "soubory": {
     "vyrez": "vyrez/bell-parker.webp",
-    "vyrez_400": "vyrez/bell-parker-400.webp",
     "portret_jpg": "portret/bell-parker.jpg",
     "portret_webp": "portret/bell-parker.webp"
    },
    "varovani": [
-    "výřez se zvětšuje 1.6×, může být měkký",
-    "portrét se zvětšuje 2.1×, může být měkký",
+    "výřez se zvětšuje 1.4×, může být měkký",
+    "portrét se zvětšuje 1.4×, může být měkký",
     "originál má jen 280×280 px, na velký tisk nestačí"
    ],
-   "verze": "4d62018e272e"
+   "verze": "2c01a64f7d94"
   },
   {
    "slug": "beranek-martin",
@@ -441,16 +426,15 @@
    "oblicej_zdroj": "detekce",
    "soubory": {
     "vyrez": "vyrez/beranek-martin.webp",
-    "vyrez_400": "vyrez/beranek-martin-400.webp",
     "portret_jpg": "portret/beranek-martin.jpg",
     "portret_webp": "portret/beranek-martin.webp"
    },
    "varovani": [
-    "výřez se zvětšuje 1.6×, může být měkký",
-    "portrét se zvětšuje 2.1×, může být měkký",
+    "výřez se zvětšuje 1.3×, může být měkký",
+    "portrét se zvětšuje 1.4×, může být měkký",
     "originál má jen 280×280 px, na velký tisk nestačí"
    ],
-   "verze": "3757be496835"
+   "verze": "5cdca7f30e2c"
   },
   {
    "slug": "bulir-michal",
@@ -471,16 +455,15 @@
    "oblicej_zdroj": "detekce",
    "soubory": {
     "vyrez": "vyrez/bulir-michal.webp",
-    "vyrez_400": "vyrez/bulir-michal-400.webp",
     "portret_jpg": "portret/bulir-michal.jpg",
     "portret_webp": "portret/bulir-michal.webp"
    },
    "varovani": [
-    "výřez se zvětšuje 1.7×, může být měkký",
-    "portrét se zvětšuje 2.1×, může být měkký",
+    "výřez se zvětšuje 1.4×, může být měkký",
+    "portrét se zvětšuje 1.4×, může být měkký",
     "originál má jen 280×280 px, na velký tisk nestačí"
    ],
-   "verze": "f4698a01ed74"
+   "verze": "6d20be951b19"
   },
   {
    "slug": "drancak-samuel",
@@ -501,16 +484,15 @@
    "oblicej_zdroj": "detekce",
    "soubory": {
     "vyrez": "vyrez/drancak-samuel.webp",
-    "vyrez_400": "vyrez/drancak-samuel-400.webp",
     "portret_jpg": "portret/drancak-samuel.jpg",
     "portret_webp": "portret/drancak-samuel.webp"
    },
    "varovani": [
-    "výřez se zvětšuje 1.6×, může být měkký",
-    "portrét se zvětšuje 2.1×, může být měkký",
+    "výřez se zvětšuje 1.4×, může být měkký",
+    "portrét se zvětšuje 1.4×, může být měkký",
     "originál má jen 280×280 px, na velký tisk nestačí"
    ],
-   "verze": "73fd157bccd1"
+   "verze": "f305e73c931e"
   },
   {
    "slug": "hejduk-marek",
@@ -531,16 +513,15 @@
    "oblicej_zdroj": "detekce",
    "soubory": {
     "vyrez": "vyrez/hejduk-marek.webp",
-    "vyrez_400": "vyrez/hejduk-marek-400.webp",
     "portret_jpg": "portret/hejduk-marek.jpg",
     "portret_webp": "portret/hejduk-marek.webp"
    },
    "varovani": [
-    "výřez se zvětšuje 1.6×, může být měkký",
-    "portrét se zvětšuje 2.1×, může být měkký",
+    "výřez se zvětšuje 1.4×, může být měkký",
+    "portrét se zvětšuje 1.4×, může být měkký",
     "originál má jen 280×280 px, na velký tisk nestačí"
    ],
-   "verze": "58ed5a16fd5c"
+   "verze": "7796cd88ad06"
   },
   {
    "slug": "hoch-stepan",
@@ -561,16 +542,14 @@
    "oblicej_zdroj": "detekce",
    "soubory": {
     "vyrez": "vyrez/hoch-stepan.webp",
-    "vyrez_400": "vyrez/hoch-stepan-400.webp",
     "portret_jpg": "portret/hoch-stepan.jpg",
     "portret_webp": "portret/hoch-stepan.webp"
    },
    "varovani": [
-    "výřez se zvětšuje 1.5×, může být měkký",
-    "portrét se zvětšuje 2.1×, může být měkký",
+    "portrét se zvětšuje 1.4×, může být měkký",
     "originál má jen 280×280 px, na velký tisk nestačí"
    ],
-   "verze": "6e6ad8946fbc"
+   "verze": "a3bc9b4a1ffb"
   },
   {
    "slug": "humenik-matyas",
@@ -591,16 +570,15 @@
    "oblicej_zdroj": "detekce",
    "soubory": {
     "vyrez": "vyrez/humenik-matyas.webp",
-    "vyrez_400": "vyrez/humenik-matyas-400.webp",
     "portret_jpg": "portret/humenik-matyas.jpg",
     "portret_webp": "portret/humenik-matyas.webp"
    },
    "varovani": [
-    "výřez se zvětšuje 1.6×, může být měkký",
-    "portrét se zvětšuje 2.1×, může být měkký",
+    "výřez se zvětšuje 1.4×, může být měkký",
+    "portrét se zvětšuje 1.4×, může být měkký",
     "originál má jen 280×280 px, na velký tisk nestačí"
    ],
-   "verze": "d8169337fa5a"
+   "verze": "4cb2c1fd1693"
   },
   {
    "slug": "chlubna-tomas",
@@ -621,16 +599,15 @@
    "oblicej_zdroj": "detekce",
    "soubory": {
     "vyrez": "vyrez/chlubna-tomas.webp",
-    "vyrez_400": "vyrez/chlubna-tomas-400.webp",
     "portret_jpg": "portret/chlubna-tomas.jpg",
     "portret_webp": "portret/chlubna-tomas.webp"
    },
    "varovani": [
-    "výřez se zvětšuje 1.7×, může být měkký",
-    "portrét se zvětšuje 2.1×, může být měkký",
+    "výřez se zvětšuje 1.4×, může být měkký",
+    "portrét se zvětšuje 1.4×, může být měkký",
     "originál má jen 280×280 px, na velký tisk nestačí"
    ],
-   "verze": "8ee477e58547"
+   "verze": "dcd902efb34c"
   },
   {
    "slug": "kolacek-josef",
@@ -651,16 +628,14 @@
    "oblicej_zdroj": "detekce",
    "soubory": {
     "vyrez": "vyrez/kolacek-josef.webp",
-    "vyrez_400": "vyrez/kolacek-josef-400.webp",
     "portret_jpg": "portret/kolacek-josef.jpg",
     "portret_webp": "portret/kolacek-josef.webp"
    },
    "varovani": [
-    "výřez se zvětšuje 1.5×, může být měkký",
-    "portrét se zvětšuje 2.1×, může být měkký",
+    "portrét se zvětšuje 1.4×, může být měkký",
     "originál má jen 280×280 px, na velký tisk nestačí"
    ],
-   "verze": "8c791b6f10ad"
+   "verze": "552c1e7abc4f"
   },
   {
    "slug": "krastenbergs-renars",
@@ -681,16 +656,14 @@
    "oblicej_zdroj": "detekce",
    "soubory": {
     "vyrez": "vyrez/krastenbergs-renars.webp",
-    "vyrez_400": "vyrez/krastenbergs-renars-400.webp",
     "portret_jpg": "portret/krastenbergs-renars.jpg",
     "portret_webp": "portret/krastenbergs-renars.webp"
    },
    "varovani": [
-    "výřez se zvětšuje 1.5×, může být měkký",
-    "portrét se zvětšuje 2.1×, může být měkký",
+    "portrét se zvětšuje 1.4×, může být měkký",
     "originál má jen 280×280 px, na velký tisk nestačí"
    ],
-   "verze": "604738a3fd58"
+   "verze": "867ec5b54836"
   },
   {
    "slug": "lantosi-robert",
@@ -711,16 +684,14 @@
    "oblicej_zdroj": "detekce",
    "soubory": {
     "vyrez": "vyrez/lantosi-robert.webp",
-    "vyrez_400": "vyrez/lantosi-robert-400.webp",
     "portret_jpg": "portret/lantosi-robert.jpg",
     "portret_webp": "portret/lantosi-robert.webp"
    },
    "varovani": [
-    "výřez se zvětšuje 1.4×, může být měkký",
-    "portrét se zvětšuje 2.1×, může být měkký",
+    "portrét se zvětšuje 1.4×, může být měkký",
     "originál má jen 280×280 px, na velký tisk nestačí"
    ],
-   "verze": "14041339b285"
+   "verze": "0cb78f5fa58b"
   },
   {
    "slug": "lev-jakub",
@@ -741,16 +712,15 @@
    "oblicej_zdroj": "detekce",
    "soubory": {
     "vyrez": "vyrez/lev-jakub.webp",
-    "vyrez_400": "vyrez/lev-jakub-400.webp",
     "portret_jpg": "portret/lev-jakub.jpg",
     "portret_webp": "portret/lev-jakub.webp"
    },
    "varovani": [
-    "výřez se zvětšuje 1.6×, může být měkký",
-    "portrét se zvětšuje 2.1×, může být měkký",
+    "výřez se zvětšuje 1.4×, může být měkký",
+    "portrét se zvětšuje 1.4×, může být měkký",
     "originál má jen 280×280 px, na velký tisk nestačí"
    ],
-   "verze": "cd6e52954a80"
+   "verze": "f800948d0c05"
   },
   {
    "slug": "novak-pavel",
@@ -771,16 +741,14 @@
    "oblicej_zdroj": "detekce",
    "soubory": {
     "vyrez": "vyrez/novak-pavel.webp",
-    "vyrez_400": "vyrez/novak-pavel-400.webp",
     "portret_jpg": "portret/novak-pavel.jpg",
     "portret_webp": "portret/novak-pavel.webp"
    },
    "varovani": [
-    "výřez se zvětšuje 1.5×, může být měkký",
-    "portrét se zvětšuje 2.1×, může být měkký",
+    "portrét se zvětšuje 1.4×, může být měkký",
     "originál má jen 280×280 px, na velký tisk nestačí"
    ],
-   "verze": "ccaa3f9acba4"
+   "verze": "a6ccad07bf68"
   },
   {
    "slug": "olesen-nick-alexander",
@@ -801,16 +769,15 @@
    "oblicej_zdroj": "detekce",
    "soubory": {
     "vyrez": "vyrez/olesen-nick-alexander.webp",
-    "vyrez_400": "vyrez/olesen-nick-alexander-400.webp",
     "portret_jpg": "portret/olesen-nick-alexander.jpg",
     "portret_webp": "portret/olesen-nick-alexander.webp"
    },
    "varovani": [
-    "výřez se zvětšuje 1.6×, může být měkký",
-    "portrét se zvětšuje 2.1×, může být měkký",
+    "výřez se zvětšuje 1.4×, může být měkký",
+    "portrét se zvětšuje 1.4×, může být měkký",
     "originál má jen 280×280 px, na velký tisk nestačí"
    ],
-   "verze": "bc50a2b05a8e"
+   "verze": "7dcbf60e5e7f"
   },
   {
    "slug": "ordos-jan",
@@ -831,16 +798,15 @@
    "oblicej_zdroj": "detekce",
    "soubory": {
     "vyrez": "vyrez/ordos-jan.webp",
-    "vyrez_400": "vyrez/ordos-jan-400.webp",
     "portret_jpg": "portret/ordos-jan.jpg",
     "portret_webp": "portret/ordos-jan.webp"
    },
    "varovani": [
-    "výřez se zvětšuje 1.5×, může být měkký",
-    "portrét se zvětšuje 2.1×, může být měkký",
+    "výřez se zvětšuje 1.3×, může být měkký",
+    "portrét se zvětšuje 1.4×, může být měkký",
     "originál má jen 280×280 px, na velký tisk nestačí"
    ],
-   "verze": "9aafb7e03f85"
+   "verze": "7dc46e5bce6d"
   },
   {
    "slug": "pour-jakub",
@@ -861,16 +827,14 @@
    "oblicej_zdroj": "detekce",
    "soubory": {
     "vyrez": "vyrez/pour-jakub.webp",
-    "vyrez_400": "vyrez/pour-jakub-400.webp",
     "portret_jpg": "portret/pour-jakub.jpg",
     "portret_webp": "portret/pour-jakub.webp"
    },
    "varovani": [
-    "výřez se zvětšuje 1.5×, může být měkký",
-    "portrét se zvětšuje 2.1×, může být měkký",
+    "portrét se zvětšuje 1.4×, může být měkký",
     "originál má jen 280×280 px, na velký tisk nestačí"
    ],
-   "verze": "6168d1f7eaab"
+   "verze": "8562ba3f4f96"
   },
   {
    "slug": "toman-matej",
@@ -891,16 +855,15 @@
    "oblicej_zdroj": "detekce",
    "soubory": {
     "vyrez": "vyrez/toman-matej.webp",
-    "vyrez_400": "vyrez/toman-matej-400.webp",
     "portret_jpg": "portret/toman-matej.jpg",
     "portret_webp": "portret/toman-matej.webp"
    },
    "varovani": [
-    "výřez se zvětšuje 1.6×, může být měkký",
-    "portrét se zvětšuje 2.1×, může být měkký",
+    "výřez se zvětšuje 1.4×, může být měkký",
+    "portrét se zvětšuje 1.4×, může být měkký",
     "originál má jen 280×280 px, na velký tisk nestačí"
    ],
-   "verze": "b698aa2b4193"
+   "verze": "744dc027acae"
   },
   {
    "slug": "zachar-marek",
@@ -921,16 +884,14 @@
    "oblicej_zdroj": "detekce",
    "soubory": {
     "vyrez": "vyrez/zachar-marek.webp",
-    "vyrez_400": "vyrez/zachar-marek-400.webp",
     "portret_jpg": "portret/zachar-marek.jpg",
     "portret_webp": "portret/zachar-marek.webp"
    },
    "varovani": [
-    "výřez se zvětšuje 1.4×, může být měkký",
-    "portrét se zvětšuje 2.1×, může být měkký",
+    "portrét se zvětšuje 1.4×, může být měkký",
     "originál má jen 280×280 px, na velký tisk nestačí"
    ],
-   "verze": "efdc7c6c36f3"
+   "verze": "acea29de65d5"
   }
  ]
 }

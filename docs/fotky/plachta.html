@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Soupiska HC Motor 2026/27</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,500;0,600;0,700;0,800;1,800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* Plachta: sekce podle pozic, karta = výřez hráče, za hlavou obrys čísla, pod ním jmenovka.
+     Barvy z dresu Motoru: žlutá, nebeská modrá z límce, tmavá modrá. */
+  :root{
+    --night:#08121f;
+    --card:#10223a;
+    --card-2:#0b182b;
+    --ink:#eef3f8;
+    --mute:#93a7bd;
+    --yellow:#ffd21f;
+    --sky:#38b6e8;
+    --cond:'Barlow Condensed', 'Arial Narrow', sans-serif;
+    --mono:'IBM Plex Mono', ui-monospace, Consolas, monospace;
+    color-scheme:dark;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    margin:0; background:var(--night); color:var(--ink);
+    font:14px/1.4 var(--cond);
+    padding:28px max(16px, env(safe-area-inset-right, 0px)) 64px max(16px, env(safe-area-inset-left, 0px));
+  }
+  .wrap{max-width:1240px; margin:0 auto;}
+
+  /* hlavička */
+  .top{display:flex; justify-content:space-between; align-items:flex-end; gap:16px 24px; flex-wrap:wrap; margin-bottom:26px;}
+  .kicker{font:500 11px/1 var(--mono); letter-spacing:.16em; text-transform:uppercase; color:var(--yellow);}
+  h1{margin:8px 0 0; font:800 34px/1 var(--cond); text-transform:uppercase; letter-spacing:.01em;}
+  h1 span{color:var(--sky);}
+  .sub{margin-top:6px; font:400 12px/1.3 var(--mono); color:var(--mute);}
+  .sub b{color:var(--ink); font-weight:500;}
+
+  .tools{display:flex; gap:10px; flex-wrap:wrap; align-items:center;}
+  .seg{display:flex; background:var(--card-2); border:1px solid #1d3352; border-radius:8px; padding:3px;}
+  .seg button, .print{
+    font:600 14px/1 var(--cond); letter-spacing:.06em; text-transform:uppercase;
+    color:var(--mute); background:none; border:0; border-radius:6px; padding:8px 12px; cursor:pointer;
+  }
+  .seg button[aria-pressed="true"]{background:var(--yellow); color:var(--night);}
+  .seg button:hover:not([aria-pressed="true"]){color:var(--ink);}
+  .print{background:var(--card); border:1px solid #1d3352; color:var(--ink); padding:11px 14px;}
+  .print:hover{border-color:var(--yellow);}
+  button:focus-visible{outline:2px solid var(--sky); outline-offset:2px;}
+
+  /* sekce */
+  .grp + .grp{margin-top:30px;}
+  .grp h2{display:flex; align-items:baseline; gap:10px; margin:0 0 12px; font:700 22px/1 var(--cond); text-transform:uppercase; letter-spacing:.05em;}
+  .grp h2 em{font:400 12px/1 var(--mono); font-style:normal; color:var(--mute); letter-spacing:0;}
+  .grp h2::after{content:""; flex:1; height:2px; align-self:center; background:linear-gradient(90deg, var(--yellow), transparent 70%);}
+  .grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(168px, 1fr)); gap:12px;}
+
+  /* karta */
+  .pl{background:var(--card-2); color:var(--ink); border-radius:4px; overflow:hidden; container-type:inline-size; min-width:0;}
+  .ph{
+    position:relative; aspect-ratio:1; overflow:hidden;
+    background:
+      radial-gradient(circle at 50% 42%, rgba(56,182,232,.28), transparent 62%),
+      linear-gradient(180deg, #14304f, var(--card));
+  }
+  .ph .num{
+    position:absolute; right:-3cqw; top:-9cqw;
+    font:800 italic 82cqw/1 var(--cond); letter-spacing:-.05em;
+    color:transparent; -webkit-text-stroke:1.5px rgba(56,182,232,.5);
+    user-select:none;
+  }
+  .ph img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; transition:transform .35s ease; transform-origin:50% 100%;}
+  .pl:hover .ph img{transform:scale(1.03);}
+  .foto-portret .ph .num{display:none;}
+  .ph .none{position:absolute; inset:0; display:grid; place-items:center; font:400 11px var(--mono); color:var(--mute);}
+
+  .nm{border-top:3px solid var(--yellow); padding:6cqw 7cqw 6.5cqw;}
+  .fi{display:block; font:600 7cqw/1.05 var(--cond); letter-spacing:.1em; text-transform:uppercase; color:var(--mute); overflow-wrap:anywhere;}
+  .la{display:block; margin-top:1.5cqw; font:800 13cqw/.95 var(--cond); text-transform:uppercase; overflow-wrap:anywhere;}
+  .mt{display:flex; justify-content:space-between; align-items:baseline; margin-top:4.5cqw; font:500 5.4cqw/1 var(--mono); color:var(--mute); text-transform:uppercase; letter-spacing:.04em;}
+  .mt b{font:800 italic 8cqw/1 var(--cond); color:var(--yellow); letter-spacing:0;}
+
+  @media (max-width:420px){
+    h1{font-size:28px;}
+    .grid{grid-template-columns:repeat(2, minmax(0, 1fr)); gap:10px;}
+  }
+  @media (prefers-reduced-motion:reduce){ .ph img{transition:none;} }
+
+  /* tisk: A4 na výšku, 8 karet vedle sebe, celá soupiska na jedné stránce */
+  @media print{
+    @page{size:A4; margin:9mm;}
+    body{background:#fff; color:#08121f; padding:0;}
+    .tools{display:none;}
+    .top{margin-bottom:4mm; padding-top:1mm;}
+    h1{font-size:20pt;}
+    .sub{color:#555;} .sub b{color:#08121f;}
+    .kicker{color:#08121f;}
+    .grp + .grp{margin-top:5mm;}
+    .grp h2{font-size:12pt; margin-bottom:2.5mm; color:#08121f;}
+    .grp h2 em{color:#555;}
+    .grid{grid-template-columns:repeat(8, 1fr); gap:2mm;}
+    .pl{break-inside:avoid;}
+    .pl, .ph, .grp h2::after{-webkit-print-color-adjust:exact; print-color-adjust:exact;}
+    .pl:hover .ph img{transform:none;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div>
+      <div class="kicker">HC Motor České Budějovice</div>
+      <h1>Soupiska <span>2026/27</span></h1>
+      <div class="sub">A-tým · <b id="count"></b> · stav k 26. 10. 2026</div>
+    </div>
+    <div class="tools">
+      <div class="seg" role="group" aria-label="Pozice" id="segPos">
+        <button type="button" data-pos="" aria-pressed="true">Všichni</button>
+        <button type="button" data-pos="G" aria-pressed="false">Brankáři</button>
+        <button type="button" data-pos="D" aria-pressed="false">Obránci</button>
+        <button type="button" data-pos="F" aria-pressed="false">Útočníci</button>
+      </div>
+      <div class="seg" role="group" aria-label="Fotka" id="segFoto">
+        <button type="button" data-foto="vyrez" aria-pressed="true">Výřez</button>
+        <button type="button" data-foto="portret" aria-pressed="false">Portrét</button>
+      </div>
+      <button type="button" class="print" id="print">Tisk / PDF</button>
+    </div>
+  </header>
+  <main id="roster"></main>
+</div>
+<script>
+const DATA = [{"slug": "kloucek-milan", "cislo": 35, "jmeno": "Milan Klouček", "pozice": "G", "zdroj": "https://hcmotor.cz/foto/hraci/2027/kloucek_milan.jpg?v=1789577658", "originál": [280, 280], "oblicej": [82, 54, 115, 115], "oblicej_zdroj": "detekce", "soubory": {"vyrez": "vyrez/kloucek-milan.webp", "portret_jpg": "portret/kloucek-milan.jpg", "portret_webp": "portret/kloucek-milan.webp"}, "varovani": ["výřez se zvětšuje 1.4×, může být měkký", "portrét se zvětšuje 1.4×, může být měkký", "originál má jen 280×280 px, na velký tisk nestačí"], "verze": "917ac6be4441"}, {"slug": "marik-matyas", "cislo": 21, "jmeno": "Matyáš Mařík", "pozice": "G", "zdroj": "https://hcmotor.cz/foto/hraci/2027/marik_matyas.jpg?v=1789573753", "originál": [280, 280], "oblicej": [84, 62, 112, 112], "oblicej_zdroj": "detekce", "soubory": {"vyrez": "vyrez/marik-matyas.webp", "portret_jpg": "portret/marik-matyas.jpg", "portret_webp": "portret/marik-matyas.webp"}, "varovani": ["výřez se zvětšuje 1.4×, může být měkký", "portrét se zvětšuje 1.4×, může být měkký", "originál má jen 280×280 px, na velký tisk nestačí"], "verze": "5bffffb8439d"}, {"slug": "strmen-jan", "cislo": 2, "jmeno": "Jan Strmeň", "pozice": "G", "zdroj": "https://hcmotor.cz/foto/hraci/2027/strmen_jan.jpg?v=1789596363", "originál": [280, 329], "oblicej": [79, 90, 127, 127], "oblicej_zdroj": "detekce", "soubory": {"vyrez": "vyrez/strmen-jan.webp", "portret_jpg": "portret/strmen-jan.jpg", "portret_webp": "portret/strmen-jan.webp"}, "varovani": ["portrét se zvětšuje 1.4×, může být měkký", "originál má jen 280×329 px, na velký tisk nestačí"], "verze": "e783351f7110"}, {"slug": "andersen-ole-einar-engeland", "cislo": 79, "jmeno": "Ole Einar Engeland Andersen", "pozice": "D", "zdroj": "https://hcmotor.cz/foto/hraci/2027/andersen_ole_einar_engeland.jpg", "originál": [280, 280], "oblicej": [88, 61, 116, 116], "oblicej_zdroj": "detekce", "soubory": {"vyrez": "vyrez/andersen-ole-einar-engeland.webp", "portret_jpg": "portret/andersen-ole-einar-engeland.jpg", "portret_webp": "portret/andersen-ole-einar-engeland.webp"}, "varovani": ["výřez se zvětšuje 1.4×, může být měkký", "portrét se zvětšuje 1.4×, může být měkký", "originál má jen 280×280 px, na velký tisk nestačí"], "verze": "68a75aa266db"}, {"slug": "kachyna-ondrej", "cislo": 98, "jmeno": "Ondřej Kachyňa", "pozice": "D", "zdroj": "https://hcmotor.cz/foto/hraci/2027/kachyna_ondrej.jpg?v=1789579476", "originál": [280, 280], "oblicej": [86, 58, 114, 114], "oblicej_zdroj": "detekce", "soubory": {"vyrez": "vyrez/kachyna-ondrej.webp", "portret_jpg": "portret/kachyna-ondrej.jpg", "portret_webp": "portret/kachyna-ondrej.webp"}, "varovani": ["výřez se zvětšuje 1.4×, může být měkký", "portrét se zvětšuje 1.4×, může být měkký", "originál má jen 280×280 px, na velký tisk nestačí"], "verze": "c1369a862629"}, {"slug": "kundratek-tomas", "cislo": 84, "jmeno": "Tomáš Kundrátek", "pozice": "D", "zdroj": "https://hcmotor.cz/foto/hraci/2027/kundratek_tomas.jpg?v=1789580287", "originál": [280, 280], "oblicej": [84, 51, 119, 119], "oblicej_zdroj": "detekce", "soubory": {"vyrez": "vyrez/kundratek-tomas.webp", "portret_jpg": "portret/kundratek-tomas.jpg", "portret_webp": "portret/kundratek-tomas.webp"}, "varovani": ["výřez se zvětšuje 1.4×, může být měkký", "portrét se zvětšuje 1.4×, může být měkký", "originál má jen 280×280 px, na velký tisk nestačí"], "verze": "9f75e785551f"}, {"slug": "nedorost-vaclav", "cislo": 13, "jmeno": "Václav Nedorost", "pozice": "D", "zdroj": "https://hcmotor.cz/foto/hraci/2027/nedorost_vaclav.jpg", "originál": [280, 280], "oblicej": [84, 61, 110, 110], "oblicej_zdroj": "detekce", "soubory": {"vyrez": "vyrez/nedorost-vaclav.webp", "portret_jpg": "portret/nedorost-vaclav.jpg", "portret_webp": "portret/nedorost-vaclav.webp"}, "varovani": ["výřez se zvětšuje 1.5×, může být měkký", "portrét se zvětšuje 1.4×, může být měkký", "originál má jen 280×280 px, na velký tisk nestačí"], "verze": "f137730e084b"}, {"slug": "nordsater-lucas", "cislo": 8, "jmeno": "Lucas Nordsäter", "pozice": "D", "zdroj": "https://hcmotor.cz/foto/hraci/2027/nordsater_lucas.jpg?v=1789579188", "originál": [280, 280], "oblicej": [89, 70, 105, 105], "oblicej_zdroj": "detekce", "soubory": {"vyrez": "vyrez/nordsater-lucas.webp", "portret_jpg": "portret/nordsater-lucas.jpg", "portret_webp": "portret/nordsater-lucas.webp"}, "varovani": ["výřez se zvětšuje 1.5×, může být měkký", "portrét se zvětšuje 1.4×, může být měkký", "originál má jen 280×280 px, na velký tisk nestačí"], "verze": "a2f2936e70cc"}, {"slug": "pycha-pavel", "cislo": 12, "jmeno": "Pavel Pýcha", "pozice": "D", "zdroj": "https://hcmotor.cz/foto/hraci/2027/pycha_pavel.jpg?v=1789579785", "originál": [280, 280], "oblicej": [89, 58, 111, 111], "oblicej_zdroj": "detekce", "soubory": {"vyrez": "vyrez/pycha-pavel.webp", "portret_jpg": "portret/pycha-pavel.jpg", "portret_webp": "portret/pycha-pavel.webp"}, "varovani": ["výřez se zvětšuje 1.5×, může být měkký", "portrét se zvětšuje 1.4×, může být měkký", "originál má jen 280×280 px, na velký tisk nestačí"], "verze": "1c6c01d20147"}, {"slug": "stencel-jan", "cislo": 7, "jmeno": "Jan Štencel", "pozice": "D", "zdroj": "https://hcmotor.cz/foto/hraci/2027/stencel_jan.jpg?v=1789579710", "originál": [280, 280], "oblicej": [85, 56, 120, 120], "oblicej_zdroj": "detekce", "soubory": {"vyrez": "vyrez/stencel-jan.webp", "portret_jpg": "portret/stencel-jan.jpg", "portret_webp": "portret/stencel-jan.webp"}, "varovani": ["výřez se zvětšuje 1.4×, může být měkký", "portrét se zvětšuje 1.4×, může být měkký", "originál má jen 280×280 px, na velký tisk nestačí"], "verze": "6b1e8907f251"}, {"slug": "vala-ondrej", "cislo": 14, "jmeno": "Ondřej Vála", "pozice": "D", "zdroj": "https://hcmotor.cz/foto/hraci/2027/vala_ondrej.jpg?v=1789579873", "originál": [280, 280], "oblicej": [81, 54, 120, 120], "oblicej_zdroj": "detekce", "soubory": {"vyrez": "vyrez/vala-ondrej.webp", "portret_jpg": "portret/vala-ondrej.jpg", "portret_webp": "portret/vala-ondrej.webp"}, "varovani": ["výřez se zvětšuje 1.4×, může být měkký", "portrét se zvětšuje 1.4×, může být měkký", "originál má jen 280×280 px, na velký tisk nestačí"], "verze": "8656d6bfee57"}, {"slug": "vrablik-roman", "cislo": 69, "jmeno": "Roman Vráblík", "pozice": "D", "zdroj": "https://hcmotor.cz/foto/hraci/2027/vrablik_roman.jpg?v=1789579951", "originál": [280, 280], "oblicej": [85, 65, 111, 111], "oblicej_zdroj": "detekce", "soubory": {"vyrez": "vyrez/vrablik-roman.webp", "portret_jpg": "portret/vrablik-roman.jpg", "portret_webp": "portret/vrablik-roman.webp"}, "varovani": ["výřez se zvětšuje 1.5×, může být měkký", "portrét se zvětšuje 1.4×, může být měkký", "originál má jen 280×280 px, na velký tisk nestačí"], "verze": "571638d32280"}, {"slug": "ahl-filip", "cislo": 61, "jmeno": "Filip Ahl", "pozice": "F", "zdroj": "https://hcmotor.cz/foto/hraci/2027/ahl_filip.jpg?v=1789580442", "originál": [280, 280], "oblicej": [93, 65, 110, 110], "oblicej_zdroj": "detekce", "soubory": {"vyrez": "vyrez/ahl-filip.webp", "portret_jpg": "portret/ahl-filip.jpg", "portret_webp": "portret/ahl-filip.webp"}, "varovani": ["výřez se zvětšuje 1.5×, může být měkký", "portrét se zvětšuje 1.4×, může být měkký", "originál má jen 280×280 px, na velký tisk nestačí"], "verze": "a749d9b7c281"}, {"slug": "bell-parker", "cislo": 92, "jmeno": "Parker Bell", "pozice": "F", "zdroj": "https://hcmotor.cz/foto/hraci/2027/bell_parker.jpg?v=1789580508", "originál": [280, 280], "oblicej": [85, 60, 117, 117], "oblicej_zdroj": "detekce", "soubory": {"vyrez": "vyrez/bell-parker.webp", "portret_jpg": "portret/bell-parker.jpg", "portret_webp": "portret/bell-parker.webp"}, "varovani": ["výřez se zvětšuje 1.4×, může být měkký", "portrét se zvětšuje 1.4×, může být měkký", "originál má jen 280×280 px, na velký tisk nestačí"], "verze": "2c01a64f7d94"}, {"slug": "beranek-martin", "cislo": 56, "jmeno": "Martin Beránek", "pozice": "F", "zdroj": "https://hcmotor.cz/foto/hraci/2027/beranek_martin.jpg?v=1789580579", "originál": [280, 280], "oblicej": [85, 56, 121, 121], "oblicej_zdroj": "detekce", "soubory": {"vyrez": "vyrez/beranek-martin.webp", "portret_jpg": "portret/beranek-martin.jpg", "portret_webp": "portret/beranek-martin.webp"}, "varovani": ["výřez se zvětšuje 1.3×, může být měkký", "portrét se zvětšuje 1.4×, může být měkký", "originál má jen 280×280 px, na velký tisk nestačí"], "verze": "5cdca7f30e2c"}, {"slug": "bulir-michal", "cislo": 88, "jmeno": "Michal Bulíř", "pozice": "F", "zdroj": "https://hcmotor.cz/foto/hraci/2027/bulir_michal.jpg?v=1789580746", "originál": [280, 280], "oblicej": [84, 69, 112, 112], "oblicej_zdroj": "detekce", "soubory": {"vyrez": "vyrez/bulir-michal.webp", "portret_jpg": "portret/bulir-michal.jpg", "portret_webp": "portret/bulir-michal.webp"}, "varovani": ["výřez se zvětšuje 1.4×, může být měkký", "portrét se zvětšuje 1.4×, může být měkký", "originál má jen 280×280 px, na velký tisk nestačí"], "verze": "6d20be951b19"}, {"slug": "drancak-samuel", "cislo": 46, "jmeno": "Samuel Drančák", "pozice": "F", "zdroj": "https://hcmotor.cz/foto/hraci/2027/drancak_samuel.jpg?v=1789580811", "originál": [280, 280], "oblicej": [85, 51, 120, 120], "oblicej_zdroj": "detekce", "soubory": {"vyrez": "vyrez/drancak-samuel.webp", "portret_jpg": "portret/drancak-samuel.jpg", "portret_webp": "portret/drancak-samuel.webp"}, "varovani": ["výřez se zvětšuje 1.4×, může být měkký", "portrét se zvětšuje 1.4×, může být měkký", "originál má jen 280×280 px, na velký tisk nestačí"], "verze": "f305e73c931e"}, {"slug": "hejduk-marek", "cislo": 37, "jmeno": "Marek Hejduk", "pozice": "F", "zdroj": "https://hcmotor.cz/foto/hraci/2027/hejduk_marek.jpg?v=1789580907", "originál": [280, 280], "oblicej": [78, 59, 120, 120], "oblicej_zdroj": "detekce", "soubory": {"vyrez": "vyrez/hejduk-marek.webp", "portret_jpg": "portret/hejduk-marek.jpg", "portret_webp": "portret/hejduk-marek.webp"}, "varovani": ["výřez se zvětšuje 1.4×, může být měkký", "portrét se zvětšuje 1.4×, může být měkký", "originál má jen 280×280 px, na velký tisk nestačí"], "verze": "7796cd88ad06"}, {"slug": "hoch-stepan", "cislo": 42, "jmeno": "Štěpán Hoch", "pozice": "F", "zdroj": "https://hcmotor.cz/foto/hraci/2027/hoch_stepan.jpg?v=1789581007", "originál": [280, 280], "oblicej": [85, 57, 125, 125], "oblicej_zdroj": "detekce", "soubory": {"vyrez": "vyrez/hoch-stepan.webp", "portret_jpg": "portret/hoch-stepan.jpg", "portret_webp": "portret/hoch-stepan.webp"}, "varovani": ["portrét se zvětšuje 1.4×, může být měkký", "originál má jen 280×280 px, na velký tisk nestačí"], "verze": "a3bc9b4a1ffb"}, {"slug": "humenik-matyas", "cislo": 27, "jmeno": "Matyáš Humeník", "pozice": "F", "zdroj": "https://hcmotor.cz/foto/hraci/2027/humenik_matyas.jpg?v=1789581075", "originál": [280, 280], "oblicej": [71, 63, 120, 120], "oblicej_zdroj": "detekce", "soubory": {"vyrez": "vyrez/humenik-matyas.webp", "portret_jpg": "portret/humenik-matyas.jpg", "portret_webp": "portret/humenik-matyas.webp"}, "varovani": ["výřez se zvětšuje 1.4×, může být měkký", "portrét se zvětšuje 1.4×, může být měkký", "originál má jen 280×280 px, na velký tisk nestačí"], "verze": "4cb2c1fd1693"}, {"slug": "chlubna-tomas", "cislo": 10, "jmeno": "Tomáš Chlubna", "pozice": "F", "zdroj": "https://hcmotor.cz/foto/hraci/2027/chlubna_tomas.jpg?v=1789581169", "originál": [280, 280], "oblicej": [78, 64, 112, 112], "oblicej_zdroj": "detekce", "soubory": {"vyrez": "vyrez/chlubna-tomas.webp", "portret_jpg": "portret/chlubna-tomas.jpg", "portret_webp": "portret/chlubna-tomas.webp"}, "varovani": ["výřez se zvětšuje 1.4×, může být měkký", "portrét se zvětšuje 1.4×, může být měkký", "originál má jen 280×280 px, na velký tisk nestačí"], "verze": "dcd902efb34c"}, {"slug": "kolacek-josef", "cislo": 22, "jmeno": "Josef Koláček", "pozice": "F", "zdroj": "https://hcmotor.cz/foto/hraci/2027/kolacek_josef.jpg?v=1789581278", "originál": [280, 280], "oblicej": [88, 63, 127, 127], "oblicej_zdroj": "detekce", "soubory": {"vyrez": "vyrez/kolacek-josef.webp", "portret_jpg": "portret/kolacek-josef.jpg", "portret_webp": "portret/kolacek-josef.webp"}, "varovani": ["portrét se zvětšuje 1.4×, může být měkký", "originál má jen 280×280 px, na velký tisk nestačí"], "verze": "552c1e7abc4f"}, {"slug": "krastenbergs-renars", "cislo": 29, "jmeno": "Renars Krastenbergs", "pozice": "F", "zdroj": "https://hcmotor.cz/foto/hraci/2027/krastenbergs_renars.jpg?v=1789581365", "originál": [280, 280], "oblicej": [75, 59, 126, 126], "oblicej_zdroj": "detekce", "soubory": {"vyrez": "vyrez/krastenbergs-renars.webp", "portret_jpg": "portret/krastenbergs-renars.jpg", "portret_webp": "portret/krastenbergs-renars.webp"}, "varovani": ["portrét se zvětšuje 1.4×, může být měkký", "originál má jen 280×280 px, na velký tisk nestačí"], "verze": "867ec5b54836"}, {"slug": "lantosi-robert", "cislo": 16, "jmeno": "Róbert Lantoši", "pozice": "F", "zdroj": "https://hcmotor.cz/foto/hraci/2027/lantosi_robert.jpg?v=1789581430", "originál": [280, 280], "oblicej": [76, 50, 134, 134], "oblicej_zdroj": "detekce", "soubory": {"vyrez": "vyrez/lantosi-robert.webp", "portret_jpg": "portret/lantosi-robert.jpg", "portret_webp": "portret/lantosi-robert.webp"}, "varovani": ["portrét se zvětšuje 1.4×, může být měkký", "originál má jen 280×280 px, na velký tisk nestačí"], "verze": "0cb78f5fa58b"}, {"slug": "lev-jakub", "cislo": null, "jmeno": "Jakub Lev", "pozice": "F", "zdroj": "https://hcmotor.cz/foto/hraci/2027/lev_jakub.jpg?v=1789581492", "originál": [280, 280], "oblicej": [84, 73, 117, 117], "oblicej_zdroj": "detekce", "soubory": {"vyrez": "vyrez/lev-jakub.webp", "portret_jpg": "portret/lev-jakub.jpg", "portret_webp": "portret/lev-jakub.webp"}, "varovani": ["výřez se zvětšuje 1.4×, může být měkký", "portrét se zvětšuje 1.4×, může být měkký", "originál má jen 280×280 px, na velký tisk nestačí"], "verze": "f800948d0c05"}, {"slug": "novak-pavel", "cislo": 11, "jmeno": "Pavel Novák", "pozice": "F", "zdroj": "https://hcmotor.cz/foto/hraci/2027/novak_pavel.jpg?v=1789581537", "originál": [280, 280], "oblicej": [80, 63, 125, 125], "oblicej_zdroj": "detekce", "soubory": {"vyrez": "vyrez/novak-pavel.webp", "portret_jpg": "portret/novak-pavel.jpg", "portret_webp": "portret/novak-pavel.webp"}, "varovani": ["portrét se zvětšuje 1.4×, může být měkký", "originál má jen 280×280 px, na velký tisk nestačí"], "verze": "a6ccad07bf68"}, {"slug": "olesen-nick-alexander", "cislo": 95, "jmeno": "Nick Alexander Olesen", "pozice": "F", "zdroj": "https://hcmotor.cz/foto/hraci/2027/olesen_nick_alexander.jpg?v=1789581606", "originál": [280, 280], "oblicej": [82, 65, 118, 118], "oblicej_zdroj": "detekce", "soubory": {"vyrez": "vyrez/olesen-nick-alexander.webp", "portret_jpg": "portret/olesen-nick-alexander.jpg", "portret_webp": "portret/olesen-nick-alexander.webp"}, "varovani": ["výřez se zvětšuje 1.4×, může být měkký", "portrét se zvětšuje 1.4×, může být měkký", "originál má jen 280×280 px, na velký tisk nestačí"], "verze": "7dcbf60e5e7f"}, {"slug": "ordos-jan", "cislo": 45, "jmeno": "Jan Ordoš", "pozice": "F", "zdroj": "https://hcmotor.cz/foto/hraci/2027/ordos_jan.jpg?v=1789581650", "originál": [280, 280], "oblicej": [80, 57, 123, 123], "oblicej_zdroj": "detekce", "soubory": {"vyrez": "vyrez/ordos-jan.webp", "portret_jpg": "portret/ordos-jan.jpg", "portret_webp": "portret/ordos-jan.webp"}, "varovani": ["výřez se zvětšuje 1.3×, může být měkký", "portrét se zvětšuje 1.4×, může být měkký", "originál má jen 280×280 px, na velký tisk nestačí"], "verze": "7dc46e5bce6d"}, {"slug": "pour-jakub", "cislo": 64, "jmeno": "Jakub Pour", "pozice": "F", "zdroj": "https://hcmotor.cz/foto/hraci/2027/pour_jakub.jpg?v=1789581765", "originál": [280, 280], "oblicej": [88, 52, 125, 125], "oblicej_zdroj": "detekce", "soubory": {"vyrez": "vyrez/pour-jakub.webp", "portret_jpg": "portret/pour-jakub.jpg", "portret_webp": "portret/pour-jakub.webp"}, "varovani": ["portrét se zvětšuje 1.4×, může být měkký", "originál má jen 280×280 px, na velký tisk nestačí"], "verze": "8562ba3f4f96"}, {"slug": "toman-matej", "cislo": 20, "jmeno": "Matěj Toman", "pozice": "F", "zdroj": "https://hcmotor.cz/foto/hraci/2027/toman_matej.jpg?v=1789581791", "originál": [280, 280], "oblicej": [87, 60, 119, 119], "oblicej_zdroj": "detekce", "soubory": {"vyrez": "vyrez/toman-matej.webp", "portret_jpg": "portret/toman-matej.jpg", "portret_webp": "portret/toman-matej.webp"}, "varovani": ["výřez se zvětšuje 1.4×, může být měkký", "portrét se zvětšuje 1.4×, může být měkký", "originál má jen 280×280 px, na velký tisk nestačí"], "verze": "744dc027acae"}, {"slug": "zachar-marek", "cislo": 26, "jmeno": "Marek Zachar", "pozice": "F", "zdroj": "https://hcmotor.cz/foto/hraci/2027/zachar_marek.jpg?v=1789581805", "originál": [280, 280], "oblicej": [76, 52, 135, 135], "oblicej_zdroj": "detekce", "soubory": {"vyrez": "vyrez/zachar-marek.webp", "portret_jpg": "portret/zachar-marek.jpg", "portret_webp": "portret/zachar-marek.webp"}, "varovani": ["portrét se zvětšuje 1.4×, může být měkký", "originál má jen 280×280 px, na velký tisk nestačí"], "verze": "acea29de65d5"}];
+const SKUPINY = [['G', 'Brankáři'], ['D', 'Obránci'], ['F', 'Útočníci']];
+const POZICE = {G:'Brankář', D:'Obránce', F:'Útočník'};
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const hraci = DATA.slice().sort((a, b) => (a.cislo ?? 999) - (b.cislo ?? 999));
+
+let stav = {pos:'', foto:'vyrez'};
+try { stav.foto = localStorage.getItem('plachta-foto') || 'vyrez'; } catch (e) {}
+
+function karta(p){
+  const f = p.soubory || {};
+  const v = p.verze ? '?v=' + p.verze : '';
+  const src = stav.foto === 'vyrez' && f.vyrez ? f.vyrez : f.portret_jpg;
+  const casti = p.jmeno.trim().split(/\s+/);
+  const prijmeni = casti.pop();
+  const cislo = p.cislo != null ? p.cislo : '';
+  return '<article class="pl">'
+    + '<div class="ph">'
+    + (cislo !== '' && stav.foto === 'vyrez' && f.vyrez ? '<span class="num" aria-hidden="true">' + cislo + '</span>' : '')
+    + (src ? '<img src="' + src + v + '" alt="' + esc(p.jmeno) + '" loading="lazy">' : '<div class="none">bez fotky</div>')
+    + '</div>'
+    + '<div class="nm"><span class="fi">' + esc(casti.join(' ')) + '</span><span class="la">' + esc(prijmeni) + '</span>'
+    + '<div class="mt"><span>' + POZICE[p.pozice] + '</span>' + (cislo !== '' ? '<b>#' + cislo + '</b>' : '') + '</div></div>'
+    + '</article>';
+}
+
+function vykresli(){
+  document.body.classList.toggle('foto-portret', stav.foto === 'portret');
+  document.getElementById('roster').innerHTML = SKUPINY
+    .filter(([pos]) => !stav.pos || stav.pos === pos)
+    .map(([pos, nazev]) => {
+      const lide = hraci.filter(p => p.pozice === pos);
+      if (!lide.length) return '';
+      return '<section class="grp"><h2>' + nazev + '<em>' + lide.length + '</em></h2>'
+        + '<div class="grid">' + lide.map(karta).join('') + '</div></section>';
+    }).join('');
+  document.querySelectorAll('#segPos button').forEach(b => b.setAttribute('aria-pressed', b.dataset.pos === stav.pos));
+  document.querySelectorAll('#segFoto button').forEach(b => b.setAttribute('aria-pressed', b.dataset.foto === stav.foto));
+}
+
+document.getElementById('count').textContent = hraci.length + ' hráčů';
+document.getElementById('segPos').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  stav.pos = b.dataset.pos; vykresli();
+});
+document.getElementById('segFoto').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  stav.foto = b.dataset.foto;
+  try { localStorage.setItem('plachta-foto', stav.foto); } catch (e) {}
+  vykresli();
+});
+document.getElementById('print').addEventListener('click', () => window.print());
+vykresli();
+</script>
+</body>
+</html>
