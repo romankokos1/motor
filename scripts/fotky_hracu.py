@@ -8,12 +8,12 @@ Pro každého hráče ze data/soupiska.json:
      hlavu ve stejné výšce a stejně velkou,
   4. upraví barvy (lokální kontrast, jemný grading, doostření),
   5. uloží:
-       docs/fotky/vyrez/<slug>.webp      800×1000, průhledné pozadí
-       docs/fotky/vyrez/<slug>-400.webp  400×500
-       docs/fotky/portret/<slug>.jpg     600×600, s pozadím (i pro články v CMS)
+       docs/fotky/vyrez/<slug>.webp      400×400, hlava a ramena, průhledné pozadí
+       docs/fotky/portret/<slug>.jpg     400×400, s pozadím (i pro články v CMS)
        docs/fotky/portret/<slug>.webp
        docs/fotky/hraci.json             přehled souborů a varování
        docs/fotky/index.html             kontrolní stránka
+       docs/fotky/plachta.html           plachta hráčů (otevřít v prohlížeči)
 
 Nezměněné fotky přeskakuje (scripts/fotky_state.json). --vse přepočítá vše,
 --jen slug1,slug2 jen vybrané hráče. Ruční opravy: scripts/fotky_upravy.json.
@@ -45,19 +45,24 @@ FOTO_BASE = "https://hcmotor.cz/foto/hraci"
 SOUPISKA_URL = "https://hcmotor.cz/soupiska.asp"
 
 # Zvyš, když se změní postup zpracování → přepočítají se všechny fotky.
-VERZE_ZPRACOVANI = 1
+VERZE_ZPRACOVANI = 2
 
 # Model pro výřez. "isnet-general-use" má čisté okraje u lidí i dresů.
 # Alternativa "u2net_human_seg" je rychlejší, ale hrubší kolem vlasů.
 MODEL = "isnet-general-use"
 
-# Výřez bez pozadí (4:5): obličej zabere 19 % výšky, jeho střed je ve 25 %.
-VYREZ_W, VYREZ_H = 800, 1000
-VYREZ_OBLICEJ = 0.19
-VYREZ_STRED_Y = 0.25
+# Klubové fotky na hcmotor.cz mají jen 280×280 px a jsou to hlava a ramena.
+# Proto čtverec 400 px (zvětšení kolem 1,4×) a obličej tak velký, aby ramena
+# sahala ke spodnímu okraji. Až budou originály ve vysokém rozlišení,
+# stačí zvednout VYREZ a PORTRET (třeba na 800).
+
+# Výřez bez pozadí (čtverec): obličej 30 % výšky, jeho střed ve 40 %.
+VYREZ_W, VYREZ_H = 400, 400
+VYREZ_OBLICEJ = 0.30
+VYREZ_STRED_Y = 0.40
 
 # Portrét s pozadím (čtverec): obličej 30 % výšky, střed ve 38 %.
-PORTRET = 600
+PORTRET = 400
 PORTRET_OBLICEJ = 0.30
 PORTRET_STRED_Y = 0.38
 
@@ -89,6 +94,15 @@ def slug_hrace(h: dict) -> str:
     zbytek = h["jmeno"].replace(prijmeni, "").strip()
     text = f"{prijmeni} {zbytek}"
     return re.sub(r"[^a-z0-9]+", "-", translit(text)).strip("-")
+
+
+def sezona_text(sezona: str) -> str:
+    """'2027' → '2026/27' (hcmotor.cz značí sezónu rokem jejího konce)."""
+    try:
+        konec = int(sezona)
+        return f"{konec - 1}/{str(konec)[-2:]}"
+    except ValueError:
+        return sezona
 
 
 def nacti_json(path: Path, vychozi):
@@ -193,16 +207,25 @@ LUT = (
 def uprav_barvy(img: Image.Image) -> Image.Image:
     """Clarity (lokální kontrast) → grading → kontrast a sytost."""
     r = max(6, round(img.width / 50))
-    img = img.filter(ImageFilter.UnsharpMask(radius=r, percent=35, threshold=0))
+    # u malých fotek slaběji, jinak vznikají světlé lemy kolem nápisů na dresu
+    sila = 35 if img.width >= 600 else 20
+    img = img.filter(ImageFilter.UnsharpMask(radius=r, percent=sila, threshold=0))
     img = img.point(LUT)
     img = ImageEnhance.Contrast(img).enhance(1.03)
     img = ImageEnhance.Color(img).enhance(1.06)
     return img
 
 
-def doostri(img: Image.Image) -> Image.Image:
-    """Jemné doostření po zmenšení. U RGBA nechá průhlednost beze změny."""
-    f = ImageFilter.UnsharpMask(radius=0.8, percent=60, threshold=2)
+def doostri(img: Image.Image, scale: float = 1.0) -> Image.Image:
+    """
+    Jemné doostření po změně velikosti. Při zmenšení plná síla, při zvětšení
+    slabší a nad 1,6× žádné: zvětšenou fotku doostření nespraví, jen přidá lemy.
+    U RGBA nechá průhlednost beze změny.
+    """
+    procent = 60 if scale <= 1.15 else 30 if scale <= 1.6 else 0
+    if not procent:
+        return img
+    f = ImageFilter.UnsharpMask(radius=0.8, percent=procent, threshold=2)
     if img.mode == "RGBA":
         rgb, a = img.convert("RGB"), img.getchannel("A")
         out = rgb.filter(f).convert("RGBA")
@@ -259,14 +282,14 @@ def rozpust_rezy(rgba: Image.Image) -> Image.Image:
     """
     Kde rám originální fotky uřízl hráče (typicky dole v pase, někdy rameno
     na boku), by ve výřezu zůstala ostrá rovná hrana. Tady ji plynule
-    rozpustíme: dole přes 15 % výšky, na bocích přes 7 % šířky.
+    rozpustíme: dole přes 10 % výšky, na bocích přes 7 % šířky.
     Horní okraj se nemění (tam je hlava a vzduch).
     """
     a = np.asarray(rgba.getchannel("A")).astype(np.float32) / 255
     h, w = a.shape
     ramp = np.ones_like(a)
     if a[-2:, :].mean() > 0.05:                       # dole
-        n = max(1, int(h * 0.15))
+        n = max(1, int(h * 0.10))
         ramp[-n:, :] *= np.linspace(1, 0, n)[:, None]
     if a[:, :2].mean() > 0.05:                         # vlevo
         n = max(1, int(w * 0.07))
@@ -280,8 +303,21 @@ def rozpust_rezy(rgba: Image.Image) -> Image.Image:
 
 
 def umisti_vyrez(rgba: Image.Image, face, W: int, H: int, upr: dict) -> tuple[Image.Image, float]:
+    """
+    Hlava a ramena: obličej je vždy ve stejné výšce (VYREZ_STRED_Y) a velikost
+    se zvolí tak, aby ramena došla až ke spodnímu okraji, jinak by hráč visel
+    uprostřed karty. Velikost obličeje se přitom drží v rozumném rozmezí kolem
+    VYREZ_OBLICEJ, aby nebyl nikdo výrazně větší nebo menší než ostatní.
+    """
     fx, fy, fw, fh = face
-    scale = (VYREZ_OBLICEJ * upr.get("zoom", 1.0) * H) / fh
+    cy_src = fy + fh / 2
+    radky = np.where((np.asarray(rgba.getchannel("A")) > 128).any(axis=1))[0]
+    if len(radky) and radky[-1] > cy_src:
+        na_spodek = ((1 - VYREZ_STRED_Y) * H) / (radky[-1] - cy_src)
+        podil = min(max(fh * na_spodek / H, VYREZ_OBLICEJ * 0.85), VYREZ_OBLICEJ * 1.35)
+    else:
+        podil = VYREZ_OBLICEJ
+    scale = (podil * upr.get("zoom", 1.0) * H) / fh
     nove = rgba.resize((max(1, round(rgba.width * scale)), max(1, round(rgba.height * scale))), Image.LANCZOS)
     cx, cy = (fx + fw / 2) * scale, (fy + fh / 2) * scale
     ox = W / 2 + upr.get("posun_x", 0) * W - cx
@@ -338,14 +374,11 @@ def zpracuj(h: dict, slug: str, url: str, data: bytes, upr: dict) -> dict:
         vyrez, scale = umisti_vyrez(rgba, face, VYREZ_W, VYREZ_H, upr)
         if scale > 1.3:
             varovani.append(f"výřez se zvětšuje {scale:.1f}×, může být měkký")
-        doostri(vyrez).save(OUT / "vyrez" / f"{slug}.webp", "WEBP", quality=90, method=6)
-        doostri(vyrez.resize((VYREZ_W // 2, VYREZ_H // 2), Image.LANCZOS)).save(
-            OUT / "vyrez" / f"{slug}-400.webp", "WEBP", quality=88, method=6)
+        doostri(vyrez, scale).save(OUT / "vyrez" / f"{slug}.webp", "WEBP", quality=90, method=6)
         soubory["vyrez"] = f"vyrez/{slug}.webp"
-        soubory["vyrez_400"] = f"vyrez/{slug}-400.webp"
 
     portret, scale_p = orizni_portret(upravena, face, PORTRET, upr)
-    portret = doostri(portret)
+    portret = doostri(portret, scale_p)
     portret.save(OUT / "portret" / f"{slug}.jpg", "JPEG", quality=88, optimize=True, progressive=True)
     portret.save(OUT / "portret" / f"{slug}.webp", "WEBP", quality=86, method=6)
     soubory["portret_jpg"] = f"portret/{slug}.jpg"
@@ -442,7 +475,12 @@ def main() -> int:
         "sezona": sezona,
         "hraci": manifest,
     })
-    (OUT / "index.html").write_text(KONTROLA_HTML.replace("__DATA__", json.dumps(manifest, ensure_ascii=False)), encoding="utf-8")
+    data_json = json.dumps(manifest, ensure_ascii=False)
+    (OUT / "index.html").write_text(KONTROLA_HTML.replace("__DATA__", data_json), encoding="utf-8")
+    plachta = (PLACHTA_HTML.replace("__DATA__", data_json)
+               .replace("__SEZONA__", sezona_text(sezona))
+               .replace("__STAV__", datetime.now(timezone.utc).astimezone().strftime("%-d. %-m. %Y")))
+    (OUT / "plachta.html").write_text(plachta, encoding="utf-8")
 
     print(f"Hotovo: zpracováno {zpracovano}, chyb {chyby}, celkem {len(manifest)}")
     return 1 if hraci and chyby == len(hraci) else 0
@@ -489,9 +527,9 @@ KONTROLA_HTML = """<!DOCTYPE html>
   .p.G{--pos:var(--gk);} .p.D{--pos:var(--def);} .p.F{--pos:var(--fwd);}
 
   /* náhled finální karty: výřez + číslo za hráčem */
-  .card{position:relative; aspect-ratio:4/5; overflow:hidden; container-type:inline-size;
+  .card{position:relative; aspect-ratio:1; overflow:hidden; container-type:inline-size;
         background:radial-gradient(ellipse at 50% 28%, color-mix(in srgb, var(--pos) 55%, #0b0f14) 0%, #0b0f14 72%);}
-  .card .num{position:absolute; inset:4% 0 auto; text-align:center; font:800 italic 62cqw/.85 var(--cond);
+  .card .num{position:absolute; inset:2% 0 auto; text-align:center; font:800 italic 70cqw/.85 var(--cond);
              color:transparent; -webkit-text-stroke:2px color-mix(in srgb, var(--pos) 70%, #fff); opacity:.55;}
   .card img{position:absolute; inset:0; width:100%; height:100%; object-fit:contain;
             -webkit-mask-image:linear-gradient(to bottom, #000 82%, transparent 100%);
@@ -554,7 +592,7 @@ function render(onlyWarn){
       + '</div>')
       + '<div class="meta"><span class="slug">' + esc(p.slug) + '</span>'
       + (p['originál'] ? '<span>originál ' + p['originál'].join('×') + ' px · obličej: ' + esc(p.oblicej_zdroj) + '</span>' : '')
-      + (f.vyrez ? '<span><a href="' + f.vyrez + v(p) + '" target="_blank">výřez 800×1000</a> · <a href="' + f.vyrez_400 + v(p) + '" target="_blank">400×500</a> · <a href="' + f.portret_webp + v(p) + '" target="_blank">portrét webp</a></span>' : '')
+      + (f.vyrez ? '<span><a href="' + f.vyrez + v(p) + '" target="_blank">výřez</a> · <a href="' + f.portret_webp + v(p) + '" target="_blank">portrét webp</a></span>' : '')
       + (warns ? '<div class="warns">' + warns + '</div>' : '')
       + '</div></article>';
   }).join('');
@@ -571,6 +609,201 @@ render(false);
 </html>
 """
 
+
+# ---------------------------------------------------------------- plachta
+
+PLACHTA_HTML = """<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Soupiska HC Motor __SEZONA__</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,500;0,600;0,700;0,800;1,800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* Plachta: sekce podle pozic, karta = výřez hráče, za hlavou obrys čísla, pod ním jmenovka.
+     Barvy z dresu Motoru: žlutá, nebeská modrá z límce, tmavá modrá. */
+  :root{
+    --night:#08121f;
+    --card:#10223a;
+    --card-2:#0b182b;
+    --ink:#eef3f8;
+    --mute:#93a7bd;
+    --yellow:#ffd21f;
+    --sky:#38b6e8;
+    --cond:'Barlow Condensed', 'Arial Narrow', sans-serif;
+    --mono:'IBM Plex Mono', ui-monospace, Consolas, monospace;
+    color-scheme:dark;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    margin:0; background:var(--night); color:var(--ink);
+    font:14px/1.4 var(--cond);
+    padding:28px max(16px, env(safe-area-inset-right, 0px)) 64px max(16px, env(safe-area-inset-left, 0px));
+  }
+  .wrap{max-width:1240px; margin:0 auto;}
+
+  /* hlavička */
+  .top{display:flex; justify-content:space-between; align-items:flex-end; gap:16px 24px; flex-wrap:wrap; margin-bottom:26px;}
+  .kicker{font:500 11px/1 var(--mono); letter-spacing:.16em; text-transform:uppercase; color:var(--yellow);}
+  h1{margin:8px 0 0; font:800 34px/1 var(--cond); text-transform:uppercase; letter-spacing:.01em;}
+  h1 span{color:var(--sky);}
+  .sub{margin-top:6px; font:400 12px/1.3 var(--mono); color:var(--mute);}
+  .sub b{color:var(--ink); font-weight:500;}
+
+  .tools{display:flex; gap:10px; flex-wrap:wrap; align-items:center;}
+  .seg{display:flex; background:var(--card-2); border:1px solid #1d3352; border-radius:8px; padding:3px;}
+  .seg button, .print{
+    font:600 14px/1 var(--cond); letter-spacing:.06em; text-transform:uppercase;
+    color:var(--mute); background:none; border:0; border-radius:6px; padding:8px 12px; cursor:pointer;
+  }
+  .seg button[aria-pressed="true"]{background:var(--yellow); color:var(--night);}
+  .seg button:hover:not([aria-pressed="true"]){color:var(--ink);}
+  .print{background:var(--card); border:1px solid #1d3352; color:var(--ink); padding:11px 14px;}
+  .print:hover{border-color:var(--yellow);}
+  button:focus-visible{outline:2px solid var(--sky); outline-offset:2px;}
+
+  /* sekce */
+  .grp + .grp{margin-top:30px;}
+  .grp h2{display:flex; align-items:baseline; gap:10px; margin:0 0 12px; font:700 22px/1 var(--cond); text-transform:uppercase; letter-spacing:.05em;}
+  .grp h2 em{font:400 12px/1 var(--mono); font-style:normal; color:var(--mute); letter-spacing:0;}
+  .grp h2::after{content:""; flex:1; height:2px; align-self:center; background:linear-gradient(90deg, var(--yellow), transparent 70%);}
+  .grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(168px, 1fr)); gap:12px;}
+
+  /* karta */
+  .pl{background:var(--card-2); color:var(--ink); border-radius:4px; overflow:hidden; container-type:inline-size; min-width:0;}
+  .ph{
+    position:relative; aspect-ratio:1; overflow:hidden;
+    background:
+      radial-gradient(circle at 50% 42%, rgba(56,182,232,.28), transparent 62%),
+      linear-gradient(180deg, #14304f, var(--card));
+  }
+  .ph .num{
+    position:absolute; right:-3cqw; top:-9cqw;
+    font:800 italic 82cqw/1 var(--cond); letter-spacing:-.05em;
+    color:transparent; -webkit-text-stroke:1.5px rgba(56,182,232,.5);
+    user-select:none;
+  }
+  .ph img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; transition:transform .35s ease; transform-origin:50% 100%;}
+  .pl:hover .ph img{transform:scale(1.03);}
+  .foto-portret .ph .num{display:none;}
+  .ph .none{position:absolute; inset:0; display:grid; place-items:center; font:400 11px var(--mono); color:var(--mute);}
+
+  .nm{border-top:3px solid var(--yellow); padding:6cqw 7cqw 6.5cqw;}
+  .fi{display:block; font:600 7cqw/1.05 var(--cond); letter-spacing:.1em; text-transform:uppercase; color:var(--mute); overflow-wrap:anywhere;}
+  .la{display:block; margin-top:1.5cqw; font:800 13cqw/.95 var(--cond); text-transform:uppercase; overflow-wrap:anywhere;}
+  .mt{display:flex; justify-content:space-between; align-items:baseline; margin-top:4.5cqw; font:500 5.4cqw/1 var(--mono); color:var(--mute); text-transform:uppercase; letter-spacing:.04em;}
+  .mt b{font:800 italic 8cqw/1 var(--cond); color:var(--yellow); letter-spacing:0;}
+
+  @media (max-width:420px){
+    h1{font-size:28px;}
+    .grid{grid-template-columns:repeat(2, minmax(0, 1fr)); gap:10px;}
+  }
+  @media (prefers-reduced-motion:reduce){ .ph img{transition:none;} }
+
+  /* tisk: A4 na výšku, 8 karet vedle sebe, celá soupiska na jedné stránce */
+  @media print{
+    @page{size:A4; margin:9mm;}
+    body{background:#fff; color:#08121f; padding:0;}
+    .tools{display:none;}
+    .top{margin-bottom:4mm; padding-top:1mm;}
+    h1{font-size:20pt;}
+    .sub{color:#555;} .sub b{color:#08121f;}
+    .kicker{color:#08121f;}
+    .grp + .grp{margin-top:5mm;}
+    .grp h2{font-size:12pt; margin-bottom:2.5mm; color:#08121f;}
+    .grp h2 em{color:#555;}
+    .grid{grid-template-columns:repeat(8, 1fr); gap:2mm;}
+    .pl{break-inside:avoid;}
+    .pl, .ph, .grp h2::after{-webkit-print-color-adjust:exact; print-color-adjust:exact;}
+    .pl:hover .ph img{transform:none;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div>
+      <div class="kicker">HC Motor České Budějovice</div>
+      <h1>Soupiska <span>__SEZONA__</span></h1>
+      <div class="sub">A-tým · <b id="count"></b> · stav k __STAV__</div>
+    </div>
+    <div class="tools">
+      <div class="seg" role="group" aria-label="Pozice" id="segPos">
+        <button type="button" data-pos="" aria-pressed="true">Všichni</button>
+        <button type="button" data-pos="G" aria-pressed="false">Brankáři</button>
+        <button type="button" data-pos="D" aria-pressed="false">Obránci</button>
+        <button type="button" data-pos="F" aria-pressed="false">Útočníci</button>
+      </div>
+      <div class="seg" role="group" aria-label="Fotka" id="segFoto">
+        <button type="button" data-foto="vyrez" aria-pressed="true">Výřez</button>
+        <button type="button" data-foto="portret" aria-pressed="false">Portrét</button>
+      </div>
+      <button type="button" class="print" id="print">Tisk / PDF</button>
+    </div>
+  </header>
+  <main id="roster"></main>
+</div>
+<script>
+const DATA = __DATA__;
+const SKUPINY = [['G', 'Brankáři'], ['D', 'Obránci'], ['F', 'Útočníci']];
+const POZICE = {G:'Brankář', D:'Obránce', F:'Útočník'};
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const hraci = DATA.slice().sort((a, b) => (a.cislo ?? 999) - (b.cislo ?? 999));
+
+let stav = {pos:'', foto:'vyrez'};
+try { stav.foto = localStorage.getItem('plachta-foto') || 'vyrez'; } catch (e) {}
+
+function karta(p){
+  const f = p.soubory || {};
+  const v = p.verze ? '?v=' + p.verze : '';
+  const src = stav.foto === 'vyrez' && f.vyrez ? f.vyrez : f.portret_jpg;
+  const casti = p.jmeno.trim().split(/\\s+/);
+  const prijmeni = casti.pop();
+  const cislo = p.cislo != null ? p.cislo : '';
+  return '<article class="pl">'
+    + '<div class="ph">'
+    + (cislo !== '' && stav.foto === 'vyrez' && f.vyrez ? '<span class="num" aria-hidden="true">' + cislo + '</span>' : '')
+    + (src ? '<img src="' + src + v + '" alt="' + esc(p.jmeno) + '" loading="lazy">' : '<div class="none">bez fotky</div>')
+    + '</div>'
+    + '<div class="nm"><span class="fi">' + esc(casti.join(' ')) + '</span><span class="la">' + esc(prijmeni) + '</span>'
+    + '<div class="mt"><span>' + POZICE[p.pozice] + '</span>' + (cislo !== '' ? '<b>#' + cislo + '</b>' : '') + '</div></div>'
+    + '</article>';
+}
+
+function vykresli(){
+  document.body.classList.toggle('foto-portret', stav.foto === 'portret');
+  document.getElementById('roster').innerHTML = SKUPINY
+    .filter(([pos]) => !stav.pos || stav.pos === pos)
+    .map(([pos, nazev]) => {
+      const lide = hraci.filter(p => p.pozice === pos);
+      if (!lide.length) return '';
+      return '<section class="grp"><h2>' + nazev + '<em>' + lide.length + '</em></h2>'
+        + '<div class="grid">' + lide.map(karta).join('') + '</div></section>';
+    }).join('');
+  document.querySelectorAll('#segPos button').forEach(b => b.setAttribute('aria-pressed', b.dataset.pos === stav.pos));
+  document.querySelectorAll('#segFoto button').forEach(b => b.setAttribute('aria-pressed', b.dataset.foto === stav.foto));
+}
+
+document.getElementById('count').textContent = hraci.length + ' hráčů';
+document.getElementById('segPos').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  stav.pos = b.dataset.pos; vykresli();
+});
+document.getElementById('segFoto').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  stav.foto = b.dataset.foto;
+  try { localStorage.setItem('plachta-foto', stav.foto); } catch (e) {}
+  vykresli();
+});
+document.getElementById('print').addEventListener('click', () => window.print());
+vykresli();
+</script>
+</body>
+</html>
+"""
 
 if __name__ == "__main__":
     sys.exit(main())
