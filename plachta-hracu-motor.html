@@ -287,6 +287,100 @@
   /* 18 — automatický ořez přes wsrv.nl */
   .fx-auto .photo img{object-position:center;}
 
+  /* ===== EXPERIMENTÁLNÍ ===== */
+
+  /* 19 — RGB posun / glitch */
+  .fx-glitch .photo img{filter:url(#rgbsplit) contrast(1.1);}
+  .fx-glitch .photo::after{
+    content:""; position:absolute; inset:0; pointer-events:none;
+    background:repeating-linear-gradient(to bottom, rgba(0,0,0,.28) 0 1px, transparent 1px 3px);
+  }
+  @keyframes glitch{
+    0%{transform:translate(0,0)} 25%{transform:translate(-3px,1px)}
+    50%{transform:translate(2px,-1px)} 75%{transform:translate(-1px,2px)} 100%{transform:translate(0,0)}
+  }
+  .fx-glitch .tile:hover .photo img{animation:glitch .25s steps(2) infinite;}
+
+  /* 20 — kresba tužkou */
+  .fx-sketch .photo{background:#f4f2ec;}
+  .fx-sketch .photo img{filter:url(#sketch) contrast(1.15);}
+
+  /* 21 — pixel art (canvas) */
+  .photo canvas.pix{position:absolute; inset:0; width:100%; height:100%; image-rendering:pixelated; z-index:1;}
+  .fx-orig .photo canvas.pix{display:none;}
+
+  /* 22 — fotka v čísle dresu */
+  .fx-cutout .photo{container-type:inline-size; background:var(--panel-2);}
+  .fx-cutout .photo img{opacity:.12; filter:grayscale(1);}
+  .fx-cutout .photo::before{
+    content:attr(data-num);
+    position:absolute; inset:0;
+    display:flex; align-items:center; justify-content:center;
+    font:700 70cqw/.8 var(--sans);
+    letter-spacing:-.05em;
+    background:var(--img) center 12%/cover no-repeat;
+    -webkit-background-clip:text; background-clip:text;
+    color:transparent;
+  }
+
+  /* 23 — lamely */
+  .photo .strip{display:none;}
+  .fx-strips .photo img{opacity:0;}
+  .fx-strips .photo .strip{
+    display:block; position:absolute; inset:0;
+    background:var(--img) top center/cover no-repeat;
+    transition:transform .35s ease-out;
+  }
+  .fx-strips .photo .s1{clip-path:inset(0 66.66% 0 0); transform:translateY(-7%);}
+  .fx-strips .photo .s2{clip-path:inset(0 33.33% 0 33.33%); transform:translateY(5%);}
+  .fx-strips .photo .s3{clip-path:inset(0 0 0 66.66%); transform:translateY(-3%);}
+  .fx-strips .tile:hover .photo .strip{transform:none;}
+
+  /* 24 — termovize */
+  .fx-thermal .photo img{filter:url(#thermal) contrast(1.1);}
+
+  /* 25 — ambientní záře */
+  .fx-ambient{isolation:isolate; gap:22px;}
+  .fx-ambient .tile{overflow:visible;}
+  .fx-ambient .tile .photo{border-radius:12px 12px 0 0;}
+  .fx-ambient .tile::before{
+    content:""; position:absolute; inset:-4% -4% 25%; z-index:-1; pointer-events:none;
+    background:var(--img) center 20%/cover no-repeat;
+    filter:blur(26px) saturate(1.7);
+    opacity:.65;
+  }
+
+  /* 26 — lupa */
+  .fx-loupe .photo{cursor:none;}
+  .fx-loupe .photo::after{
+    content:""; position:absolute; inset:0; pointer-events:none; z-index:2;
+    background:var(--img) no-repeat;
+    background-size:var(--lbs, 0 0);
+    background-position:var(--lbp, 0 0);
+    clip-path:circle(22% at var(--cx,50%) var(--cy,50%));
+    opacity:var(--lens,0);
+  }
+  .fx-loupe .photo::before{
+    content:""; position:absolute; z-index:3; pointer-events:none;
+    width:44%; aspect-ratio:1;
+    left:var(--cx,50%); top:var(--cy,50%);
+    transform:translate(-50%,-50%);
+    border:2px solid rgba(255,255,255,.85); border-radius:50%;
+    box-shadow:0 4px 18px rgba(0,0,0,.5);
+    opacity:var(--lens,0);
+  }
+
+  /* ovládání pixel artu */
+  .pixctl{
+    display:none;
+    background:var(--panel); border:1px solid var(--border); border-radius:10px;
+    padding:12px 14px; gap:12px; align-items:center;
+    font-family:var(--mono); font-size:12px; color:var(--muted);
+  }
+  .pixctl.show{display:flex;}
+  .pixctl input{width:160px; accent-color:var(--accent);}
+  .pixctl output{color:var(--text); font-variant-numeric:tabular-nums;}
+
   /* --- kód --- */
   .code{
     background:var(--panel); border:1px solid var(--border); border-radius:10px; overflow:hidden;
@@ -357,6 +451,32 @@
       <feFuncB type="discrete" tableValues="0 .33 .66 1"/>
     </feComponentTransfer>
   </filter>
+  <filter id="rgbsplit" color-interpolation-filters="sRGB">
+    <feColorMatrix in="SourceGraphic" type="matrix" values="1 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0" result="r"/>
+    <feOffset in="r" dx="-4" dy="0" result="r2"/>
+    <feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 0  0 1 0 0 0  0 0 0 0 0  0 0 0 1 0" result="g"/>
+    <feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 1 0 0  0 0 0 1 0" result="b"/>
+    <feOffset in="b" dx="4" dy="0" result="b2"/>
+    <feBlend in="r2" in2="g" mode="screen" result="rg"/>
+    <feBlend in="rg" in2="b2" mode="screen"/>
+  </filter>
+  <filter id="sketch" color-interpolation-filters="sRGB">
+    <feColorMatrix type="saturate" values="0"/>
+    <feConvolveMatrix order="3" kernelMatrix="-1 -1 -1  -1 8 -1  -1 -1 -1" preserveAlpha="true"/>
+    <feComponentTransfer>
+      <feFuncR type="linear" slope="-3" intercept="1"/>
+      <feFuncG type="linear" slope="-3" intercept="1"/>
+      <feFuncB type="linear" slope="-3" intercept="1"/>
+    </feComponentTransfer>
+  </filter>
+  <filter id="thermal" color-interpolation-filters="sRGB">
+    <feColorMatrix type="matrix" values=".3 .59 .11 0 0  .3 .59 .11 0 0  .3 .59 .11 0 0  0 0 0 1 0"/>
+    <feComponentTransfer>
+      <feFuncR type="table" tableValues="0 0.25 0.8 1 1 1"/>
+      <feFuncG type="table" tableValues="0 0 0.1 0.45 0.85 1"/>
+      <feFuncB type="table" tableValues="0.15 0.55 0.45 0 0.1 0.9"/>
+    </feComponentTransfer>
+  </filter>
 </svg>
 
 <div class="wrap">
@@ -383,6 +503,12 @@
         <label for="ty">svisle <input type="range" id="ty" min="0" max="100" step="1"><output id="oy"></output></label>
         <label for="tz">zoom <input type="range" id="tz" min="1" max="2.2" step="0.05"><output id="oz"></output></label>
         <button class="reset" id="treset" type="button">vrátit</button>
+      </div>
+
+      <div class="pixctl" id="pixctl">
+        <label for="pixn">pixelů na šířku</label>
+        <input type="range" id="pixn" min="8" max="64" step="4" value="24">
+        <output id="pixo">24</output>
       </div>
 
       <div class="sheet" id="sheet"></div>
@@ -638,6 +764,151 @@ img.src = 'https://wsrv.nl/?url=' + encodeURIComponent(src)
 // w, h         = výsledná velikost v px
 // když služba selže, vrať původní adresu:
 img.onerror = () => { img.onerror = null; img.src = src; };`},
+
+  // ===== experimentální =====
+  {id:"glitch", grp:"Experimentální", name:"RGB posun / glitch",
+   desc:"Červený a modrý kanál se rozjedou do stran a přes fotku jdou řádky jako na starém monitoru. Po najetí myší se fotka roztřese. Hodí se na upoutávky a sociální sítě, na plachtu spíš ne.",
+   code:`<svg width="0" height="0" style="position:absolute">
+  <filter id="rgbsplit" color-interpolation-filters="sRGB">
+    <feColorMatrix in="SourceGraphic" type="matrix" values="1 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0" result="r"/>
+    <feOffset in="r" dx="-4" result="r2"/>
+    <feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 0  0 1 0 0 0  0 0 0 0 0  0 0 0 1 0" result="g"/>
+    <feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 1 0 0  0 0 0 1 0" result="b"/>
+    <feOffset in="b" dx="4" result="b2"/>
+    <feBlend in="r2" in2="g" mode="screen" result="rg"/>
+    <feBlend in="rg" in2="b2" mode="screen"/>
+  </filter>
+</svg>
+
+.tile .photo img{ filter:url(#rgbsplit) contrast(1.1); }
+/* řádkování */
+.tile .photo::after{
+  content:""; position:absolute; inset:0;
+  background:repeating-linear-gradient(to bottom, rgba(0,0,0,.28) 0 1px, transparent 1px 3px);
+}
+/* třes po najetí */
+@keyframes glitch{
+  25%{transform:translate(-3px,1px)} 50%{transform:translate(2px,-1px)} 75%{transform:translate(-1px,2px)}
+}
+.tile:hover .photo img{ animation:glitch .25s steps(2) infinite; }`},
+  {id:"sketch", grp:"Experimentální", name:"Kresba tužkou",
+   desc:"SVG filtr najde hrany (matice 3×3, stejný princip jako ve Photoshopu) a otočí je na tmavé čáry na papíře. U fotek s rušivým pozadím vyjde lépe, když je fotka menší.",
+   code:`<svg width="0" height="0" style="position:absolute">
+  <filter id="sketch" color-interpolation-filters="sRGB">
+    <feColorMatrix type="saturate" values="0"/>
+    <!-- detekce hran -->
+    <feConvolveMatrix order="3" kernelMatrix="-1 -1 -1  -1 8 -1  -1 -1 -1" preserveAlpha="true"/>
+    <!-- převrácení: světlé hrany → tmavé čáry na bílém; slope = síla čar -->
+    <feComponentTransfer>
+      <feFuncR type="linear" slope="-3" intercept="1"/>
+      <feFuncG type="linear" slope="-3" intercept="1"/>
+      <feFuncB type="linear" slope="-3" intercept="1"/>
+    </feComponentTransfer>
+  </filter>
+</svg>
+
+.tile .photo{ background:#f4f2ec; }
+.tile .photo img{ filter:url(#sketch) contrast(1.15); }`},
+  {id:"pixel", grp:"Experimentální", name:"Pixel art",
+   desc:"Fotka se překreslí do malé mřížky a zvětší bez vyhlazení, takže vznikne 8bitový portrét jako z NHL 94. Hustotu pixelů nastavíš posuvníkem. Funguje přes canvas i u cizích fotek, protože z něj nic nečteme, jen kreslíme.",
+   code:`// N = kolik pixelů na šířku (menší = hrubší)
+function pixelate(img, canvas, N){
+  const side = Math.min(img.naturalWidth, img.naturalHeight);
+  const sx = (img.naturalWidth - side) / 2;   // čtverec od horního okraje
+
+  const small = document.createElement('canvas');
+  small.width = small.height = N;
+  small.getContext('2d').drawImage(img, sx, 0, side, side, 0, 0, N, N);
+
+  const ctx = canvas.getContext('2d');
+  ctx.imageSmoothingEnabled = false;          // ostré hrany pixelů
+  ctx.drawImage(small, 0, 0, N, N, 0, 0, canvas.width, canvas.height);
+}
+
+/* canvas položený přes fotku */
+.photo canvas{ position:absolute; inset:0; width:100%; height:100%; image-rendering:pixelated; }`},
+  {id:"cutout", grp:"Experimentální", name:"Fotka v čísle dresu",
+   desc:"Obří číslo dresu, kterým prosvítá fotka hráče, a za ním slabě celá fotka. Dělá to background-clip:text. Velikost čísla se řídí šířkou dlaždice přes jednotku cqw.",
+   code:`/* na dlaždici: style="--img:url('…/kundratek_tomas.jpg')"  a  data-num="84" */
+.tile .photo{ position:relative; container-type:inline-size; }
+.tile .photo img{ opacity:.12; filter:grayscale(1); }
+.tile .photo::before{
+  content:attr(data-num);
+  position:absolute; inset:0;
+  display:flex; align-items:center; justify-content:center;
+  font:700 70cqw/.8 'IBM Plex Sans', sans-serif;   /* 70 % šířky dlaždice */
+  letter-spacing:-.05em;
+  background:var(--img) center 12%/cover no-repeat;
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+}`},
+  {id:"strips", grp:"Experimentální", name:"Lamely",
+   desc:"Fotka rozřezaná na tři svislé pruhy posunuté proti sobě. Po najetí myší do sebe zapadnou. Každý pruh je stejná fotka, jen z ní clip-path ukáže jinou třetinu.",
+   code:`<!-- uvnitř .photo -->
+<div class="strip s1"></div><div class="strip s2"></div><div class="strip s3"></div>
+
+.tile .photo img{ opacity:0; }
+.tile .photo .strip{
+  position:absolute; inset:0;
+  background:var(--img) top center/cover no-repeat;
+  transition:transform .35s ease-out;
+}
+.tile .photo .s1{ clip-path:inset(0 66.66% 0 0);      transform:translateY(-7%); }
+.tile .photo .s2{ clip-path:inset(0 33.33% 0 33.33%); transform:translateY(5%); }
+.tile .photo .s3{ clip-path:inset(0 0 0 66.66%);      transform:translateY(-3%); }
+.tile:hover .photo .strip{ transform:none; }`},
+  {id:"thermal", grp:"Experimentální", name:"Termovize",
+   desc:"Jas fotky se přemapuje na paletu termokamery od černé přes fialovou a červenou po žlutou a bílou. Stejný princip jako duotón, jen s šesti barvami místo tří.",
+   code:`<svg width="0" height="0" style="position:absolute">
+  <filter id="thermal" color-interpolation-filters="sRGB">
+    <!-- převod na jas -->
+    <feColorMatrix type="matrix" values=".3 .59 .11 0 0  .3 .59 .11 0 0  .3 .59 .11 0 0  0 0 0 1 0"/>
+    <!-- jas → černá · fialová · červená · oranžová · žlutá · bílá -->
+    <feComponentTransfer>
+      <feFuncR type="table" tableValues="0 0.25 0.8 1 1 1"/>
+      <feFuncG type="table" tableValues="0 0 0.1 0.45 0.85 1"/>
+      <feFuncB type="table" tableValues="0.15 0.55 0.45 0 0.1 0.9"/>
+    </feComponentTransfer>
+  </filter>
+</svg>
+
+.tile .photo img{ filter:url(#thermal) contrast(1.1); }`},
+  {id:"ambient", grp:"Experimentální", name:"Ambientní záře",
+   desc:"Za kartou svítí rozmazaná kopie fotky, takže každý hráč má záři ve svých barvách, podobně jako režim Ambient na YouTube. Barvy se neurčují výpočtem, je to jen rozmazaná fotka.",
+   code:`/* na dlaždici: style="--img:url('…/kundratek_tomas.jpg')" */
+.sheet{ isolation:isolate; gap:22px; }
+.tile{ position:relative; overflow:visible; }
+.tile .photo{ border-radius:12px 12px 0 0; }
+.tile::before{
+  content:""; position:absolute; inset:-4% -4% 25%; z-index:-1;
+  background:var(--img) center 20%/cover no-repeat;
+  filter:blur(26px) saturate(1.7);
+  opacity:.65;
+}`},
+  {id:"loupe", grp:"Experimentální", name:"Lupa",
+   desc:"Najeď myší na fotku a pod kurzorem se objeví kruhová lupa s 2,5× zvětšením. Skript přepočítá pozici kurzoru na bod v obrázku, takže lupa sedí přesně i při ořezu object-fit:cover.",
+   code:`.photo::after{
+  content:""; position:absolute; inset:0; pointer-events:none;
+  background:var(--img) no-repeat;
+  background-size:var(--lbs);
+  background-position:var(--lbp);
+  clip-path:circle(22% at var(--cx) var(--cy));
+  opacity:var(--lens, 0);
+}
+
+// JS (pointermove na .photo)
+const r = photo.getBoundingClientRect();
+const cx = e.clientX - r.left, cy = e.clientY - r.top;
+const s = Math.max(r.width / img.naturalWidth, r.height / img.naturalHeight);
+const w = img.naturalWidth * s, h = img.naturalHeight * s;   // velikost po cover
+const u = (cx - (r.width - w) / 2) / w, v = cy / h;          // bod v obrázku 0–1
+const Z = 2.5;                                                // zvětšení
+photo.style.setProperty('--cx', cx + 'px');
+photo.style.setProperty('--cy', cy + 'px');
+photo.style.setProperty('--lbs', \`\${w*Z}px \${h*Z}px\`);
+photo.style.setProperty('--lbp', \`\${cx - u*w*Z}px \${cy - v*h*Z}px\`);
+photo.style.setProperty('--lens', 1);`},
 ];
 
 // --- fotky ---
@@ -666,6 +937,11 @@ players.forEach((p, i) => {
   const img = document.createElement('img');
   img.alt = p.name;
   photo.appendChild(img);
+  ['s1','s2','s3'].forEach(c => {
+    const s = document.createElement('div');
+    s.className = 'strip ' + c;
+    photo.appendChild(s);
+  });
   tile.appendChild(photo);
   const label = document.createElement('div');
   label.className = 'label';
@@ -680,7 +956,10 @@ players.forEach((p, i) => {
   const urls = candidateUrls(p);
   let idx = 0;
   img.onload = () => {
-    if (img.dataset.mode !== 'proxy') img.dataset.orig = img.src;
+    if (img.dataset.mode !== 'proxy'){
+      img.dataset.orig = img.src;
+      tile.style.setProperty('--img', `url("${img.src}")`);
+    }
   };
   img.onerror = () => {
     if (img.dataset.mode === 'proxy'){ img.dataset.mode = ''; img.src = img.dataset.orig; return; }
@@ -691,18 +970,21 @@ players.forEach((p, i) => {
   img.src = urls[0];
 
   tile.addEventListener('pointermove', e => {
-    if (current.id !== 'tilt') return;
-    const r = tile.getBoundingClientRect();
-    const px = (e.clientX - r.left) / r.width;
-    const py = (e.clientY - r.top) / r.height;
-    tile.style.setProperty('--ry', (px - .5) * 14 + 'deg');
-    tile.style.setProperty('--rx', (.5 - py) * 14 + 'deg');
-    tile.style.setProperty('--mx', px * 100 + '%');
-    tile.style.setProperty('--my', py * 100 + '%');
-    tile.style.setProperty('--glare', 1);
+    if (current.id === 'tilt'){
+      const r = tile.getBoundingClientRect();
+      const px = (e.clientX - r.left) / r.width;
+      const py = (e.clientY - r.top) / r.height;
+      tile.style.setProperty('--ry', (px - .5) * 14 + 'deg');
+      tile.style.setProperty('--rx', (.5 - py) * 14 + 'deg');
+      tile.style.setProperty('--mx', px * 100 + '%');
+      tile.style.setProperty('--my', py * 100 + '%');
+      tile.style.setProperty('--glare', 1);
+    }
+    if (current.id === 'loupe') moveLoupe(e, photo, img);
   });
   tile.addEventListener('pointerleave', () => {
     ['--rx','--ry','--glare'].forEach(v => tile.style.removeProperty(v));
+    photo.style.removeProperty('--lens');
   });
 
   tile.addEventListener('click', () => {
@@ -715,10 +997,11 @@ players.forEach((p, i) => {
 // --- navigace ---
 const nav = document.getElementById('nav');
 const navBtns = effects.map((fx, i) => {
-  if (fx.adv && !effects[i-1].adv){
+  const grp = f => f ? (f.grp || (f.adv ? 'Pokročilé' : '')) : '';
+  if (grp(fx) && grp(fx) !== grp(effects[i-1])){
     const g = document.createElement('div');
     g.className = 'navgroup';
-    g.textContent = 'Pokročilé';
+    g.textContent = grp(fx);
     nav.appendChild(g);
   }
   const b = document.createElement('button');
@@ -739,7 +1022,51 @@ let curIdx = 0;
 function proxyUrl(src){
   return 'https://wsrv.nl/?url=' + encodeURIComponent(src) + '&w=400&h=400&fit=cover&a=attention';
 }
+// lupa: přepočet z kurzoru na bod v obrázku (respektuje object-fit:cover + top)
+function moveLoupe(e, photo, img){
+  if (!img.naturalWidth || !img.isConnected) return;
+  const r = photo.getBoundingClientRect();
+  const W = r.width, H = r.height;
+  const cx = e.clientX - r.left, cy = e.clientY - r.top;
+  const s = Math.max(W / img.naturalWidth, H / img.naturalHeight);
+  const w = img.naturalWidth * s, h = img.naturalHeight * s;
+  const ox = (W - w) / 2, oy = 0;
+  const u = (cx - ox) / w, v = (cy - oy) / h;
+  const Z = 2.5;
+  photo.style.setProperty('--cx', cx + 'px');
+  photo.style.setProperty('--cy', cy + 'px');
+  photo.style.setProperty('--lbs', `${w * Z}px ${h * Z}px`);
+  photo.style.setProperty('--lbp', `${cx - u * w * Z}px ${cy - v * h * Z}px`);
+  photo.style.setProperty('--lens', 1);
+}
+
+// pixel art: zmenšit na N×N a zpět zvětšit bez vyhlazení
+function drawPixel(photo){
+  const img = photo.querySelector('img');
+  if (!img || !img.naturalWidth) return;
+  const N = +document.getElementById('pixn').value;
+  let big = photo.querySelector('canvas.pix');
+  if (!big){ big = document.createElement('canvas'); big.className = 'pix'; photo.appendChild(big); }
+  const side = Math.min(img.naturalWidth, img.naturalHeight);
+  const sx = (img.naturalWidth - side) / 2, sy = 0;
+  const small = document.createElement('canvas');
+  small.width = small.height = N;
+  small.getContext('2d').drawImage(img, sx, sy, side, side, 0, 0, N, N);
+  const px = Math.round(photo.clientWidth * (window.devicePixelRatio || 1));
+  big.width = big.height = px;
+  const ctx = big.getContext('2d');
+  ctx.imageSmoothingEnabled = false;
+  ctx.drawImage(small, 0, 0, N, N, 0, 0, px, px);
+}
+function clearPixel(){ photos.forEach(ph => ph.querySelector('canvas.pix')?.remove()); }
+document.getElementById('pixn').addEventListener('input', e => {
+  document.getElementById('pixo').textContent = e.target.value;
+  if (current.id === 'pixel') photos.forEach(drawPixel);
+});
+
 function leaveFx(id){
+  if (id === 'pixel') clearPixel();
+  if (id === 'loupe') photos.forEach(ph => ph.style.removeProperty('--lens'));
   if (id === 'auto'){
     imgs.forEach(img => {
       if (img.dataset.mode === 'proxy'){ img.dataset.mode = ''; img.src = img.dataset.orig; }
@@ -750,6 +1077,8 @@ function leaveFx(id){
   }
 }
 function enterFx(id){
+  document.getElementById('pixctl').classList.toggle('show', id === 'pixel');
+  if (id === 'pixel') photos.forEach(drawPixel);
   if (id === 'auto'){
     imgs.forEach(img => {
       if (img.isConnected && img.dataset.orig){ img.dataset.mode = 'proxy'; img.src = proxyUrl(img.dataset.orig); }
