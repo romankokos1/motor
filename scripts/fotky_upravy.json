@@ -1,0 +1,9 @@
+{
+  "_navod": "Ruční opravy pro jednotlivé hráče, klíč = slug z kontrolní stránky (např. 'beranek-martin'). Vše je nepovinné. zoom: 1.1 = obličej o 10 % větší. posun_x / posun_y: posun hráče v podílu plátna (0.03 = o 3 % doprava / dolů). bez_vyrezu: true = výřez se nedělá (když rembg selže). url: přímá adresa fotky. oblicej: [x, y, šířka, výška] v pixelech originálu, když detekce obličeje netrefí. Po úpravě commitni, Action přepočítá jen dotčené hráče.",
+  "_priklad": {
+    "zoom": 1.08,
+    "posun_x": 0.0,
+    "posun_y": 0.02,
+    "bez_vyrezu": false
+  }
+}
