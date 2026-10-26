@@ -70,6 +70,10 @@
   nav button[aria-current="true"]{background:var(--panel-2); color:var(--text); box-shadow:inset 2px 0 0 var(--accent);}
   nav button[aria-current="true"] .n{color:var(--accent);}
   .navhint{font-family:var(--mono); font-size:10px; color:var(--muted); padding:8px 10px 4px; border-top:1px solid var(--border); margin-top:4px;}
+  .navgroup{
+    font-family:var(--mono); font-size:10px; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--muted); padding:10px 10px 4px; border-top:1px solid var(--border); margin-top:4px;
+  }
 
   /* --- hlavní panel --- */
   main{min-width:0; display:flex; flex-direction:column; gap:14px;}
@@ -112,6 +116,7 @@
     gap:14px;
   }
   .tile{
+    position:relative;
     background:var(--panel);
     border:1px solid var(--border);
     border-radius:12px;
@@ -219,6 +224,69 @@
     background:var(--pos); z-index:2;
   }
 
+  /* ===== POKROČILÉ ===== */
+
+  /* 11 — skutečný duotón přes SVG filtr */
+  .fx-svgduo .pos-G .photo img{filter:url(#duo-G);}
+  .fx-svgduo .pos-D .photo img{filter:url(#duo-D);}
+  .fx-svgduo .pos-F .photo img{filter:url(#duo-F);}
+
+  /* 12 — posterizace */
+  .fx-poster .photo img{filter:url(#poster) saturate(1.3) contrast(1.05);}
+
+  /* 13 — retro kartička */
+  .fx-retro .photo{padding:6px; background:#e9dfc8;}
+  .fx-retro .photo img{filter:sepia(.45) contrast(1.1) saturate(.8); border-radius:3px;}
+  .fx-retro .photo::before{
+    content:""; position:absolute; inset:6px; border-radius:3px; z-index:1; pointer-events:none;
+    background:radial-gradient(ellipse at 50% 40%, transparent 45%, rgba(40,25,10,.55) 100%);
+  }
+  .fx-retro .photo::after{
+    content:""; position:absolute; inset:6px; border-radius:3px; z-index:2; pointer-events:none;
+    background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    mix-blend-mode:overlay; opacity:.45;
+  }
+
+  /* 14 — novinový rastr */
+  .fx-halftone .photo{filter:grayscale(1) contrast(14); background:#fff;}
+  .fx-halftone .photo img{filter:brightness(1.05) blur(.6px);}
+  .fx-halftone .photo::after{
+    content:""; position:absolute; inset:0; pointer-events:none;
+    background:radial-gradient(circle, #000 0, #fff 75%) 0 0/5px 5px;
+    mix-blend-mode:screen;
+  }
+
+  /* 15 — prolnutí do pozadí */
+  .fx-fade .photo{background:transparent;}
+  .fx-fade .photo img{
+    -webkit-mask-image:linear-gradient(to bottom, #000 55%, transparent 98%);
+    mask-image:linear-gradient(to bottom, #000 55%, transparent 98%);
+  }
+  .fx-fade .label{position:relative; margin-top:-34px;}
+
+  /* 16 — 3D náklon s odleskem */
+  .fx-tilt .tile{
+    transform:perspective(700px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));
+    transition:transform .15s ease-out;
+  }
+  .fx-tilt .tile::after{
+    content:""; position:absolute; inset:0; border-radius:inherit; pointer-events:none;
+    background:radial-gradient(circle at var(--mx,50%) var(--my,50%), rgba(255,255,255,.22), transparent 55%);
+    opacity:var(--glare,0); transition:opacity .2s;
+  }
+
+  /* 17 — načítání */
+  @keyframes shimmer{from{background-position:-200% 0} to{background-position:200% 0}}
+  .fx-load .photo.loading{
+    background:linear-gradient(90deg, var(--panel-2) 25%, var(--border) 50%, var(--panel-2) 75%) 0 0/200% 100%;
+    animation:shimmer 1.2s linear infinite;
+  }
+  .fx-load .photo img{transition:opacity .5s, transform .6s;}
+  .fx-load .photo.loading img{opacity:0; transform:scale(1.04);}
+
+  /* 18 — automatický ořez přes wsrv.nl */
+  .fx-auto .photo img{object-position:center;}
+
   /* --- kód --- */
   .code{
     background:var(--panel); border:1px solid var(--border); border-radius:10px; overflow:hidden;
@@ -247,6 +315,7 @@
     nav button{white-space:nowrap;}
     nav button[aria-current="true"]{box-shadow:inset 0 -2px 0 var(--accent);}
     .navhint{display:none;}
+    .navgroup{border-top:none; border-left:1px solid var(--border); margin:0 0 0 4px; padding:10px 10px 0; white-space:nowrap;}
     .sheet{grid-template-columns:repeat(2, minmax(0,1fr)); gap:10px;}
   }
   @media (prefers-reduced-motion:reduce){
@@ -255,6 +324,41 @@
 </style>
 </head>
 <body>
+<!-- SVG filtry pro pokročilé efekty (neviditelné) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <filter id="duo-G" color-interpolation-filters="sRGB">
+    <feColorMatrix type="saturate" values="0"/>
+    <feComponentTransfer>
+      <feFuncR type="table" tableValues="0.05 0.96 1"/>
+      <feFuncG type="table" tableValues="0.08 0.66 0.97"/>
+      <feFuncB type="table" tableValues="0.14 0.25 0.9"/>
+    </feComponentTransfer>
+  </filter>
+  <filter id="duo-D" color-interpolation-filters="sRGB">
+    <feColorMatrix type="saturate" values="0"/>
+    <feComponentTransfer>
+      <feFuncR type="table" tableValues="0.05 0.25 0.95"/>
+      <feFuncG type="table" tableValues="0.08 0.66 0.98"/>
+      <feFuncB type="table" tableValues="0.14 0.96 1"/>
+    </feComponentTransfer>
+  </filter>
+  <filter id="duo-F" color-interpolation-filters="sRGB">
+    <feColorMatrix type="saturate" values="0"/>
+    <feComponentTransfer>
+      <feFuncR type="table" tableValues="0.05 0.90 1"/>
+      <feFuncG type="table" tableValues="0.08 0.33 0.95"/>
+      <feFuncB type="table" tableValues="0.14 0.29 0.92"/>
+    </feComponentTransfer>
+  </filter>
+  <filter id="poster" color-interpolation-filters="sRGB">
+    <feComponentTransfer>
+      <feFuncR type="discrete" tableValues="0 .33 .66 1"/>
+      <feFuncG type="discrete" tableValues="0 .33 .66 1"/>
+      <feFuncB type="discrete" tableValues="0 .33 .66 1"/>
+    </feComponentTransfer>
+  </filter>
+</svg>
+
 <div class="wrap">
   <header>
     <h1>Úpravy fotek hráčů</h1>
@@ -405,6 +509,135 @@ const effects = [
   height:4px;
   background:var(--pos);
 }`},
+
+  // ===== pokročilé =====
+  {id:"svgduo", adv:true, name:"Skutečný duotón (SVG)",
+   desc:"Na rozdíl od efektu 6 tady SVG filtr přemapuje každý tón zvlášť: stíny do tmavě modré, střední tóny do barvy pozice, světla skoro do bílé. Výsledek je čistší a vypadá jako tištěná grafika.",
+   code:`<!-- jednou kamkoli do <body>, je neviditelné -->
+<svg width="0" height="0" style="position:absolute">
+  <filter id="duo-D" color-interpolation-filters="sRGB">
+    <feColorMatrix type="saturate" values="0"/>
+    <feComponentTransfer>
+      <feFuncR type="table" tableValues="0.05 0.25 0.95"/>
+      <feFuncG type="table" tableValues="0.08 0.66 0.98"/>
+      <feFuncB type="table" tableValues="0.14 0.96 1"/>
+    </feComponentTransfer>
+  </filter>
+  <!-- duo-G a duo-F stejně, jen jiná čísla -->
+</svg>
+
+/* tableValues = stíny → střední tóny → světla, kanál 0–1 */
+.pos-G .photo img{ filter:url(#duo-G); }
+.pos-D .photo img{ filter:url(#duo-D); }
+.pos-F .photo img{ filter:url(#duo-F); }`},
+  {id:"poster", adv:true, name:"Posterizace",
+   desc:"Každý barevný kanál má jen čtyři úrovně, takže plynulé přechody se rozpadnou do ploch. Plakátový až komiksový vzhled, dobrý třeba na pozvánku nebo sociální sítě.",
+   code:`<svg width="0" height="0" style="position:absolute">
+  <filter id="poster" color-interpolation-filters="sRGB">
+    <feComponentTransfer>
+      <feFuncR type="discrete" tableValues="0 .33 .66 1"/>
+      <feFuncG type="discrete" tableValues="0 .33 .66 1"/>
+      <feFuncB type="discrete" tableValues="0 .33 .66 1"/>
+    </feComponentTransfer>
+  </filter>
+</svg>
+
+/* víc hodnot v tableValues = jemnější, méně = plakátovější */
+.tile .photo img{ filter:url(#poster) saturate(1.3) contrast(1.05); }`},
+  {id:"retro", adv:true, name:"Retro kartička",
+   desc:"Sépie, vinětace do krajů, filmové zrno a krémový rámeček. Vypadá jako hokejová kartička z 90. let. Zrno se generuje SVG šumem, žádný obrázek navíc.",
+   code:`.tile .photo{ position:relative; padding:6px; background:#e9dfc8; }
+.tile .photo img{ filter:sepia(.45) contrast(1.1) saturate(.8); border-radius:3px; }
+
+/* vinětace */
+.tile .photo::before{
+  content:""; position:absolute; inset:6px; border-radius:3px;
+  background:radial-gradient(ellipse at 50% 40%, transparent 45%, rgba(40,25,10,.55) 100%);
+}
+/* zrno */
+.tile .photo::after{
+  content:""; position:absolute; inset:6px; border-radius:3px;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode:overlay;
+  opacity:.45;
+}`},
+  {id:"halftone", adv:true, name:"Novinový rastr",
+   desc:"Fotka složená z teček, které jsou ve stínech větší a ve světlech menší, jako v tištěných novinách. Funguje to trikem: přes fotku se položí mřížka přechodů a vysoký kontrast z nich udělá ostré tečky.",
+   code:`.tile .photo{
+  position:relative;
+  filter:grayscale(1) contrast(14);   /* „prahování“ na černou a bílou */
+  background:#fff;
+}
+.tile .photo img{ filter:brightness(1.05) blur(.6px); }
+.tile .photo::after{
+  content:""; position:absolute; inset:0;
+  background:radial-gradient(circle, #000 0, #fff 75%) 0 0/5px 5px;   /* 5px = velikost rastru */
+  mix-blend-mode:screen;
+}`},
+  {id:"fade", adv:true, name:"Prolnutí do pozadí",
+   desc:"Spodek fotky plynule mizí do pozadí dlaždice a jméno se posune do fotky. Dělá to mask-image, které určuje průhlednost podle přechodu.",
+   code:`.tile .photo{ background:transparent; }
+.tile .photo img{
+  -webkit-mask-image:linear-gradient(to bottom, #000 55%, transparent 98%);
+  mask-image:linear-gradient(to bottom, #000 55%, transparent 98%);
+}
+.tile .label{
+  position:relative;
+  margin-top:-34px;   /* jméno vjede do prolnuté části */
+}`},
+  {id:"tilt", adv:true, name:"3D náklon s odleskem",
+   desc:"Najeď myší na kartu: nakloní se za kurzorem a přejede po ní odlesk jako po lesklé sběratelské kartě. Potřebuje pár řádků JavaScriptu.",
+   code:`.tile{
+  position:relative;
+  transform:perspective(700px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));
+  transition:transform .15s ease-out;
+}
+.tile::after{
+  content:""; position:absolute; inset:0; border-radius:inherit; pointer-events:none;
+  background:radial-gradient(circle at var(--mx,50%) var(--my,50%), rgba(255,255,255,.22), transparent 55%);
+  opacity:var(--glare,0);
+  transition:opacity .2s;
+}
+
+// JS
+document.querySelectorAll('.tile').forEach(t => {
+  t.addEventListener('pointermove', e => {
+    const r = t.getBoundingClientRect();
+    const px = (e.clientX - r.left) / r.width;   // 0–1
+    const py = (e.clientY - r.top) / r.height;
+    t.style.setProperty('--ry', (px - .5) * 14 + 'deg');
+    t.style.setProperty('--rx', (.5 - py) * 14 + 'deg');
+    t.style.setProperty('--mx', px * 100 + '%');
+    t.style.setProperty('--my', py * 100 + '%');
+    t.style.setProperty('--glare', 1);
+  });
+  t.addEventListener('pointerleave', () => {
+    ['--rx', '--ry', '--glare'].forEach(v => t.style.removeProperty(v));
+  });
+});`},
+  {id:"load", adv:true, name:"Načítání s animací",
+   desc:"Než se fotka stáhne, běží v dlaždici světelný pruh a fotka pak jemně najede. Tady je pomalé načítání jen simulované, znovu ho přehraješ dalším kliknutím na tuto položku.",
+   code:`.photo.loading{
+  background:linear-gradient(90deg, #1e242b 25%, #2a323b 50%, #1e242b 75%) 0 0/200% 100%;
+  animation:shimmer 1.2s linear infinite;
+}
+@keyframes shimmer{ from{background-position:-200% 0} to{background-position:200% 0} }
+.photo img{ transition:opacity .5s, transform .6s; }
+.photo.loading img{ opacity:0; transform:scale(1.04); }
+
+// JS: dlaždice začne jako class="photo loading"
+img.onload = () => photo.classList.remove('loading');`},
+  {id:"auto", adv:true, name:"Automatický ořez (wsrv.nl)",
+   desc:"Fotka jde přes bezplatnou službu wsrv.nl, která sama najde nejzajímavější místo, obvykle obličej, a vrátí hotový čtverec. Navíc je soubor menší a stránka rychlejší. Závisí ale na cizí službě.",
+   code:`// místo přímé adresy pošli fotku přes wsrv.nl
+const src = 'https://hcmotor.cz/foto/hraci/2027/kundratek_tomas.jpg';
+img.src = 'https://wsrv.nl/?url=' + encodeURIComponent(src)
+        + '&w=400&h=400&fit=cover&a=attention';
+
+// a=attention  = server najde nejvýraznější část fotky
+// w, h         = výsledná velikost v px
+// když služba selže, vrať původní adresu:
+img.onerror = () => { img.onerror = null; img.src = src; };`},
 ];
 
 // --- fotky ---
@@ -419,6 +652,8 @@ function candidateUrls(p){
 
 const sheet = document.getElementById('sheet');
 const tiles = [];
+const photos = [];
+const imgs = [];
 const tune = players.map(() => ({x:50, y:0, z:1}));
 let sel = 0;
 
@@ -439,14 +674,36 @@ players.forEach((p, i) => {
   sheet.appendChild(tile);
   tiles.push(tile);
 
+  photos.push(photo);
+  imgs.push(img);
+
   const urls = candidateUrls(p);
   let idx = 0;
+  img.onload = () => {
+    if (img.dataset.mode !== 'proxy') img.dataset.orig = img.src;
+  };
   img.onerror = () => {
+    if (img.dataset.mode === 'proxy'){ img.dataset.mode = ''; img.src = img.dataset.orig; return; }
     idx++;
     if (idx < urls.length) img.src = urls[idx];
     else photo.innerHTML = '<div class="noimg">fotka<br>nenalezena</div>';
   };
   img.src = urls[0];
+
+  tile.addEventListener('pointermove', e => {
+    if (current.id !== 'tilt') return;
+    const r = tile.getBoundingClientRect();
+    const px = (e.clientX - r.left) / r.width;
+    const py = (e.clientY - r.top) / r.height;
+    tile.style.setProperty('--ry', (px - .5) * 14 + 'deg');
+    tile.style.setProperty('--rx', (.5 - py) * 14 + 'deg');
+    tile.style.setProperty('--mx', px * 100 + '%');
+    tile.style.setProperty('--my', py * 100 + '%');
+    tile.style.setProperty('--glare', 1);
+  });
+  tile.addEventListener('pointerleave', () => {
+    ['--rx','--ry','--glare'].forEach(v => tile.style.removeProperty(v));
+  });
 
   tile.addEventListener('click', () => {
     if (current.id !== 'tune') return;
@@ -458,6 +715,12 @@ players.forEach((p, i) => {
 // --- navigace ---
 const nav = document.getElementById('nav');
 const navBtns = effects.map((fx, i) => {
+  if (fx.adv && !effects[i-1].adv){
+    const g = document.createElement('div');
+    g.className = 'navgroup';
+    g.textContent = 'Pokročilé';
+    nav.appendChild(g);
+  }
   const b = document.createElement('button');
   b.type = 'button';
   b.innerHTML = `<span class="n">${i+1}</span><span>${fx.name}</span>`;
@@ -473,7 +736,37 @@ nav.appendChild(hint);
 let current = effects[0];
 let curIdx = 0;
 
+function proxyUrl(src){
+  return 'https://wsrv.nl/?url=' + encodeURIComponent(src) + '&w=400&h=400&fit=cover&a=attention';
+}
+function leaveFx(id){
+  if (id === 'auto'){
+    imgs.forEach(img => {
+      if (img.dataset.mode === 'proxy'){ img.dataset.mode = ''; img.src = img.dataset.orig; }
+    });
+  }
+  if (id === 'tilt'){
+    tiles.forEach(t => ['--rx','--ry','--glare'].forEach(v => t.style.removeProperty(v)));
+  }
+}
+function enterFx(id){
+  if (id === 'auto'){
+    imgs.forEach(img => {
+      if (img.isConnected && img.dataset.orig){ img.dataset.mode = 'proxy'; img.src = proxyUrl(img.dataset.orig); }
+    });
+  }
+  if (id === 'load'){
+    photos.forEach((ph, j) => {
+      if (!ph.querySelector('img')) return;
+      ph.classList.add('loading');
+      setTimeout(() => ph.classList.remove('loading'), 600 + j * 200);
+    });
+  }
+}
+
 function setFx(i){
+  if (current.id !== effects[i].id) leaveFx(current.id);
+  enterFx(effects[i].id);
   curIdx = i;
   current = effects[i];
   sheet.className = 'sheet fx-' + current.id;
@@ -540,7 +833,7 @@ function renderCode(){
     codeEl.innerHTML = tuneCode();
   } else {
     document.getElementById('codeLabel').textContent = 'CSS';
-    codeEl.innerHTML = esc(current.code).replace(/(\/\*.*?\*\/|&lt;!--.*?--&gt;)/g, '<span class="c">$1</span>');
+    codeEl.innerHTML = esc(current.code).replace(/(\/\*.*?\*\/|&lt;!--.*?--&gt;|(?:^|\s)\/\/[^\n]*)/gm, '<span class="c">$1</span>');
   }
 }
 
