@@ -531,6 +531,76 @@
   }
   .fx-entry .tile.pre .photo::before{transform-origin:left; transform:scaleX(1); transition:none;}
 
+  /* ===== VYLEPŠENÍ FOTKY ===== */
+  .photo .sharp, .photo .orig-layer, .photo .split-line{display:none;}
+
+  /* 35 — doostření */
+  .fx-sharpen .photo img{filter:url(#sharpen) contrast(1.03);}
+
+  /* 36 — clarity */
+  .fx-clarity .photo img{filter:url(#clarity) saturate(1.05);}
+
+  /* 37 — studiové světlo */
+  .fx-light .photo img{filter:contrast(1.05) saturate(1.05);}
+  .fx-light .photo::after{
+    content:""; position:absolute; inset:0; pointer-events:none; z-index:1;
+    background:
+      radial-gradient(circle at 28% 12%, rgba(255,244,228,.7), transparent 55%),
+      radial-gradient(circle at 85% 95%, rgba(8,14,30,.6), transparent 60%);
+    mix-blend-mode:soft-light;
+  }
+
+  /* 38 — rozostřené pozadí */
+  .fx-portrait .photo img{filter:blur(3px) brightness(.92) saturate(.9); transform:scale(1.04);}
+  .fx-portrait .photo .sharp{
+    display:block; position:absolute; inset:0; z-index:1;
+    background:var(--img) top center/cover no-repeat;
+    -webkit-mask-image:radial-gradient(ellipse 34% 42% at 50% 34%, #000 55%, transparent 100%);
+    mask-image:radial-gradient(ellipse 34% 42% at 50% 34%, #000 55%, transparent 100%);
+  }
+
+  /* 39 — Orton glow */
+  .fx-orton .photo img{filter:url(#orton) contrast(1.08) saturate(1.12);}
+
+  /* 40 — matný film */
+  .fx-matte .photo img{filter:url(#matte) saturate(.85);}
+
+  /* 41 — dramatická černobílá */
+  .fx-bwred .photo img{filter:url(#bwred);}
+
+  /* 42 — barevné studiové pozadí */
+  .fx-studio .photo{
+    background:radial-gradient(circle at 50% 32%,
+      color-mix(in srgb, var(--pos) 22%, #fff) 0%,
+      color-mix(in srgb, var(--pos) 75%, #000) 100%);
+  }
+  .fx-studio .photo img{mix-blend-mode:multiply; filter:contrast(1.08);}
+
+  /* 43 — kompletní úprava */
+  .fx-pro .photo img{filter:url(#clarity) url(#sharpen) url(#grade) contrast(1.03) saturate(1.06);}
+  .fx-pro .photo::after{
+    content:""; position:absolute; inset:0; pointer-events:none; z-index:1;
+    background:
+      radial-gradient(circle at 30% 12%, rgba(255,244,228,.45), transparent 55%),
+      radial-gradient(ellipse at 50% 35%, transparent 58%, rgba(5,10,18,.4) 100%);
+    mix-blend-mode:soft-light;
+  }
+
+  /* porovnání posuvníkem: vlevo originál, vpravo efekt */
+  .split .photo .orig-layer{
+    display:block; position:absolute; inset:0; z-index:5; pointer-events:none;
+    background:var(--panel-2) var(--img) top center/cover no-repeat;
+    clip-path:inset(0 calc(100% - var(--split, 50%)) 0 0);
+  }
+  .split .photo .split-line{
+    display:block; position:absolute; top:0; bottom:0; z-index:6; pointer-events:none;
+    left:var(--split, 50%); width:2px; transform:translateX(-1px);
+    background:#fff; box-shadow:0 0 6px rgba(0,0,0,.5);
+  }
+  .cmpgroup{display:flex; gap:8px; align-items:center; flex-wrap:wrap;}
+  .cmpgroup input[type=range]{width:120px; accent-color:var(--accent);}
+  .cmpgroup input[hidden]{display:none;}
+
   /* ovládání pixel artu */
   .pixctl{
     display:none;
@@ -645,6 +715,33 @@
       <feFuncB type="table" tableValues="0.13 0.33 0.5 0.7 0.84"/>
     </feComponentTransfer>
   </filter>
+  <filter id="sharpen" color-interpolation-filters="sRGB">
+    <feConvolveMatrix order="3" kernelMatrix="0 -0.5 0  -0.5 3 -0.5  0 -0.5 0" preserveAlpha="true" edgeMode="duplicate"/>
+  </filter>
+  <filter id="clarity" color-interpolation-filters="sRGB">
+    <feGaussianBlur in="SourceGraphic" stdDeviation="8" edgeMode="duplicate" result="blur"/>
+    <feComposite in="SourceGraphic" in2="blur" operator="arithmetic" k1="0" k2="1.6" k3="-0.6" k4="0"/>
+  </filter>
+  <filter id="orton" color-interpolation-filters="sRGB">
+    <feGaussianBlur in="SourceGraphic" stdDeviation="6" edgeMode="duplicate" result="blur"/>
+    <feBlend in="SourceGraphic" in2="blur" mode="screen" result="glow"/>
+    <feComposite in="glow" in2="SourceGraphic" operator="arithmetic" k1="0" k2="0.45" k3="0.55" k4="0"/>
+  </filter>
+  <filter id="matte" color-interpolation-filters="sRGB">
+    <feComponentTransfer>
+      <feFuncR type="table" tableValues="0.09 0.36 0.63 0.87 0.95"/>
+      <feFuncG type="table" tableValues="0.09 0.34 0.6 0.84 0.94"/>
+      <feFuncB type="table" tableValues="0.1 0.34 0.58 0.81 0.91"/>
+    </feComponentTransfer>
+  </filter>
+  <filter id="bwred" color-interpolation-filters="sRGB">
+    <feColorMatrix type="matrix" values=".75 .35 -.1 0 0  .75 .35 -.1 0 0  .75 .35 -.1 0 0  0 0 0 1 0"/>
+    <feComponentTransfer>
+      <feFuncR type="table" tableValues="0 0.07 0.28 0.62 0.88 1"/>
+      <feFuncG type="table" tableValues="0 0.07 0.28 0.62 0.88 1"/>
+      <feFuncB type="table" tableValues="0 0.07 0.28 0.62 0.88 1"/>
+    </feComponentTransfer>
+  </filter>
 </svg>
 
 <div class="wrap">
@@ -662,7 +759,11 @@
           <h2 id="fxName"></h2>
           <p id="fxDesc"></p>
         </div>
-        <button class="compare" id="compare" type="button" title="Drž myš nebo mezerník">Podržet = původní</button>
+        <div class="cmpgroup">
+          <button class="compare" id="compare" type="button" title="Drž myš nebo mezerník">Podržet = původní</button>
+          <button class="compare" id="splitBtn" type="button" aria-pressed="false">Před | po</button>
+          <input type="range" id="splitRange" min="0" max="100" value="50" aria-label="Poloha dělicí čáry" hidden>
+        </div>
       </div>
 
       <div class="tuner" id="tuner">
@@ -1240,6 +1341,132 @@ tile.addEventListener('click', () => {
 // JS: všem dát .pre a postupně ho odebírat
 tiles.forEach(t => t.classList.add('pre'));
 tiles.forEach((t, i) => setTimeout(() => t.classList.remove('pre'), 120 + i * 110));`},
+
+  // ===== vylepšení fotky =====
+  {id:"sharpen", grp:"Vylepšení fotky", name:"Doostření",
+   desc:"Zvýrazní jemné detaily, jako jsou oči, vlasy nebo logo na dresu. Fotky zmenšené do malé dlaždice bývají měkké a tohle jim vrátí ostrost. Nejlíp to porovnáš posuvníkem Před | po.",
+   code:`<svg width="0" height="0" style="position:absolute">
+  <filter id="sharpen" color-interpolation-filters="sRGB">
+    <!-- střed 3, okolí -0,5: součet 1 = jas se nemění. Silnější: 0 -1 0 -1 5 -1 0 -1 0 -->
+    <feConvolveMatrix order="3" kernelMatrix="0 -0.5 0  -0.5 3 -0.5  0 -0.5 0"
+                      preserveAlpha="true" edgeMode="duplicate"/>
+  </filter>
+</svg>
+
+.tile .photo img{ filter:url(#sharpen) contrast(1.03); }`},
+  {id:"clarity", grp:"Vylepšení fotky", name:"Clarity (lokální kontrast)",
+   desc:"Posuvník Clarity z Lightroomu: zvýší kontrast v detailech, ale ne celkově. Obličej dostane plasticitu a dres strukturu, přitom se nepřepálí světla ani nezačerní stíny.",
+   code:`<svg width="0" height="0" style="position:absolute">
+  <filter id="clarity" color-interpolation-filters="sRGB">
+    <feGaussianBlur in="SourceGraphic" stdDeviation="8" edgeMode="duplicate" result="blur"/>
+    <!-- výsledek = 1,6 × originál − 0,6 × rozmazaná verze → zvýrazní střední detaily -->
+    <feComposite in="SourceGraphic" in2="blur" operator="arithmetic" k1="0" k2="1.6" k3="-0.6" k4="0"/>
+  </filter>
+</svg>
+
+/* síla: k2 = 1 + x, k3 = −x  (0,3 jemně · 0,6 výrazně) */
+.tile .photo img{ filter:url(#clarity) saturate(1.05); }`},
+  {id:"light", grp:"Vylepšení fotky", name:"Studiové světlo",
+   desc:"Fotka dostane směr světla: měkký teplý odlesk zleva shora a jemný stín vpravo dole. Plochá klubová fotka tím získá hloubku, jako by byla nasvícená v ateliéru.",
+   code:`.tile .photo{ position:relative; isolation:isolate; }
+.tile .photo img{ filter:contrast(1.05) saturate(1.05); }
+.tile .photo::after{
+  content:""; position:absolute; inset:0;
+  background:
+    radial-gradient(circle at 28% 12%, rgba(255,244,228,.7), transparent 55%),   /* světlo */
+    radial-gradient(circle at 85% 95%, rgba(8,14,30,.6), transparent 60%);       /* stín */
+  mix-blend-mode:soft-light;   /* působí jako světlo, ne jako barva */
+}`},
+  {id:"portrait", grp:"Vylepšení fotky", name:"Rozostřené pozadí",
+   desc:"Napodobí portrétní režim foťáku: okolí se rozmaže a ztlumí, ostrý zůstane jen obličej. Funguje to dvěma vrstvami stejné fotky, ostrou s oválnou maskou a rozmazanou pod ní. Ovál předpokládá hlavu nahoře uprostřed.",
+   code:`<!-- v .photo navíc: <div class="sharp"></div>, na dlaždici --img:url(…) -->
+
+.tile .photo img{
+  filter:blur(3px) brightness(.92) saturate(.9);
+  transform:scale(1.04);          /* schová rozmazané okraje */
+}
+.tile .photo .sharp{
+  position:absolute; inset:0;
+  background:var(--img) top center/cover no-repeat;
+  /* ostrý ovál kolem hlavy: šířka 34 %, výška 42 %, střed 50 % / 34 % */
+  -webkit-mask-image:radial-gradient(ellipse 34% 42% at 50% 34%, #000 55%, transparent 100%);
+  mask-image:radial-gradient(ellipse 34% 42% at 50% 34%, #000 55%, transparent 100%);
+}`},
+  {id:"orton", grp:"Vylepšení fotky", name:"Měkký glow",
+   desc:"Ortonův efekt z krajinářské fotografie: přes ostrou fotku se položí rozmazaná a zesvětlená kopie. Světla jemně září a pleť vypadá hladší, přičemž ostrost zůstane.",
+   code:`<svg width="0" height="0" style="position:absolute">
+  <filter id="orton" color-interpolation-filters="sRGB">
+    <feGaussianBlur in="SourceGraphic" stdDeviation="6" edgeMode="duplicate" result="blur"/>
+    <feBlend in="SourceGraphic" in2="blur" mode="screen" result="glow"/>
+    <!-- 45 % záře + 55 % originálu -->
+    <feComposite in="glow" in2="SourceGraphic" operator="arithmetic" k1="0" k2="0.45" k3="0.55" k4="0"/>
+  </filter>
+</svg>
+
+.tile .photo img{ filter:url(#orton) contrast(1.08) saturate(1.12); }`},
+  {id:"matte", grp:"Vylepšení fotky", name:"Matný film",
+   desc:"Zvednuté černé a ztlumená světla, jako na matném fotopapíru. Fotka působí měkce a módně a tvrdé světlo z blesku ztratí ostré hrany. Hodí se k webům, kde je hodně tmavé grafiky.",
+   code:`<svg width="0" height="0" style="position:absolute">
+  <filter id="matte" color-interpolation-filters="sRGB">
+    <feComponentTransfer>
+      <!-- černá začíná na 0,09 místo 0, bílá končí na 0,95 → matný vzhled -->
+      <feFuncR type="table" tableValues="0.09 0.36 0.63 0.87 0.95"/>
+      <feFuncG type="table" tableValues="0.09 0.34 0.6 0.84 0.94"/>
+      <feFuncB type="table" tableValues="0.1 0.34 0.58 0.81 0.91"/>
+    </feComponentTransfer>
+  </filter>
+</svg>
+
+.tile .photo img{ filter:url(#matte) saturate(.85); }`},
+  {id:"bwred", grp:"Vylepšení fotky", name:"Dramatická černobílá",
+   desc:"Na rozdíl od obyčejného grayscale převádí fotku jako černobílý film s červeným filtrem: pleť vyjde světlejší a modré tóny tmavší. K tomu S-křivka pro hluboké stíny. Výrazně lepší než efekt 5.",
+   code:`<svg width="0" height="0" style="position:absolute">
+  <filter id="bwred" color-interpolation-filters="sRGB">
+    <!-- mix kanálů: hodně červené, trochu zelené, modrá ubírá -->
+    <feColorMatrix type="matrix"
+      values=".75 .35 -.1 0 0  .75 .35 -.1 0 0  .75 .35 -.1 0 0  0 0 0 1 0"/>
+    <!-- S-křivka -->
+    <feComponentTransfer>
+      <feFuncR type="table" tableValues="0 0.07 0.28 0.62 0.88 1"/>
+      <feFuncG type="table" tableValues="0 0.07 0.28 0.62 0.88 1"/>
+      <feFuncB type="table" tableValues="0 0.07 0.28 0.62 0.88 1"/>
+    </feComponentTransfer>
+  </filter>
+</svg>
+
+.tile .photo img{ filter:url(#bwred); }`},
+  {id:"studio", grp:"Vylepšení fotky", name:"Barevné pozadí studia",
+   desc:"Pokud mají klubové fotky světlé pozadí, režim multiply ho nahradí barevným studiovým přechodem v barvě pozice a hráč zůstane beze změny. U tmavého pozadí se fotka jen přebarví, proto tenhle efekt závisí na tom, jak byly fotky nafocené.",
+   code:`.tile .photo{
+  isolation:isolate;
+  background:radial-gradient(circle at 50% 32%,
+    color-mix(in srgb, var(--pos) 22%, #fff) 0%,     /* světlo za hlavou */
+    color-mix(in srgb, var(--pos) 75%, #000) 100%);  /* tmavé okraje */
+}
+.tile .photo img{
+  mix-blend-mode:multiply;   /* bílá zmizí, tmavší místa zůstanou */
+  filter:contrast(1.08);
+}`},
+  {id:"pro", grp:"Vylepšení fotky", name:"Kompletní úprava",
+   desc:"Kombinace toho nejlepšího z této skupiny: clarity, doostření, jemný filmový grading, studiové světlo a vinětace. Pořád vypadá jako fotka, jen lépe zpracovaná. Tohle bych dal do plachty.",
+   code:`<!-- SVG filtry clarity, sharpen a grade z efektů 35, 36 a 30 -->
+
+.tile .photo{ position:relative; isolation:isolate; }
+.tile .photo img{
+  filter:url(#clarity) url(#sharpen) url(#grade) contrast(1.03) saturate(1.06);
+}
+.tile .photo::after{
+  content:""; position:absolute; inset:0;
+  background:
+    radial-gradient(circle at 30% 12%, rgba(255,244,228,.45), transparent 55%),
+    radial-gradient(ellipse at 50% 35%, transparent 58%, rgba(5,10,18,.4) 100%);
+  mix-blend-mode:soft-light;
+}
+
+@media print{
+  /* v tisku stejné, jen bez vinětace, ať se nešpiní okraje */
+  .tile .photo::after{ background:radial-gradient(circle at 30% 12%, rgba(255,244,228,.45), transparent 55%); }
+}`},
 ];
 
 // --- fotky ---
@@ -1285,6 +1512,11 @@ players.forEach((p, i) => {
     const s = document.createElement('div');
     s.className = 'strip ' + c;
     photo.appendChild(s);
+  });
+  ['sharp','orig-layer','split-line'].forEach(c => {
+    const d = document.createElement('div');
+    d.className = c;
+    photo.appendChild(d);
   });
   const ov = document.createElement('div');
   ov.className = 'ov';
@@ -1375,6 +1607,7 @@ nav.appendChild(hint);
 
 let current = effects[0];
 let curIdx = 0;
+let splitOn = false;
 
 function proxyUrl(src){
   return 'https://wsrv.nl/?url=' + encodeURIComponent(src) + '&w=400&h=400&fit=cover&a=attention';
@@ -1462,7 +1695,7 @@ function setFx(i){
   enterFx(effects[i].id);
   curIdx = i;
   current = effects[i];
-  sheet.className = 'sheet fx-' + current.id;
+  sheet.className = 'sheet fx-' + current.id + (splitOn ? ' split' : '');
   navBtns.forEach((b, j) => b.setAttribute('aria-current', j === i ? 'true' : 'false'));
   document.getElementById('fxName').textContent = current.name;
   document.getElementById('fxDesc').textContent = current.desc;
@@ -1533,7 +1766,18 @@ function renderCode(){
 // --- porovnání s původním ---
 const cmp = document.getElementById('compare');
 function rawOn(){ sheet.className = 'sheet fx-orig'; cmp.classList.add('on'); }
-function rawOff(){ sheet.className = 'sheet fx-' + current.id; cmp.classList.remove('on'); }
+function rawOff(){ sheet.className = 'sheet fx-' + current.id + (splitOn ? ' split' : ''); cmp.classList.remove('on'); }
+
+const splitBtn = document.getElementById('splitBtn');
+const splitRange = document.getElementById('splitRange');
+splitBtn.addEventListener('click', () => {
+  splitOn = !splitOn;
+  sheet.classList.toggle('split', splitOn);
+  splitBtn.classList.toggle('on', splitOn);
+  splitBtn.setAttribute('aria-pressed', splitOn);
+  splitRange.hidden = !splitOn;
+});
+splitRange.addEventListener('input', () => sheet.style.setProperty('--split', splitRange.value + '%'));
 cmp.addEventListener('pointerdown', rawOn);
 ['pointerup','pointerleave','pointercancel'].forEach(e => cmp.addEventListener(e, rawOff));
 
