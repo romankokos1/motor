@@ -31,7 +31,11 @@ jobs:
   run:
     runs-on: ubuntu-latest
     steps:
+      # Vždy nejnovější main: když běží dva běhy po sobě, druhý tak
+      # vidí, co uložil první (jinak vznikne konflikt při ukládání).
       - uses: actions/checkout@v4
+        with:
+          ref: main
 
       - uses: actions/setup-python@v5
         with:
@@ -65,6 +69,8 @@ jobs:
             exit 0
           fi
           git commit -m "Aktualizace fotek hráčů [skip ci]"
-          # ostatní Actions taky commitují, tak se nejdřív srovnat s main
-          git pull --rebase
+          # Ostatní Actions taky commitují, tak se nejdřív srovnat s main.
+          # Při konfliktu v generovaných souborech vyhrává čerstvý výsledek
+          # tohoto běhu (u rebase je to strana "theirs").
+          git pull --rebase -X theirs
           git push
