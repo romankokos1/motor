@@ -3,11 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Plachta hráčů — Motor České Budějovice 2026/27</title>
+<title>Úpravy fotek hráčů</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
+  /* Rozvržení: vlevo seznam efektů, vpravo popis → mřížka fotek → CSS kód. Stejný svět jako plachta hráčů. */
   :root{
     --bg:#0d0f12;
     --panel:#161a1f;
@@ -19,74 +20,95 @@
     --gk:#f5a83f;
     --def:#3fa9f5;
     --fwd:#e5534b;
+    --code-bg:#0a0c0f;
+    --sans:'IBM Plex Sans', system-ui, sans-serif;
+    --mono:'IBM Plex Mono', ui-monospace, Consolas, monospace;
+    color-scheme:dark;
   }
   *{box-sizing:border-box;}
   body{
     margin:0;
     background:var(--bg);
     color:var(--text);
-    font-family:'IBM Plex Sans', sans-serif;
-    padding:24px 16px 60px;
-  }
-  .toolbar{
-    max-width:900px;
-    margin:0 auto 20px;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:12px;
-    flex-wrap:wrap;
-  }
-  h1{
-    font-size:20px;
-    margin:0;
-    font-weight:600;
-  }
-  .subtitle{
-    color:var(--muted);
-    font-size:12px;
-    font-family:'IBM Plex Mono', monospace;
-    margin-top:4px;
-  }
-  .print-btn{
-    background:var(--accent);
-    color:#08131c;
-    border:none;
-    font-weight:600;
-    font-family:'IBM Plex Sans', sans-serif;
+    font-family:var(--sans);
     font-size:14px;
-    padding:10px 20px;
-    border-radius:10px;
-    cursor:pointer;
+    padding:24px max(16px, env(safe-area-inset-right, 0px)) 60px max(16px, env(safe-area-inset-left, 0px));
   }
-  .status{
-    max-width:900px;
-    margin:0 auto 16px;
-    font-family:'IBM Plex Mono', monospace;
-    font-size:12px;
-    color:var(--muted);
+  .wrap{max-width:1180px; margin:0 auto;}
+  header{margin-bottom:20px;}
+  h1{font-size:20px; margin:0; font-weight:600;}
+  .subtitle{color:var(--muted); font-size:12px; font-family:var(--mono); margin-top:4px;}
+
+  .layout{
+    display:grid;
+    grid-template-columns:230px minmax(0,1fr);
+    gap:20px;
+    align-items:start;
   }
-  .status b{color:var(--text);}
-  .missing-box{
-    max-width:900px;
-    margin:0 auto 20px;
+
+  /* --- seznam efektů --- */
+  nav{
+    position:sticky; top:16px;
     background:var(--panel);
     border:1px solid var(--border);
     border-radius:10px;
-    padding:12px 14px;
-    font-family:'IBM Plex Mono', monospace;
-    font-size:12px;
-    color:var(--muted);
-    display:none;
+    padding:6px;
+    display:flex; flex-direction:column; gap:2px;
   }
-  .missing-box.show{display:block;}
-  .missing-box b{color:var(--text);}
+  nav button{
+    all:unset;
+    display:flex; gap:10px; align-items:baseline;
+    padding:8px 10px;
+    border-radius:6px;
+    cursor:pointer;
+    font-size:13px;
+    color:var(--muted);
+  }
+  nav button .n{font-family:var(--mono); font-size:11px; color:var(--muted); min-width:16px;}
+  nav button:hover{background:var(--panel-2); color:var(--text);}
+  nav button:focus-visible{outline:2px solid var(--accent); outline-offset:-2px;}
+  nav button[aria-current="true"]{background:var(--panel-2); color:var(--text); box-shadow:inset 2px 0 0 var(--accent);}
+  nav button[aria-current="true"] .n{color:var(--accent);}
+  .navhint{font-family:var(--mono); font-size:10px; color:var(--muted); padding:8px 10px 4px; border-top:1px solid var(--border); margin-top:4px;}
 
+  /* --- hlavní panel --- */
+  main{min-width:0; display:flex; flex-direction:column; gap:14px;}
+  .intro{
+    display:flex; justify-content:space-between; align-items:flex-start; gap:16px; flex-wrap:wrap;
+  }
+  .intro h2{font-size:16px; margin:0 0 4px; font-weight:600;}
+  .intro p{margin:0; color:var(--muted); max-width:62ch; line-height:1.5;}
+  .compare{
+    font-family:var(--sans); font-size:13px; font-weight:500;
+    background:var(--panel-2); color:var(--text);
+    border:1px solid var(--border); border-radius:8px;
+    padding:8px 14px; cursor:pointer; user-select:none; white-space:nowrap;
+  }
+  .compare:active, .compare.on{border-color:var(--accent); color:var(--accent);}
+  .compare:focus-visible{outline:2px solid var(--accent); outline-offset:2px;}
+
+  .tuner{
+    display:none;
+    background:var(--panel); border:1px solid var(--border); border-radius:10px;
+    padding:12px 14px;
+    gap:12px 20px; flex-wrap:wrap; align-items:center;
+    font-family:var(--mono); font-size:12px; color:var(--muted);
+  }
+  .tuner.show{display:flex;}
+  .tuner b{color:var(--text); font-weight:600;}
+  .tuner label{display:flex; align-items:center; gap:8px;}
+  .tuner input[type=range]{width:130px; accent-color:var(--accent);}
+  .tuner output{color:var(--text); min-width:42px; font-variant-numeric:tabular-nums;}
+  .tuner .reset{
+    font-family:var(--mono); font-size:12px; background:none; color:var(--muted);
+    border:1px solid var(--border); border-radius:6px; padding:4px 10px; cursor:pointer;
+  }
+  .tuner .reset:hover{color:var(--text);}
+
+  /* --- mřížka (stejná jako plachta) --- */
   .sheet{
-    max-width:900px;
-    margin:0 auto;
     display:grid;
-    grid-template-columns:repeat(4, 1fr);
+    grid-template-columns:repeat(4, minmax(0,1fr));
     gap:14px;
   }
   .tile{
@@ -94,207 +116,461 @@
     border:1px solid var(--border);
     border-radius:12px;
     overflow:hidden;
-    display:flex;
-    flex-direction:column;
+    display:flex; flex-direction:column;
+    transition:border-color .15s;
   }
   .tile .photo{
+    position:relative;
     width:100%;
     aspect-ratio:1/1;
     background:var(--panel-2);
-    display:flex;
-    align-items:center;
-    justify-content:center;
+    display:flex; align-items:center; justify-content:center;
     overflow:hidden;
+    isolation:isolate;
   }
   .tile .photo img{
-    width:100%;
-    height:100%;
+    width:100%; height:100%;
     object-fit:cover;
     object-position:top center;
     display:block;
   }
-  .tile .photo .noimg{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:10px;
-    color:var(--muted);
-    text-align:center;
-    padding:8px;
-  }
-  .tile .label{
-    padding:8px 8px 10px;
-    text-align:center;
-  }
-  .tile .name{
-    font-size:13px;
-    font-weight:600;
-    line-height:1.2;
-  }
-  .tile .meta{
-    margin-top:3px;
-    font-family:'IBM Plex Mono', monospace;
-    font-size:10px;
-    color:var(--muted);
-  }
-  .pos-G .meta{color:var(--gk);}
-  .pos-D .meta{color:var(--def);}
-  .pos-F .meta{color:var(--fwd);}
+  .tile .noimg{font-family:var(--mono); font-size:10px; color:var(--muted); text-align:center; padding:8px;}
+  .tile .label{padding:8px 8px 10px; text-align:center;}
+  .tile .name{font-size:13px; font-weight:600; line-height:1.2;}
+  .tile .meta{margin-top:3px; font-family:var(--mono); font-size:10px; color:var(--muted);}
+  .pos-G{--pos:var(--gk);}
+  .pos-D{--pos:var(--def);}
+  .pos-F{--pos:var(--fwd);}
+  .tile .meta{color:var(--pos);}
 
-  @media print{
-    body{background:#fff; color:#000; padding:0;}
-    .toolbar, .status, .missing-box{display:none !important;}
-    .sheet{
-      max-width:100%;
-      grid-template-columns:repeat(4, 1fr);
-      gap:8px;
-    }
-    .tile{
-      background:#fff;
-      border:1px solid #ccc;
-      break-inside:avoid;
-      page-break-inside:avoid;
-      -webkit-print-color-adjust:exact;
-      print-color-adjust:exact;
-    }
-    .tile .photo{background:#eee;}
-    .tile .name{color:#000;}
-    .tile .meta{color:#444 !important;}
-    @page{ margin:12mm; }
+  /* ===== EFEKTY ===== */
+
+  /* 2 — zoom na obličej */
+  .fx-zoom .photo img{
+    object-position:center 10%;
+    transform:scale(1.3);
+    transform-origin:center 12%;
+  }
+
+  /* 3 — ruční ladění (hodnoty v proměnných na dlaždici) */
+  .fx-tune .photo img{
+    object-position:var(--x,50%) var(--y,0%);
+    transform:scale(var(--z,1));
+    transform-origin:var(--x,50%) var(--y,0%);
+  }
+  .fx-tune .tile{cursor:pointer;}
+  .fx-tune .tile.sel{border-color:var(--accent);}
+
+  /* 4 — sjednocení barev */
+  .fx-unify .photo img{filter:contrast(1.06) saturate(.85) brightness(1.02);}
+
+  /* 5 — černobílá (tisk) */
+  .fx-bw .photo img{filter:grayscale(1) contrast(1.1);}
+
+  /* 6 — duotón podle pozice */
+  .fx-duo .photo img{filter:grayscale(1) contrast(1.15);}
+  .fx-duo .photo::after{
+    content:""; position:absolute; inset:0;
+    background:var(--pos);
+    mix-blend-mode:color;
+    opacity:.55;
+    pointer-events:none;
+  }
+
+  /* 7 — kruhový výřez */
+  .fx-circle .photo{padding:12%;}
+  .fx-circle .photo img{
+    border-radius:50%;
+    box-shadow:0 0 0 3px var(--pos);
+    object-position:center 8%;
+  }
+
+  /* 8 — hover: černobílá → barva */
+  .fx-hover .photo img{
+    filter:grayscale(1);
+    transition:filter .3s, transform .3s;
+  }
+  .fx-hover .tile:hover .photo img{
+    filter:grayscale(0);
+    transform:scale(1.07);
+  }
+
+  /* 9 — šikmý spodní okraj */
+  .fx-clip .photo{
+    clip-path:polygon(0 0, 100% 0, 100% 86%, 0 100%);
+    background:transparent;
+  }
+  .fx-clip .photo img{object-position:center 6%;}
+  .fx-clip .label{margin-top:-6px; text-align:left; padding-left:12px;}
+
+  /* 10 — číslo dresu přes fotku */
+  .fx-num .photo::before{
+    content:attr(data-num);
+    position:absolute; inset:0;
+    display:flex; align-items:flex-end;
+    padding:6px 10px;
+    background:linear-gradient(to top, rgba(0,0,0,.75), transparent 45%);
+    font:700 34px/1 var(--sans);
+    color:#fff;
+    z-index:1;
+  }
+  .fx-num .photo::after{
+    content:""; position:absolute; left:0; right:0; bottom:0; height:4px;
+    background:var(--pos); z-index:2;
+  }
+
+  /* --- kód --- */
+  .code{
+    background:var(--panel); border:1px solid var(--border); border-radius:10px; overflow:hidden;
+  }
+  .code-head{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:8px 12px; border-bottom:1px solid var(--border);
+    font-family:var(--mono); font-size:11px; color:var(--muted);
+  }
+  .copy{
+    font-family:var(--mono); font-size:11px; background:var(--panel-2); color:var(--text);
+    border:1px solid var(--border); border-radius:6px; padding:4px 10px; cursor:pointer;
+  }
+  .copy:hover{border-color:var(--accent);}
+  .copy:focus-visible{outline:2px solid var(--accent); outline-offset:2px;}
+  pre{
+    margin:0; padding:12px 14px; overflow-x:auto;
+    background:var(--code-bg);
+    font-family:var(--mono); font-size:12px; line-height:1.6; color:var(--text);
+  }
+  pre .c{color:var(--muted);}
+
+  @media (max-width:820px){
+    .layout{grid-template-columns:minmax(0,1fr);}
+    nav{position:static; flex-direction:row; overflow-x:auto; padding:4px;}
+    nav button{white-space:nowrap;}
+    nav button[aria-current="true"]{box-shadow:inset 0 -2px 0 var(--accent);}
+    .navhint{display:none;}
+    .sheet{grid-template-columns:repeat(2, minmax(0,1fr)); gap:10px;}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{transition:none !important;}
   }
 </style>
 </head>
 <body>
+<div class="wrap">
+  <header>
+    <h1>Úpravy fotek hráčů</h1>
+    <div class="subtitle">CSS efekty na fotkách z hcmotor.cz · soubor se nemění, mění se jen zobrazení</div>
+  </header>
 
-<div class="toolbar">
-  <div>
-    <h1>Plachta hráčů — Motor České Budějovice</h1>
-    <div class="subtitle">Soupiska Muži 2026/27</div>
+  <div class="layout">
+    <nav id="nav" aria-label="Efekty"></nav>
+
+    <main>
+      <div class="intro">
+        <div>
+          <h2 id="fxName"></h2>
+          <p id="fxDesc"></p>
+        </div>
+        <button class="compare" id="compare" type="button" title="Drž myš nebo mezerník">Podržet = původní</button>
+      </div>
+
+      <div class="tuner" id="tuner">
+        <span>Hráč: <b id="tuneName"></b></span>
+        <label for="tx">vodorovně <input type="range" id="tx" min="0" max="100" step="1"><output id="ox"></output></label>
+        <label for="ty">svisle <input type="range" id="ty" min="0" max="100" step="1"><output id="oy"></output></label>
+        <label for="tz">zoom <input type="range" id="tz" min="1" max="2.2" step="0.05"><output id="oz"></output></label>
+        <button class="reset" id="treset" type="button">vrátit</button>
+      </div>
+
+      <div class="sheet" id="sheet"></div>
+
+      <div class="code">
+        <div class="code-head">
+          <span id="codeLabel">CSS</span>
+          <button class="copy" id="copy" type="button">Kopírovat</button>
+        </div>
+        <pre id="code"></pre>
+      </div>
+    </main>
   </div>
-  <button class="print-btn" id="printBtn">Vytisknout / uložit PDF</button>
 </div>
 
-<div class="status" id="status">Načítám fotky…</div>
-<div class="missing-box" id="missingBox"></div>
-
-<div class="sheet" id="sheet"></div>
-
 <script>
-// --- Data: soupiska Muži 2026/2027, https://hcmotor.cz/soupiska.asp ---
 const players = [
   {num:35, name:"Milan Klouček", first:"Milan", last:"Klouček", pos:"G"},
   {num:21, name:"Matyáš Mařík", first:"Matyáš", last:"Mařík", pos:"G"},
-  {num:2,  name:"Jan Strmeň", first:"Jan", last:"Strmeň", pos:"G"},
-
-  {num:79, name:"Ole Einar Engeland Andersen", first:"Ole", last:"Andersen", altFirst:["ole-einar-engeland","ole_einar_engeland"], pos:"D"},
-  {num:98, name:"Ondřej Kachyňa", first:"Ondřej", last:"Kachyňa", pos:"D"},
   {num:84, name:"Tomáš Kundrátek", first:"Tomáš", last:"Kundrátek", pos:"D"},
   {num:13, name:"Václav Nedorost", first:"Václav", last:"Nedorost", pos:"D"},
-  {num:8,  name:"Lucas Nordsäter", first:"Lucas", last:"Nordsäter", pos:"D"},
   {num:12, name:"Pavel Pýcha", first:"Pavel", last:"Pýcha", pos:"D"},
-  {num:7,  name:"Jan Štencel", first:"Jan", last:"Štencel", pos:"D"},
-  {num:14, name:"Ondřej Vála", first:"Ondřej", last:"Vála", pos:"D"},
-  {num:69, name:"Roman Vráblík", first:"Roman", last:"Vráblík", pos:"D"},
-
-  {num:61, name:"Filip Ahl", first:"Filip", last:"Ahl", pos:"F"},
-  {num:92, name:"Parker Bell", first:"Parker", last:"Bell", pos:"F"},
-  {num:56, name:"Martin Beránek", first:"Martin", last:"Beránek", pos:"F"},
   {num:88, name:"Michal Bulíř", first:"Michal", last:"Bulíř", pos:"F"},
-  {num:46, name:"Samuel Drančák", first:"Samuel", last:"Drančák", pos:"F"},
-  {num:37, name:"Marek Hejduk", first:"Marek", last:"Hejduk", pos:"F"},
-  {num:42, name:"Štěpán Hoch", first:"Štěpán", last:"Hoch", pos:"F"},
-  {num:27, name:"Matyáš Humeník", first:"Matyáš", last:"Humeník", pos:"F"},
   {num:10, name:"Tomáš Chlubna", first:"Tomáš", last:"Chlubna", pos:"F"},
-  {num:22, name:"Josef Koláček", first:"Josef", last:"Koláček", pos:"F"},
-  {num:29, name:"Renars Krastenbergs", first:"Renars", last:"Krastenbergs", pos:"F"},
-  {num:16, name:"Róbert Lantoši", first:"Róbert", last:"Lantoši", pos:"F"},
-  {num:null, name:"Jakub Lev", first:"Jakub", last:"Lev", pos:"F"},
-  {num:11, name:"Pavel Novák", first:"Pavel", last:"Novák", pos:"F"},
-  {num:95, name:"Nick Alexander Olesen", first:"Nick", last:"Olesen", altFirst:["nick-alexander","nick_alexander"], pos:"F"},
-  {num:45, name:"Jan Ordoš", first:"Jan", last:"Ordoš", pos:"F"},
-  {num:64, name:"Jakub Pour", first:"Jakub", last:"Pour", pos:"F"},
-  {num:20, name:"Matěj Toman", first:"Matěj", last:"Toman", pos:"F"},
-  {num:26, name:"Marek Zachar", first:"Marek", last:"Zachar", pos:"F"},
+  {num:37, name:"Marek Hejduk", first:"Marek", last:"Hejduk", pos:"F"},
 ];
-
 const SEASON = "2027";
 const posLabel = {G:"Brankář", D:"Obránce", F:"Útočník"};
 
-function translit(s){
-  return s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
-}
-
-function candidateUrls(p){
-  const last = translit(p.last);
-  const first = translit(p.first);
-  const urls = [`https://hcmotor.cz/foto/hraci/${SEASON}/${last}_${first}.jpg`];
-  if (p.altFirst) {
-    p.altFirst.forEach(af => urls.push(`https://hcmotor.cz/foto/hraci/${SEASON}/${last}_${af}.jpg`));
+const effects = [
+  {id:"orig", name:"Původní stav",
+   desc:"Jak to máš teď na plachtě: čtverec, fotka vyplní celý prostor a ořízne se od hlavy dolů.",
+   code:`.tile .photo img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:top center;
+}`},
+  {id:"zoom", name:"Zoom na obličej",
+   desc:"Fotka se zvětší a ukotví u hlavy, takže obličej zabere víc místa. Platí pro všechny hráče stejně.",
+   code:`.tile .photo img{
+  object-position:center 10%;
+  transform:scale(1.3);
+  transform-origin:center 12%;
+}`},
+  {id:"tune", name:"Ladění ořezu u hráče",
+   desc:"Klikni na hráče a posuvníky mu nastav ořez a zoom. Dole se ti vygenerují řádky do dat, které stačí zkopírovat do plachty.",
+   code:null},
+  {id:"unify", name:"Sjednocení barev",
+   desc:"Lehce víc kontrastu a méně sytosti. Fotky z různých focení pak vedle sebe působí jednotněji.",
+   code:`.tile .photo img{
+  filter:contrast(1.06) saturate(.85) brightness(1.02);
+}`},
+  {id:"bw", name:"Černobílá pro tisk",
+   desc:"Na obrazovce zůstanou barvy, v tisku a PDF bude černobílá. Tady je pro ukázku zapnutá i na obrazovce.",
+   code:`@media print{
+  .tile .photo img{
+    filter:grayscale(1) contrast(1.1);
   }
-  urls.push(`https://hcmotor.cz/foto/hraci/${SEASON}/${first}_${last}.jpg`);
-  return urls;
+}`},
+  {id:"duo", name:"Duotón podle pozice",
+   desc:"Černobílá fotka s nádechem barvy pozice: brankáři oranžově, obránci modře, útočníci červeně.",
+   code:`.pos-G{ --pos:#f5a83f; }
+.pos-D{ --pos:#3fa9f5; }
+.pos-F{ --pos:#e5534b; }
+
+.tile .photo{ position:relative; isolation:isolate; }
+.tile .photo img{ filter:grayscale(1) contrast(1.15); }
+.tile .photo::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:var(--pos);
+  mix-blend-mode:color;   /* obarví jen odstín, světla a stíny zůstanou */
+  opacity:.55;
+}`},
+  {id:"circle", name:"Kruhový výřez",
+   desc:"Portrét v kruhu s prstencem v barvě pozice. Hodí se na soupisku, kde chceš víc vzduchu.",
+   code:`.tile .photo{ padding:12%; }
+.tile .photo img{
+  border-radius:50%;
+  box-shadow:0 0 0 3px var(--pos);
+  object-position:center 8%;
+}`},
+  {id:"hover", name:"Najetí myší",
+   desc:"V klidu černobílé, po najetí myší barevné a lehce přiblížené. Jen pro web, v tisku nemá smysl.",
+   code:`.tile .photo img{
+  filter:grayscale(1);
+  transition:filter .3s, transform .3s;
+}
+.tile:hover .photo img{
+  filter:grayscale(0);
+  transform:scale(1.07);
+}`},
+  {id:"clip", name:"Šikmý spodní okraj",
+   desc:"clip-path ořízne fotku do mnohoúhelníku. Dynamičtější, sportovní dojem bez úpravy souboru.",
+   code:`.tile .photo{
+  clip-path:polygon(0 0, 100% 0, 100% 86%, 0 100%);
+}
+.tile .label{
+  margin-top:-6px;
+  text-align:left;
+}`},
+  {id:"num", name:"Číslo dresu přes fotku",
+   desc:"Ztmavení odspodu, velké číslo a proužek v barvě pozice. Číslo se bere z atributu data-num.",
+   code:`<!-- v HTML: <div class="photo" data-num="84"> -->
+
+.tile .photo{ position:relative; }
+.tile .photo::before{
+  content:attr(data-num);
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:flex-end;
+  padding:6px 10px;
+  background:linear-gradient(to top, rgba(0,0,0,.75), transparent 45%);
+  font:700 34px/1 sans-serif;
+  color:#fff;
+}
+.tile .photo::after{
+  content:"";
+  position:absolute;
+  left:0; right:0; bottom:0;
+  height:4px;
+  background:var(--pos);
+}`},
+];
+
+// --- fotky ---
+function translit(s){ return s.normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase(); }
+function candidateUrls(p){
+  const last = translit(p.last), first = translit(p.first);
+  return [
+    `https://hcmotor.cz/foto/hraci/${SEASON}/${last}_${first}.jpg`,
+    `https://hcmotor.cz/foto/hraci/${SEASON}/${first}_${last}.jpg`,
+  ];
 }
 
-const sheetEl = document.getElementById('sheet');
-const statusEl = document.getElementById('status');
-const missingBox = document.getElementById('missingBox');
-const missing = [];
-let loadedCount = 0;
+const sheet = document.getElementById('sheet');
+const tiles = [];
+const tune = players.map(() => ({x:50, y:0, z:1}));
+let sel = 0;
 
-// stabilní pořadí: G, D, F, v rámci skupiny podle čísla (null naposled)
-const order = {G:0, D:1, F:2};
-const sorted = players.slice().sort((a,b) => {
-  if(order[a.pos] !== order[b.pos]) return order[a.pos]-order[b.pos];
-  const an = a.num ?? 999, bn = b.num ?? 999;
-  return an-bn;
-});
-
-sorted.forEach(p => {
+players.forEach((p, i) => {
   const tile = document.createElement('div');
   tile.className = 'tile pos-' + p.pos;
-
   const photo = document.createElement('div');
   photo.className = 'photo';
+  photo.dataset.num = p.num ?? '';
   const img = document.createElement('img');
   img.alt = p.name;
   photo.appendChild(img);
   tile.appendChild(photo);
-
   const label = document.createElement('div');
   label.className = 'label';
-  label.innerHTML = `<div class="name">${p.name}</div><div class="meta">${p.num ? '#'+p.num+' · ' : ''}${posLabel[p.pos]}</div>`;
+  label.innerHTML = `<div class="name">${p.name}</div><div class="meta">#${p.num} · ${posLabel[p.pos]}</div>`;
   tile.appendChild(label);
-
-  sheetEl.appendChild(tile);
+  sheet.appendChild(tile);
+  tiles.push(tile);
 
   const urls = candidateUrls(p);
   let idx = 0;
-  function tryNext(){
-    if(idx >= urls.length){
-      photo.innerHTML = '<div class="noimg">fotka<br>nenalezena</div>';
-      missing.push(p.name);
-      done();
-      return;
-    }
-    img.onload = () => done();
-    img.onerror = () => { idx++; tryNext(); };
-    img.src = urls[idx];
-  }
-  tryNext();
+  img.onerror = () => {
+    idx++;
+    if (idx < urls.length) img.src = urls[idx];
+    else photo.innerHTML = '<div class="noimg">fotka<br>nenalezena</div>';
+  };
+  img.src = urls[0];
 
-  function done(){
-    loadedCount++;
-    if(loadedCount === sorted.length){
-      statusEl.innerHTML = `Načteno: <b>${sorted.length - missing.length}</b> / ${sorted.length} fotek`;
-      if(missing.length){
-        missingBox.classList.add('show');
-        missingBox.innerHTML = '<b>Nenačtené fotky (' + missing.length + ') — zkontroluj název souboru na webu:</b><br>' +
-          missing.map(n => '• ' + n).join('<br>');
-      }
-    }
-  }
+  tile.addEventListener('click', () => {
+    if (current.id !== 'tune') return;
+    sel = i;
+    syncTuner();
+  });
 });
 
-document.getElementById('printBtn').addEventListener('click', () => window.print());
-</script>
+// --- navigace ---
+const nav = document.getElementById('nav');
+const navBtns = effects.map((fx, i) => {
+  const b = document.createElement('button');
+  b.type = 'button';
+  b.innerHTML = `<span class="n">${i+1}</span><span>${fx.name}</span>`;
+  b.addEventListener('click', () => setFx(i));
+  nav.appendChild(b);
+  return b;
+});
+const hint = document.createElement('div');
+hint.className = 'navhint';
+hint.textContent = '↑ ↓ přepínání · mezerník = původní';
+nav.appendChild(hint);
 
+let current = effects[0];
+let curIdx = 0;
+
+function setFx(i){
+  curIdx = i;
+  current = effects[i];
+  sheet.className = 'sheet fx-' + current.id;
+  navBtns.forEach((b, j) => b.setAttribute('aria-current', j === i ? 'true' : 'false'));
+  document.getElementById('fxName').textContent = current.name;
+  document.getElementById('fxDesc').textContent = current.desc;
+  document.getElementById('tuner').classList.toggle('show', current.id === 'tune');
+  tiles.forEach((t, j) => t.classList.toggle('sel', current.id === 'tune' && j === sel));
+  renderCode();
+}
+
+// --- ladění ---
+const tx = document.getElementById('tx'), ty = document.getElementById('ty'), tz = document.getElementById('tz');
+function applyTune(i){
+  const t = tune[i], el = tiles[i];
+  el.style.setProperty('--x', t.x + '%');
+  el.style.setProperty('--y', t.y + '%');
+  el.style.setProperty('--z', t.z);
+}
+function syncTuner(){
+  const t = tune[sel];
+  tx.value = t.x; ty.value = t.y; tz.value = t.z;
+  document.getElementById('ox').textContent = t.x + ' %';
+  document.getElementById('oy').textContent = t.y + ' %';
+  document.getElementById('oz').textContent = Number(t.z).toFixed(2) + '×';
+  document.getElementById('tuneName').textContent = players[sel].name;
+  tiles.forEach((el, j) => el.classList.toggle('sel', j === sel));
+  renderCode();
+}
+[tx, ty, tz].forEach(inp => inp.addEventListener('input', () => {
+  tune[sel] = {x:+tx.value, y:+ty.value, z:+tz.value};
+  applyTune(sel);
+  syncTuner();
+}));
+document.getElementById('treset').addEventListener('click', () => {
+  tune[sel] = {x:50, y:0, z:1};
+  applyTune(sel);
+  syncTuner();
+});
+
+function tuneCode(){
+  const changed = players.map((p, i) => ({p, t:tune[i]}))
+    .filter(({t}) => !(t.x === 50 && t.y === 0 && t.z === 1));
+  const dataLines = changed.length
+    ? changed.map(({p, t}) => `  {num:${p.num}, name:"${p.name}", ..., focus:"${t.x}% ${t.y}%", zoom:${Number(t.z).toFixed(2)}},`).join('\n')
+    : '  // zatím žádná úprava, klikni na hráče a pohni posuvníkem';
+  return `<span class="c">// 1) do pole players doplň u upravených hráčů:</span>
+${esc(dataLines)}
+
+<span class="c">// 2) při vytváření dlaždice:</span>
+if (p.focus) img.style.objectPosition = p.focus;
+if (p.zoom){
+  img.style.transform = \`scale(\${p.zoom})\`;
+  img.style.transformOrigin = p.focus || 'center top';
+}`;
+}
+
+function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function renderCode(){
+  const codeEl = document.getElementById('code');
+  if (current.id === 'tune'){
+    document.getElementById('codeLabel').textContent = 'JavaScript';
+    codeEl.innerHTML = tuneCode();
+  } else {
+    document.getElementById('codeLabel').textContent = 'CSS';
+    codeEl.innerHTML = esc(current.code).replace(/(\/\*.*?\*\/|&lt;!--.*?--&gt;)/g, '<span class="c">$1</span>');
+  }
+}
+
+// --- porovnání s původním ---
+const cmp = document.getElementById('compare');
+function rawOn(){ sheet.className = 'sheet fx-orig'; cmp.classList.add('on'); }
+function rawOff(){ sheet.className = 'sheet fx-' + current.id; cmp.classList.remove('on'); }
+cmp.addEventListener('pointerdown', rawOn);
+['pointerup','pointerleave','pointercancel'].forEach(e => cmp.addEventListener(e, rawOff));
+
+document.addEventListener('keydown', e => {
+  if (e.target.tagName === 'INPUT') return;
+  if (e.key === 'ArrowDown' || e.key === 'ArrowRight'){ e.preventDefault(); setFx((curIdx + 1) % effects.length); }
+  if (e.key === 'ArrowUp' || e.key === 'ArrowLeft'){ e.preventDefault(); setFx((curIdx - 1 + effects.length) % effects.length); }
+  if (e.key === ' ' && !e.repeat){ e.preventDefault(); rawOn(); }
+});
+document.addEventListener('keyup', e => { if (e.key === ' ') rawOff(); });
+
+// --- kopírování ---
+document.getElementById('copy').addEventListener('click', async () => {
+  const text = document.getElementById('code').textContent;
+  const btn = document.getElementById('copy');
+  try { await navigator.clipboard.writeText(text); btn.textContent = 'Zkopírováno'; }
+  catch { const r = document.createRange(); r.selectNodeContents(document.getElementById('code')); const s = getSelection(); s.removeAllRanges(); s.addRange(r); btn.textContent = 'Označeno, Ctrl+C'; }
+  setTimeout(() => btn.textContent = 'Kopírovat', 1500);
+});
+
+setFx(0);
+syncTuner();
+setFx(0);
+</script>
 </body>
 </html>
