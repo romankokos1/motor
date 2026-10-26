@@ -1,0 +1,70 @@
+name: Fotky hráčů
+
+# Stáhne fotky A-týmu z hcmotor.cz, vyřízne hráče z pozadí, srovná ořez
+# podle obličeje, upraví barvy a uloží hotové soubory do docs/fotky/.
+# Nezměněné fotky přeskakuje, takže běžný běh je rychlý.
+on:
+  workflow_dispatch:
+    inputs:
+      vse:
+        description: "Přepočítat všechny fotky (i ty, které se nezměnily)"
+        type: boolean
+        default: false
+  push:
+    paths:
+      - "data/soupiska.json"
+      - "scripts/fotky_upravy.json"
+      - "scripts/fotky_hracu.py"
+  schedule:
+    # Jednou týdně v pondělí ráno: zachytí novou fotku na hcmotor.cz
+    # (mění se parametr ?v= v adrese). Necelá minuta schválně.
+    - cron: "43 4 * * 1"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: fotky-hracu
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: scripts/requirements-fotky.txt
+
+      # Model pro výřez (~180 MB) se stahuje jen poprvé, pak je v cache.
+      # Starší rembg ho ukládá do ~/.u2net, novější do ~/.rembg.
+      - name: Cache modelu pro výřez
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.u2net
+            ~/.rembg
+          key: rembg-isnet-general-use-v1
+
+      - name: Instalace závislostí
+        run: pip install -r scripts/requirements-fotky.txt
+
+      - name: Zpracovat fotky
+        run: python scripts/fotky_hracu.py ${{ inputs.vse && '--vse' || '' }}
+
+      - name: Commitnout fotky a stav
+        run: |
+          git config user.name "fotky-hracu-bot"
+          git config user.email "actions@github.com"
+          git add docs/fotky scripts/fotky_state.json
+          if git diff --staged --quiet; then
+            echo "Žádné změny."
+            exit 0
+          fi
+          git commit -m "Aktualizace fotek hráčů [skip ci]"
+          # ostatní Actions taky commitují, tak se nejdřív srovnat s main
+          git pull --rebase
+          git push
