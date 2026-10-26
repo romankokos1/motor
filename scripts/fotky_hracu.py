@@ -384,6 +384,11 @@ def main() -> int:
     stary_manifest = {m["slug"]: m for m in nacti_json(OUT / "hraci.json", {}).get("hraci", [])}
     jen = {s.strip() for s in args.jen.split(",") if s.strip()}
 
+    if not hraci:
+        # Nic neukládat: prázdný výsledek by přepsal hotové fotky.
+        print(f"✗ Soupiska {SOUPISKA.relative_to(ROOT)} chybí nebo je prázdná, končím bez změn.")
+        return 1
+
     print(f"Fotky hráčů: {len(hraci)} na soupisce")
     ze_soupisky = adresy_ze_soupisky()
 
