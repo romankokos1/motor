@@ -455,8 +455,8 @@
 
   /* 30 — filmový grading */
   .fx-grade .photo img{filter:url(#grade) contrast(1.06) saturate(1.1);}
-  .fx-grade .photo::after{
-    content:""; position:absolute; inset:0; pointer-events:none;
+  .fx-grade .photo .tone{
+    display:block;
     background:radial-gradient(ellipse at 50% 35%, transparent 55%, rgba(5,10,18,.45) 100%);
   }
 
@@ -533,6 +533,7 @@
 
   /* ===== VYLEPŠENÍ FOTKY ===== */
   .photo .sharp, .photo .orig-layer, .photo .split-line{display:none;}
+  .photo .tone{display:none; position:absolute; inset:0; pointer-events:none; z-index:0;}
 
   /* 35 — doostření */
   .fx-sharpen .photo img{filter:url(#sharpen) contrast(1.03);}
@@ -542,8 +543,8 @@
 
   /* 37 — studiové světlo */
   .fx-light .photo img{filter:contrast(1.05) saturate(1.05);}
-  .fx-light .photo::after{
-    content:""; position:absolute; inset:0; pointer-events:none; z-index:1;
+  .fx-light .photo .tone{
+    display:block;
     background:
       radial-gradient(circle at 28% 12%, rgba(255,244,228,.7), transparent 55%),
       radial-gradient(circle at 85% 95%, rgba(8,14,30,.6), transparent 60%);
@@ -553,7 +554,7 @@
   /* 38 — rozostřené pozadí */
   .fx-portrait .photo img{filter:blur(3px) brightness(.92) saturate(.9); transform:scale(1.04);}
   .fx-portrait .photo .sharp{
-    display:block; position:absolute; inset:0; z-index:1;
+    display:block; position:absolute; inset:0; z-index:0;
     background:var(--img) top center/cover no-repeat;
     -webkit-mask-image:radial-gradient(ellipse 34% 42% at 50% 34%, #000 55%, transparent 100%);
     mask-image:radial-gradient(ellipse 34% 42% at 50% 34%, #000 55%, transparent 100%);
@@ -578,8 +579,8 @@
 
   /* 43 — kompletní úprava */
   .fx-pro .photo img{filter:url(#clarity) url(#sharpen) url(#grade) contrast(1.03) saturate(1.06);}
-  .fx-pro .photo::after{
-    content:""; position:absolute; inset:0; pointer-events:none; z-index:1;
+  .fx-pro .photo .tone{
+    display:block;
     background:
       radial-gradient(circle at 30% 12%, rgba(255,244,228,.45), transparent 55%),
       radial-gradient(ellipse at 50% 35%, transparent 58%, rgba(5,10,18,.4) 100%);
@@ -600,6 +601,22 @@
   .cmpgroup{display:flex; gap:8px; align-items:center; flex-wrap:wrap;}
   .cmpgroup input[type=range]{width:120px; accent-color:var(--accent);}
   .cmpgroup input[hidden]{display:none;}
+
+  /* kombinátor */
+  .combo{
+    display:none;
+    background:var(--panel); border:1px solid var(--border); border-radius:10px;
+    padding:12px 14px; gap:10px 14px; align-items:flex-end; flex-wrap:wrap;
+  }
+  .combo.show{display:flex;}
+  .combo label{display:flex; flex-direction:column; gap:5px; font-family:var(--mono); font-size:11px; color:var(--muted);}
+  .combo select{
+    font-family:var(--sans); font-size:14px; color:var(--text);
+    background:var(--panel-2); border:1px solid var(--border); border-radius:6px;
+    padding:7px 10px; min-width:200px; max-width:100%;
+  }
+  .combo select:focus-visible{outline:2px solid var(--accent); outline-offset:1px;}
+  .combo .plus{font-family:var(--mono); color:var(--muted); padding-bottom:8px;}
 
   /* ovládání pixel artu */
   .pixctl{
@@ -763,6 +780,7 @@
           <button class="compare" id="compare" type="button" title="Drž myš nebo mezerník">Podržet = původní</button>
           <button class="compare" id="splitBtn" type="button" aria-pressed="false">Před | po</button>
           <input type="range" id="splitRange" min="0" max="100" value="50" aria-label="Poloha dělicí čáry" hidden>
+          <button class="compare" id="rosterBtn" type="button" aria-pressed="false">Celá soupiska (31)</button>
         </div>
       </div>
 
@@ -780,6 +798,16 @@
         <output id="pixo">24</output>
       </div>
 
+      <div class="combo" id="combo">
+        <label for="cPhoto">Úprava fotky
+          <select id="cPhoto"></select>
+        </label>
+        <span class="plus">+</span>
+        <label for="cGfx">Grafika karty
+          <select id="cGfx"></select>
+        </label>
+      </div>
+
       <div class="sheet" id="sheet"></div>
 
       <div class="code">
@@ -794,16 +822,43 @@
 </div>
 
 <script>
-const players = [
+// soupiska Muži 2026/27 (stejná data jako plachta)
+const ROSTER = [
   {num:35, name:"Milan Klouček", first:"Milan", last:"Klouček", pos:"G"},
   {num:21, name:"Matyáš Mařík", first:"Matyáš", last:"Mařík", pos:"G"},
+  {num:2,  name:"Jan Strmeň", first:"Jan", last:"Strmeň", pos:"G"},
+  {num:79, name:"Ole Einar Engeland Andersen", first:"Ole", last:"Andersen", altFirst:["ole-einar-engeland","ole_einar_engeland"], pos:"D"},
+  {num:98, name:"Ondřej Kachyňa", first:"Ondřej", last:"Kachyňa", pos:"D"},
   {num:84, name:"Tomáš Kundrátek", first:"Tomáš", last:"Kundrátek", pos:"D"},
   {num:13, name:"Václav Nedorost", first:"Václav", last:"Nedorost", pos:"D"},
+  {num:8,  name:"Lucas Nordsäter", first:"Lucas", last:"Nordsäter", pos:"D"},
   {num:12, name:"Pavel Pýcha", first:"Pavel", last:"Pýcha", pos:"D"},
+  {num:7,  name:"Jan Štencel", first:"Jan", last:"Štencel", pos:"D"},
+  {num:14, name:"Ondřej Vála", first:"Ondřej", last:"Vála", pos:"D"},
+  {num:69, name:"Roman Vráblík", first:"Roman", last:"Vráblík", pos:"D"},
+  {num:61, name:"Filip Ahl", first:"Filip", last:"Ahl", pos:"F"},
+  {num:92, name:"Parker Bell", first:"Parker", last:"Bell", pos:"F"},
+  {num:56, name:"Martin Beránek", first:"Martin", last:"Beránek", pos:"F"},
   {num:88, name:"Michal Bulíř", first:"Michal", last:"Bulíř", pos:"F"},
-  {num:10, name:"Tomáš Chlubna", first:"Tomáš", last:"Chlubna", pos:"F"},
+  {num:46, name:"Samuel Drančák", first:"Samuel", last:"Drančák", pos:"F"},
   {num:37, name:"Marek Hejduk", first:"Marek", last:"Hejduk", pos:"F"},
+  {num:42, name:"Štěpán Hoch", first:"Štěpán", last:"Hoch", pos:"F"},
+  {num:27, name:"Matyáš Humeník", first:"Matyáš", last:"Humeník", pos:"F"},
+  {num:10, name:"Tomáš Chlubna", first:"Tomáš", last:"Chlubna", pos:"F"},
+  {num:22, name:"Josef Koláček", first:"Josef", last:"Koláček", pos:"F"},
+  {num:29, name:"Renars Krastenbergs", first:"Renars", last:"Krastenbergs", pos:"F"},
+  {num:16, name:"Róbert Lantoši", first:"Róbert", last:"Lantoši", pos:"F"},
+  {num:null, name:"Jakub Lev", first:"Jakub", last:"Lev", pos:"F"},
+  {num:11, name:"Pavel Novák", first:"Pavel", last:"Novák", pos:"F"},
+  {num:95, name:"Nick Alexander Olesen", first:"Nick", last:"Olesen", altFirst:["nick-alexander","nick_alexander"], pos:"F"},
+  {num:45, name:"Jan Ordoš", first:"Jan", last:"Ordoš", pos:"F"},
+  {num:64, name:"Jakub Pour", first:"Jakub", last:"Pour", pos:"F"},
+  {num:20, name:"Matěj Toman", first:"Matěj", last:"Toman", pos:"F"},
+  {num:26, name:"Marek Zachar", first:"Marek", last:"Zachar", pos:"F"},
 ];
+const SAMPLE = [35, 21, 84, 13, 12, 88, 10, 37];
+const SAMPLE_PLAYERS = SAMPLE.map(n => ROSTER.find(p => p.num === n));
+let players = SAMPLE_PLAYERS;
 const SEASON = "2027";
 const posLabel = {G:"Brankář", D:"Obránce", F:"Útočník"};
 
@@ -1467,21 +1522,29 @@ tiles.forEach((t, i) => setTimeout(() => t.classList.remove('pre'), 120 + i * 11
   /* v tisku stejné, jen bez vinětace, ať se nešpiní okraje */
   .tile .photo::after{ background:radial-gradient(circle at 30% 12%, rgba(255,244,228,.45), transparent 55%); }
 }`},
+
+  // ===== kombinátor =====
+  {id:"combo", grp:"Výběr pro plachtu", name:"Kombinátor",
+   desc:"Spoj libovolnou úpravu fotky s grafikou karty a podívej se, jak spolu fungují. S tlačítkem Celá soupiska uvidíš výsledek na všech hráčích, jako na skutečné plachtě. Kód dole obsahuje obě části.",
+   code:null},
 ];
+
+const COMBO_PHOTO = ['orig','unify','sharpen','clarity','light','grade','orton','matte','bwred','bw','svgduo','portrait','pro'];
+const COMBO_GFX = ['orig','lower','match','outline','glass','detail','num','circle','clip','fade'];
 
 // --- fotky ---
 function translit(s){ return s.normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase(); }
 function candidateUrls(p){
   const last = translit(p.last), first = translit(p.first);
-  return [
-    `https://hcmotor.cz/foto/hraci/${SEASON}/${last}_${first}.jpg`,
-    `https://hcmotor.cz/foto/hraci/${SEASON}/${first}_${last}.jpg`,
-  ];
+  const urls = [`https://hcmotor.cz/foto/hraci/${SEASON}/${last}_${first}.jpg`];
+  (p.altFirst || []).forEach(af => urls.push(`https://hcmotor.cz/foto/hraci/${SEASON}/${last}_${af}.jpg`));
+  urls.push(`https://hcmotor.cz/foto/hraci/${SEASON}/${first}_${last}.jpg`);
+  return urls;
 }
 
 // ukázková čísla pro efekt „Detail po najetí“ (nejsou skutečná)
 function exampleStats(p, i){
-  const r = k => ((p.num * 37 + i * 11 + k * 17) % 100) / 100;
+  const r = k => (((p.num ?? 50) * 37 + i * 11 + k * 17) % 100) / 100;
   if (p.pos === 'G') return [
     ['Z', 8 + Math.round(r(1) * 20)],
     ['Úsp.', (89.5 + r(2) * 3.5).toFixed(1).replace('.', ',')],
@@ -1496,15 +1559,24 @@ const sheet = document.getElementById('sheet');
 const tiles = [];
 const photos = [];
 const imgs = [];
-const tune = players.map(() => ({x:50, y:0, z:1}));
+let tune = [];
 let sel = 0;
 
-players.forEach((p, i) => {
+function buildSheet(list){
+  sheet.innerHTML = '';
+  tiles.length = 0; photos.length = 0; imgs.length = 0;
+  tune = list.map(() => ({x:50, y:0, z:1}));
+  sel = 0;
+  list.forEach(buildTile);
+}
+
+function buildTile(p, i){
+  const numTxt = p.num ?? '';
   const tile = document.createElement('div');
   tile.className = 'tile pos-' + p.pos;
   const photo = document.createElement('div');
   photo.className = 'photo';
-  photo.dataset.num = p.num ?? '';
+  photo.dataset.num = numTxt;
   const img = document.createElement('img');
   img.alt = p.name;
   photo.appendChild(img);
@@ -1513,7 +1585,7 @@ players.forEach((p, i) => {
     s.className = 'strip ' + c;
     photo.appendChild(s);
   });
-  ['sharp','orig-layer','split-line'].forEach(c => {
+  ['tone','sharp','orig-layer','split-line'].forEach(c => {
     const d = document.createElement('div');
     d.className = c;
     photo.appendChild(d);
@@ -1521,7 +1593,7 @@ players.forEach((p, i) => {
   const ov = document.createElement('div');
   ov.className = 'ov';
   const st = exampleStats(p, i);
-  ov.innerHTML = `<span class="ov-num">${p.num}</span>`
+  ov.innerHTML = `<span class="ov-num">${numTxt}</span>`
     + `<span class="ov-name"><span class="ov-first">${p.first}</span><span class="ov-last">${p.last}</span></span>`
     + `<span class="ov-pos">${posLabel[p.pos]}</span>`
     + `<div class="ov-stats">${st.map(([k,v]) => `<div><b>${v}</b><span>${k}</span></div>`).join('')}<em>ukázková čísla</em></div>`;
@@ -1530,7 +1602,7 @@ players.forEach((p, i) => {
   tile.appendChild(photo);
   const label = document.createElement('div');
   label.className = 'label';
-  label.innerHTML = `<div class="name">${p.name}</div><div class="meta">#${p.num} · ${posLabel[p.pos]}</div>`;
+  label.innerHTML = `<div class="name">${p.name}</div><div class="meta">${p.num ? '#' + p.num + ' · ' : ''}${posLabel[p.pos]}</div>`;
   tile.appendChild(label);
   sheet.appendChild(tile);
   tiles.push(tile);
@@ -1581,7 +1653,8 @@ players.forEach((p, i) => {
     sel = i;
     syncTuner();
   });
-});
+}
+buildSheet(players);
 
 // --- navigace ---
 const nav = document.getElementById('nav');
@@ -1608,6 +1681,27 @@ nav.appendChild(hint);
 let current = effects[0];
 let curIdx = 0;
 let splitOn = false;
+let cPhoto = 'pro', cGfx = 'match';
+const fxById = id => effects.find(f => f.id === id);
+
+function sheetClass(){
+  const fx = current.id === 'combo' ? `fx-combo fx-${cPhoto} fx-${cGfx}` : `fx-${current.id}`;
+  return 'sheet ' + fx + (splitOn ? ' split' : '');
+}
+
+function comboCode(){
+  const parts = [];
+  if (cPhoto !== 'orig') parts.push(`/* ===== úprava fotky: ${fxById(cPhoto).name} ===== */\n` + fxById(cPhoto).code);
+  if (cGfx !== 'orig') parts.push(`/* ===== grafika: ${fxById(cGfx).name} ===== */\n` + fxById(cGfx).code);
+  return parts.length ? parts.join('\n\n') : '/* vyber úpravu fotky nebo grafiku */';
+}
+
+function fillSelect(id, list, val, onChange){
+  const sel = document.getElementById(id);
+  sel.innerHTML = list.map(fid => `<option value="${fid}">${fid === 'orig' ? 'žádná' : fxById(fid).name}</option>`).join('');
+  sel.value = val;
+  sel.addEventListener('change', () => { onChange(sel.value); sheet.className = sheetClass(); renderCode(); });
+}
 
 function proxyUrl(src){
   return 'https://wsrv.nl/?url=' + encodeURIComponent(src) + '&w=400&h=400&fit=cover&a=attention';
@@ -1695,11 +1789,12 @@ function setFx(i){
   enterFx(effects[i].id);
   curIdx = i;
   current = effects[i];
-  sheet.className = 'sheet fx-' + current.id + (splitOn ? ' split' : '');
+  sheet.className = sheetClass();
   navBtns.forEach((b, j) => b.setAttribute('aria-current', j === i ? 'true' : 'false'));
   document.getElementById('fxName').textContent = current.name;
   document.getElementById('fxDesc').textContent = current.desc;
   document.getElementById('tuner').classList.toggle('show', current.id === 'tune');
+  document.getElementById('combo').classList.toggle('show', current.id === 'combo');
   tiles.forEach((t, j) => t.classList.toggle('sel', current.id === 'tune' && j === sel));
   renderCode();
 }
@@ -1759,14 +1854,14 @@ function renderCode(){
     codeEl.innerHTML = tuneCode();
   } else {
     document.getElementById('codeLabel').textContent = 'CSS';
-    codeEl.innerHTML = esc(current.code).replace(/(\/\*.*?\*\/|&lt;!--.*?--&gt;|(?:^|\s)\/\/[^\n]*)/gm, '<span class="c">$1</span>');
+    codeEl.innerHTML = esc(current.id === 'combo' ? comboCode() : current.code).replace(/(\/\*.*?\*\/|&lt;!--.*?--&gt;|(?:^|\s)\/\/[^\n]*)/gm, '<span class="c">$1</span>');
   }
 }
 
 // --- porovnání s původním ---
 const cmp = document.getElementById('compare');
 function rawOn(){ sheet.className = 'sheet fx-orig'; cmp.classList.add('on'); }
-function rawOff(){ sheet.className = 'sheet fx-' + current.id + (splitOn ? ' split' : ''); cmp.classList.remove('on'); }
+function rawOff(){ sheet.className = sheetClass(); cmp.classList.remove('on'); }
 
 const splitBtn = document.getElementById('splitBtn');
 const splitRange = document.getElementById('splitRange');
@@ -1796,6 +1891,25 @@ document.getElementById('copy').addEventListener('click', async () => {
   try { await navigator.clipboard.writeText(text); btn.textContent = 'Zkopírováno'; }
   catch { const r = document.createRange(); r.selectNodeContents(document.getElementById('code')); const s = getSelection(); s.removeAllRanges(); s.addRange(r); btn.textContent = 'Označeno, Ctrl+C'; }
   setTimeout(() => btn.textContent = 'Kopírovat', 1500);
+});
+
+fillSelect('cPhoto', COMBO_PHOTO, cPhoto, v => cPhoto = v);
+fillSelect('cGfx', COMBO_GFX, cGfx, v => cGfx = v);
+
+// --- celá soupiska / ukázka ---
+const rosterBtn = document.getElementById('rosterBtn');
+let fullRoster = false;
+rosterBtn.addEventListener('click', () => {
+  fullRoster = !fullRoster;
+  rosterBtn.classList.toggle('on', fullRoster);
+  rosterBtn.setAttribute('aria-pressed', fullRoster);
+  rosterBtn.textContent = fullRoster ? 'Jen ukázka (8)' : 'Celá soupiska (31)';
+  leaveFx(current.id);
+  players = fullRoster ? ROSTER : SAMPLE_PLAYERS;
+  buildSheet(players);
+  enterFx(current.id);
+  sheet.className = sheetClass();
+  syncTuner();
 });
 
 setFx(0);
