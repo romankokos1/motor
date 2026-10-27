@@ -29,6 +29,7 @@
     color-scheme:dark;
   }
   *{box-sizing:border-box;}
+  [hidden]{display:none !important;}
   body{
     margin:0;
     background:var(--bg);
@@ -1114,6 +1115,85 @@
   .fx-bokeh .tile:nth-child(3n) .photo .tone{transform:scaleX(-1) translateY(-5%);}
   .fx-bokeh .tile:nth-child(5n) .photo .tone{transform:translateY(4%);}
 
+  /* ===== PRAKTICKÉ NÁSTROJE ===== */
+  .seg-tools{display:flex; gap:4px; flex-wrap:wrap;}
+  .seg-tools button{
+    font:600 13px/1 var(--sans); color:var(--muted); background:var(--panel-2);
+    border:1px solid var(--border); border-radius:6px; padding:7px 10px; cursor:pointer;
+  }
+  .seg-tools button[aria-pressed="true"]{color:var(--accent); border-color:var(--accent);}
+  .seg-tools button:focus-visible{outline:2px solid var(--accent); outline-offset:2px;}
+  .tool-note{flex-basis:100%; font:12px/1.55 var(--mono); color:var(--muted);}
+  .tool-note b{color:var(--text); font-weight:500;}
+  .tool-note .warn{color:var(--gk);}
+  .tool-note .bad{color:var(--fwd);}
+
+  /* odznaky: platí ve všech efektech i ve stažené plachtě */
+  .tile .badges{position:absolute; inset:0; pointer-events:none; z-index:6;}
+  .badges .cap{
+    position:absolute; top:6px; right:6px; width:26px; height:26px; border-radius:50%;
+    background:#ffd21f; color:#08121f; font:800 16px/26px var(--cond); text-align:center;
+    box-shadow:0 2px 6px rgba(0,0,0,.45);
+  }
+  .badges .stat{
+    position:absolute; top:8px; left:0; padding:5px 9px 4px 8px; border-radius:0 4px 4px 0;
+    font:700 11px/1 var(--cond); letter-spacing:.08em; text-transform:uppercase; color:#fff;
+    box-shadow:0 2px 6px rgba(0,0,0,.35);
+  }
+  .badges .cap:empty, .badges .stat:empty{display:none;}
+  .tile[data-status="new"] .stat{background:#2f9e5b;}
+  .tile[data-status="injured"] .stat{background:#d64541;}
+  .tile[data-status="loan"] .stat{background:#5d6b7a;}
+  .tile[data-status="injured"] .photo, .tile[data-status="loan"] .photo{filter:grayscale(1) brightness(.85);}
+  .fx-badges .tile{cursor:pointer;}
+
+  /* kontrola fotek */
+  .photo .qa{display:none;}
+  .fx-qa .photo .qa{
+    display:block; position:absolute; left:6px; bottom:6px; z-index:5;
+    font:500 11px/1 var(--mono); padding:4px 6px; border-radius:4px;
+    background:rgba(8,11,15,.82); color:var(--text);
+  }
+  .fx-qa .photo .qa.warn{color:var(--gk);}
+  .fx-qa .photo .qa.bad{color:var(--fwd);}
+
+  /* sestava */
+  .lineup{display:grid; grid-template-columns:minmax(0, 1fr); gap:22px; align-items:start;}
+  @media (min-width:1100px){ .lineup{grid-template-columns:auto auto; justify-content:start; column-gap:32px;} }
+  .lu-col{display:flex; flex-direction:column; gap:22px; min-width:0;}
+  .lineup[hidden]{display:none;}
+  .lu-group h3{margin:0 0 8px; font:600 13px/1 var(--mono); letter-spacing:.08em; text-transform:uppercase; color:var(--muted);}
+  .lu-rows{display:flex; flex-direction:column; gap:10px;}
+  .lu-row{display:flex; align-items:stretch; gap:8px; flex-wrap:wrap;}
+  .lu-row > .lu-label{flex:0 0 64px; align-self:center; font:600 12px/1.2 var(--mono); color:var(--muted);}
+  .lu-slot{
+    flex:0 1 128px; min-width:112px; background:var(--panel); border:1px solid var(--border);
+    border-radius:10px; overflow:hidden; display:flex; flex-direction:column;
+  }
+  .lu-slot .ph{aspect-ratio:1; background:var(--panel-2) center top/cover no-repeat; display:grid; place-items:center; color:var(--muted); font:11px var(--mono);}
+  .lu-slot .tx{padding:7px 8px 8px; display:flex; flex-direction:column; gap:6px;}
+  .lu-slot .nm{font:600 13px/1.15 var(--sans); min-height:15px;}
+  .lu-slot .nm b{color:var(--muted); font:500 11px var(--mono); margin-right:4px;}
+  .lu-slot select{
+    width:100%; font:12px var(--sans); color:var(--text); background:var(--panel-2);
+    border:1px solid var(--border); border-radius:6px; padding:5px 6px;
+  }
+  .lu-slot select:focus-visible{outline:2px solid var(--accent); outline-offset:1px;}
+  .lu-pos-G .nm b{color:var(--gk);} .lu-pos-D .nm b{color:var(--def);} .lu-pos-F .nm b{color:var(--fwd);}
+
+  /* tisk karet k vystřižení: 63 × 88 mm, 3 × 3 na A4 */
+  .sheet.cards{grid-template-columns:repeat(3, 63mm); gap:0; justify-content:center;}
+  .sheet.cards .tile{width:63mm; height:88mm; border:0; border-radius:0; outline:.25mm dashed #8a94a0; outline-offset:-.125mm;}
+  @media (max-width:820px){ .sheet.cards{grid-template-columns:repeat(auto-fill, 63mm);} }
+  @media print{
+    @page{size:A4; margin:10mm;}
+    body.print-cards{background:#fff; padding:0;}
+    body.print-cards header, body.print-cards nav, body.print-cards .intro, body.print-cards .tuner,
+    body.print-cards .combo, body.print-cards .code, body.print-cards .pixctl{display:none !important;}
+    body.print-cards .layout{display:block;}
+    body.print-cards .sheet.cards .tile{break-inside:avoid; -webkit-print-color-adjust:exact; print-color-adjust:exact;}
+  }
+
   /* kombinátor */
   .combo{
     display:none;
@@ -1448,6 +1528,30 @@
         <div class="lvl-table" id="levelTable"></div>
       </div>
 
+      <div class="tuner" id="badgectl">
+        <div class="seg-tools" id="badgeTools" role="group" aria-label="Odznak">
+          <button type="button" data-tool="C" aria-pressed="true">C kapitán</button>
+          <button type="button" data-tool="A" aria-pressed="false">A asistent</button>
+          <button type="button" data-tool="new" aria-pressed="false">Nová posila</button>
+          <button type="button" data-tool="injured" aria-pressed="false">Zraněný</button>
+          <button type="button" data-tool="loan" aria-pressed="false">Hostování</button>
+          <button type="button" data-tool="clear" aria-pressed="false">Smazat</button>
+        </div>
+        <div class="tool-note" id="badgeNote"></div>
+      </div>
+
+      <div class="tuner" id="qactl"><div class="tool-note" id="qaNote">Kontroluji fotky…</div></div>
+
+      <div class="tuner" id="lineupctl">
+        <div class="tool-note">Vyber hráče do každé pozice. Hráč může být v sestavě jen jednou, výběr ho přesune. Text sestavy dole zkopíruješ do článku nebo příspěvku.</div>
+        <button class="reset" id="luReset" type="button">vymazat sestavu</button>
+      </div>
+
+      <div class="tuner" id="cardsctl">
+        <div class="tool-note" id="cardsNote"></div>
+        <button class="compare" id="cardsPrint" type="button">Tisk / PDF</button>
+      </div>
+
       <div class="tuner" id="splitctl">
         <label for="spS">stíny <input type="color" id="spS" value="#1d4e89"></label>
         <label for="spH">světla <input type="color" id="spH" value="#ffcf6a"></label>
@@ -1486,6 +1590,7 @@
       </div>
 
       <div class="sheet" id="sheet"></div>
+      <div class="lineup" id="lineup" hidden></div>
 
       <div class="code">
         <div class="code-head">
@@ -3000,6 +3105,29 @@ RIM.forEach((a, k) => {
 .tile:nth-child(2n) .photo::after{ transform:scaleX(-1); }
 .tile:nth-child(3n) .photo::after{ transform:scaleX(-1) translateY(-5%); }`},
 
+  // ===== praktické nástroje =====
+  {id:"badges", grp:"Praktické nástroje", name:"Odznaky",
+   desc:"Kapitán, asistenti, nové posily, zranění a hráči na hostování přímo na kartách. Vyber odznak a klikni na hráče. Zranění a hostování se ztlumí do šeda. Odznaky platí ve všech efektech, pamatují se v prohlížeči a přenesou se do stažené plachty.",
+   code:null},
+  {id:"qa", grp:"Praktické nástroje", name:"Kontrola fotek",
+   desc:"Než něco vytiskneš: u každé fotky skutečné rozlišení, upozornění na chybějící fotky a na fotky nalezené pod jiným názvem souboru. Nahoře spočítá, do jaké velikosti se fotky dají tisknout. Dole je přehled ke zkopírování.",
+   code:null},
+  {id:"lineup", grp:"Praktické nástroje", name:"Sestava na zápas",
+   desc:"Poskládej sestavu: dva brankáři, tři obrany a čtyři útoky, s fotkami a čísly. Dole se z ní sestaví text ve tvaru, jaký se píše do článků a příspěvků. Sestava se pamatuje v prohlížeči.",
+   code:null},
+  {id:"cards", grp:"Praktické nástroje", name:"Tisk karet k vystřižení",
+   desc:"Karty ve velikosti sběratelské kartičky (63 × 88 mm), devět na A4, s čarami pro střih. Vzhled se bere z Kombinátoru, odznaky a ruční ořez taky. Tlačítkem Tisk / PDF vytiskneš jen karty, bez zbytku stránky.",
+   code:`/* karta 63 × 88 mm, 3 × 3 na A4 */
+.sheet{ display:grid; grid-template-columns:repeat(3, 63mm); gap:0; justify-content:center; }
+.tile{ width:63mm; height:88mm; overflow:hidden; outline:.25mm dashed #8a94a0; outline-offset:-.125mm; }
+
+@media print{
+  @page{ size:A4; margin:10mm; }        /* 3 × 88 mm = 264 mm, vejde se do 277 mm */
+  .tile{ break-inside:avoid; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  /* všechno kromě karet skrýt */
+  header, nav, .code{ display:none !important; }
+}`},
+
   // ===== kombinátor =====
   {id:"combo", grp:"Výběr pro plachtu", name:"Kombinátor",
    desc:"Spoj úpravu fotky s grafikou karty, případně dolaď ořez jednotlivých hráčů v efektu 3, a stáhni hotovou plachtu celé soupisky. Stažený soubor vypadá přesně jako tenhle náhled a má vlastní tlačítko tisku.",
@@ -3193,6 +3321,13 @@ function buildTile(p, i){
     + `<div class="b-note">ukázková čísla · klikni zpět</div>`;
   tile.appendChild(back);
   sheet.appendChild(tile);
+  const bd = document.createElement('div');
+  bd.className = 'badges';
+  bd.innerHTML = '<span class="cap"></span><span class="stat"></span>';
+  tile.appendChild(bd);
+  const qa = document.createElement('span');
+  qa.className = 'qa';
+  photo.appendChild(qa);
   tiles.push(tile);
 
   photos.push(photo);
@@ -3202,6 +3337,7 @@ function buildTile(p, i){
   let idx = 0;
   img.onload = () => {
     if (img.dataset.mode !== 'proxy'){
+      img.dataset.cand = idx;
       img.dataset.orig = img.src;
       tile.style.setProperty('--img', `url("${img.src}")`);
     }
@@ -3247,6 +3383,7 @@ function buildTile(p, i){
       return;
     }
     if (current.id === 'flip'){ tile.classList.toggle('flipped'); return; }
+    if (current.id === 'badges'){ applyBadge(p.name); return; }
     if (current.id !== 'tune') return;
     sel = i;
     syncTuner();
@@ -3283,7 +3420,9 @@ let cPhoto = 'pro', cGfx = 'match';
 const fxById = id => effects.find(f => f.id === id);
 
 function sheetClass(){
-  const fx = current.id === 'combo' ? `fx-combo fx-${cPhoto} fx-${cGfx}` : `fx-${current.id}`;
+  const fx = current.id === 'combo' ? `fx-combo fx-${cPhoto} fx-${cGfx}`
+           : current.id === 'cards' ? `fx-combo fx-${cPhoto} fx-${cGfx} cards`
+           : `fx-${current.id}`;
   return 'sheet ' + fx + (splitOn ? ' split' : '') + (levelOn ? ' level-on' : '');
 }
 
@@ -3328,6 +3467,8 @@ function exportPlachta(){
   const script = `
 const ROSTER = ${JSON.stringify(ROSTER)};
 const TUNE = ${JSON.stringify(tuneData)};
+const BADGES = ${JSON.stringify(badges)};
+const STATUS_LABEL = ${JSON.stringify(STATUS_LABEL)};
 const LEVEL = ${JSON.stringify(levelOn ? levelIds() : {})};
 const SEASON = ${JSON.stringify(SEASON)};
 const posLabel = ${JSON.stringify(posLabel)};
@@ -3369,6 +3510,12 @@ list.forEach(p => {
   label.innerHTML = '<div class="name">' + p.name + '</div><div class="meta">' + (p.num ? '#' + p.num + ' · ' : '') + posLabel[p.pos] + '</div>';
   tile.appendChild(label);
   if (LEVEL[p.name]) tile.style.setProperty('--lvf', 'url(#' + LEVEL[p.name] + ')');
+  const bg = BADGES[p.name] || {};
+  const bd = document.createElement('div');
+  bd.className = 'badges';
+  bd.innerHTML = '<span class="cap">' + (bg.cap || '') + '</span><span class="stat">' + (STATUS_LABEL[bg.status] || '') + '</span>';
+  tile.appendChild(bd);
+  if (bg.status) tile.dataset.status = bg.status;
   const t = TUNE[p.name];
   if (t){
     tile.classList.add('tuned');
@@ -3549,6 +3696,202 @@ document.getElementById('spS').addEventListener('input', e => { split.sh = e.tar
 document.getElementById('spH').addEventListener('input', e => { split.hi = e.target.value; applySplit(); });
 document.getElementById('spK').addEventListener('input', e => { split.k = +e.target.value; applySplit(); });
 document.getElementById('spReset').addEventListener('click', () => { Object.assign(split, SPLIT_DEF); applySplit(); });
+
+// --- úložiště v prohlížeči (odznaky a sestava přežijí obnovení stránky) ---
+const store = {
+  get(k, d){ try { return JSON.parse(localStorage.getItem(k)) ?? d; } catch (e){ return d; } },
+  set(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch (e){} },
+};
+
+// --- odznaky ---
+const STATUS_LABEL = {new:'Nová posila', injured:'Zraněný', loan:'Hostování'};
+const badges = store.get('fe-badges', {});   // jméno → {cap:'C'|'A', status:'new'|'injured'|'loan'}
+let badgeTool = 'C';
+function renderBadges(){
+  tiles.forEach((t, i) => {
+    const b = badges[players[i].name] || {};
+    if (b.status) t.dataset.status = b.status; else delete t.dataset.status;
+    t.querySelector('.badges .cap').textContent = b.cap || '';
+    t.querySelector('.badges .stat').textContent = STATUS_LABEL[b.status] || '';
+  });
+}
+function applyBadge(name){
+  const b = badges[name] || {};
+  if (badgeTool === 'clear'){ delete badges[name]; }
+  else if (badgeTool === 'C' || badgeTool === 'A'){
+    if (badgeTool === 'C' && b.cap !== 'C') Object.values(badges).forEach(o => { if (o.cap === 'C') delete o.cap; });
+    b.cap = b.cap === badgeTool ? undefined : badgeTool;
+    badges[name] = b;
+  } else {
+    b.status = b.status === badgeTool ? undefined : badgeTool;
+    badges[name] = b;
+  }
+  Object.keys(badges).forEach(k => { const o = badges[k]; if (!o.cap) delete o.cap; if (!o.status) delete o.status; if (!o.cap && !o.status) delete badges[k]; });
+  store.set('fe-badges', badges);
+  renderBadges(); badgeNote(); renderCode(); comboNote();
+}
+function badgeNote(){
+  const list = Object.entries(badges);
+  const c = list.filter(([, b]) => b.cap === 'C').map(([n]) => n);
+  const a = list.filter(([, b]) => b.cap === 'A').map(([n]) => n);
+  const st = k => list.filter(([, b]) => b.status === k).length;
+  document.getElementById('badgeNote').innerHTML = 'Vyber odznak a klikni na hráče, druhým kliknutím ho sundáš. '
+    + `Kapitán: <b>${c[0] || '—'}</b> · asistenti: <b>${a.join(', ') || '—'}</b>`
+    + ` · nové posily ${st('new')} · zranění ${st('injured')} · hostování ${st('loan')}.`
+    + (a.length > 2 ? ' <span class="warn">Asistenti bývají dva.</span>' : '')
+    + ' Odznaky se ukazují ve všech efektech a přenesou se do stažené plachty.';
+}
+document.getElementById('badgeTools').addEventListener('click', e => {
+  const btn = e.target.closest('button'); if (!btn) return;
+  badgeTool = btn.dataset.tool;
+  document.querySelectorAll('#badgeTools button').forEach(x => x.setAttribute('aria-pressed', x === btn));
+});
+function badgesCode(){
+  const data = ROSTER.filter(p => badges[p.name]).map(p => `  "${p.name}": ${JSON.stringify(badges[p.name])},`).join('\n');
+  return `// 1) data: kdo má jaký odznak
+const ODZNAKY = {
+${data || '  // zatím nikdo, klikni na hráče'}
+};
+const STAV = {new:'Nová posila', injured:'Zraněný', loan:'Hostování'};
+
+// 2) při vytváření dlaždice
+const b = ODZNAKY[p.name] || {};
+tile.insertAdjacentHTML('beforeend',
+  '<div class="badges"><span class="cap">' + (b.cap || '') + '</span><span class="stat">' + (STAV[b.status] || '') + '</span></div>');
+if (b.status) tile.dataset.status = b.status;
+
+/* 3) vzhled */
+.tile{ position:relative; }
+.tile .badges{ position:absolute; inset:0; pointer-events:none; }
+.badges .cap{                         /* C / A jako nášivka na dresu */
+  position:absolute; top:6px; right:6px; width:26px; height:26px; border-radius:50%;
+  background:#ffd21f; color:#08121f; font:800 16px/26px 'Barlow Condensed', sans-serif; text-align:center;
+}
+.badges .stat{                        /* štítek stavu u levého okraje */
+  position:absolute; top:8px; left:0; padding:5px 9px 4px 8px; border-radius:0 4px 4px 0;
+  font:700 11px/1 'Barlow Condensed', sans-serif; letter-spacing:.08em; text-transform:uppercase; color:#fff;
+}
+.badges .cap:empty, .badges .stat:empty{ display:none; }
+.tile[data-status="new"] .stat{ background:#2f9e5b; }
+.tile[data-status="injured"] .stat{ background:#d64541; }
+.tile[data-status="loan"] .stat{ background:#5d6b7a; }
+/* zranění a hostování ztlumit */
+.tile[data-status="injured"] .photo, .tile[data-status="loan"] .photo{ filter:grayscale(1) brightness(.85); }`;
+}
+
+// --- kontrola fotek ---
+const PX_KARTA = Math.round(63 / 25.4 * 300);   // 744 px: šířka karty 63 mm při 300 dpi
+let qaReport = [];
+function renderQA(){
+  qaReport = players.map((p, i) => {
+    const img = imgs[i], tag = photos[i].querySelector('.qa');
+    if (!img.isConnected || !img.naturalWidth){
+      if (tag){ tag.textContent = img.isConnected ? 'načítá se' : 'chybí'; tag.className = 'qa bad'; }
+      return {p, missing: img.isConnected ? 'loading' : true};
+    }
+    const w = img.naturalWidth, h = img.naturalHeight;
+    const issues = [];
+    if (w < 200) issues.push('velmi malá');
+    if (Math.abs(w - h) / w > .05) issues.push(`poměr ${w}:${h}`);
+    if (+img.dataset.cand > 0) issues.push('jiný název souboru');
+    if (tag){
+      tag.textContent = `${w}×${h}` + (+img.dataset.cand > 0 ? ' · jiný název' : '');
+      tag.className = 'qa' + (w < 200 ? ' bad' : w < PX_KARTA ? ' warn' : '');
+    }
+    return {p, w, h, issues, file: img.src.split('/').pop().split('?')[0]};
+  });
+  const ok = qaReport.filter(r => r.w), miss = qaReport.filter(r => r.missing === true);
+  const minW = ok.length ? Math.min(...ok.map(r => r.w)) : 0;
+  const cm = dpi => (minW / dpi * 2.54).toFixed(1).replace('.', ',');
+  document.getElementById('qaNote').innerHTML = !ok.length ? 'Fotky se ještě načítají…'
+    : `Načteno <b>${ok.length} z ${qaReport.length}</b> fotek` + (miss.length ? `, <span class="bad">chybí ${miss.length}</span>` : '')
+      + `. Nejmenší fotka má <b>${minW} px</b>: při kvalitním tisku (300 dpi) vyjde nejvýš <b>${cm(300)} cm</b> na stranu, při běžném (150 dpi) <b>${cm(150)} cm</b>.`
+      + (minW < PX_KARTA ? ` <span class="warn">Na kartu 63 mm by bylo potřeba aspoň ${PX_KARTA} px, při ${minW} px vyjde tisk měkce.</span>` : '')
+      + ' Žlutý údaj = na tisk karet málo, červený = fotka chybí nebo je velmi malá.';
+  if (current.id === 'qa') renderCode();
+}
+function qaText(){
+  if (!qaReport.length) return 'Kontroluji fotky…';
+  const rows = qaReport.map(r => r.missing === true ? `${r.p.name}: CHYBÍ`
+    : r.missing ? `${r.p.name}: načítá se`
+    : `${r.p.name}: ${r.w} × ${r.h} px, ${r.file}${r.issues.length ? '  (' + r.issues.join(', ') + ')' : ''}`);
+  return rows.join('\n');
+}
+
+// --- sestava ---
+// dva sloupce: vlevo útoky, vpravo obrany a brankáři (na úzké obrazovce pod sebou)
+const LINEUP_COLS = [
+  [{group:'Útoky', rows:[1, 2, 3, 4].map(n => ({label:`${n}. útok`, slots:[[`F${n}L`, 'F'], [`F${n}C`, 'F'], [`F${n}R`, 'F']]}))}],
+  [{group:'Obrany', rows:[1, 2, 3].map(n => ({label:`${n}. obrana`, slots:[[`D${n}L`, 'D'], [`D${n}R`, 'D']]}))},
+   {group:'Brankáři', rows:[{label:'', slots:[['G1', 'G'], ['G2', 'G']]}]}],
+];
+const slotName = slot => ({G1:'start', G2:'náhradník'})[slot]
+  || (slot[0] === 'D' ? {L:'levý obránce', R:'pravý obránce'} : {L:'levé křídlo', C:'centr', R:'pravé křídlo'})[slot.slice(-1)];
+const lineup = store.get('fe-lineup', {});   // slot → jméno hráče
+const srcCache = {};
+function photoFor(p){
+  const t = tiles.find((_, i) => players[i] && players[i].name === p.name);
+  const loaded = t && imgs[tiles.indexOf(t)].dataset.orig;
+  if (loaded) return Promise.resolve(loaded);
+  if (!srcCache[p.name]) srcCache[p.name] = new Promise(res => {
+    const urls = candidateUrls(p); let i = 0; const im = new Image();
+    im.onload = () => res(im.src);
+    im.onerror = () => (++i < urls.length ? im.src = urls[i] : res(''));
+    im.src = urls[0];
+  });
+  return srcCache[p.name];
+}
+function renderLineup(){
+  const box = document.getElementById('lineup');
+  const byPos = pos => ROSTER.filter(p => p.pos === pos).sort((a, b) => (a.num ?? 999) - (b.num ?? 999));
+  box.innerHTML = LINEUP_COLS.map(col => '<div class="lu-col">' + col.map(g => `<section class="lu-group"><h3>${g.group}</h3><div class="lu-rows">`
+    + g.rows.map(r => `<div class="lu-row"><div class="lu-label">${r.label}</div>`
+      + r.slots.map(([slot, pos]) => {
+        const name = lineup[slot], p = ROSTER.find(x => x.name === name);
+        const opts = byPos(pos).map(x => `<option value="${x.name}"${x.name === name ? ' selected' : ''}>${x.num != null ? x.num + ' ' : ''}${x.name}${Object.values(lineup).includes(x.name) && x.name !== name ? ' ✓' : ''}</option>`).join('');
+        return `<div class="lu-slot lu-pos-${pos}" data-slot="${slot}"><div class="ph">${p ? '' : slotName(slot)}</div>`
+          + `<div class="tx"><div class="nm">${p ? `<b>${p.num ?? ''}</b>${p.name}` : ''}</div>`
+          + `<select aria-label="${r.label || g.group}, ${slotName(slot)}"><option value="">—</option>${opts}</select></div></div>`;
+      }).join('') + '</div>').join('') + '</div></section>').join('') + '</div>').join('');
+  box.querySelectorAll('.lu-slot').forEach(el => {
+    const p = ROSTER.find(x => x.name === lineup[el.dataset.slot]);
+    if (p) photoFor(p).then(src => { if (src) el.querySelector('.ph').style.backgroundImage = `url("${src}")`; });
+    el.querySelector('select').addEventListener('change', e => {
+      const v = e.target.value;
+      Object.keys(lineup).forEach(k => { if (lineup[k] === v) delete lineup[k]; });   // hráč jen jednou
+      if (v) lineup[el.dataset.slot] = v; else delete lineup[el.dataset.slot];
+      store.set('fe-lineup', lineup);
+      renderLineup(); renderCode();
+    });
+  });
+}
+function lineupText(){
+  const last = slot => { const p = ROSTER.find(x => x.name === lineup[slot]); return p ? p.last : '?'; };
+  const filled = slots => slots.some(s => lineup[s]);
+  const lines = [];
+  if (filled(['G1', 'G2'])) lines.push(`Brankáři: ${last('G1')}${lineup.G2 ? ` (${last('G2')})` : ''}`);
+  const d = [1, 2, 3].filter(n => filled([`D${n}L`, `D${n}R`])).map(n => `${last(`D${n}L`)} – ${last(`D${n}R`)}`);
+  if (d.length) lines.push(`Obrany: ${d.join(', ')}`);
+  const f = [1, 2, 3, 4].filter(n => filled([`F${n}L`, `F${n}C`, `F${n}R`])).map(n => `${last(`F${n}L`)} – ${last(`F${n}C`)} – ${last(`F${n}R`)}`);
+  if (f.length) lines.push(`Útoky: ${f.join(', ')}`);
+  return lines.length ? lines.join('\n') : 'Sestava je zatím prázdná.';
+}
+document.getElementById('luReset').addEventListener('click', () => {
+  Object.keys(lineup).forEach(k => delete lineup[k]);
+  store.set('fe-lineup', lineup); renderLineup(); renderCode();
+});
+
+// --- tisk karet ---
+function cardsNote(){
+  const ph = cPhoto === 'orig' ? 'bez úpravy' : fxById(cPhoto).name, gf = cGfx === 'orig' ? 'bez grafiky' : fxById(cGfx).name;
+  const pages = Math.ceil(players.length / 9);
+  document.getElementById('cardsNote').innerHTML = `Karty 63 × 88 mm (velikost sběratelské karty), 9 na stranu A4, čárkovaně čáry pro střih. `
+    + `Vzhled z Kombinátoru: <b>${ph} + ${gf}</b>. Teď ${players.length} hráčů = <b>${pages} ${pages === 1 ? 'strana' : pages < 5 ? 'strany' : 'stran'}</b>`
+    + (players.length < ROSTER.length ? ' (celou soupisku zapneš tlačítkem Celá soupiska).' : '.')
+    + ` <span class="warn">Fotky z hcmotor.cz mají kolem 280 px, na kartě vyjdou asi na 110 dpi, tedy znatelně měkce.</span>`
+    + ' V dialogu tisku zapni Grafika na pozadí, jinak se nevytisknou barvy karet.';
+}
+document.getElementById('cardsPrint').addEventListener('click', () => window.print());
 
 function fillSelect(id, list, val, onChange){
   const sel = document.getElementById(id);
@@ -3857,6 +4200,8 @@ document.getElementById('pixn').addEventListener('input', e => {
 });
 
 function leaveFx(id){
+  if (id === 'lineup'){ sheet.hidden = false; document.getElementById('lineup').hidden = true; }
+  if (id === 'cards') document.body.classList.remove('print-cards');
   if (id === 'pixel') clearPixel();
   if (id === 'entry') tiles.forEach(t => t.classList.remove('pre'));
   if (id === 'flip') tiles.forEach(t => t.classList.remove('flipped'));
@@ -3878,6 +4223,14 @@ function enterFx(id){
   document.getElementById('labctl').classList.toggle('show', id === 'lab');
   document.getElementById('splitctl').classList.toggle('show', id === 'split');
   document.getElementById('levelctl').classList.toggle('show', id === 'level');
+  document.getElementById('badgectl').classList.toggle('show', id === 'badges');
+  document.getElementById('qactl').classList.toggle('show', id === 'qa');
+  document.getElementById('lineupctl').classList.toggle('show', id === 'lineup');
+  document.getElementById('cardsctl').classList.toggle('show', id === 'cards');
+  if (id === 'badges') badgeNote();
+  if (id === 'qa'){ renderQA(); setTimeout(renderQA, 1500); }
+  if (id === 'lineup'){ sheet.hidden = true; document.getElementById('lineup').hidden = false; renderLineup(); }
+  if (id === 'cards'){ document.body.classList.add('print-cards'); cardsNote(); }
   if (id === 'level' && !levelOn) setLevel(true);
   if (id === 'motm' && !tiles.some(t => t.classList.contains('motm'))) tiles[5].classList.add('motm');
   if (id === 'entry'){
@@ -3973,8 +4326,8 @@ function renderCode(){
     document.getElementById('codeLabel').textContent = 'JavaScript';
     codeEl.innerHTML = tuneCode();
   } else {
-    document.getElementById('codeLabel').textContent = 'CSS';
-    codeEl.innerHTML = esc(current.id === 'combo' ? comboCode() : current.id === 'lab' ? labCode() : current.id === 'level' ? levelCode() : current.id === 'split' ? splitCode() : current.code).replace(/(\/\*.*?\*\/|&lt;!--.*?--&gt;|(?:^|\s)\/\/[^\n]*)/gm, '<span class="c">$1</span>');
+    document.getElementById('codeLabel').textContent = current.id === 'lineup' ? 'Text sestavy' : current.id === 'qa' ? 'Přehled' : 'CSS';
+    codeEl.innerHTML = esc(current.id === 'combo' ? comboCode() : current.id === 'lab' ? labCode() : current.id === 'level' ? levelCode() : current.id === 'split' ? splitCode() : current.id === 'badges' ? badgesCode() : current.id === 'qa' ? qaText() : current.id === 'lineup' ? lineupText() : current.code).replace(/(\/\*.*?\*\/|&lt;!--.*?--&gt;|(?:^|\s)\/\/[^\n]*)/gm, '<span class="c">$1</span>');
   }
 }
 
@@ -4017,6 +4370,7 @@ fillSelect('cPhoto', COMBO_PHOTO, cPhoto, v => cPhoto = v);
 fillSelect('cGfx', COMBO_GFX, cGfx, v => cGfx = v);
 applyLab();
 applySplit();
+renderBadges();
 document.getElementById('exportBtn').addEventListener('click', exportPlachta);
 comboNote();
 
@@ -4035,6 +4389,9 @@ rosterBtn.addEventListener('click', () => {
   sheet.className = sheetClass();
   syncTuner();
   if (levelOn) runLevel();
+  renderBadges();
+  if (current.id === 'qa'){ renderQA(); setTimeout(renderQA, 1500); }
+  if (current.id === 'cards') cardsNote();
 });
 
 setFx(0);
