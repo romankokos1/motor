@@ -1031,6 +1031,89 @@
   .lvl-table .sw{display:inline-block; width:12px; height:12px; border-radius:3px; vertical-align:-2px; margin-right:6px; box-shadow:inset 0 0 0 1px rgba(255,255,255,.2);}
   #levelStatus{color:var(--text);}
 
+  /* ===== SVĚTLO, FILM A TISK ===== */
+  .photo .blur, .photo .riso{display:none;}
+
+  /* fokus na obličej: okolí rozmazané přes backdrop-filter, ostrá elipsa kolem hlavy */
+  .fx-focus .photo img{filter:contrast(1.04) saturate(1.05);}
+  .fx-focus .photo .blur{
+    display:block; position:absolute; inset:0; z-index:1; pointer-events:none;
+    -webkit-backdrop-filter:blur(3.5px); backdrop-filter:blur(3.5px);
+    -webkit-mask-image:radial-gradient(ellipse 30% 38% at 50% 36%, transparent 55%, #000 100%);
+    mask-image:radial-gradient(ellipse 30% 38% at 50% 36%, transparent 55%, #000 100%);
+  }
+
+  /* rychlost: vodorovně rozmazaná kopie, posunutá dozadu, mimo hlavu */
+  .fx-speed .photo .blur{
+    display:block; position:absolute; inset:0; z-index:1; pointer-events:none;
+    background:var(--img) top center/cover no-repeat;
+    filter:url(#motion) saturate(1.1);
+    transform:translateX(-5%);
+    -webkit-mask-image:radial-gradient(ellipse 32% 44% at 50% 40%, transparent 58%, #000 92%);
+    mask-image:radial-gradient(ellipse 32% 44% at 50% 40%, transparent 58%, #000 92%);
+  }
+  .fx-speed .photo .tone{
+    display:block; z-index:2;
+    background:repeating-linear-gradient(180deg, transparent 0 9px, rgba(255,255,255,.07) 9px 10px);
+    -webkit-mask-image:linear-gradient(90deg, #000, transparent 38%, transparent 62%, #000);
+    mask-image:linear-gradient(90deg, #000, transparent 38%, transparent 62%, #000);
+  }
+
+  /* světelný průnik */
+  .fx-leak .photo img{filter:contrast(1.05) saturate(1.06);}
+  .fx-leak .photo .tone{
+    display:block; mix-blend-mode:screen;
+    background:
+      radial-gradient(circle at -4% 16%, rgba(255,128,36,.95), transparent 56%),
+      radial-gradient(circle at 106% 88%, rgba(255,64,96,.5), transparent 40%),
+      linear-gradient(100deg, rgba(255,196,96,.32), transparent 34%);
+  }
+  .fx-leak .photo .grain{display:block; background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E") 0 0/160px 160px; mix-blend-mode:overlay; opacity:.22;}
+
+  /* zlatá edice */
+  .fx-gold .photo img{filter:url(#gold) contrast(1.06);}
+  .fx-gold .photo .tone{
+    display:block; z-index:1;
+    background:linear-gradient(135deg, rgba(255,255,255,.2), transparent 38%);
+    box-shadow:inset 0 0 0 3px #d4af57, inset 0 0 0 5px rgba(0,0,0,.35);
+  }
+
+  /* riso tisk: dvě barvy přes sebe na papíře, lehce posunuté */
+  .fx-riso .photo img{opacity:0;}
+  .fx-riso .photo .riso{display:block; position:absolute; inset:0; z-index:1; background:#f4f0e6; isolation:isolate;}
+  .riso i{position:absolute; inset:0; background:var(--img) top center/cover no-repeat; mix-blend-mode:multiply;}
+  .riso i:nth-child(1){filter:url(#riso-y);}
+  .riso i:nth-child(2){filter:url(#riso-b); transform:translate(1.5px, -1px);}
+  .fx-riso .photo .grain{display:block; z-index:2; background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E") 0 0/160px 160px; mix-blend-mode:multiply; opacity:.28;}
+
+  /* split toning: barvy z ovladačů, filtr #split se přepisuje skriptem */
+  .fx-split .photo img{filter:url(#split);}
+
+  /* barevný film 80. let */
+  .fx-film .photo{padding:5% 5% 14%; background:#f3efe6;}
+  .fx-film .photo img{filter:url(#film) contrast(1.06) saturate(1.22); border-radius:2px;}
+  .fx-film .photo .grain{display:block; inset:5% 5% 14%; background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E") 0 0/160px 160px; mix-blend-mode:overlay; opacity:.3;}
+
+  /* světla stadionu */
+  .fx-bokeh .photo img{filter:brightness(.92) contrast(1.06);}
+  .fx-bokeh .photo .tone{
+    display:block; mix-blend-mode:screen; filter:blur(3px);
+    background:
+      radial-gradient(circle at 12% 14%, rgba(255,226,170,.55) 0 5%, transparent 9%),
+      radial-gradient(circle at 27% 5%, rgba(255,206,130,.35) 0 3%, transparent 6%),
+      radial-gradient(circle at 85% 11%, rgba(255,236,200,.5) 0 6%, transparent 10%),
+      radial-gradient(circle at 94% 33%, rgba(255,214,150,.3) 0 3.5%, transparent 6.5%),
+      radial-gradient(circle at 5% 42%, rgba(220,236,255,.3) 0 4%, transparent 7.5%),
+      radial-gradient(circle at 70% 3%, rgba(255,246,220,.35) 0 2.5%, transparent 5%);
+    -webkit-mask-image:radial-gradient(ellipse 30% 42% at 50% 40%, transparent 70%, #000 100%);
+    mask-image:radial-gradient(ellipse 30% 42% at 50% 40%, transparent 70%, #000 100%);
+  }
+
+  /* ať nemají všichni světla na stejném místě */
+  .fx-bokeh .tile:nth-child(2n) .photo .tone{transform:scaleX(-1);}
+  .fx-bokeh .tile:nth-child(3n) .photo .tone{transform:scaleX(-1) translateY(-5%);}
+  .fx-bokeh .tile:nth-child(5n) .photo .tone{transform:translateY(4%);}
+
   /* kombinátor */
   .combo{
     display:none;
@@ -1054,6 +1137,7 @@
   .combo .export:focus-visible{outline:2px solid var(--text); outline-offset:2px;}
   .combo-note{flex-basis:100%; font:12px/1.5 var(--mono); color:var(--muted);}
   .combo-note b{color:var(--text); font-weight:500;}
+  #splitctl input[type=color]{width:38px; height:26px; padding:0; border:1px solid var(--border); border-radius:6px; background:none; cursor:pointer;}
 
   /* ruční ořez hráče platí i v kombinátoru a ve stažené plachtě */
   .fx-combo .tile.tuned .photo img{
@@ -1193,6 +1277,50 @@
       <feFuncB type="table" tableValues="0.1 0.32 0.5 0.66 0.84"/>
     </feComponentTransfer>
   </filter>
+  <filter id="motion" x="-20%" y="0" width="140%" height="100%">
+    <feGaussianBlur stdDeviation="9 0" edgeMode="duplicate"/>
+  </filter>
+  <filter id="gold" color-interpolation-filters="sRGB">
+    <feColorMatrix type="matrix" values=".3 .59 .11 0 0  .3 .59 .11 0 0  .3 .59 .11 0 0  0 0 0 1 0"/>
+    <feComponentTransfer>
+      <feFuncR type="table" tableValues="0.1 0.55 0.93 1"/>
+      <feFuncG type="table" tableValues="0.06 0.38 0.77 0.97"/>
+      <feFuncB type="table" tableValues="0.02 0.12 0.38 0.86"/>
+    </feComponentTransfer>
+  </filter>
+  <filter id="riso-y" color-interpolation-filters="sRGB">
+    <feColorMatrix type="matrix" values=".3 .59 .11 0 0  .3 .59 .11 0 0  .3 .59 .11 0 0  0 0 0 1 0"/>
+    <feComponentTransfer>
+      <feFuncR type="table" tableValues="1 1 1 1"/>
+      <feFuncG type="table" tableValues="0.8 0.8 0.8 0.9 1"/>
+      <feFuncB type="table" tableValues="0.12 0.12 0.15 0.55 1"/>
+    </feComponentTransfer>
+  </filter>
+  <filter id="riso-b" color-interpolation-filters="sRGB">
+    <feColorMatrix type="matrix" values=".3 .59 .11 0 0  .3 .59 .11 0 0  .3 .59 .11 0 0  0 0 0 1 0"/>
+    <feComponentTransfer>
+      <feFuncR type="table" tableValues="0.08 0.6 1 1 1"/>
+      <feFuncG type="table" tableValues="0.16 0.64 1 1 1"/>
+      <feFuncB type="table" tableValues="0.36 0.74 1 1 1"/>
+    </feComponentTransfer>
+  </filter>
+  <filter id="split" color-interpolation-filters="sRGB">
+    <feColorMatrix in="SourceGraphic" type="matrix" values=".3 .59 .11 0 0  .3 .59 .11 0 0  .3 .59 .11 0 0  0 0 0 1 0" result="lum"/>
+    <feComponentTransfer in="lum" result="map">
+      <feFuncR id="splitR" type="table" tableValues="0.11 0.5 1"/>
+      <feFuncG id="splitG" type="table" tableValues="0.31 0.5 0.81"/>
+      <feFuncB id="splitB" type="table" tableValues="0.54 0.5 0.42"/>
+    </feComponentTransfer>
+    <feBlend in="map" in2="SourceGraphic" mode="color" result="toned"/>
+    <feComposite id="splitMix" in="toned" in2="SourceGraphic" operator="arithmetic" k1="0" k2="0.5" k3="0.5" k4="0"/>
+  </filter>
+  <filter id="film" color-interpolation-filters="sRGB">
+    <feComponentTransfer>
+      <feFuncR type="table" tableValues="0.04 0.28 0.6 0.88 1"/>
+      <feFuncG type="table" tableValues="0.03 0.22 0.52 0.83 0.97"/>
+      <feFuncB type="table" tableValues="0.06 0.2 0.45 0.75 0.9"/>
+    </feComponentTransfer>
+  </filter>
   <filter id="grade" color-interpolation-filters="sRGB">
     <feComponentTransfer>
       <feFuncR type="table" tableValues="0.02 0.24 0.56 0.86 1"/>
@@ -1318,6 +1446,13 @@
         <label for="lvk">síla <input type="range" id="lvk" min="0" max="100" step="5" value="100"><output id="lvko">100 %</output></label>
         <span id="levelStatus">Zapni tlačítkem Vyrovnat fotky nahoře.</span>
         <div class="lvl-table" id="levelTable"></div>
+      </div>
+
+      <div class="tuner" id="splitctl">
+        <label for="spS">stíny <input type="color" id="spS" value="#1d4e89"></label>
+        <label for="spH">světla <input type="color" id="spH" value="#ffcf6a"></label>
+        <label for="spK">síla <input type="range" id="spK" min="0" max="100" step="5" value="50"><output id="spKo">50 %</output></label>
+        <button class="reset" id="spReset" type="button">vrátit</button>
       </div>
 
       <div class="tuner" id="labctl">
@@ -2701,13 +2836,177 @@ RIM.forEach((a, k) => {
    desc:"Srovná fotky mezi sebou, aby celá soupiska vypadala jako z jednoho focení. Vzorem je studiové pozadí v horních rozích: když se u dvou fotek liší, jde o rozdíl ve světle, ne o hráče. Každá fotka dostane korekci jasu a teploty, aby její pozadí sedělo na střední hodnotu týmu, a pleť ani vlasy se nesrovnávají. Tlačítkem Vyrovnat fotky nahoře to zapneš u všech efektů, v Kombinátoru i ve stažené plachtě. Měření potřebuje službu wsrv.nl.",
    code:null},
 
+  // ===== světlo, film a tisk =====
+  {id:"focus", grp:"Světlo, film a tisk", name:"Fokus na obličej",
+   desc:"Napodobí objektiv s malou hloubkou ostrosti: obličej ostrý, okolí měkce rozmazané. Na rozdíl od efektu Rozostřené pozadí rozmazává backdrop-filter to, co je pod maskou, takže stačí jedna vrstva a přechod je plynulý.",
+   code:`<!-- v .photo navíc: <div class="blur"></div> -->
+
+.tile .photo{ position:relative; }
+.tile .photo img{ filter:contrast(1.04) saturate(1.05); }
+.tile .photo .blur{
+  position:absolute; inset:0; pointer-events:none;
+  -webkit-backdrop-filter:blur(3.5px);
+  backdrop-filter:blur(3.5px);          /* rozmaže fotku pod vrstvou */
+  /* maska: uprostřed (hlava) průhledná = ostrá, k okrajům plná = rozmazaná */
+  -webkit-mask-image:radial-gradient(ellipse 30% 38% at 50% 36%, transparent 55%, #000 100%);
+  mask-image:radial-gradient(ellipse 30% 38% at 50% 36%, transparent 55%, #000 100%);
+}`},
+  {id:"speed", grp:"Světlo, film a tisk", name:"Rychlost",
+   desc:"Hráč ostrý a kolem něj vodorovné rozmazání jako při švenku fotoaparátem za bruslařem. Je to rozmazaná kopie fotky posunutá dozadu a přes ni jemné rychlostní linky, hlava zůstává čistá.",
+   code:`<svg width="0" height="0" style="position:absolute">
+  <filter id="motion" x="-20%" y="0" width="140%" height="100%">
+    <!-- rozmazání jen vodorovně: 9 px do stran, 0 nahoru a dolů -->
+    <feGaussianBlur stdDeviation="9 0" edgeMode="duplicate"/>
+  </filter>
+</svg>
+
+<!-- v .photo navíc: <div class="blur"></div><div class="tone"></div>, na dlaždici --img:url(…) -->
+
+.tile .photo .blur{
+  position:absolute; inset:0;
+  background:var(--img) top center/cover no-repeat;
+  filter:url(#motion) saturate(1.1);
+  transform:translateX(-5%);            /* stopa za hráčem */
+  -webkit-mask-image:radial-gradient(ellipse 32% 44% at 50% 40%, transparent 58%, #000 92%);
+  mask-image:radial-gradient(ellipse 32% 44% at 50% 40%, transparent 58%, #000 92%);
+}
+/* rychlostní linky jen po stranách */
+.tile .photo .tone{
+  position:absolute; inset:0;
+  background:repeating-linear-gradient(180deg, transparent 0 9px, rgba(255,255,255,.07) 9px 10px);
+  -webkit-mask-image:linear-gradient(90deg, #000, transparent 38%, transparent 62%, #000);
+  mask-image:linear-gradient(90deg, #000, transparent 38%, transparent 62%, #000);
+}`},
+  {id:"leak", grp:"Světlo, film a tisk", name:"Světelný průnik",
+   desc:"Teplé světlo pronikající do filmu z okraje, typické pro analogové fotky a dnes populární u sportovních klubů na sociálních sítích. Tři barevné přechody přes režim screen, které jen zesvětlují, a jemné zrno.",
+   code:`.tile .photo{ position:relative; }
+.tile .photo img{ filter:contrast(1.05) saturate(1.06); }
+.tile .photo::before{
+  content:""; position:absolute; inset:0; pointer-events:none;
+  mix-blend-mode:screen;                /* jen zesvětluje, jako světlo */
+  background:
+    radial-gradient(circle at -4% 16%, rgba(255,128,36,.95), transparent 56%),
+    radial-gradient(circle at 106% 88%, rgba(255,64,96,.5), transparent 40%),
+    linear-gradient(100deg, rgba(255,196,96,.32), transparent 34%);
+}
+/* zrno */
+.tile .photo::after{
+  content:""; position:absolute; inset:0; pointer-events:none;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E") 0 0/160px 160px;
+  mix-blend-mode:overlay; opacity:.22;
+}`},
+  {id:"gold", grp:"Světlo, film a tisk", name:"Zlatá edice",
+   desc:"Fotka převedená do zlatých tónů se zlatým rámečkem a odleskem. Hodí se na milníky, jako 100. zápas nebo 50. gól, kdy má jeden hráč vypadat jinak než zbytek soupisky.",
+   code:`<svg width="0" height="0" style="position:absolute">
+  <filter id="gold" color-interpolation-filters="sRGB">
+    <feColorMatrix type="matrix" values=".3 .59 .11 0 0  .3 .59 .11 0 0  .3 .59 .11 0 0  0 0 0 1 0"/>
+    <!-- jas → tmavě hnědá · bronz · zlatá · krémová -->
+    <feComponentTransfer>
+      <feFuncR type="table" tableValues="0.1 0.55 0.93 1"/>
+      <feFuncG type="table" tableValues="0.06 0.38 0.77 0.97"/>
+      <feFuncB type="table" tableValues="0.02 0.12 0.38 0.86"/>
+    </feComponentTransfer>
+  </filter>
+</svg>
+
+.tile .photo{ position:relative; }
+.tile .photo img{ filter:url(#gold) contrast(1.06); }
+/* zlatý rámeček a odlesk */
+.tile .photo::after{
+  content:""; position:absolute; inset:0; pointer-events:none;
+  background:linear-gradient(135deg, rgba(255,255,255,.2), transparent 38%);
+  box-shadow:inset 0 0 0 3px #d4af57, inset 0 0 0 5px rgba(0,0,0,.35);
+}`},
+  {id:"riso", grp:"Světlo, film a tisk", name:"Riso tisk",
+   desc:"Napodobí risograf, levný tisk plakátů a fanzinů: dvě barvy, žlutá a tmavě modrá Motoru, vytištěné přes sebe na krémovém papíře, s lehce posunutým soutiskem a zrnem. Kde se barvy překryjí, vznikne tmavá olivová, jako na skutečném tisku.",
+   code:`<svg width="0" height="0" style="position:absolute">
+  <!-- žlutá barva: kde je fotka tmavší, tam víc žluté -->
+  <filter id="riso-y" color-interpolation-filters="sRGB">
+    <feColorMatrix type="matrix" values=".3 .59 .11 0 0  .3 .59 .11 0 0  .3 .59 .11 0 0  0 0 0 1 0"/>
+    <feComponentTransfer>
+      <feFuncR type="table" tableValues="1 1 1 1"/>
+      <feFuncG type="table" tableValues="0.8 0.8 0.8 0.9 1"/>
+      <feFuncB type="table" tableValues="0.12 0.12 0.15 0.55 1"/>
+    </feComponentTransfer>
+  </filter>
+  <!-- modrá barva: jen v hlubokých stínech (vlasy, vousy, obrysy) -->
+  <filter id="riso-b" color-interpolation-filters="sRGB">
+    <feColorMatrix type="matrix" values=".3 .59 .11 0 0  .3 .59 .11 0 0  .3 .59 .11 0 0  0 0 0 1 0"/>
+    <feComponentTransfer>
+      <feFuncR type="table" tableValues="0.08 0.6 1 1 1"/>
+      <feFuncG type="table" tableValues="0.16 0.64 1 1 1"/>
+      <feFuncB type="table" tableValues="0.36 0.74 1 1 1"/>
+    </feComponentTransfer>
+  </filter>
+</svg>
+
+<!-- v .photo: <div class="riso"><i></i><i></i></div>, na dlaždici --img:url(…) -->
+
+.tile .photo img{ opacity:0; }
+.riso{ position:absolute; inset:0; background:#f4f0e6; isolation:isolate; }   /* papír */
+.riso i{
+  position:absolute; inset:0;
+  background:var(--img) top center/cover no-repeat;
+  mix-blend-mode:multiply;              /* barvy se přes sebe násobí jako inkoust */
+}
+.riso i:nth-child(1){ filter:url(#riso-y); }
+.riso i:nth-child(2){ filter:url(#riso-b); transform:translate(1.5px, -1px); }   /* posunutý soutisk */`},
+  {id:"split", grp:"Světlo, film a tisk", name:"Split toning",
+   desc:"Stíny do jedné barvy, světla do druhé. Obě vybereš sám a nastavíš sílu, výchozí je klubová modrá ve stínech a teplá žlutá ve světlech. Filtr bere z barevné mapy jen odstín, takže jas fotky se nemění. Nastavení se dá použít i v Kombinátoru.",
+   code:null},
+  {id:"film", grp:"Světlo, film a tisk", name:"Barevný film 80. let",
+   desc:"Fotka jako vytažená ze starého alba: syté teplé barvy diapozitivu, mírně stlačené stíny, zrno a bílý okraj fotopapíru se širším spodkem. Na historii klubu nebo srovnání dřív a dnes.",
+   code:`<svg width="0" height="0" style="position:absolute">
+  <filter id="film" color-interpolation-filters="sRGB">
+    <!-- teplejší světla, mírně potlačená modrá -->
+    <feComponentTransfer>
+      <feFuncR type="table" tableValues="0.04 0.28 0.6 0.88 1"/>
+      <feFuncG type="table" tableValues="0.03 0.22 0.52 0.83 0.97"/>
+      <feFuncB type="table" tableValues="0.06 0.2 0.45 0.75 0.9"/>
+    </feComponentTransfer>
+  </filter>
+</svg>
+
+/* okraj fotopapíru, spodek širší */
+.tile .photo{ position:relative; padding:5% 5% 14%; background:#f3efe6; }
+.tile .photo img{ filter:url(#film) contrast(1.06) saturate(1.22); border-radius:2px; }
+/* zrno jen přes fotku, ne přes okraj */
+.tile .photo::after{
+  content:""; position:absolute; inset:5% 5% 14%; pointer-events:none;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E") 0 0/160px 160px;
+  mix-blend-mode:overlay; opacity:.3;
+}`},
+  {id:"bokeh", grp:"Světlo, film a tisk", name:"Světla stadionu",
+   desc:"V pozadí za hráčem rozostřená světla haly, jako když fotograf fotí s otevřenou clonou proti reflektorům. Světla jsou jen kolem hlavy, obličej zůstává čistý.",
+   code:`.tile .photo{ position:relative; }
+.tile .photo img{ filter:brightness(.92) contrast(1.06); }
+.tile .photo::after{
+  content:""; position:absolute; inset:0; pointer-events:none;
+  mix-blend-mode:screen;
+  filter:blur(3px);
+  /* každý kruh = jedno světlo: barva, ostrý střed, měkký okraj */
+  background:
+    radial-gradient(circle at 12% 14%, rgba(255,226,170,.55) 0 5%, transparent 9%),
+    radial-gradient(circle at 27% 5%, rgba(255,206,130,.35) 0 3%, transparent 6%),
+    radial-gradient(circle at 85% 11%, rgba(255,236,200,.5) 0 6%, transparent 10%),
+    radial-gradient(circle at 94% 33%, rgba(255,214,150,.3) 0 3.5%, transparent 6.5%),
+    radial-gradient(circle at 5% 42%, rgba(220,236,255,.3) 0 4%, transparent 7.5%),
+    radial-gradient(circle at 70% 3%, rgba(255,246,220,.35) 0 2.5%, transparent 5%);
+  /* hlava bez světel */
+  -webkit-mask-image:radial-gradient(ellipse 30% 42% at 50% 40%, transparent 70%, #000 100%);
+  mask-image:radial-gradient(ellipse 30% 42% at 50% 40%, transparent 70%, #000 100%);
+}
+/* ať nemají všichni světla na stejném místě */
+.tile:nth-child(2n) .photo::after{ transform:scaleX(-1); }
+.tile:nth-child(3n) .photo::after{ transform:scaleX(-1) translateY(-5%); }`},
+
   // ===== kombinátor =====
   {id:"combo", grp:"Výběr pro plachtu", name:"Kombinátor",
    desc:"Spoj úpravu fotky s grafikou karty, případně dolaď ořez jednotlivých hráčů v efektu 3, a stáhni hotovou plachtu celé soupisky. Stažený soubor vypadá přesně jako tenhle náhled a má vlastní tlačítko tisku.",
    code:null},
 ];
 
-const COMBO_PHOTO = ['orig','unify','sharpen','clarity','light','grade','orton','matte','bwred','bw','svgduo','portrait','pro','lab','motorduo','selective','tealorange','bleach','lowkey','highkey'];
+const COMBO_PHOTO = ['orig','unify','sharpen','clarity','light','grade','orton','matte','bwred','bw','svgduo','portrait','pro','lab','motorduo','selective','tealorange','bleach','lowkey','highkey','focus','speed','leak','gold','riso','split','film','bokeh'];
 const COMBO_GFX = ['orig','lower','match','outline','glass','detail','num','circle','clip','fade'];
 
 // --- fotky ---
@@ -2821,7 +3120,7 @@ function buildTile(p, i){
     s.className = 'strip ' + c;
     photo.appendChild(s);
   });
-  ['tone','grain','sharp','orig-layer','split-line','holo','depth','under','clear','torch','palette','dexp','mosaic','beams','smoke'].forEach(c => {
+  ['tone','grain','blur','sharp','orig-layer','split-line','holo','depth','under','clear','torch','palette','dexp','mosaic','beams','smoke'].forEach(c => {
     const d = document.createElement('div');
     d.className = c;
     photo.appendChild(d);
@@ -2846,8 +3145,8 @@ function buildTile(p, i){
     cubes.appendChild(cell);
   }
   photo.appendChild(cubes);
-  // pop-art 2×2, kaleidoskop 8 klínů
-  [['warhol', 4], ['kaleido', 8]].forEach(([cls, n]) => {
+  // pop-art 2×2, kaleidoskop 8 klínů, riso 2 barvy
+  [['warhol', 4], ['kaleido', 8], ['riso', 2]].forEach(([cls, n]) => {
     const w = document.createElement('div');
     w.className = cls;
     w.innerHTML = '<i></i>'.repeat(n);
@@ -2990,7 +3289,7 @@ function sheetClass(){
 
 function comboCode(){
   const parts = [];
-  if (cPhoto !== 'orig') parts.push(`/* ===== úprava fotky: ${fxById(cPhoto).name} ===== */\n` + (cPhoto === 'lab' ? labCode() : fxById(cPhoto).code));
+  if (cPhoto !== 'orig') parts.push(`/* ===== úprava fotky: ${fxById(cPhoto).name} ===== */\n` + (cPhoto === 'lab' ? labCode() : cPhoto === 'split' ? splitCode() : fxById(cPhoto).code));
   if (cGfx !== 'orig') parts.push(`/* ===== grafika: ${fxById(cGfx).name} ===== */\n` + fxById(cGfx).code);
   return parts.length ? parts.join('\n\n') : '/* vyber úpravu fotky nebo grafiku */';
 }
@@ -3058,7 +3357,8 @@ list.forEach(p => {
   const img = document.createElement('img');
   img.alt = p.name;
   photo.appendChild(img);
-  ['tone', 'grain', 'sharp'].forEach(c => { const d = document.createElement('div'); d.className = c; photo.appendChild(d); });
+  ['tone', 'grain', 'blur', 'sharp'].forEach(c => { const d = document.createElement('div'); d.className = c; photo.appendChild(d); });
+  const riso = document.createElement('div'); riso.className = 'riso'; riso.innerHTML = '<i></i><i></i>'; photo.appendChild(riso);
   const ov = document.createElement('div');
   ov.className = 'ov';
   ov.innerHTML = '<span class="ov-num">' + num + '</span><span class="ov-name"><span class="ov-first">' + p.first + '</span><span class="ov-last">' + p.last + '</span></span><span class="ov-pos">' + posLabel[p.pos] + '</span>';
@@ -3202,6 +3502,53 @@ Object.entries(LAB_IN).forEach(([k, id]) => {
   document.getElementById(id).addEventListener('input', e => { lab[k] = +e.target.value; applyLab(); });
 });
 document.getElementById('labReset').addEventListener('click', () => { Object.assign(lab, LAB_DEF); applyLab(); });
+
+// --- split toning ---
+const SPLIT_DEF = {sh:'#1d4e89', hi:'#ffcf6a', k:50};
+const split = {...SPLIT_DEF};
+const rgbOf = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16) / 255);
+// mapa jasu: stíny → barva stínů, střed → neutrální šedá, světla → barva světel;
+// režim color převezme jen odstín a sytost, jas zůstane z fotky
+function splitTables(){
+  const a = rgbOf(split.sh), b = rgbOf(split.hi);
+  return [0, 1, 2].map(c => `${num3(a[c])} 0.5 ${num3(b[c])}`);
+}
+function applySplit(){
+  const t = splitTables();
+  ['splitR', 'splitG', 'splitB'].forEach((id, i) => document.getElementById(id).setAttribute('tableValues', t[i]));
+  const k = split.k / 100, mix = document.getElementById('splitMix');
+  mix.setAttribute('k2', num3(k)); mix.setAttribute('k3', num3(1 - k));
+  document.getElementById('spS').value = split.sh;
+  document.getElementById('spH').value = split.hi;
+  document.getElementById('spK').value = split.k;
+  document.getElementById('spKo').textContent = split.k + ' %';
+  if (current.id === 'split' || (current.id === 'combo' && cPhoto === 'split')) renderCode();
+}
+function splitCode(){
+  const t = splitTables(), k = split.k / 100;
+  return `<svg width="0" height="0" style="position:absolute">
+  <filter id="split" color-interpolation-filters="sRGB">
+    <!-- 1) jas fotky -->
+    <feColorMatrix in="SourceGraphic" type="matrix" values=".3 .59 .11 0 0  .3 .59 .11 0 0  .3 .59 .11 0 0  0 0 0 1 0" result="lum"/>
+    <!-- 2) jas → stíny ${split.sh} · neutrální střed · světla ${split.hi} -->
+    <feComponentTransfer in="lum" result="map">
+      <feFuncR type="table" tableValues="${t[0]}"/>
+      <feFuncG type="table" tableValues="${t[1]}"/>
+      <feFuncB type="table" tableValues="${t[2]}"/>
+    </feComponentTransfer>
+    <!-- 3) z mapy jen odstín a sytost, jas zůstává z fotky -->
+    <feBlend in="map" in2="SourceGraphic" mode="color" result="toned"/>
+    <!-- 4) síla ${split.k} % -->
+    <feComposite in="toned" in2="SourceGraphic" operator="arithmetic" k1="0" k2="${num3(k)}" k3="${num3(1 - k)}" k4="0"/>
+  </filter>
+</svg>
+
+.tile .photo img{ filter:url(#split); }`;
+}
+document.getElementById('spS').addEventListener('input', e => { split.sh = e.target.value; applySplit(); });
+document.getElementById('spH').addEventListener('input', e => { split.hi = e.target.value; applySplit(); });
+document.getElementById('spK').addEventListener('input', e => { split.k = +e.target.value; applySplit(); });
+document.getElementById('spReset').addEventListener('click', () => { Object.assign(split, SPLIT_DEF); applySplit(); });
 
 function fillSelect(id, list, val, onChange){
   const sel = document.getElementById(id);
@@ -3529,6 +3876,7 @@ function enterFx(id){
   if (id === 'palette') photos.forEach((ph, j) => makePalette(ph, imgs[j], tiles[j]));
   document.getElementById('pixctl').classList.toggle('show', id === 'pixel');
   document.getElementById('labctl').classList.toggle('show', id === 'lab');
+  document.getElementById('splitctl').classList.toggle('show', id === 'split');
   document.getElementById('levelctl').classList.toggle('show', id === 'level');
   if (id === 'level' && !levelOn) setLevel(true);
   if (id === 'motm' && !tiles.some(t => t.classList.contains('motm'))) tiles[5].classList.add('motm');
@@ -3626,7 +3974,7 @@ function renderCode(){
     codeEl.innerHTML = tuneCode();
   } else {
     document.getElementById('codeLabel').textContent = 'CSS';
-    codeEl.innerHTML = esc(current.id === 'combo' ? comboCode() : current.id === 'lab' ? labCode() : current.id === 'level' ? levelCode() : current.code).replace(/(\/\*.*?\*\/|&lt;!--.*?--&gt;|(?:^|\s)\/\/[^\n]*)/gm, '<span class="c">$1</span>');
+    codeEl.innerHTML = esc(current.id === 'combo' ? comboCode() : current.id === 'lab' ? labCode() : current.id === 'level' ? levelCode() : current.id === 'split' ? splitCode() : current.code).replace(/(\/\*.*?\*\/|&lt;!--.*?--&gt;|(?:^|\s)\/\/[^\n]*)/gm, '<span class="c">$1</span>');
   }
 }
 
@@ -3668,6 +4016,7 @@ document.getElementById('copy').addEventListener('click', async () => {
 fillSelect('cPhoto', COMBO_PHOTO, cPhoto, v => cPhoto = v);
 fillSelect('cGfx', COMBO_GFX, cGfx, v => cGfx = v);
 applyLab();
+applySplit();
 document.getElementById('exportBtn').addEventListener('click', exportPlachta);
 comboNote();
 
