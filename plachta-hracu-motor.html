@@ -1194,6 +1194,122 @@
     body.print-cards .sheet.cards .tile{break-inside:avoid; -webkit-print-color-adjust:exact; print-color-adjust:exact;}
   }
 
+  /* ===== ANIMOVANÉ PROFILOVKY ===== */
+  .photo .wipe, .photo .marq, .photo .goal, .tile .frame{display:none;}
+
+  /* představení hráče: barevná clona, fotka, číslo, jméno; .wait = čeká na svůj nástup */
+  .an-intro .photo .wipe{display:block; position:absolute; inset:0; z-index:4; pointer-events:none; background:var(--pos); transform:scaleX(0);}
+  .an-intro .tile.wait .photo img, .an-intro .tile.wait .ov, .an-intro .tile.wait .label{opacity:0;}
+  .an-intro .tile.play .photo .wipe{animation:anWipe .75s cubic-bezier(.7,0,.2,1) both;}
+  .an-intro .tile.play .photo img{animation:anImg .9s .3s cubic-bezier(.2,.8,.2,1) backwards;}
+  .an-intro .tile.play .ov, .an-intro .tile.play .label{animation:anUp .6s .6s cubic-bezier(.2,.8,.2,1) backwards;}
+  @keyframes anWipe{
+    0%{transform:scaleX(0); transform-origin:0 50%;} 48%{transform:scaleX(1); transform-origin:0 50%;}
+    52%{transform:scaleX(1); transform-origin:100% 50%;} 100%{transform:scaleX(0); transform-origin:100% 50%;}
+  }
+  @keyframes anImg{from{opacity:0; transform:scale(1.15);}}
+  @keyframes anUp{from{opacity:0; transform:translateY(14px);}}
+  /* samostatný efekt: velké číslo a jméno vlevo dole */
+  .fx-intro .label{display:none;}
+  .fx-intro .photo .tone{display:block; z-index:1; background:linear-gradient(to top, rgba(8,11,15,.88), transparent 52%);}
+  .fx-intro .ov{display:block; position:absolute; left:6cqw; right:6cqw; bottom:5cqw; z-index:3; color:#fff;}
+  .fx-intro .ov-num{display:block; font:800 italic 26cqw/.8 var(--cond); color:var(--pos); font-variant-numeric:tabular-nums;}
+  .fx-intro .ov-first{display:block; margin-top:2cqw; font:600 6cqw/1 var(--cond); letter-spacing:.12em; text-transform:uppercase; opacity:.8;}
+  .fx-intro .ov-last{display:block; font:800 12cqw/.92 var(--cond); text-transform:uppercase;}
+  .fx-intro .ov-pos{display:none;}
+  .fx-intro .tile.play .ov-num{animation:anPop .5s .55s cubic-bezier(.2,1.4,.4,1) backwards;}
+  .fx-intro .tile.play .ov-last{animation:anName .55s .8s cubic-bezier(.7,0,.2,1) backwards;}
+  @keyframes anPop{from{opacity:0; transform:scale(.4) translateX(-20%);}}
+  @keyframes anName{from{clip-path:inset(0 100% 0 0);}}
+  .fx-intro .tile{cursor:pointer;}
+
+  /* animovaná TV jmenovka: v klidu vidět, při najetí a při spuštění vjede znovu */
+  .fx-lowerani .label{display:none;}
+  .fx-lowerani .photo img{object-position:center 8%; transition:transform .5s ease;}
+  .fx-lowerani .tile:hover .photo img{transform:scale(1.04);}
+  .fx-lowerani .photo .tone{display:block; z-index:1; background:linear-gradient(to top, rgba(8,11,15,.55), transparent 45%);}
+  .fx-lowerani .ov{display:flex; align-items:stretch; position:absolute; left:0; bottom:9%; max-width:88%; z-index:3; font-family:var(--cond); text-transform:uppercase; color:#fff; overflow:hidden; box-shadow:0 6px 20px rgba(0,0,0,.35);}
+  .fx-lowerani .ov-num{display:flex; align-items:center; position:relative; z-index:1; background:var(--pos); color:var(--ink); font-weight:800; font-size:11cqw; padding:0 3cqw;}
+  .fx-lowerani .ov-name{background:rgba(8,11,15,.9); padding:1.6cqw 4cqw 1.8cqw 3cqw; border-bottom:.8cqw solid var(--pos);}
+  .fx-lowerani .ov-first{display:block; font-weight:500; font-size:5.2cqw; letter-spacing:.06em; opacity:.75;}
+  .fx-lowerani .ov-last{display:block; font-weight:800; font-size:9cqw; line-height:.95;}
+  .fx-lowerani .ov-pos{display:none;}
+  .fx-lowerani .tile.play .ov-num, .fx-lowerani .tile:hover .ov-num{animation:l3Num .4s cubic-bezier(.2,.8,.2,1) backwards;}
+  .fx-lowerani .tile.play .ov-name, .fx-lowerani .tile:hover .ov-name{animation:l3Name .5s .14s cubic-bezier(.7,0,.2,1) backwards;}
+  .fx-lowerani .tile.play .ov-last, .fx-lowerani .tile:hover .ov-last{animation:anUp .4s .4s cubic-bezier(.2,.8,.2,1) backwards;}
+  @keyframes l3Num{from{transform:translateX(-101%);}}
+  @keyframes l3Name{from{clip-path:inset(0 100% 0 0);}}
+
+  /* lesklý přejezd */
+  .an-shine .photo .holo{
+    display:block; position:absolute; inset:0; z-index:4; pointer-events:none; opacity:1;
+    background:linear-gradient(110deg, transparent 35%, rgba(255,255,255,.55) 48%, rgba(255,255,255,.1) 54%, transparent 64%) 130% 0/260% 100% no-repeat;
+    mix-blend-mode:screen;
+    animation:anShine 5s ease-in-out infinite; animation-delay:var(--kbd, 0s);
+  }
+  @keyframes anShine{0%{background-position:130% 0;} 28%, 100%{background-position:-30% 0;}}
+
+  /* obíhající rámeček */
+  @property --ang{syntax:'<angle>'; initial-value:0deg; inherits:false;}
+  .an-border .tile .frame{
+    display:block; position:absolute; inset:0; z-index:7; pointer-events:none; border-radius:inherit; padding:2px;
+    background:conic-gradient(from var(--ang), var(--pos), #ffd21f 12%, transparent 30%, transparent 62%, var(--pos));
+    -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite:xor;
+    mask:linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+    animation:anSpin 4s linear infinite; animation-delay:var(--kbd, 0s);
+  }
+  @keyframes anSpin{to{--ang:360deg;}}
+
+  /* jméno běžící v pozadí, maska vynechá hlavu */
+  .an-marquee .photo .marq{
+    display:flex; align-items:center; position:absolute; left:0; right:0; top:6%; height:40%; z-index:1; overflow:hidden; pointer-events:none;
+    -webkit-mask-image:radial-gradient(ellipse 30% 90% at 50% 60%, transparent 70%, #000 100%);
+    mask-image:radial-gradient(ellipse 30% 90% at 50% 60%, transparent 70%, #000 100%);
+  }
+  .marq span{
+    white-space:nowrap; font:800 italic 30cqw/1 var(--cond); text-transform:uppercase; letter-spacing:.01em;
+    color:transparent; -webkit-text-stroke:1.5px rgba(255,255,255,.55);
+    animation:anMarq 14s linear infinite; animation-delay:var(--kbd, 0s);
+  }
+  @keyframes anMarq{to{transform:translateX(-50%);}}
+
+  /* barevné odhalení od kurzoru */
+  .fx-reveal .photo img{filter:grayscale(1) contrast(1.05) brightness(.95);}
+  .fx-reveal .photo .clear{
+    display:block; position:absolute; inset:0; z-index:1; pointer-events:none;
+    background:var(--img) top center/cover no-repeat;
+    clip-path:circle(0% at var(--fx, 50%) var(--fy, 40%));
+    transition:clip-path .55s cubic-bezier(.2,.8,.2,1);
+  }
+  .fx-reveal .tile:hover .photo .clear, .fx-reveal .tile:focus-visible .photo .clear{clip-path:circle(150% at var(--fx, 50%) var(--fy, 40%));}
+
+  /* odhalení při posunu stránky (Chrome, Edge; jinde se karty ukážou normálně) */
+  @supports (animation-timeline: view()){
+    .an-scroll .tile{animation:anScroll linear both; animation-timeline:view(); animation-range:entry 0% cover 28%;}
+    .an-scroll .tile .photo img{animation:anScrollImg linear both; animation-timeline:view(); animation-range:entry 10% cover 45%;}
+  }
+  @keyframes anScroll{from{opacity:0; transform:translateY(48px) scale(.94);}}
+  @keyframes anScrollImg{from{transform:scale(1.2);}}
+
+  /* oslava gólu */
+  .fx-goal .tile{cursor:pointer;}
+  .fx-goal .photo .goal{display:block; position:absolute; inset:0; z-index:6; pointer-events:none; overflow:hidden;}
+  .goal .flash{position:absolute; inset:0; background:#fff; opacity:0;}
+  .goal .txt{position:absolute; left:0; right:0; top:34%; text-align:center; font:800 italic 21cqw/1 var(--cond); text-transform:uppercase; color:#ffd21f; -webkit-text-stroke:2px #08121f; paint-order:stroke fill; opacity:0;}
+  .goal i{position:absolute; top:-8%; left:var(--gx); width:2.4cqw; height:4.2cqw; background:var(--gc); opacity:0; border-radius:1px;}
+  .tile.scored .goal .flash{animation:anFlash .5s ease-out;}
+  .tile.scored .goal .txt{animation:anSlam 1.9s cubic-bezier(.2,1.3,.4,1) both;}
+  .tile.scored .goal i{animation:anFall var(--gd) var(--gl) cubic-bezier(.3,.6,.5,1) both;}
+  .tile.scored .photo img{animation:anShake .45s .05s;}
+  @keyframes anFlash{0%{opacity:.85;} 100%{opacity:0;}}
+  @keyframes anSlam{0%{opacity:0; transform:scale(2.4) rotate(-8deg);} 18%{opacity:1; transform:scale(1) rotate(-8deg);} 80%{opacity:1; transform:scale(1.05) rotate(-8deg);} 100%{opacity:0; transform:scale(1.05) rotate(-8deg);}}
+  @keyframes anFall{0%{opacity:1; transform:translate(0, 0) rotate(0);} 100%{opacity:0; transform:translate(var(--gdx), 125cqw) rotate(var(--gr));}}
+  @keyframes anShake{20%{transform:translateX(-3%);} 40%{transform:translateX(3%);} 60%{transform:translateX(-2%);} 80%{transform:translateX(1%);}}
+
+  @media (prefers-reduced-motion:reduce){
+    .an-shine .photo .holo, .an-border .tile .frame, .marq span{animation:none;}
+  }
+
   /* kombinátor */
   .combo{
     display:none;
@@ -1528,6 +1644,11 @@
         <div class="lvl-table" id="levelTable"></div>
       </div>
 
+      <div class="tuner" id="introctl">
+        <div class="tool-note">Každá karta nastoupí po svém. Kliknutím na hráče přehraješ jen jeho, tlačítkem všechny. Představení jde vybrat i v Kombinátoru jako animace k libovolné profilovce.</div>
+        <button class="compare" id="introReplay" type="button">Přehrát znovu</button>
+      </div>
+
       <div class="tuner" id="badgectl">
         <div class="seg-tools" id="badgeTools" role="group" aria-label="Odznak">
           <button type="button" data-tool="C" aria-pressed="true">C kapitán</button>
@@ -1584,6 +1705,10 @@
         <span class="plus">+</span>
         <label for="cGfx">Grafika karty
           <select id="cGfx"></select>
+        </label>
+        <span class="plus">+</span>
+        <label for="cAnim">Animace
+          <select id="cAnim"></select>
         </label>
         <button type="button" class="export" id="exportBtn">Stáhnout plachtu</button>
         <div class="combo-note" id="comboNote"></div>
@@ -3128,6 +3253,176 @@ RIM.forEach((a, k) => {
   header, nav, .code{ display:none !important; }
 }`},
 
+  // ===== animované profilovky =====
+  {id:"intro", grp:"Animované profilovky", name:"Představení hráče",
+   desc:"Nástup jako v televizní znělce: přes kartu přejede clona v barvě pozice, fotka se přiblíží na místo, číslo vyskočí a napočítá se a jméno se odkryje. Karty nastupují postupně. V Kombinátoru jde dát jako animace k jakékoli profilovce.",
+   code:`<!-- v .photo navíc: <div class="wipe"></div> -->
+
+/* barevná clona: zleva přes kartu a odjede doprava */
+.photo .wipe{ position:absolute; inset:0; background:var(--pos); transform:scaleX(0); }
+.tile.play .photo .wipe{ animation:wipe .75s cubic-bezier(.7,0,.2,1) both; }
+@keyframes wipe{
+  0%  { transform:scaleX(0); transform-origin:0 50%; }
+  48% { transform:scaleX(1); transform-origin:0 50%; }
+  52% { transform:scaleX(1); transform-origin:100% 50%; }
+  100%{ transform:scaleX(0); transform-origin:100% 50%; }
+}
+/* fotka a texty po cloně; "backwards" drží začátek během zpoždění */
+.tile.play .photo img{ animation:img .9s .3s cubic-bezier(.2,.8,.2,1) backwards; }
+.tile.play .ov{ animation:up .6s .6s cubic-bezier(.2,.8,.2,1) backwards; }
+.tile.play .ov-num{ animation:pop .5s .55s cubic-bezier(.2,1.4,.4,1) backwards; }
+.tile.play .ov-last{ animation:name .55s .8s cubic-bezier(.7,0,.2,1) backwards; }
+@keyframes img { from{ opacity:0; transform:scale(1.15); } }
+@keyframes up  { from{ opacity:0; transform:translateY(14px); } }
+@keyframes pop { from{ opacity:0; transform:scale(.4) translateX(-20%); } }
+@keyframes name{ from{ clip-path:inset(0 100% 0 0); } }
+
+// JS: spustit postupně, číslo napočítat
+tiles.forEach((t, i) => setTimeout(() => {
+  t.classList.add('play');
+  const el = t.querySelector('.ov-num'), n = +el.textContent, t0 = performance.now() + 550;
+  const step = now => {
+    const k = Math.min(1, Math.max(0, (now - t0) / 650));
+    el.textContent = Math.round(n * (1 - (1 - k) ** 3));
+    if (k < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}, 80 + i * 120));`},
+  {id:"lowerani", grp:"Animované profilovky", name:"Animovaná TV jmenovka",
+   desc:"TV vizitka, která vjede jako v přímém přenosu: nejdřív barevný blok s číslem, za ním se odkryje pruh se jménem. V klidu je jmenovka vidět, takže jde i tisknout. Při najetí myší vjede znovu. V Kombinátoru je mezi grafikami karty.",
+   code:`/* stejná stavba jako TV vizitka (efekt 27), navíc animace */
+.ov{ overflow:hidden; }
+.ov-num{ position:relative; z-index:1; }
+
+/* při najetí: číslo vyjede zleva, pruh se jménem se odkryje za ním */
+.tile:hover .ov-num { animation:num .4s cubic-bezier(.2,.8,.2,1) backwards; }
+.tile:hover .ov-name{ animation:bar .5s .14s cubic-bezier(.7,0,.2,1) backwards; }
+.tile:hover .ov-last{ animation:up .4s .4s cubic-bezier(.2,.8,.2,1) backwards; }
+@keyframes num{ from{ transform:translateX(-101%); } }
+@keyframes bar{ from{ clip-path:inset(0 100% 0 0); } }
+@keyframes up { from{ opacity:0; transform:translateY(14px); } }
+
+/* fotka se při najetí jemně přiblíží */
+.tile .photo img{ transition:transform .5s ease; }
+.tile:hover .photo img{ transform:scale(1.04); }`},
+  {id:"shine", grp:"Animované profilovky", name:"Lesklý přejezd",
+   desc:"Přes kartu jednou za pár sekund přejede světelný odlesk, jako po lesklé sběratelské kartě. Každá karta v jiném okamžiku, takže plachta působí živě a neruší. Nejlíp vypadá v Kombinátoru s Matchday kartou nebo Obrysovým číslem.",
+   code:`<!-- v .photo navíc: <div class="holo"></div> -->
+
+.photo .holo{
+  position:absolute; inset:0; pointer-events:none;
+  background:linear-gradient(110deg, transparent 35%, rgba(255,255,255,.55) 48%, rgba(255,255,255,.1) 54%, transparent 64%) 130% 0/260% 100% no-repeat;
+  mix-blend-mode:screen;
+  animation:shine 5s ease-in-out infinite;
+  animation-delay:var(--kbd, 0s);        /* každá karta jindy */
+}
+/* odlesk přejede za 28 % cyklu, zbytek je pauza */
+@keyframes shine{ 0%{ background-position:130% 0; } 28%, 100%{ background-position:-30% 0; } }
+
+// JS: rozfázovat
+tile.style.setProperty('--kbd', '-' + (i * 1.7 % 5) + 's');`},
+  {id:"border", grp:"Animované profilovky", name:"Obíhající rámeček",
+   desc:"Kolem karty obíhá světelná linka v barvě pozice a klubové žluté. Dělá to kuželový přechod, jehož úhel se animuje. Hodí se na zvýraznění, třeba hráče zápasu, nebo na obrazovku v hale.",
+   code:`<!-- v .tile navíc: <div class="frame"></div> -->
+
+/* registrace vlastnosti, aby šel úhel plynule animovat */
+@property --ang{ syntax:'<angle>'; initial-value:0deg; inherits:false; }
+
+.tile .frame{
+  position:absolute; inset:0; pointer-events:none; border-radius:inherit;
+  padding:2px;                            /* tloušťka linky */
+  background:conic-gradient(from var(--ang), var(--pos), #ffd21f 12%, transparent 30%, transparent 62%, var(--pos));
+  /* maska nechá jen 2px okraj */
+  -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;
+  mask:linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  animation:spin 4s linear infinite;
+}
+@keyframes spin{ to{ --ang:360deg; } }`},
+  {id:"marquee", grp:"Animované profilovky", name:"Jméno v pozadí",
+   desc:"Za hráčem pomalu běží jeho příjmení obřím obrysovým písmem, typický prvek současné sportovní grafiky. Maska vynechá hlavu, takže písmo jde jen přes pozadí a obličej zůstává čistý.",
+   code:`<!-- v .photo: <div class="marq"><span>BERÁNEK · BERÁNEK · … (2× za sebou)</span></div> -->
+
+.photo .marq{
+  position:absolute; left:0; right:0; top:6%; height:40%; overflow:hidden; pointer-events:none;
+  display:flex; align-items:center;
+  /* střed s hlavou bez písma, jméno běží jen po stranách */
+  -webkit-mask-image:radial-gradient(ellipse 30% 90% at 50% 60%, transparent 70%, #000 100%);
+  mask-image:radial-gradient(ellipse 30% 90% at 50% 60%, transparent 70%, #000 100%);
+}
+.marq span{
+  white-space:nowrap;
+  font:800 italic 30cqw/1 'Barlow Condensed', sans-serif; text-transform:uppercase;
+  color:transparent; -webkit-text-stroke:1.5px rgba(255,255,255,.55);   /* jen obrys */
+  animation:marq 14s linear infinite;
+}
+/* text je tam dvakrát, posun o polovinu = plynulá smyčka */
+@keyframes marq{ to{ transform:translateX(-50%); } }`},
+  {id:"reveal", grp:"Animované profilovky", name:"Barevné odhalení",
+   desc:"V klidu černobílá fotka, po najetí myší se barva rozlije z místa, kde je kurzor. Je to barevná kopie fotky s kruhovým ořezem, který se plynule zvětší.",
+   code:`<!-- v .photo navíc: <div class="clear"></div>, na dlaždici --img:url(…) -->
+
+.tile .photo img{ filter:grayscale(1) contrast(1.05) brightness(.95); }
+.tile .photo .clear{
+  position:absolute; inset:0; pointer-events:none;
+  background:var(--img) top center/cover no-repeat;
+  clip-path:circle(0% at var(--fx, 50%) var(--fy, 40%));
+  transition:clip-path .55s cubic-bezier(.2,.8,.2,1);
+}
+.tile:hover .photo .clear{ clip-path:circle(150% at var(--fx, 50%) var(--fy, 40%)); }
+
+// JS: střed kruhu = místo kurzoru
+photo.addEventListener('pointermove', e => {
+  const r = photo.getBoundingClientRect();
+  photo.style.setProperty('--fx', (e.clientX - r.left) / r.width * 100 + '%');
+  photo.style.setProperty('--fy', (e.clientY - r.top) / r.height * 100 + '%');
+});`},
+  {id:"scroll", grp:"Animované profilovky", name:"Odhalení při posunu",
+   desc:"Karty se vynořují postupně, jak posouváš stránku: vyjedou zespodu a fotka se usadí. Řídí to přímo posun stránky (CSS animation-timeline), žádný skript. Funguje v Chrome a Edge, v ostatních prohlížečích se karty ukážou normálně. Nejlépe je vidět s Celou soupiskou.",
+   code:`/* jen tam, kde to prohlížeč umí; jinde se nic nemění */
+@supports (animation-timeline: view()){
+  .tile{
+    animation:in linear both;
+    animation-timeline:view();              /* průběh = poloha karty v okně */
+    animation-range:entry 0% cover 28%;     /* od vjezdu do okna po 28 % průjezdu */
+  }
+  .tile .photo img{
+    animation:zoom linear both;
+    animation-timeline:view();
+    animation-range:entry 10% cover 45%;
+  }
+}
+@keyframes in  { from{ opacity:0; transform:translateY(48px) scale(.94); } }
+@keyframes zoom{ from{ transform:scale(1.2); } }`},
+  {id:"goal", grp:"Animované profilovky", name:"Oslava gólu",
+   desc:"Klikni na hráče: záblesk, fotka se otřese, přes kartu dopadne nápis GÓL! (u brankáře ZÁKROK!) a spadnou konfety v klubových barvách. Na promítání v hale nebo na nahrání krátkého videa z obrazovky.",
+   code:`<!-- v .photo: <div class="goal"><div class="flash"></div><div class="txt">Gól!</div><i></i>… (26 konfet)</div> -->
+
+.goal{ position:absolute; inset:0; pointer-events:none; overflow:hidden; }
+.goal .flash{ position:absolute; inset:0; background:#fff; opacity:0; }
+.goal .txt{
+  position:absolute; left:0; right:0; top:34%; text-align:center; opacity:0;
+  font:800 italic 21cqw/1 'Barlow Condensed', sans-serif; text-transform:uppercase;
+  color:#ffd21f; -webkit-text-stroke:2px #08121f; paint-order:stroke fill;
+}
+/* konfeta: poloha, barva, délka a zpoždění pádu, odklon a rotace z proměnných */
+.goal i{ position:absolute; top:-8%; left:var(--gx); width:2.4cqw; height:4.2cqw; background:var(--gc); opacity:0; }
+
+.tile.scored .goal .flash{ animation:flash .5s ease-out; }
+.tile.scored .goal .txt  { animation:slam 1.9s cubic-bezier(.2,1.3,.4,1) both; }
+.tile.scored .goal i     { animation:fall var(--gd) var(--gl) cubic-bezier(.3,.6,.5,1) both; }
+.tile.scored .photo img  { animation:shake .45s .05s; }
+@keyframes flash{ 0%{ opacity:.85; } 100%{ opacity:0; } }
+@keyframes slam { 0%{ opacity:0; transform:scale(2.4) rotate(-8deg); } 18%{ opacity:1; transform:scale(1) rotate(-8deg); }
+                  80%{ opacity:1; transform:scale(1.05) rotate(-8deg); } 100%{ opacity:0; transform:scale(1.05) rotate(-8deg); } }
+@keyframes fall { 0%{ opacity:1; transform:translate(0,0) rotate(0); } 100%{ opacity:0; transform:translate(var(--gdx), 125cqw) rotate(var(--gr)); } }
+@keyframes shake{ 20%{ transform:translateX(-3%); } 40%{ transform:translateX(3%); } 60%{ transform:translateX(-2%); } 80%{ transform:translateX(1%); } }
+
+// JS: klik = přehrát znovu
+tile.addEventListener('click', () => {
+  tile.classList.remove('scored'); void tile.offsetWidth; tile.classList.add('scored');
+});`},
+
   // ===== kombinátor =====
   {id:"combo", grp:"Výběr pro plachtu", name:"Kombinátor",
    desc:"Spoj úpravu fotky s grafikou karty, případně dolaď ořez jednotlivých hráčů v efektu 3, a stáhni hotovou plachtu celé soupisky. Stažený soubor vypadá přesně jako tenhle náhled a má vlastní tlačítko tisku.",
@@ -3135,7 +3430,8 @@ RIM.forEach((a, k) => {
 ];
 
 const COMBO_PHOTO = ['orig','unify','sharpen','clarity','light','grade','orton','matte','bwred','bw','svgduo','portrait','pro','lab','motorduo','selective','tealorange','bleach','lowkey','highkey','focus','speed','leak','gold','riso','split','film','bokeh'];
-const COMBO_GFX = ['orig','lower','match','outline','glass','detail','num','circle','clip','fade'];
+const COMBO_GFX = ['orig','lower','lowerani','match','outline','glass','detail','num','circle','clip','fade'];
+const COMBO_ANIM = ['orig','intro','shine','border','marquee','scroll'];
 
 // --- fotky ---
 function translit(s){ return s.normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase(); }
@@ -3248,7 +3544,7 @@ function buildTile(p, i){
     s.className = 'strip ' + c;
     photo.appendChild(s);
   });
-  ['tone','grain','blur','sharp','orig-layer','split-line','holo','depth','under','clear','torch','palette','dexp','mosaic','beams','smoke'].forEach(c => {
+  ['tone','grain','blur','wipe','sharp','orig-layer','split-line','holo','depth','under','clear','torch','palette','dexp','mosaic','beams','smoke'].forEach(c => {
     const d = document.createElement('div');
     d.className = c;
     photo.appendChild(d);
@@ -3325,6 +3621,20 @@ function buildTile(p, i){
   bd.className = 'badges';
   bd.innerHTML = '<span class="cap"></span><span class="stat"></span>';
   tile.appendChild(bd);
+  // animované profilovky: rámeček, jméno v pozadí, oslava gólu
+  const frame = document.createElement('div'); frame.className = 'frame'; tile.appendChild(frame);
+  const marq = document.createElement('div'); marq.className = 'marq';
+  const mtxt = Array(6).fill(p.last).join(' · ') + ' · ';
+  marq.innerHTML = '<span>' + mtxt + mtxt + '</span>';
+  photo.appendChild(marq);
+  const goal = document.createElement('div'); goal.className = 'goal';
+  const GC = ['#ffd21f', '#38b6e8', '#ffffff', 'var(--pos)'];
+  goal.innerHTML = '<div class="flash"></div><div class="txt">' + (p.pos === 'G' ? 'Zákrok!' : 'Gól!') + '</div>'
+    + Array.from({length: 26}, (_, k) => {
+      const h = n => (((i + 7) * 131 + k * 197 + n * 61) % 1000) / 1000;
+      return `<i style="--gx:${(h(1) * 100).toFixed(1)}%;--gc:${GC[k % 4]};--gd:${(1.1 + h(2) * .9).toFixed(2)}s;--gl:${(h(3) * .35).toFixed(2)}s;--gdx:${((h(4) - .5) * 40).toFixed(1)}cqw;--gr:${Math.round((h(5) - .5) * 720)}deg"></i>`;
+    }).join('');
+  photo.appendChild(goal);
   const qa = document.createElement('span');
   qa.className = 'qa';
   photo.appendChild(qa);
@@ -3365,7 +3675,7 @@ function buildTile(p, i){
       tile.style.setProperty('--dy', ((py - .5) * 2).toFixed(3));
       tile.style.setProperty('--glare', 1);
     }
-    if (id === 'torch'){
+    if (id === 'torch' || id === 'reveal'){
       const r = photo.getBoundingClientRect();
       photo.style.setProperty('--fx', (e.clientX - r.left) / r.width * 100 + '%');
       photo.style.setProperty('--fy', (e.clientY - r.top) / r.height * 100 + '%');
@@ -3384,6 +3694,8 @@ function buildTile(p, i){
     }
     if (current.id === 'flip'){ tile.classList.toggle('flipped'); return; }
     if (current.id === 'badges'){ applyBadge(p.name); return; }
+    if (current.id === 'intro' || (current.id === 'combo' && cAnim === 'intro')){ playIntro(tile); return; }
+    if (current.id === 'goal'){ tile.classList.remove('scored'); void tile.offsetWidth; tile.classList.add('scored'); clearTimeout(tile._gt); tile._gt = setTimeout(() => tile.classList.remove('scored'), 2100); return; }
     if (current.id !== 'tune') return;
     sel = i;
     syncTuner();
@@ -3416,12 +3728,14 @@ nav.appendChild(hint);
 let current = effects[0];
 let curIdx = 0;
 let splitOn = false;
-let cPhoto = 'pro', cGfx = 'match';
+let cPhoto = 'pro', cGfx = 'match', cAnim = 'orig';
+const ANIM_IDS = ['intro', 'shine', 'border', 'marquee', 'scroll'];
 const fxById = id => effects.find(f => f.id === id);
 
 function sheetClass(){
-  const fx = current.id === 'combo' ? `fx-combo fx-${cPhoto} fx-${cGfx}`
+  const fx = current.id === 'combo' ? `fx-combo fx-${cPhoto} fx-${cGfx} an-${cAnim}`
            : current.id === 'cards' ? `fx-combo fx-${cPhoto} fx-${cGfx} cards`
+           : ANIM_IDS.includes(current.id) ? `fx-${current.id} an-${current.id}`
            : `fx-${current.id}`;
   return 'sheet ' + fx + (splitOn ? ' split' : '') + (levelOn ? ' level-on' : '');
 }
@@ -3430,6 +3744,7 @@ function comboCode(){
   const parts = [];
   if (cPhoto !== 'orig') parts.push(`/* ===== úprava fotky: ${fxById(cPhoto).name} ===== */\n` + (cPhoto === 'lab' ? labCode() : cPhoto === 'split' ? splitCode() : fxById(cPhoto).code));
   if (cGfx !== 'orig') parts.push(`/* ===== grafika: ${fxById(cGfx).name} ===== */\n` + fxById(cGfx).code);
+  if (cAnim !== 'orig') parts.push(`/* ===== animace: ${fxById(cAnim).name} ===== */\n` + fxById(cAnim).code);
   return parts.length ? parts.join('\n\n') : '/* vyber úpravu fotky nebo grafiku */';
 }
 
@@ -3448,7 +3763,7 @@ function exportPlachta(){
   const defs = document.querySelector('body > svg').outerHTML;
   const fonts = document.querySelector('link[rel="stylesheet"]').href;
   const tuneData = Object.fromEntries(ROSTER.filter(p => tuneByName[p.name]).map(p => [p.name, tuneByName[p.name]]));
-  const popis = [cPhoto !== 'orig' ? fxById(cPhoto).name : '', cGfx !== 'orig' ? fxById(cGfx).name : ''].filter(Boolean).join(' + ') || 'bez úprav';
+  const popis = [cPhoto !== 'orig' ? fxById(cPhoto).name : '', cGfx !== 'orig' ? fxById(cGfx).name : '', cAnim !== 'orig' ? fxById(cAnim).name : ''].filter(Boolean).join(' + ') || 'bez úprav';
   const extra = `
   .ex-top{max-width:900px; margin:0 auto 20px; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;}
   .ex-status{max-width:900px; margin:0 auto 16px; font:12px var(--mono); color:var(--muted);}
@@ -3467,6 +3782,7 @@ function exportPlachta(){
   const script = `
 const ROSTER = ${JSON.stringify(ROSTER)};
 const TUNE = ${JSON.stringify(tuneData)};
+const ANIM = ${JSON.stringify(cAnim)};
 const BADGES = ${JSON.stringify(badges)};
 const STATUS_LABEL = ${JSON.stringify(STATUS_LABEL)};
 const LEVEL = ${JSON.stringify(levelOn ? levelIds() : {})};
@@ -3488,7 +3804,7 @@ function finish(){
     box.innerHTML = '<b>Nenačtené fotky (' + missing.length + '):</b><br>' + missing.map(n => '• ' + n).join('<br>');
   }
 }
-list.forEach(p => {
+list.forEach((p, i) => {
   const num = p.num ?? '';
   const tile = document.createElement('div');
   tile.className = 'tile pos-' + p.pos;
@@ -3516,6 +3832,16 @@ list.forEach(p => {
   bd.innerHTML = '<span class="cap">' + (bg.cap || '') + '</span><span class="stat">' + (STATUS_LABEL[bg.status] || '') + '</span>';
   tile.appendChild(bd);
   if (bg.status) tile.dataset.status = bg.status;
+  // animace: rozfázování, rámeček, clona, lesk, jméno v pozadí
+  tile.style.setProperty('--kbd', '-' + ((i * 1.7) % 5).toFixed(1) + 's');
+  ['frame'].forEach(c => { const d = document.createElement('div'); d.className = c; tile.appendChild(d); });
+  ['wipe', 'holo'].forEach(c => { const d = document.createElement('div'); d.className = c; photo.appendChild(d); });
+  const mt = Array(6).fill(p.last).join(' · ') + ' · ';
+  const marq = document.createElement('div'); marq.className = 'marq'; marq.innerHTML = '<span>' + mt + mt + '</span>'; photo.appendChild(marq);
+  if (ANIM === 'intro'){
+    tile.classList.add('wait');
+    setTimeout(() => { tile.classList.remove('wait'); tile.classList.add('play'); }, 300 + i * 110);
+  }
   const t = TUNE[p.name];
   if (t){
     tile.classList.add('tuned');
@@ -3560,14 +3886,14 @@ ${defs}
 </div>
 <div class="ex-status" id="status">Načítám fotky…</div>
 <div class="ex-missing" id="missing" hidden></div>
-<div class="sheet fx-combo fx-${cPhoto} fx-${cGfx}${levelOn ? ' level-on' : ''}" id="sheet" style="${labVars()}"></div>
+<div class="sheet fx-combo fx-${cPhoto} fx-${cGfx} an-${cAnim}${levelOn ? ' level-on' : ''}" id="sheet" style="${labVars()}"></div>
 <script>${script}<\/script>
 </body>
 </html>
 `;
   const a = document.createElement('a');
   a.href = URL.createObjectURL(new Blob([html], {type:'text/html'}));
-  a.download = `plachta-hracu-${cPhoto}-${cGfx}.html`;
+  a.download = `plachta-hracu-${cPhoto}-${cGfx}${cAnim !== 'orig' ? '-' + cAnim : ''}.html`;
   document.body.appendChild(a);
   a.click();
   a.remove();
@@ -3893,6 +4219,30 @@ function cardsNote(){
 }
 document.getElementById('cardsPrint').addEventListener('click', () => window.print());
 
+// --- představení hráče ---
+function countUp(tile){
+  const el = tile.querySelector('.ov-num');
+  if (!el) return;
+  const n = parseInt(el.dataset.n ?? el.textContent, 10);
+  if (!n) return;
+  el.dataset.n = n;
+  const t0 = performance.now() + 550;
+  const step = now => {
+    const k = Math.min(1, Math.max(0, (now - t0) / 650));
+    el.textContent = Math.round(n * (1 - Math.pow(1 - k, 3)));
+    if (k < 1) requestAnimationFrame(step);
+  };
+  el.textContent = '0';
+  requestAnimationFrame(step);
+}
+function playIntro(only){
+  const ts = only ? [only] : tiles;
+  ts.forEach(t => { t.classList.remove('play'); t.classList.add('wait'); });
+  void sheet.offsetWidth;
+  ts.forEach((t, j) => setTimeout(() => { t.classList.remove('wait'); t.classList.add('play'); countUp(t); }, only ? 0 : 80 + j * 120));
+}
+document.getElementById('introReplay').addEventListener('click', () => playIntro());
+
 function fillSelect(id, list, val, onChange){
   const sel = document.getElementById(id);
   sel.innerHTML = list.map(fid => `<option value="${fid}">${fid === 'orig' ? 'žádná' : fxById(fid).name}</option>`).join('');
@@ -4200,6 +4550,8 @@ document.getElementById('pixn').addEventListener('input', e => {
 });
 
 function leaveFx(id){
+  if (ANIM_IDS.includes(id) || id === 'lowerani' || id === 'combo') tiles.forEach(t => t.classList.remove('play', 'wait'));
+  if (id === 'goal') tiles.forEach(t => t.classList.remove('scored'));
   if (id === 'lineup'){ sheet.hidden = false; document.getElementById('lineup').hidden = true; }
   if (id === 'cards') document.body.classList.remove('print-cards');
   if (id === 'pixel') clearPixel();
@@ -4227,6 +4579,12 @@ function enterFx(id){
   document.getElementById('qactl').classList.toggle('show', id === 'qa');
   document.getElementById('lineupctl').classList.toggle('show', id === 'lineup');
   document.getElementById('cardsctl').classList.toggle('show', id === 'cards');
+  document.getElementById('introctl').classList.toggle('show', id === 'intro');
+  if (id === 'intro') setTimeout(() => playIntro(), 30);
+  if (id === 'combo' && cAnim === 'intro') setTimeout(() => playIntro(), 30);
+  if (id === 'lowerani'){
+    tiles.forEach((t, j) => setTimeout(() => { t.classList.add('play'); setTimeout(() => t.classList.remove('play'), 1200); }, 60 + j * 110));
+  }
   if (id === 'badges') badgeNote();
   if (id === 'qa'){ renderQA(); setTimeout(renderQA, 1500); }
   if (id === 'lineup'){ sheet.hidden = true; document.getElementById('lineup').hidden = false; renderLineup(); }
@@ -4368,6 +4726,7 @@ document.getElementById('copy').addEventListener('click', async () => {
 
 fillSelect('cPhoto', COMBO_PHOTO, cPhoto, v => cPhoto = v);
 fillSelect('cGfx', COMBO_GFX, cGfx, v => cGfx = v);
+fillSelect('cAnim', COMBO_ANIM, cAnim, v => { cAnim = v; if (v === 'intro') setTimeout(() => playIntro(), 30); });
 applyLab();
 applySplit();
 renderBadges();
