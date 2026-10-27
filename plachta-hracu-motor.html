@@ -74,6 +74,28 @@
   nav button[aria-current="true"]{background:var(--panel-2); color:var(--text); box-shadow:inset 2px 0 0 var(--accent);}
   nav button[aria-current="true"] .n{color:var(--accent);}
   .navhint{font-family:var(--mono); font-size:10px; color:var(--muted); padding:8px 10px 4px; border-top:1px solid var(--border); margin-top:4px;}
+  /* skupiny: sticky panel s vlastním posunem, otevřená jen jedna */
+  nav{max-height:calc(100vh - 32px); overflow-y:auto; overscroll-behavior:contain;}
+  #navSearch{
+    width:100%; margin:2px 0 6px; padding:8px 10px; border-radius:6px;
+    font:13px var(--sans); color:var(--text); background:var(--panel-2); border:1px solid var(--border);
+  }
+  #navSearch:focus-visible{outline:2px solid var(--accent); outline-offset:-1px;}
+  .ng + .ng{border-top:1px solid var(--border);}
+  nav .ng-head{
+    display:flex; align-items:baseline; gap:8px; width:100%; box-sizing:border-box;
+    padding:9px 10px; font:600 11px/1.2 var(--mono); letter-spacing:.08em; text-transform:uppercase; color:var(--muted);
+  }
+  nav .ng-head span{flex:1; min-width:0;}
+  nav .ng-head em{font-style:normal; font-weight:400; letter-spacing:0;}
+  nav .ng-head::after{content:"+"; width:10px; text-align:center; color:var(--muted);}
+  nav .ng-head[aria-expanded="true"]{color:var(--text);}
+  nav .ng-head[aria-expanded="true"]::after{content:"−";}
+  nav .ng-head:hover{background:none; color:var(--text);}
+  .ng-items{display:none; flex-direction:column; gap:2px; padding-bottom:6px;}
+  .ng-head[aria-expanded="true"] + .ng-items, nav.searching .ng-items{display:flex;}
+  nav.searching .ng-head{pointer-events:none;}
+  nav.searching .ng-head::after{content:"";}
   .navgroup{
     font-family:var(--mono); font-size:10px; letter-spacing:.08em; text-transform:uppercase;
     color:var(--muted); padding:10px 10px 4px; border-top:1px solid var(--border); margin-top:4px;
@@ -1377,11 +1399,8 @@
 
   @media (max-width:820px){
     .layout{grid-template-columns:minmax(0,1fr);}
-    nav{position:static; flex-direction:row; overflow-x:auto; padding:4px;}
-    nav button{white-space:nowrap;}
-    nav button[aria-current="true"]{box-shadow:inset 0 -2px 0 var(--accent);}
+    nav{position:static; max-height:none;}
     .navhint{display:none;}
-    .navgroup{border-top:none; border-left:1px solid var(--border); margin:0 0 0 4px; padding:10px 10px 0; white-space:nowrap;}
     .sheet{grid-template-columns:repeat(2, minmax(0,1fr)); gap:10px;}
   }
   @media (prefers-reduced-motion:reduce){
@@ -3704,21 +3723,72 @@ function buildTile(p, i){
 buildSheet(players);
 
 // --- navigace ---
+// Efekty po skupinách, otevřená je vždy jen jedna (ta s vybraným efektem). Hledání prochází všechny.
 const nav = document.getElementById('nav');
-const navBtns = effects.map((fx, i) => {
-  const grp = f => f ? (f.grp || (f.adv ? 'Pokročilé' : '')) : '';
-  if (grp(fx) && grp(fx) !== grp(effects[i-1])){
-    const g = document.createElement('div');
-    g.className = 'navgroup';
-    g.textContent = grp(fx);
-    nav.appendChild(g);
-  }
-  const b = document.createElement('button');
-  b.type = 'button';
-  b.innerHTML = `<span class="n">${i+1}</span><span>${fx.name}</span>`;
-  b.addEventListener('click', () => setFx(i));
-  nav.appendChild(b);
-  return b;
+const grpOf = f => f.grp || (f.adv ? 'Pokročilé' : 'Základní');
+const groups = [];
+effects.forEach((fx, i) => {
+  const name = grpOf(fx);
+  let g = groups.find(x => x.name === name);
+  if (!g){ g = {name, items:[]}; groups.push(g); }
+  g.items.push(i);
+});
+// Kombinátor (výběr pro plachtu) nahoru, ať je po ruce
+groups.sort((a, b) => (b.name === 'Výběr pro plachtu') - (a.name === 'Výběr pro plachtu'));
+
+const search = document.createElement('input');
+search.type = 'search'; search.id = 'navSearch'; search.placeholder = 'Hledat efekt…'; search.setAttribute('aria-label', 'Hledat efekt');
+nav.appendChild(search);
+
+const navBtns = [];
+const groupEls = groups.map(g => {
+  const sec = document.createElement('section');
+  sec.className = 'ng';
+  const head = document.createElement('button');
+  head.type = 'button'; head.className = 'ng-head'; head.setAttribute('aria-expanded', 'false');
+  head.innerHTML = `<span>${g.name}</span><em>${g.items.length}</em>`;
+  const list = document.createElement('div');
+  list.className = 'ng-items';
+  g.items.forEach(i => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.innerHTML = `<span class="n">${i + 1}</span><span>${effects[i].name}</span>`;
+    b.addEventListener('click', () => setFx(i));
+    navBtns[i] = b;
+    list.appendChild(b);
+  });
+  head.addEventListener('click', () => openGroup(sec, head.getAttribute('aria-expanded') !== 'true'));
+  sec.append(head, list);
+  nav.appendChild(sec);
+  return sec;
+});
+function openGroup(sec, open = true){
+  groupEls.forEach(x => x.querySelector('.ng-head').setAttribute('aria-expanded', open && x === sec));
+}
+function revealInNav(i){
+  if (search.value) return;
+  const sec = navBtns[i].closest('.ng');
+  if (sec.querySelector('.ng-head').getAttribute('aria-expanded') !== 'true') openGroup(sec);
+  // posunout jen panel, ne celou stránku
+  const r = navBtns[i].getBoundingClientRect(), nr = nav.getBoundingClientRect();
+  if (r.top < nr.top || r.bottom > nr.bottom) nav.scrollTop += r.top - nr.top - nr.height / 3;
+}
+search.addEventListener('input', () => {
+  const q = translit(search.value.trim());
+  nav.classList.toggle('searching', !!q);
+  groupEls.forEach(sec => {
+    let any = false;
+    sec.querySelectorAll('.ng-items button').forEach(b => {
+      const hit = !q || translit(b.textContent).includes(q);
+      b.hidden = !hit; any = any || hit;
+    });
+    sec.hidden = !any;
+  });
+  if (!q) revealInNav(curIdx);
+});
+search.addEventListener('keydown', e => {
+  if (e.key === 'Enter'){ const b = nav.querySelector('.ng:not([hidden]) .ng-items button:not([hidden])'); if (b) b.click(); }
+  if (e.key === 'Escape'){ search.value = ''; search.dispatchEvent(new Event('input')); }
 });
 const hint = document.createElement('div');
 hint.className = 'navhint';
@@ -4618,6 +4688,7 @@ function setFx(i){
   current = effects[i];
   sheet.className = sheetClass();
   navBtns.forEach((b, j) => b.setAttribute('aria-current', j === i ? 'true' : 'false'));
+  revealInNav(i);
   document.getElementById('fxName').textContent = current.name;
   document.getElementById('fxDesc').textContent = current.desc;
   document.getElementById('tuner').classList.toggle('show', current.id === 'tune');
@@ -4708,7 +4779,7 @@ cmp.addEventListener('pointerdown', rawOn);
 ['pointerup','pointerleave','pointercancel'].forEach(e => cmp.addEventListener(e, rawOff));
 
 document.addEventListener('keydown', e => {
-  if (e.target.tagName === 'INPUT') return;
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
   if (e.key === 'ArrowDown' || e.key === 'ArrowRight'){ e.preventDefault(); setFx((curIdx + 1) % effects.length); }
   if (e.key === 'ArrowUp' || e.key === 'ArrowLeft'){ e.preventDefault(); setFx((curIdx - 1 + effects.length) % effects.length); }
   if (e.key === ' ' && !e.repeat){ e.preventDefault(); rawOn(); }
