@@ -1020,6 +1020,17 @@
   .fx-highkey .photo img{filter:brightness(1.14) contrast(.9) saturate(.85);}
   .fx-highkey .photo .tone{display:block; background:radial-gradient(ellipse 70% 65% at 50% 32%, transparent 50%, rgba(255,255,255,.6) 100%);}
 
+  /* vyrovnání fotek: každá fotka má svůj filtr (--lvf), :where = efekty s vlastním filtrem na .photo mají přednost */
+  .level-on :where(.photo){filter:var(--lvf, none);}
+  .lvl-table{flex-basis:100%; overflow-x:auto;}
+  .lvl-table table{border-collapse:collapse; width:100%; font:12px/1.5 var(--mono); font-variant-numeric:tabular-nums;}
+  .lvl-table th{font-weight:500; color:var(--muted); text-align:right; padding:4px 10px; border-bottom:1px solid var(--border); white-space:nowrap;}
+  .lvl-table td{color:var(--text); text-align:right; padding:3px 10px; white-space:nowrap;}
+  .lvl-table th:first-child, .lvl-table td:first-child{text-align:left;}
+  .lvl-table tr.off td{color:var(--muted);}
+  .lvl-table .bar{display:inline-block; height:6px; border-radius:3px; background:var(--accent); vertical-align:middle; margin-right:6px;}
+  #levelStatus{color:var(--text);}
+
   /* kombinátor */
   .combo{
     display:none;
@@ -1289,6 +1300,7 @@
         <div class="cmpgroup">
           <button class="compare" id="compare" type="button" title="Drž myš nebo mezerník">Podržet = původní</button>
           <button class="compare" id="splitBtn" type="button" aria-pressed="false">Před | po</button>
+          <button class="compare" id="levelBtn" type="button" aria-pressed="false" title="Srovná jas a barvu fotek mezi sebou">Vyrovnat fotky</button>
           <input type="range" id="splitRange" min="0" max="100" value="50" aria-label="Poloha dělicí čáry" hidden>
           <button class="compare" id="rosterBtn" type="button" aria-pressed="false">Celá soupiska (31)</button>
         </div>
@@ -1300,6 +1312,12 @@
         <label for="ty">svisle <input type="range" id="ty" min="0" max="100" step="1"><output id="oy"></output></label>
         <label for="tz">zoom <input type="range" id="tz" min="1" max="2.2" step="0.05"><output id="oz"></output></label>
         <button class="reset" id="treset" type="button">vrátit</button>
+      </div>
+
+      <div class="tuner" id="levelctl">
+        <label for="lvk">síla <input type="range" id="lvk" min="0" max="100" step="5" value="100"><output id="lvko">100 %</output></label>
+        <span id="levelStatus">Zapni tlačítkem Vyrovnat fotky nahoře.</span>
+        <div class="lvl-table" id="levelTable"></div>
       </div>
 
       <div class="tuner" id="labctl">
@@ -2679,6 +2697,10 @@ RIM.forEach((a, k) => {
   background:radial-gradient(ellipse 70% 65% at 50% 32%, transparent 50%, rgba(255,255,255,.6) 100%);
 }`},
 
+  {id:"level", grp:"Fotografické úpravy", name:"Vyrovnání fotek",
+   desc:"Srovná fotky mezi sebou, aby celá soupiska vypadala jako z jednoho focení. Změří jas, barvu a kontrast obličeje na každé fotce, cílem je střední hodnota celého týmu a každá fotka dostane vlastní jemnou korekci. Tlačítkem Vyrovnat fotky nahoře to zapneš u všech efektů, v Kombinátoru i ve stažené plachtě. Měření potřebuje službu wsrv.nl.",
+   code:null},
+
   // ===== kombinátor =====
   {id:"combo", grp:"Výběr pro plachtu", name:"Kombinátor",
    desc:"Spoj úpravu fotky s grafikou karty, případně dolaď ořez jednotlivých hráčů v efektu 3, a stáhni hotovou plachtu celé soupisky. Stažený soubor vypadá přesně jako tenhle náhled a má vlastní tlačítko tisku.",
@@ -2963,7 +2985,7 @@ const fxById = id => effects.find(f => f.id === id);
 
 function sheetClass(){
   const fx = current.id === 'combo' ? `fx-combo fx-${cPhoto} fx-${cGfx}` : `fx-${current.id}`;
-  return 'sheet ' + fx + (splitOn ? ' split' : '');
+  return 'sheet ' + fx + (splitOn ? ' split' : '') + (levelOn ? ' level-on' : '');
 }
 
 function comboCode(){
@@ -3007,6 +3029,7 @@ function exportPlachta(){
   const script = `
 const ROSTER = ${JSON.stringify(ROSTER)};
 const TUNE = ${JSON.stringify(tuneData)};
+const LEVEL = ${JSON.stringify(levelOn ? levelIds() : {})};
 const SEASON = ${JSON.stringify(SEASON)};
 const posLabel = ${JSON.stringify(posLabel)};
 ${translit.toString()}
@@ -3045,6 +3068,7 @@ list.forEach(p => {
   label.className = 'label';
   label.innerHTML = '<div class="name">' + p.name + '</div><div class="meta">' + (p.num ? '#' + p.num + ' · ' : '') + posLabel[p.pos] + '</div>';
   tile.appendChild(label);
+  if (LEVEL[p.name]) tile.style.setProperty('--lvf', 'url(#' + LEVEL[p.name] + ')');
   const t = TUNE[p.name];
   if (t){
     tile.classList.add('tuned');
@@ -3089,7 +3113,7 @@ ${defs}
 </div>
 <div class="ex-status" id="status">Načítám fotky…</div>
 <div class="ex-missing" id="missing" hidden></div>
-<div class="sheet fx-combo fx-${cPhoto} fx-${cGfx}" id="sheet" style="${labVars()}"></div>
+<div class="sheet fx-combo fx-${cPhoto} fx-${cGfx}${levelOn ? ' level-on' : ''}" id="sheet" style="${labVars()}"></div>
 <script>${script}<\/script>
 </body>
 </html>
@@ -3201,6 +3225,188 @@ function whenLoaded(img, fn, tries = 0){
   if (img.dataset.orig) return fn();
   if (tries < 15) setTimeout(() => whenLoaded(img, fn, tries + 1), 400);
 }
+
+// --- vyrovnání fotek ---
+// Změří barvu obličejové části každé fotky (přes wsrv.nl, jinak prohlížeč pixely nepustí),
+// vezme medián celé soupisky jako cíl a každé fotce spočítá vlastní SVG filtr:
+// zesílení R, G, B (jas + vyvážení bílé) a kontrast kolem cílového jasu.
+let levelOn = false, levelK = 1, levelRun = 0;
+const levelStats = {};   // jméno → {r, g, b, l, sd} v rozsahu 0–1, nebo {err:true}
+const levelFix = {};     // jméno → {gr, gg, gb, c}
+const LVL_NS = 'http://www.w3.org/2000/svg';
+const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+const median = a => { const s = a.slice().sort((x, y) => x - y), m = s.length >> 1; return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2; };
+const slugOf = p => translit(p.name).replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+let levelTarget = null;
+
+function measurePhoto(p, img){
+  return new Promise(res => {
+    if (levelStats[p.name]) return res();
+    let tries = 0;
+    const go = () => {
+      if (!img.dataset.orig){
+        if (++tries > 20 || !img.isConnected){ levelStats[p.name] = {err:true}; return res(); }
+        return setTimeout(go, 300);
+      }
+      corsImage(img.dataset.orig, 64, im => {
+        try {
+          const cv = document.createElement('canvas');
+          cv.width = cv.height = 64;
+          const ctx = cv.getContext('2d');
+          ctx.drawImage(im, 0, 0, 64, 64);
+          // obličejová oblast: střed, horní polovina (fotky jsou hlava a ramena)
+          const d = ctx.getImageData(19, 8, 26, 28).data;
+          let r = 0, g = 0, b = 0, n = 0; const ls = [];
+          for (let k = 0; k < d.length; k += 4){
+            r += d[k]; g += d[k + 1]; b += d[k + 2]; n++;
+            ls.push((0.3 * d[k] + 0.59 * d[k + 1] + 0.11 * d[k + 2]) / 255);
+          }
+          const l = ls.reduce((x, y) => x + y, 0) / n;
+          const sd = Math.sqrt(ls.reduce((x, y) => x + (y - l) ** 2, 0) / n);
+          levelStats[p.name] = {r: r / n / 255, g: g / n / 255, b: b / n / 255, l, sd};
+        } catch (e){ levelStats[p.name] = {err:true}; }
+        res();
+      }, () => { levelStats[p.name] = {err:true}; res(); });
+    };
+    go();
+  });
+}
+
+function computeLevel(){
+  const ok = ROSTER.map(p => levelStats[p.name]).filter(s => s && !s.err);
+  if (ok.length < 2){ levelTarget = null; return; }
+  levelTarget = {r: median(ok.map(s => s.r)), g: median(ok.map(s => s.g)), b: median(ok.map(s => s.b)),
+                 l: median(ok.map(s => s.l)), sd: median(ok.map(s => s.sd))};
+  const svg = document.querySelector('body > svg');
+  ROSTER.forEach(p => {
+    const st = levelStats[p.name];
+    if (!st || st.err) return;
+    const k = levelK, T = levelTarget;
+    const f = {
+      gr: 1 + (clamp(T.r / st.r, .82, 1.22) - 1) * k,
+      gg: 1 + (clamp(T.g / st.g, .82, 1.22) - 1) * k,
+      gb: 1 + (clamp(T.b / st.b, .82, 1.22) - 1) * k,
+      // kontrast jen jemně: vousy a vlasy v obličejové oblasti zvyšují rozptyl jasu, i když fotka není kontrastnější
+      c:  1 + (clamp(T.sd / st.sd, .94, 1.08) - 1) * k,
+    };
+    levelFix[p.name] = f;
+    const id = 'lvl-' + slugOf(p);
+    let el = document.getElementById(id);
+    if (!el){
+      el = document.createElementNS(LVL_NS, 'filter');
+      el.id = id;
+      el.setAttribute('color-interpolation-filters', 'sRGB');
+      el.appendChild(document.createElementNS(LVL_NS, 'feColorMatrix'));
+      const ct = el.appendChild(document.createElementNS(LVL_NS, 'feComponentTransfer'));
+      ['feFuncR', 'feFuncG', 'feFuncB'].forEach(t => ct.appendChild(document.createElementNS(LVL_NS, t)));
+      svg.appendChild(el);
+    }
+    const cm = el.firstChild;
+    cm.setAttribute('type', 'matrix');
+    cm.setAttribute('values', levelMatrix(f));
+    [...el.lastChild.children].forEach(fn => {
+      fn.setAttribute('type', 'linear');
+      fn.setAttribute('slope', num3(f.c));
+      fn.setAttribute('intercept', num3(T.l * (1 - f.c)));
+    });
+  });
+}
+const levelMatrix = f => `${num3(f.gr)} 0 0 0 0  0 ${num3(f.gg)} 0 0 0  0 0 ${num3(f.gb)} 0 0  0 0 0 1 0`;
+function levelIds(){
+  return Object.fromEntries(ROSTER.filter(p => levelFix[p.name]).map(p => [p.name, 'lvl-' + slugOf(p)]));
+}
+function applyLevelVars(){
+  tiles.forEach((t, i) => {
+    const p = players[i];
+    if (levelFix[p.name]) t.style.setProperty('--lvf', `url(#lvl-${slugOf(p)})`);
+    else t.style.removeProperty('--lvf');
+  });
+}
+
+async function runLevel(){
+  const run = ++levelRun;
+  const st = document.getElementById('levelStatus');
+  st.textContent = 'Měřím fotky…';
+  await Promise.all(players.map((p, i) => measurePhoto(p, imgs[i])));
+  if (run !== levelRun) return;
+  computeLevel();
+  applyLevelVars();
+  const shown = players.map(p => levelStats[p.name]);
+  const bad = shown.filter(s => !s || s.err).length;
+  st.textContent = !levelTarget
+    ? 'Fotky se nepodařilo změřit: služba wsrv.nl neodpovídá nebo fotky nejdou načíst.'
+    : `Vyrovnáno ${shown.length - bad} z ${shown.length} fotek` + (bad ? `, ${bad} se nepodařilo změřit.` : '.');
+  renderLevelTable();
+  if (current.id === 'level') renderCode();
+}
+
+function setLevel(on){
+  levelOn = on;
+  const btn = document.getElementById('levelBtn');
+  btn.classList.toggle('on', on);
+  btn.setAttribute('aria-pressed', on);
+  sheet.className = sheetClass();
+  if (on) runLevel();
+}
+
+function renderLevelTable(){
+  const box = document.getElementById('levelTable');
+  if (!levelTarget){ box.innerHTML = ''; return; }
+  const pct = v => (v >= 1 ? '+' : '−') + Math.abs(Math.round((v - 1) * 100)) + ' %';
+  const warm = s => Math.round((s.r - s.b) * 100);
+  const sgn = v => (v > 0 ? '+' : v < 0 ? '−' : '') + Math.abs(v);
+  const rows = players.map(p => {
+    const s = levelStats[p.name], f = levelFix[p.name];
+    if (!s || s.err || !f) return `<tr class="off"><td>${p.name}</td><td colspan="4">nezměřeno</td></tr>`;
+    const jas = (0.3 * f.gr + 0.59 * f.gg + 0.11 * f.gb);
+    return `<tr><td>${p.name}</td>`
+      + `<td><span class="bar" style="width:${Math.round(s.l * 60)}px"></span>${Math.round(s.l * 100)}</td>`
+      + `<td>${sgn(warm(s))}</td>`
+      + `<td>${pct(jas)}</td>`
+      + `<td>${pct(f.c)}</td></tr>`;
+  }).join('');
+  box.innerHTML = `<table><thead><tr><th>Hráč</th><th>Jas obličeje (cíl ${Math.round(levelTarget.l * 100)})</th>`
+    + `<th>Teplota (cíl ${sgn(warm(levelTarget))})</th><th>Úprava jasu</th><th>Úprava kontrastu</th></tr></thead><tbody>${rows}</tbody></table>`;
+}
+
+function levelCode(){
+  if (!levelTarget) return '/* zatím nezměřeno: zapni Vyrovnat fotky */';
+  const list = ROSTER.filter(p => levelFix[p.name]);
+  const filters = list.map(p => {
+    const f = levelFix[p.name];
+    return `  <filter id="lvl-${slugOf(p)}" color-interpolation-filters="sRGB">
+    <feColorMatrix type="matrix" values="${levelMatrix(f)}"/>
+    <feComponentTransfer>
+      <feFuncR type="linear" slope="${num3(f.c)}" intercept="${num3(levelTarget.l * (1 - f.c))}"/>
+      <feFuncG type="linear" slope="${num3(f.c)}" intercept="${num3(levelTarget.l * (1 - f.c))}"/>
+      <feFuncB type="linear" slope="${num3(f.c)}" intercept="${num3(levelTarget.l * (1 - f.c))}"/>
+    </feComponentTransfer>
+  </filter>`;
+  }).join('\n');
+  const map = list.map(p => `  "${p.name}": "lvl-${slugOf(p)}",`).join('\n');
+  return `<!-- jeden filtr na hráče: zesílení R, G, B (jas a vyvážení bílé) + kontrast kolem cílového jasu -->
+<svg width="0" height="0" style="position:absolute">
+${filters}
+</svg>
+
+.tile .photo{ filter:var(--lvf, none); }
+
+// JS: při vytváření dlaždice
+const VYROVNANI = {
+${map}
+};
+if (VYROVNANI[p.name]) tile.style.setProperty('--lvf', 'url(#' + VYROVNANI[p.name] + ')');`;
+}
+
+document.getElementById('levelBtn').addEventListener('click', () => setLevel(!levelOn));
+document.getElementById('lvk').addEventListener('input', e => {
+  levelK = +e.target.value / 100;
+  document.getElementById('lvko').textContent = e.target.value + ' %';
+  if (!levelTarget) return;
+  computeLevel();
+  renderLevelTable();
+  if (current.id === 'level') renderCode();
+});
 
 const ASCII_RAMP = ' .:-=+*#%@';
 function makeAscii(photo, img){
@@ -3334,6 +3540,8 @@ function enterFx(id){
   if (id === 'palette') photos.forEach((ph, j) => makePalette(ph, imgs[j], tiles[j]));
   document.getElementById('pixctl').classList.toggle('show', id === 'pixel');
   document.getElementById('labctl').classList.toggle('show', id === 'lab');
+  document.getElementById('levelctl').classList.toggle('show', id === 'level');
+  if (id === 'level' && !levelOn) setLevel(true);
   if (id === 'motm' && !tiles.some(t => t.classList.contains('motm'))) tiles[5].classList.add('motm');
   if (id === 'entry'){
     tiles.forEach(t => t.classList.add('pre'));
@@ -3429,7 +3637,7 @@ function renderCode(){
     codeEl.innerHTML = tuneCode();
   } else {
     document.getElementById('codeLabel').textContent = 'CSS';
-    codeEl.innerHTML = esc(current.id === 'combo' ? comboCode() : current.id === 'lab' ? labCode() : current.code).replace(/(\/\*.*?\*\/|&lt;!--.*?--&gt;|(?:^|\s)\/\/[^\n]*)/gm, '<span class="c">$1</span>');
+    codeEl.innerHTML = esc(current.id === 'combo' ? comboCode() : current.id === 'lab' ? labCode() : current.id === 'level' ? levelCode() : current.code).replace(/(\/\*.*?\*\/|&lt;!--.*?--&gt;|(?:^|\s)\/\/[^\n]*)/gm, '<span class="c">$1</span>');
   }
 }
 
@@ -3488,6 +3696,7 @@ rosterBtn.addEventListener('click', () => {
   enterFx(current.id);
   sheet.className = sheetClass();
   syncTuner();
+  if (levelOn) runLevel();
 });
 
 setFx(0);
