@@ -1028,7 +1028,7 @@
   .lvl-table td{color:var(--text); text-align:right; padding:3px 10px; white-space:nowrap;}
   .lvl-table th:first-child, .lvl-table td:first-child{text-align:left;}
   .lvl-table tr.off td{color:var(--muted);}
-  .lvl-table .bar{display:inline-block; height:6px; border-radius:3px; background:var(--accent); vertical-align:middle; margin-right:6px;}
+  .lvl-table .sw{display:inline-block; width:12px; height:12px; border-radius:3px; vertical-align:-2px; margin-right:6px; box-shadow:inset 0 0 0 1px rgba(255,255,255,.2);}
   #levelStatus{color:var(--text);}
 
   /* kombinátor */
@@ -2698,7 +2698,7 @@ RIM.forEach((a, k) => {
 }`},
 
   {id:"level", grp:"Fotografické úpravy", name:"Vyrovnání fotek",
-   desc:"Srovná fotky mezi sebou, aby celá soupiska vypadala jako z jednoho focení. Změří jas, barvu a kontrast obličeje na každé fotce, cílem je střední hodnota celého týmu a každá fotka dostane vlastní jemnou korekci. Tlačítkem Vyrovnat fotky nahoře to zapneš u všech efektů, v Kombinátoru i ve stažené plachtě. Měření potřebuje službu wsrv.nl.",
+   desc:"Srovná fotky mezi sebou, aby celá soupiska vypadala jako z jednoho focení. Vzorem je studiové pozadí v horních rozích: když se u dvou fotek liší, jde o rozdíl ve světle, ne o hráče. Každá fotka dostane korekci jasu a teploty, aby její pozadí sedělo na střední hodnotu týmu, a pleť ani vlasy se nesrovnávají. Tlačítkem Vyrovnat fotky nahoře to zapneš u všech efektů, v Kombinátoru i ve stažené plachtě. Měření potřebuje službu wsrv.nl.",
    code:null},
 
   // ===== kombinátor =====
@@ -3227,16 +3227,20 @@ function whenLoaded(img, fn, tries = 0){
 }
 
 // --- vyrovnání fotek ---
-// Změří barvu obličejové části každé fotky (přes wsrv.nl, jinak prohlížeč pixely nepustí),
-// vezme medián celé soupisky jako cíl a každé fotce spočítá vlastní SVG filtr:
-// zesílení R, G, B (jas + vyvážení bílé) a kontrast kolem cílového jasu.
+// Vzorem je POZADÍ, ne obličej: všichni jsou focení na stejné studiové pozadí, takže když se
+// pozadí dvou fotek liší, je to rozdílem světla nebo vyvážení bílé, ne hráčem. Pleť, vousy
+// a vlasy se tak posunou jen o rozdíl ve světle a skutečné rozdíly mezi lidmi zůstanou.
+// Měří horní rohy fotky (přes wsrv.nl, jinak prohlížeč pixely nepustí), cílem je medián
+// pozadí celé soupisky, každá fotka dostane zesílení R, G, B.
 let levelOn = false, levelK = 1, levelRun = 0;
-const levelStats = {};   // jméno → {r, g, b, l, sd} v rozsahu 0–1, nebo {err:true}
-const levelFix = {};     // jméno → {gr, gg, gb, c}
+const levelStats = {};   // jméno → {r, g, b, l} pozadí v rozsahu 0–1, nebo {err:'důvod'}
+const levelFix = {};     // jméno → {gr, gg, gb}
 const LVL_NS = 'http://www.w3.org/2000/svg';
 const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
 const median = a => { const s = a.slice().sort((x, y) => x - y), m = s.length >> 1; return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2; };
 const slugOf = p => translit(p.name).replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+const lum = c => 0.3 * c.r + 0.59 * c.g + 0.11 * c.b;
+const hexOf = c => '#' + [c.r, c.g, c.b].map(v => Math.round(clamp(v, 0, 1) * 255).toString(16).padStart(2, '0')).join('');
 let levelTarget = null;
 
 function measurePhoto(p, img){
@@ -3245,7 +3249,7 @@ function measurePhoto(p, img){
     let tries = 0;
     const go = () => {
       if (!img.dataset.orig){
-        if (++tries > 20 || !img.isConnected){ levelStats[p.name] = {err:true}; return res(); }
+        if (++tries > 20 || !img.isConnected){ levelStats[p.name] = {err:'fotka se nenačetla'}; return res(); }
         return setTimeout(go, 300);
       }
       corsImage(img.dataset.orig, 64, im => {
@@ -3254,19 +3258,21 @@ function measurePhoto(p, img){
           cv.width = cv.height = 64;
           const ctx = cv.getContext('2d');
           ctx.drawImage(im, 0, 0, 64, 64);
-          // obličejová oblast: střed, horní polovina (fotky jsou hlava a ramena)
-          const d = ctx.getImageData(19, 8, 26, 28).data;
-          let r = 0, g = 0, b = 0, n = 0; const ls = [];
-          for (let k = 0; k < d.length; k += 4){
-            r += d[k]; g += d[k + 1]; b += d[k + 2]; n++;
-            ls.push((0.3 * d[k] + 0.59 * d[k + 1] + 0.11 * d[k + 2]) / 255);
+          // dva vzorky pozadí: levý a pravý horní roh, mimo hlavu i ramena
+          const px = [...ctx.getImageData(1, 1, 11, 13).data, ...ctx.getImageData(52, 1, 11, 13).data];
+          const R = [], G = [], B = [], L = [];
+          for (let k = 0; k < px.length; k += 4){
+            R.push(px[k] / 255); G.push(px[k + 1] / 255); B.push(px[k + 2] / 255);
+            L.push(lum({r: px[k] / 255, g: px[k + 1] / 255, b: px[k + 2] / 255}));
           }
-          const l = ls.reduce((x, y) => x + y, 0) / n;
-          const sd = Math.sqrt(ls.reduce((x, y) => x + (y - l) ** 2, 0) / n);
-          levelStats[p.name] = {r: r / n / 255, g: g / n / 255, b: b / n / 255, l, sd};
-        } catch (e){ levelStats[p.name] = {err:true}; }
+          // medián místo průměru: pár pixelů vlasů v rohu výsledek neovlivní
+          const c = {r: median(R), g: median(G), b: median(B)};
+          c.l = lum(c);
+          const sd = Math.sqrt(L.reduce((x, y) => x + (y - c.l) ** 2, 0) / L.length);
+          levelStats[p.name] = sd > 0.08 ? {err:'pozadí v rozích není jednolité'} : c;
+        } catch (e){ levelStats[p.name] = {err:'pixely nejdou přečíst'}; }
         res();
-      }, () => { levelStats[p.name] = {err:true}; res(); });
+      }, () => { levelStats[p.name] = {err:'wsrv.nl fotku nevrátil'}; res(); });
     };
     go();
   });
@@ -3275,19 +3281,17 @@ function measurePhoto(p, img){
 function computeLevel(){
   const ok = ROSTER.map(p => levelStats[p.name]).filter(s => s && !s.err);
   if (ok.length < 2){ levelTarget = null; return; }
-  levelTarget = {r: median(ok.map(s => s.r)), g: median(ok.map(s => s.g)), b: median(ok.map(s => s.b)),
-                 l: median(ok.map(s => s.l)), sd: median(ok.map(s => s.sd))};
+  levelTarget = {r: median(ok.map(s => s.r)), g: median(ok.map(s => s.g)), b: median(ok.map(s => s.b))};
+  levelTarget.l = lum(levelTarget);
   const svg = document.querySelector('body > svg');
   ROSTER.forEach(p => {
     const st = levelStats[p.name];
-    if (!st || st.err) return;
+    if (!st || st.err){ delete levelFix[p.name]; return; }
     const k = levelK, T = levelTarget;
     const f = {
-      gr: 1 + (clamp(T.r / st.r, .82, 1.22) - 1) * k,
-      gg: 1 + (clamp(T.g / st.g, .82, 1.22) - 1) * k,
-      gb: 1 + (clamp(T.b / st.b, .82, 1.22) - 1) * k,
-      // kontrast jen jemně: vousy a vlasy v obličejové oblasti zvyšují rozptyl jasu, i když fotka není kontrastnější
-      c:  1 + (clamp(T.sd / st.sd, .94, 1.08) - 1) * k,
+      gr: 1 + (clamp(T.r / st.r, .85, 1.18) - 1) * k,
+      gg: 1 + (clamp(T.g / st.g, .85, 1.18) - 1) * k,
+      gb: 1 + (clamp(T.b / st.b, .85, 1.18) - 1) * k,
     };
     levelFix[p.name] = f;
     const id = 'lvl-' + slugOf(p);
@@ -3297,18 +3301,10 @@ function computeLevel(){
       el.id = id;
       el.setAttribute('color-interpolation-filters', 'sRGB');
       el.appendChild(document.createElementNS(LVL_NS, 'feColorMatrix'));
-      const ct = el.appendChild(document.createElementNS(LVL_NS, 'feComponentTransfer'));
-      ['feFuncR', 'feFuncG', 'feFuncB'].forEach(t => ct.appendChild(document.createElementNS(LVL_NS, t)));
       svg.appendChild(el);
     }
-    const cm = el.firstChild;
-    cm.setAttribute('type', 'matrix');
-    cm.setAttribute('values', levelMatrix(f));
-    [...el.lastChild.children].forEach(fn => {
-      fn.setAttribute('type', 'linear');
-      fn.setAttribute('slope', num3(f.c));
-      fn.setAttribute('intercept', num3(T.l * (1 - f.c)));
-    });
+    el.firstChild.setAttribute('type', 'matrix');
+    el.firstChild.setAttribute('values', levelMatrix(f));
   });
 }
 const levelMatrix = f => `${num3(f.gr)} 0 0 0 0  0 ${num3(f.gg)} 0 0 0  0 0 ${num3(f.gb)} 0 0  0 0 0 1 0`;
@@ -3318,7 +3314,7 @@ function levelIds(){
 function applyLevelVars(){
   tiles.forEach((t, i) => {
     const p = players[i];
-    if (levelFix[p.name]) t.style.setProperty('--lvf', `url(#lvl-${slugOf(p)})`);
+    if (levelOn && levelFix[p.name]) t.style.setProperty('--lvf', `url(#lvl-${slugOf(p)})`);
     else t.style.removeProperty('--lvf');
   });
 }
@@ -3326,7 +3322,7 @@ function applyLevelVars(){
 async function runLevel(){
   const run = ++levelRun;
   const st = document.getElementById('levelStatus');
-  st.textContent = 'Měřím fotky…';
+  st.textContent = 'Měřím pozadí fotek…';
   await Promise.all(players.map((p, i) => measurePhoto(p, imgs[i])));
   if (run !== levelRun) return;
   computeLevel();
@@ -3335,7 +3331,7 @@ async function runLevel(){
   const bad = shown.filter(s => !s || s.err).length;
   st.textContent = !levelTarget
     ? 'Fotky se nepodařilo změřit: služba wsrv.nl neodpovídá nebo fotky nejdou načíst.'
-    : `Vyrovnáno ${shown.length - bad} z ${shown.length} fotek` + (bad ? `, ${bad} se nepodařilo změřit.` : '.');
+    : `Vyrovnáno ${shown.length - bad} z ${shown.length} fotek` + (bad ? `, ${bad} beze změny (viz tabulka).` : '.');
   renderLevelTable();
   if (current.id === 'level') renderCode();
 }
@@ -3352,39 +3348,32 @@ function setLevel(on){
 function renderLevelTable(){
   const box = document.getElementById('levelTable');
   if (!levelTarget){ box.innerHTML = ''; return; }
-  const pct = v => (v >= 1 ? '+' : '−') + Math.abs(Math.round((v - 1) * 100)) + ' %';
-  const warm = s => Math.round((s.r - s.b) * 100);
-  const sgn = v => (v > 0 ? '+' : v < 0 ? '−' : '') + Math.abs(v);
+  const pct = v => Math.round((v - 1) * 100);
+  const sgnPct = v => (v > 0 ? '+' : v < 0 ? '−' : '') + Math.abs(v) + ' %';
+  const sw = c => `<span class="sw" style="background:${hexOf(c)}"></span>`;
   const rows = players.map(p => {
     const s = levelStats[p.name], f = levelFix[p.name];
-    if (!s || s.err || !f) return `<tr class="off"><td>${p.name}</td><td colspan="4">nezměřeno</td></tr>`;
-    const jas = (0.3 * f.gr + 0.59 * f.gg + 0.11 * f.gb);
+    if (!s || s.err || !f) return `<tr class="off"><td>${p.name}</td><td colspan="3">beze změny: ${s && s.err ? s.err : 'nezměřeno'}</td></tr>`;
+    const jas = pct(0.3 * f.gr + 0.59 * f.gg + 0.11 * f.gb);
+    // teplota: o kolik víc se zesiluje červená než modrá
+    const tep = Math.round((f.gr - f.gb) * 100);
     return `<tr><td>${p.name}</td>`
-      + `<td><span class="bar" style="width:${Math.round(s.l * 60)}px"></span>${Math.round(s.l * 100)}</td>`
-      + `<td>${sgn(warm(s))}</td>`
-      + `<td>${pct(jas)}</td>`
-      + `<td>${pct(f.c)}</td></tr>`;
+      + `<td>${sw(s)}${hexOf(s)}</td>`
+      + `<td>${sgnPct(jas)}</td>`
+      + `<td>${tep === 0 ? '—' : tep > 0 ? `teplejší o ${tep}` : `studenější o ${-tep}`}</td></tr>`;
   }).join('');
-  box.innerHTML = `<table><thead><tr><th>Hráč</th><th>Jas obličeje (cíl ${Math.round(levelTarget.l * 100)})</th>`
-    + `<th>Teplota (cíl ${sgn(warm(levelTarget))})</th><th>Úprava jasu</th><th>Úprava kontrastu</th></tr></thead><tbody>${rows}</tbody></table>`;
+  box.innerHTML = `<table><thead><tr><th>Hráč</th><th>Pozadí (cíl ${sw(levelTarget)}${hexOf(levelTarget)})</th>`
+    + `<th>Úprava jasu</th><th>Úprava teploty</th></tr></thead><tbody>${rows}</tbody></table>`;
 }
 
 function levelCode(){
   if (!levelTarget) return '/* zatím nezměřeno: zapni Vyrovnat fotky */';
   const list = ROSTER.filter(p => levelFix[p.name]);
-  const filters = list.map(p => {
-    const f = levelFix[p.name];
-    return `  <filter id="lvl-${slugOf(p)}" color-interpolation-filters="sRGB">
-    <feColorMatrix type="matrix" values="${levelMatrix(f)}"/>
-    <feComponentTransfer>
-      <feFuncR type="linear" slope="${num3(f.c)}" intercept="${num3(levelTarget.l * (1 - f.c))}"/>
-      <feFuncG type="linear" slope="${num3(f.c)}" intercept="${num3(levelTarget.l * (1 - f.c))}"/>
-      <feFuncB type="linear" slope="${num3(f.c)}" intercept="${num3(levelTarget.l * (1 - f.c))}"/>
-    </feComponentTransfer>
-  </filter>`;
-  }).join('\n');
+  const filters = list.map(p => `  <filter id="lvl-${slugOf(p)}" color-interpolation-filters="sRGB">
+    <feColorMatrix type="matrix" values="${levelMatrix(levelFix[p.name])}"/>
+  </filter>`).join('\n');
   const map = list.map(p => `  "${p.name}": "lvl-${slugOf(p)}",`).join('\n');
-  return `<!-- jeden filtr na hráče: zesílení R, G, B (jas a vyvážení bílé) + kontrast kolem cílového jasu -->
+  return `<!-- jeden filtr na hráče: zesílení R, G, B tak, aby pozadí odpovídalo cílovému ${hexOf(levelTarget)} -->
 <svg width="0" height="0" style="position:absolute">
 ${filters}
 </svg>
