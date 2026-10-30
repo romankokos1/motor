@@ -786,7 +786,7 @@ def _bodu_za_zapas(vysledek: str | None, vyhra: bool, prohra: bool) -> int:
     """
     if not vysledek:
         return 0
-    prodlouzeni = bool(re.search(r"p", vysledek))
+    prodlouzeni = bool(re.search(r"p|sn|n", vysledek))
     if vyhra:
         return 2 if prodlouzeni else 3
     if prohra:
@@ -979,7 +979,7 @@ HOKEJCZ_IDS_FILE = SCRIPT_DIR / "hokejcz_zapasy.json"  # ID zápasů dodaná sta
 HOKEJOVYZAPIS_URL_TMPL = "https://hokejovyzapis.cz/pdf/print/cs-html/?hokejczId={id}"
 ZAPIS_STATE_FILE = SCRIPT_DIR / "zapis_state.json"
 ZAPIS_GAMES_SHOWN = 5  # kolik posledních zápasů se zobrazuje v záložce Zápas
-ZAPIS_VERZE = 3  # 2 = hráči na ledě při gólech, 3 = navíc nejlepší hráči utkání
+ZAPIS_VERZE = 4  # 2 = hráči na ledě, 3 = nejlepší hráči, 4 = soupiska/třetiny/nájezdy/rozhodčí
 ZAPIS_MAX_PER_RUN = 80  # strop stažených zápisů za jeden běh (zpětné doplnění)
 
 # Zkratky důvodů trestů — některé potvrzené přímo Gafferem (NROZ, PODR,
@@ -1100,11 +1100,15 @@ def _parse_zapis_team_table(table) -> dict:
     rows = table.select("tr.values")
 
     roster = {}
+    nastoupili = []
     for r in rows:
         no = _text(r.select_one("td.value_no"))
-        name = r.select_one("td.value_name") or r.select_one("td.value_name_not_attended")
+        attended = r.select_one("td.value_name")
+        name = attended or r.select_one("td.value_name_not_attended")
         if no and name:
             roster[no] = (_norm_name(_text(name)), _text(r.select_one("td.value_pos")))
+            if attended:
+                nastoupili.append(roster[no][0])
 
     def rn(no):
         return roster[no][0] if no in roster else f"č. {no}"
@@ -1151,7 +1155,8 @@ def _parse_zapis_team_table(table) -> dict:
                 "do": end,
             })
 
-    return {"nazev": nazev, "soupiska": roster, "goly": goly, "tresty": tresty}
+    return {"nazev": nazev, "soupiska": roster, "nastoupili": nastoupili,
+            "goly": goly, "tresty": tresty}
 
 
 def _resolve_on_ice(goly: list, own: dict, opp: dict) -> None:
@@ -1178,6 +1183,104 @@ def _parse_best_players(soup) -> dict:
         name = nxt.get_text(" ", strip=True) if nxt else ""
         if name and "nejlepší" not in name.lower():
             out[m.group(1).upper()] = name
+    return out
+
+
+def _direct_cells(tr) -> list:
+    return [c.get_text(" ", strip=True) for c in tr.find_all(["td", "th"], recursive=False)]
+
+
+def _rows_after(header_tr) -> list:
+    """Řádky téže tabulky za řádkem hlavičky (i když hlavička leží v
+    <thead> a data v <tbody>). Vnořené tabulky se ignorují."""
+    table = header_tr.find_parent("table")
+    rows = [tr for tr in table.find_all("tr") if tr.find_parent("table") is table]
+    idx = rows.index(header_tr)
+    return [_direct_cells(tr) for tr in rows[idx + 1:]]
+
+
+def _score_pair(t: str):
+    m = re.match(r"\s*(\d+)\s*:\s*(\d+)", t or "")
+    return (int(m.group(1)), int(m.group(2))) if m else None
+
+
+def _parse_periods(soup) -> list:
+    """Tabulka 'Souhrn utkání' (Třetina | GÓLY A:B | Střely A:B | Tresty
+    A:B | ...). Vrací [{"tretina": "1"/"2"/"3"/"P"/"SN", "goly": [a,b],
+    "strely": [a,b]}] jen pro třetiny, kde něco je."""
+    for tr in soup.find_all("tr"):
+        cells = _direct_cells(tr)
+        if not cells or cells[0].lower() != "třetina":
+            continue
+        out = []
+        for row in _rows_after(tr):
+            if not row or row[0] not in ("1", "2", "3", "P", "SN"):
+                continue
+            g = _score_pair(row[1]) if len(row) > 1 else None
+            st = _score_pair(row[2]) if len(row) > 2 else None
+            if g or st:
+                out.append({"tretina": row[0], "goly": list(g or (0, 0)),
+                            "strely": list(st or (0, 0))})
+        return out
+    return []
+
+
+def _parse_shootout_raw(soup) -> list:
+    """Surové řádky tabulky 'Samostatné nájezdy' (hlavička A|B|BA|BB|A:B,
+    opakovaná 4×). Vrací seznam nájezdových kol [[A, B, BA, BB, A:B]],
+    po skupinách sloupců (1.–5. kolo v první skupině atd.), prázdná
+    kola vynechá."""
+    for tr in soup.find_all("tr"):
+        cells = _direct_cells(tr)
+        if len(cells) < 5 or cells[:5] != ["A", "B", "BA", "BB", "A:B"]:
+            continue
+        rows = _rows_after(tr)
+        groups = len(cells) // 5
+        kola = []
+        for gi in range(groups):
+            for row in rows:
+                chunk = row[gi * 5:(gi + 1) * 5]
+                if len(chunk) == 5 and any(chunk[:2]):
+                    kola.append(chunk)
+        return kola
+    return []
+
+
+def _build_shootout(raw: list, domaci: dict, hoste: dict) -> list:
+    """Převede surová kola nájezdů na pokusy. Předpoklad: A:B je průběžný
+    stav nájezdů po kole — gól se pozná podle toho, o kolik se zvedlo
+    skóre dané strany. A/B = číslo střelce domácích/hostí, BA/BB =
+    číslo brankáře domácích/hostí."""
+    def nm(roster, no):
+        return roster[no][0] if no in roster else (f"č. {no}" if no else "")
+
+    pokusy, prev = [], (0, 0)
+    for i, (a, b, ba, bb, ab) in enumerate(raw, 1):
+        sc = _score_pair(ab) or prev
+        if a:
+            pokusy.append({"kolo_n": i, "tym": domaci["nazev"], "strelec": nm(domaci["soupiska"], a),
+                           "brankar": nm(hoste["soupiska"], bb), "brankar_tym": hoste["nazev"],
+                           "gol": sc[0] > prev[0]})
+        if b:
+            pokusy.append({"kolo_n": i, "tym": hoste["nazev"], "strelec": nm(hoste["soupiska"], b),
+                           "brankar": nm(domaci["soupiska"], ba), "brankar_tym": domaci["nazev"],
+                           "gol": sc[1] > prev[1]})
+        prev = sc
+    return pokusy
+
+
+def _parse_referees(soup) -> dict:
+    """{"hlavni": [jména], "carovi": [jména]} z bloku 'Rozhodčí, delegát,
+    oficiality' — buňka má na prvním řádku funkci, na druhém jméno."""
+    out = {"hlavni": [], "carovi": []}
+    for td in soup.find_all("td"):
+        lines = [l.strip() for l in td.get_text("\n", strip=True).split("\n") if l.strip()]
+        if len(lines) < 2:
+            continue
+        role = lines[0].lower()
+        key = "hlavni" if role == "hlavní rozhodčí" else "carovi" if role == "čárový rozhodčí" else None
+        if key and lines[1] not in out[key] and not lines[1].lower().startswith("potvrdil"):
+            out[key].append(lines[1])
     return out
 
 
@@ -1217,6 +1320,7 @@ def fetch_zapis(hokejcz_id: str) -> dict | None:
         return None
 
     best = _parse_best_players(soup)
+    najezdy_raw = _parse_shootout_raw(soup)
     _resolve_on_ice(domaci["goly"], domaci["soupiska"], hoste["soupiska"])
     _resolve_on_ice(hoste["goly"], hoste["soupiska"], domaci["soupiska"])
     goly = sorted(domaci["goly"] + hoste["goly"], key=lambda g: g["vteriny"])
@@ -1247,6 +1351,11 @@ def fetch_zapis(hokejcz_id: str) -> dict | None:
             )
             if jm
         },
+        "nastoupili": {"domaci": domaci["nastoupili"], "hoste": hoste["nastoupili"]},
+        "tretiny": _parse_periods(soup),
+        "najezdy_raw": najezdy_raw,
+        "najezdy": _build_shootout(najezdy_raw, domaci, hoste),
+        "rozhodci": _parse_referees(soup),
     }
 
 
@@ -1295,6 +1404,9 @@ def update_zapis_state(state: dict, games: list) -> dict:
                 print(f"Zápis pro {game['kolo']}. kolo zatím není kompletní, zkusím příště.")
                 continue
             zapis["kolo"] = game["kolo"]
+            if zapis.get("najezdy_raw"):
+                # kontrolní výpis pro ověření formátu tabulky nájezdů
+                print(f"Nájezdy {game['kolo']}. kolo (A|B|BA|BB|A:B): {zapis['najezdy_raw']}")
             zapasy[game["kolo"]] = zapis
             stazeno += 1
             time.sleep(0.5)
@@ -1346,6 +1458,196 @@ def _best_line(z: dict) -> str:
     return " · ".join(
         f'{"Motor" if _is_motor(v["tym"]) else "soupeř"}: {v["hrac"]}' for v in nb
     )
+
+
+def _motor_side(z: dict) -> str:
+    return "domaci" if _is_motor(z["domaci"]) else "hoste"
+
+
+def _game_by_kolo(games: list) -> dict:
+    return {g["kolo"]: g for g in games or []}
+
+
+def _result_type(game: dict | None) -> str | None:
+    """'V' výhra v základní době, 'VP' výhra po prodl./SN, 'PP' prohra
+    po prodl./SN, 'P' prohra v základní době, None = neznámo."""
+    if not game or not game.get("odehrano"):
+        return None
+    pr = bool(re.search(r"p|sn|n", game.get("vysledek") or ""))
+    if game.get("vyhra"):
+        return "VP" if pr else "V"
+    if game.get("prohra"):
+        return "PP" if pr else "P"
+    return None
+
+
+def _game_goals(z: dict) -> list:
+    """Góly ze hry (bez případného rozhodujícího nájezdu, kdyby ho zápis
+    vedl jako gól s časem 65:00 a víc)."""
+    if z.get("najezdy"):
+        return [g for g in z["goly"] if g["vteriny"] < 3900]
+    return list(z["goly"])
+
+
+def _period_of(sec: int) -> str:
+    return "1" if sec < 1200 else "2" if sec < 2400 else "3" if sec < 3600 else "P"
+
+
+def build_absences(zapasy: list) -> dict:
+    """Kdo z Motoru chyběl na soupisce. Kádr pro dané kolo = hráči, kteří
+    už v sezóně aspoň jednou nastoupili (do toho kola včetně) — posila tak
+    před debutem nechybí. Vrací {"po_kolech": {kolo: [jména]},
+    "hraci": {jmeno: {"nastoupil", "chybel", "serie"}}, "navraty":
+    {kolo: [(jmeno, kolik)]}} — serie = kolik posledních zápasů v řadě
+    chybí, navraty = kdo se v tom kole vrátil po absenci."""
+    zz = sorted((z for z in zapasy if z.get("nastoupili")), key=lambda z: z["kolo"])
+    seen, po_kolech, hraci, navraty, run = [], {}, {}, {}, {}
+    for z in zz:
+        hrali = z["nastoupili"][_motor_side(z)]
+        for h in hrali:
+            if h not in seen:
+                seen.append(h)
+        chybi = sorted(h for h in seen if h not in hrali)
+        po_kolech[z["kolo"]] = chybi
+        for h in seen:
+            e = hraci.setdefault(h, {"nastoupil": 0, "chybel": 0, "serie": 0})
+            if h in hrali:
+                if run.get(h):
+                    navraty.setdefault(z["kolo"], []).append((h, run[h]))
+                run[h] = 0
+                e["nastoupil"] += 1
+            else:
+                run[h] = run.get(h, 0) + 1
+                e["chybel"] += 1
+            e["serie"] = run[h]
+    return {"po_kolech": po_kolech, "hraci": hraci, "navraty": navraty}
+
+
+def build_gwg(zapasy: list, games: list) -> list:
+    """Vítězné góly a první góly zápasu hráčů Motoru.
+    [{'jmeno', 'gwg', 'gwg_kola', 'prvni', 'prvni_kola'}]"""
+    gk = _game_by_kolo(games)
+    acc = {}
+
+    def e(jm):
+        return acc.setdefault(jm, {"jmeno": jm, "gwg": 0, "gwg_kola": [], "prvni": 0, "prvni_kola": []})
+
+    for z in zapasy:
+        goly = sorted(_game_goals(z), key=lambda g: g["vteriny"])
+        if goly and _is_motor(goly[0]["tym"]):
+            x = e(goly[0]["strelec"]); x["prvni"] += 1; x["prvni_kola"].append(z["kolo"])
+        if not (gk.get(z["kolo"]) or {}).get("vyhra"):
+            continue
+        mine = [g for g in goly if _is_motor(g["tym"])]
+        opp = len(goly) - len(mine)
+        if len(mine) > opp:  # při nerozhodném stavu rozhodly nájezdy → bez GWG
+            x = e(mine[opp]["strelec"]); x["gwg"] += 1; x["gwg_kola"].append(z["kolo"])
+    return sorted(acc.values(), key=lambda r: (-r["gwg"], -r["prvni"], r["jmeno"]))
+
+
+def build_periods(zapasy: list, games: list) -> dict:
+    """Bilance Motoru po třetinách (výhra/remíza/prohra třetiny, góly
+    pro/proti, střely pro/proti) + výsledek podle stavu po 1. a 2. třetině."""
+    gk = _game_by_kolo(games)
+    per = {t: {"v": 0, "r": 0, "p": 0, "gf": 0, "ga": 0, "sf": 0, "sa": 0, "z": 0, "zs": 0}
+           for t in ("1", "2", "3", "P")}
+    stav = {k: {s: {"z": 0, "V": 0, "VP": 0, "PP": 0, "P": 0} for s in ("vedl", "remiza", "prohraval")}
+            for k in ("1", "2")}
+    for z in zapasy:
+        motor_a = _motor_side(z) == "domaci"
+        gf = {t: 0 for t in per}; ga = {t: 0 for t in per}
+        for g in _game_goals(z):
+            t = _period_of(g["vteriny"])
+            (gf if _is_motor(g["tym"]) else ga)[t] += 1
+        for t in ("1", "2", "3"):
+            e = per[t]; e["z"] += 1; e["gf"] += gf[t]; e["ga"] += ga[t]
+            e["v" if gf[t] > ga[t] else "p" if gf[t] < ga[t] else "r"] += 1
+        hral_p = any(r["tretina"] == "P" for r in z.get("tretiny", [])) or gf["P"] + ga["P"] > 0 \
+            or _result_type(gk.get(z["kolo"])) in ("VP", "PP")
+        if hral_p:
+            e = per["P"]; e["z"] += 1; e["gf"] += gf["P"]; e["ga"] += ga["P"]
+            e["v" if gf["P"] > ga["P"] else "p" if gf["P"] < ga["P"] else "r"] += 1
+        for r in z.get("tretiny", []):
+            if r["tretina"] in per:
+                a, b = r["strely"]
+                e = per[r["tretina"]]; e["zs"] += 1
+                e["sf"] += a if motor_a else b
+                e["sa"] += b if motor_a else a
+        res = _result_type(gk.get(z["kolo"]))
+        if res:
+            for k, lim in (("1", ("1",)), ("2", ("1", "2"))):
+                d = sum(gf[t] for t in lim) - sum(ga[t] for t in lim)
+                s = stav[k]["vedl" if d > 0 else "prohraval" if d < 0 else "remiza"]
+                s["z"] += 1; s[res] += 1
+    return {"tretiny": per, "stav": stav}
+
+
+def build_shootouts(zapasy: list, games: list) -> dict:
+    """Nájezdy v sezóně: střelci Motoru, brankáři Motoru, zápasy."""
+    gk = _game_by_kolo(games)
+    strelci, brankari, zapasy_sn = {}, {}, []
+    for z in zapasy:
+        pokusy = z.get("najezdy") or []
+        if not pokusy:
+            continue
+        g = gk.get(z["kolo"]) or {}
+        souper = z["hoste"] if _motor_side(z) == "domaci" else z["domaci"]
+        motor_pokusy = []
+        for p in pokusy:
+            if _is_motor(p["tym"]):
+                e = strelci.setdefault(p["strelec"], {"pokusy": 0, "goly": 0})
+                e["pokusy"] += 1; e["goly"] += p["gol"]
+                motor_pokusy.append(f'{p["strelec"]} {"✅" if p["gol"] else "❌"}')
+            elif p["brankar"]:
+                e = brankari.setdefault(p["brankar"], {"najezdy": 0, "zakroky": 0})
+                e["najezdy"] += 1; e["zakroky"] += not p["gol"]
+        zapasy_sn.append({"kolo": z["kolo"], "souper": souper, "vyhra": bool(g.get("vyhra")),
+                          "motor": motor_pokusy})
+    return {"strelci": strelci, "brankari": brankari, "zapasy": sorted(zapasy_sn, key=lambda x: -x["kolo"])}
+
+
+def build_referees(zapasy: list, games: list) -> list:
+    """Souhrn rozhodčích v zápasech Motoru: počet, bilance, tresty na zápas."""
+    gk = _game_by_kolo(games)
+    acc = {}
+    for z in zapasy:
+        rz = z.get("rozhodci") or {}
+        res = _result_type(gk.get(z["kolo"]))
+        inc = _penalty_incidents(z["tresty"])
+        tm_m = sum(t["min"] for t in inc if _is_motor(t["tym"]))
+        tm_s = sum(t["min"] for t in inc if not _is_motor(t["tym"]))
+        for role, key in (("hlavní", "hlavni"), ("čárový", "carovi")):
+            for jm in rz.get(key, []):
+                e = acc.setdefault((jm, role), {"jmeno": jm, "role": role, "z": 0, "V": 0, "VP": 0,
+                                                "PP": 0, "P": 0, "tm_m": 0, "tm_s": 0, "kola": []})
+                e["z"] += 1; e["tm_m"] += tm_m; e["tm_s"] += tm_s; e["kola"].append(z["kolo"])
+                if res:
+                    e[res] += 1
+    return sorted(acc.values(), key=lambda e: (e["role"] != "hlavní", -e["z"], e["jmeno"]))
+
+
+def _fmt_n(n) -> str:
+    """6318 -> '6 318' (pevná mezera)."""
+    return f"{round(n):,}".replace(",", "\u00a0")
+
+
+def _divaci_int(z: dict) -> int:
+    d = re.sub(r"\D", "", str(z.get("divaci") or ""))
+    return int(d) if d else 0
+
+
+def build_attendance(zapasy: list) -> dict:
+    """Návštěvnost: domácí a venkovní zápasy Motoru (jen se zadaným číslem)."""
+    doma, venku = [], []
+    for z in zapasy:
+        n = _divaci_int(z)
+        if not n:
+            continue
+        doma_z = _motor_side(z) == "domaci"
+        souper = z["hoste"] if doma_z else z["domaci"]
+        (doma if doma_z else venku).append({"kolo": z["kolo"], "souper": souper, "n": n,
+                                             "datum": z.get("datum", "")})
+    return {"doma": sorted(doma, key=lambda x: x["kolo"]), "venku": sorted(venku, key=lambda x: x["kolo"])}
 
 
 def build_discipline(zapasy: list) -> dict:
@@ -1414,6 +1716,7 @@ def render_html(
     league_points: int = 0,
     streaks: dict | None = None,
     zapis_games: list | None = None,
+    games: list | None = None,
 ) -> str:
     now = datetime.now(ZoneInfo("Europe/Prague")).strftime("%d.%m.%Y %H:%M")
 
@@ -1605,6 +1908,43 @@ def render_html(
         monthly_html = ""
 
     zapis_all = zapis_games or []
+    games = games or []
+    gk = _game_by_kolo(games)
+    absences = build_absences(zapis_all)
+
+    def souper_of(z: dict) -> str:
+        g = gk.get(z["kolo"])
+        if g:
+            return g["hoste"] if g["domaci"] == CLUB_NAME else g["domaci"]
+        return z["hoste"] if _motor_side(z) == "domaci" else z["domaci"]
+
+    RES_LBL = {"V": "V", "VP": "VP", "PP": "PP", "P": "P"}
+
+    def pct(a: int, b: int) -> str:
+        return f"{100 * a / b:.0f} %" if b else "–"
+
+    # --- karta Zápas: doplňky ke každému zápasu
+    def _game_extra_html(z: dict) -> str:
+        bits = []
+        tr = [r for r in z.get("tretiny", []) if r["tretina"] in ("1", "2", "3", "P")]
+        if tr:
+            ma = _motor_side(z) == "domaci"
+            f = lambda r: f'{r["strely"][0 if ma else 1]}:{r["strely"][1 if ma else 0]}'
+            sf = sum(r["strely"][0 if ma else 1] for r in tr)
+            sa = sum(r["strely"][1 if ma else 0] for r in tr)
+            bits.append(f'Střely Motor:soupeř {sf}:{sa} ({", ".join(f(r) for r in tr)})')
+        rz = z.get("rozhodci") or {}
+        if rz.get("hlavni"):
+            bits.append(f'🦓 Rozhodčí: {", ".join(rz["hlavni"])}'
+                        + (f' · čároví {", ".join(rz["carovi"])}' if rz.get("carovi") else ""))
+        chyb = absences["po_kolech"].get(z["kolo"])
+        if chyb:
+            bits.append(f'🚑 Chyběli: {", ".join(chyb)}')
+        if z.get("najezdy"):
+            mp = [f'{p["strelec"]} {"✅" if p["gol"] else "❌"}' for p in z["najezdy"] if _is_motor(p["tym"])]
+            bits.append(f'🎯 Nájezdy Motoru: {", ".join(mp)}')
+        return "".join(f'<p class="small">{esc(b)}</p>' for b in bits)
+
     zapis_games = sorted(zapis_all, key=lambda z: z["kolo"], reverse=True)[:ZAPIS_GAMES_SHOWN]
     if zapis_games:
         game_blocks = []
@@ -1629,6 +1969,7 @@ def render_html(
       <summary>{z["kolo"]}. kolo: {esc(z["domaci"])} {z["skore_domaci"]}:{z["skore_hoste"]} {esc(z["hoste"])}
         <span class="muted small">({esc(z["datum"])}, {esc(z["divaci"])} diváků)</span></summary>
       {f'<p class="small">⭐ Nejlepší hráči: {esc(_best_line(z))}</p>' if z.get("nejlepsi") else ""}
+      {_game_extra_html(z)}
       <ul class="changes">{"".join(timeline_items) or "<li class='muted'>Bez gólů a trestů.</li>"}</ul>
     </details>""")
         zapas_html = f"""
@@ -1662,6 +2003,199 @@ def render_html(
     </div>"""
     else:
         best_html = ""
+
+    # --- Kdo chyběl na soupisce
+    if absences["hraci"]:
+        ab_rows = "".join(
+            f"<tr><td>{esc(jm)}</td><td>{e['nastoupil']}</td><td><strong>{e['chybel']}</strong></td>"
+            f"<td>{e['serie'] if e['serie'] else '–'}</td></tr>"
+            for jm, e in sorted(absences["hraci"].items(),
+                                key=lambda kv: (-kv[1]["serie"], -kv[1]["chybel"], kv[0]))
+            if e["chybel"]
+        )
+        absence_html = f"""
+    <div class="card">
+      <h2>🚑 Kdo chyběl na soupisce</h2>
+      <p class="muted small">Podle oficiálních zápisů ({len(absences['po_kolech'])} zápasů). Počítají se jen
+      hráči, kteří už v sezóně aspoň jednou nastoupili — posila tedy před debutem nechybí.
+      „V řadě" = kolik posledních zápasů po sobě chybí; u hráčů, kteří z kádru odešli,
+      bude číslo dál růst.</p>
+      <table class="tbl-absence">
+        <thead><tr><th>Hráč</th><th>{lbl("Nastoupil","Hr.")}</th><th>{lbl("Chyběl","Ch.")}</th><th>{lbl("V řadě","Řada")}</th></tr></thead>
+        <tbody>{ab_rows or "<tr><td colspan='4' class='muted'>Zatím nikdo nechyběl.</td></tr>"}</tbody>
+      </table>
+    </div>"""
+    else:
+        absence_html = ""
+
+    # --- Vítězné a první góly
+    gwg = build_gwg(zapis_all, games)
+    if gwg:
+        kola = lambda ks: esc(", ".join(str(k) for k in sorted(ks))) or "–"
+        gwg_rows = "".join(
+            f"<tr><td>{esc(r['jmeno'])}</td><td><strong>{r['gwg']}</strong></td>"
+            f"<td class='muted'>{kola(r['gwg_kola'])}</td><td>{r['prvni']}</td>"
+            f"<td class='muted'>{kola(r['prvni_kola'])}</td></tr>"
+            for r in gwg
+        )
+        gwg_html = f"""
+    <div class="card">
+      <h2>🏆 Vítězné a první góly</h2>
+      <p class="muted small">Vítězný gól = gól Motoru, po kterém už soupeř nevyrovnal
+      (u výher v nájezdech se nepočítá). 1. gól = Motor otevřel skóre zápasu.</p>
+      <table class="tbl-gwg">
+        <thead><tr><th>Hráč</th><th>{lbl("Vítězné","VG")}</th><th>{lbl("Kola","K.")}</th><th>{lbl("1. gól","1.G")}</th><th>{lbl("Kola","K.")}</th></tr></thead>
+        <tbody>{gwg_rows}</tbody>
+      </table>
+    </div>"""
+    else:
+        gwg_html = ""
+
+    # --- Třetiny + stav po třetinách
+    per = build_periods(zapis_all, games)
+    if zapis_all:
+        tl = {"1": "1. třetina", "2": "2. třetina", "3": "3. třetina", "P": "Prodloužení"}
+        pr_rows = []
+        for t in ("1", "2", "3", "P"):
+            e = per["tretiny"][t]
+            if not e["z"]:
+                continue
+            sf = f"{e['sf']}:{e['sa']}" if e["zs"] else "–"
+            avg = f"{e['sf'] / e['zs']:.1f}:{e['sa'] / e['zs']:.1f}" if e["zs"] else "–"
+            pr_rows.append(
+                f"<tr><td>{tl[t]}</td><td>{e['v']}</td><td>{e['r']}</td><td>{e['p']}</td>"
+                f"<td><strong>{e['gf']}:{e['ga']}</strong></td><td>{sf}</td><td>{avg}</td></tr>"
+            )
+        sl = {"vedl": "vedl", "remiza": "nerozhodně", "prohraval": "prohrával"}
+        st_rows = []
+        for k in ("1", "2"):
+            for st_k in ("vedl", "remiza", "prohraval"):
+                e = per["stav"][k][st_k]
+                if not e["z"]:
+                    continue
+                body = 3 * e["V"] + 2 * e["VP"] + e["PP"]
+                st_rows.append(
+                    f"<tr><td>po {k}. třetině {sl[st_k]}</td><td>{e['z']}</td><td>{e['V']}</td>"
+                    f"<td>{e['VP']}</td><td>{e['PP']}</td><td>{e['P']}</td><td><strong>{body}</strong></td></tr>"
+                )
+        periods_html = f"""
+    <div class="card">
+      <h2>⏱️ Bilance po třetinách</h2>
+      <p class="muted small">V/R/P = kolikrát Motor třetinu vyhrál / remizoval / prohrál.
+      Střely ze souhrnu oficiálních zápisů ({sum(1 for z in zapis_all if z.get('tretiny'))} zápasů).</p>
+      <table class="tbl-periods">
+        <thead><tr><th>Třetina</th><th>V</th><th>R</th><th>P</th><th>{lbl("Góly","G")}</th><th>{lbl("Střely","Stř")}</th><th>{lbl("Střely/zápas","Ø")}</th></tr></thead>
+        <tbody>{"".join(pr_rows)}</tbody>
+      </table>
+    </div>
+    <div class="card">
+      <h2>📊 Výsledek podle stavu po třetinách</h2>
+      <p class="muted small">V = výhra v základní době, VP = výhra po prodloužení/nájezdech,
+      PP = prohra po prodloužení/nájezdech, P = prohra. Body podle systému 3-2-1-0.</p>
+      <table class="tbl-state">
+        <thead><tr><th>Stav</th><th>Z</th><th>V</th><th>VP</th><th>PP</th><th>P</th><th>{lbl("Body","B")}</th></tr></thead>
+        <tbody>{"".join(st_rows)}</tbody>
+      </table>
+    </div>"""
+    else:
+        periods_html = ""
+
+    # --- Nájezdy
+    so = build_shootouts(zapis_all, games)
+    if so["zapasy"]:
+        so_sh = "".join(
+            f"<tr><td>{esc(jm)}</td><td>{e['pokusy']}</td><td><strong>{e['goly']}</strong></td>"
+            f"<td>{e['pokusy'] - e['goly']}</td><td>{pct(e['goly'], e['pokusy'])}</td></tr>"
+            for jm, e in sorted(so["strelci"].items(), key=lambda kv: (-kv[1]["goly"], -kv[1]["pokusy"], kv[0]))
+        )
+        so_gk = "".join(
+            f"<tr><td>{esc(jm)}</td><td>{e['najezdy']}</td><td><strong>{e['zakroky']}</strong></td>"
+            f"<td>{e['najezdy'] - e['zakroky']}</td><td>{pct(e['zakroky'], e['najezdy'])}</td></tr>"
+            for jm, e in sorted(so["brankari"].items(), key=lambda kv: (-kv[1]["najezdy"], kv[0]))
+        )
+        so_games = "".join(
+            f"<li>{'✅' if x['vyhra'] else '❌'} <strong>{x['kolo']}. kolo</strong> — "
+            f"{esc(souper_of(next(z for z in zapis_all if z['kolo'] == x['kolo'])))}: "
+            f"{esc(', '.join(x['motor']) or '–')}</li>"
+            for x in so["zapasy"]
+        )
+        shootout_html = f"""
+    <div class="card">
+      <h2>🎯 Nájezdy v sezóně</h2>
+      <p class="muted small">{len(so['zapasy'])} zápasů rozhodnutých nájezdy,
+      bilance {sum(x['vyhra'] for x in so['zapasy'])}–{sum(not x['vyhra'] for x in so['zapasy'])}.</p>
+      <table class="tbl-so">
+        <thead><tr><th>Střelec</th><th>{lbl("Pokusy","Pok")}</th><th>{lbl("Proměnil","G")}</th><th>{lbl("Neproměnil","X")}</th><th>%</th></tr></thead>
+        <tbody>{so_sh}</tbody>
+      </table>
+      <table class="tbl-so-gk">
+        <thead><tr><th>Brankář</th><th>{lbl("Nájezdy","N")}</th><th>{lbl("Chytil","Ch")}</th><th>{lbl("Pustil","Pu")}</th><th>%</th></tr></thead>
+        <tbody>{so_gk}</tbody>
+      </table>
+      <ul class="changes">{so_games}</ul>
+    </div>"""
+    else:
+        shootout_html = """
+    <div class="card">
+      <h2>🎯 Nájezdy v sezóně</h2>
+      <p class="muted">Motor zatím v sezóně nehrál zápas rozhodnutý nájezdy.</p>
+    </div>"""
+
+    # --- Rozhodčí
+    refs = build_referees(zapis_all, games)
+    if refs:
+        ref_rows = "".join(
+            f"<tr><td>{esc(e['jmeno'])}</td><td class='muted'>{esc(e['role'])}</td><td><strong>{e['z']}</strong></td>"
+            f"<td>{e['V']}-{e['VP']}-{e['PP']}-{e['P']}</td>"
+            f"<td>{e['tm_m'] / e['z']:.1f}</td><td>{e['tm_s'] / e['z']:.1f}</td>"
+            f"<td class='muted'>{esc(', '.join(str(k) for k in sorted(e['kola'])))}</td></tr>"
+            for e in refs
+        )
+        referees_html = f"""
+    <div class="card">
+      <h2>🦓 Rozhodčí v zápasech Motoru</h2>
+      <p class="muted small">Bilance V-VP-PP-P z pohledu Motoru, trestné minuty na zápas
+      (Motor / soupeř, navazující tresty sloučené).</p>
+      <table class="tbl-refs">
+        <thead><tr><th>Rozhodčí</th><th>{lbl("Funkce","F")}</th><th>Z</th><th>{lbl("Bilance","Bil.")}</th><th>{lbl("TM Motor","TM M")}</th><th>{lbl("TM soupeř","TM S")}</th><th>{lbl("Kola","K.")}</th></tr></thead>
+        <tbody>{ref_rows}</tbody>
+      </table>
+    </div>"""
+    else:
+        referees_html = ""
+
+    # --- Diváci
+    att = build_attendance(zapis_all)
+    if att["doma"] or att["venku"]:
+        def att_block(lst: list, nadpis: str) -> str:
+            if not lst:
+                return ""
+            ns = [x["n"] for x in lst]
+            mx = max(lst, key=lambda x: x["n"])
+            mn = min(lst, key=lambda x: x["n"])
+            zk = {z["kolo"]: z for z in zapis_all}
+            rows = "".join(
+                f"<tr><td>{x['kolo']}.</td><td>{esc(souper_of(zk[x['kolo']]))}</td>"
+                f"<td>{esc(x['datum'])}</td><td><strong>{_fmt_n(x['n'])}</strong></td></tr>"
+                for x in sorted(lst, key=lambda x: -x["kolo"])
+            )
+            return f"""
+      <p><strong>{nadpis}:</strong> průměr <strong>{_fmt_n(sum(ns) / len(ns))}</strong> ({len(ns)} zápasů) ·
+      maximum {_fmt_n(mx['n'])} ({mx['kolo']}. kolo) · minimum {_fmt_n(mn['n'])} ({mn['kolo']}. kolo)</p>
+      <details>
+        <summary>Jednotlivé zápasy</summary>
+        <table class="tbl-att">
+          <thead><tr><th>{lbl("Kolo","K.")}</th><th>{lbl("Soupeř","S")}</th><th>Datum</th><th>{lbl("Diváci","D")}</th></tr></thead>
+          <tbody>{rows}</tbody>
+        </table>
+      </details>"""
+        attendance_html = f"""
+    <div class="card">
+      <h2>👥 Diváci</h2>
+      {att_block(att["doma"], "🏠 Doma")}{att_block(att["venku"], "🚌 Venku")}
+    </div>"""
+    else:
+        attendance_html = ""
 
     disc = build_discipline(zapis_all)
     on_ice = build_on_ice(zapis_all)
@@ -2127,11 +2661,11 @@ def render_html(
         <tbody>{gk_rows}</tbody>
       </table>
     </div>
-    {best_html}{on_ice_html}{discipline_html}
+    {best_html}{gwg_html}{absence_html}{on_ice_html}{discipline_html}
   </section>
 
   <section class="tabsection" data-tab="bilance">
-    {record_html}{home_away_html}
+    {record_html}{home_away_html}{periods_html}{shootout_html}{referees_html}{attendance_html}
   </section>
 
   <section class="tabsection" data-tab="historie">
@@ -2472,9 +3006,31 @@ def main() -> None:
         zapis_state = update_zapis_state(zapis_state, games)
         # Hlášení jen u zápasů, které jsme ještě nikdy neměli (ne při
         # zpětném přestahování starých zápisů kvůli nové verzi).
-        for z in zapis_state.get("zapasy", []):
-            if z["kolo"] not in pred and z.get("nejlepsi"):
-                best_changes.append(f'⭐ {z["kolo"]}. kolo — nejlepší hráči: {_best_line(z)}')
+        zapasy_vse = zapis_state.get("zapasy", [])
+        nove = sorted((z for z in zapasy_vse if z["kolo"] not in pred), key=lambda z: z["kolo"])
+        if nove:
+            absences = build_absences(zapasy_vse)
+            starsi_doma = [_divaci_int(z) for z in zapasy_vse
+                           if z["kolo"] in pred and _motor_side(z) == "domaci"]
+            for z in nove:
+                k = z["kolo"]
+                if z.get("nejlepsi"):
+                    best_changes.append(f'⭐ {k}. kolo — nejlepší hráči: {_best_line(z)}')
+                chyb = absences["po_kolech"].get(k)
+                if chyb:
+                    best_changes.append(f'🚑 {k}. kolo — na soupisce chyběli: {", ".join(chyb)}')
+                for jm, n in absences["navraty"].get(k, []):
+                    best_changes.append(f'↩️ {jm}: návrat do sestavy po {n} '
+                                        f'{"zápase" if n == 1 else "zápasech"} ({k}. kolo)')
+                mp = [p for p in z.get("najezdy") or [] if _is_motor(p["tym"])]
+                if mp:
+                    best_changes.append(f'🎯 {k}. kolo — nájezdy Motoru: ' + ", ".join(
+                        f'{p["strelec"]} {"✅" if p["gol"] else "❌"}' for p in mp))
+                n = _divaci_int(z)
+                if _motor_side(z) == "domaci" and n and starsi_doma and n > max(starsi_doma):
+                    best_changes.append(f'👥 {k}. kolo — rekordní návštěva sezóny doma: {_fmt_n(n)}')
+                if _motor_side(z) == "domaci" and n:
+                    starsi_doma.append(n)
         if best_changes:
             changes.extend(best_changes)
             history = update_history(history, best_changes, [])
@@ -2495,6 +3051,7 @@ def main() -> None:
             schedule_changes, record_svg, schedule_log,
             next_match, home_away, league_points, streaks,
             zapis_state.get("zapasy", []),
+            games,
         ),
         encoding="utf-8",
     )
