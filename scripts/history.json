@@ -1,5 +1,13 @@
 [
   {
+    "date": "2026-10-30",
+    "changes": [],
+    "corrections": [
+      "📝 Kundrátek Tomáš: oprava statistik (+1A, +1B) — beze změny počtu zápasů",
+      "📝 Beránek Martin: oprava statistik (-1A, -1B) — beze změny počtu zápasů"
+    ]
+  },
+  {
     "date": "2026-10-28",
     "changes": [
       "🏒 Lantoši Róbert: +1b (1A) → celkem 14b (2G 12A, 15 zápasů)",
@@ -91,25 +99,6 @@
       "▫️ Bez bodu odehráli zápas (13): Ahl Filip, Beránek Martin, Bulíř Michal, Koláček Josef, Kundrátek Tomáš, Nedorost Václav, Nordsäter Lucas, Olesen Nick Alexander, Pour Jakub, Pýcha Pavel, Toman Matěj, Vála Ondřej, Zachar Marek",
       "🥅 Mařík Matyáš: odchytal další zápas — 91.5% úspěšnost, 2.45 průměr (3 zápasů celkem)",
       "🎯 Vála Ondřej: dosáhl/a 350. zápasu v Extralize!"
-    ],
-    "corrections": []
-  },
-  {
-    "date": "2026-10-12",
-    "changes": [
-      "🏒 Štencel Jan: +1b (1A) → celkem 9b (3G 6A, 10 zápasů)",
-      "🏒 Pýcha Pavel: +1b (1A) → celkem 3b (0G 3A, 10 zápasů)",
-      "🏒 Nordsäter Lucas: +1b (1A) → celkem 2b (0G 2A, 10 zápasů)",
-      "🏒 Lantoši Róbert: +1b (1G) → celkem 9b (2G 7A, 10 zápasů)",
-      "🏒 Olesen Nick Alexander: +1b (1A) → celkem 8b (5G 3A, 9 zápasů)",
-      "🏒 Hoch Štěpán: +1b (1A) → celkem 7b (1G 6A, 10 zápasů)",
-      "🏒 Ahl Filip: +1b (1G) → celkem 5b (2G 3A, 10 zápasů)",
-      "🏒 Beránek Martin: +1b (1G) → celkem 2b (2G 0A, 10 zápasů)",
-      "🏒 Toman Matěj: +1b (1A) → celkem 2b (0G 2A, 10 zápasů)",
-      "🏒 Zachar Marek: +1b (1G) → celkem 1b (1G 0A, 10 zápasů)",
-      "▫️ Bez bodu odehráli zápas (10): Bell Parker, Bulíř Michal, Hejduk Marek, Kachyňa Ondřej, Krastenbergs Renars, Nedorost Václav, Ordoš Jan, Pour Jakub, Vráblík Roman, Vála Ondřej",
-      "🥅 Mařík Matyáš: odchytal další zápas — 89.5% úspěšnost, 3.24 průměr (2 zápasů celkem)",
-      "🎯 Toman Matěj: dosáhl/a 50. bodu v Extralize!"
     ],
     "corrections": []
   }
