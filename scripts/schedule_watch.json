@@ -91,9 +91,9 @@
   },
   "16": {
     "datum": "pátek 30.10.",
-    "cas": "18:00",
+    "cas": null,
     "misto": "Olomouc, Zimní stadion",
-    "odehrano": false
+    "odehrano": true
   },
   "17": {
     "datum": "neděle 1.11.",
