@@ -979,7 +979,7 @@ HOKEJCZ_IDS_FILE = SCRIPT_DIR / "hokejcz_zapasy.json"  # ID zápasů dodaná sta
 HOKEJOVYZAPIS_URL_TMPL = "https://hokejovyzapis.cz/pdf/print/cs-html/?hokejczId={id}"
 ZAPIS_STATE_FILE = SCRIPT_DIR / "zapis_state.json"
 ZAPIS_GAMES_SHOWN = 5  # kolik posledních zápasů se zobrazuje v záložce Zápas
-ZAPIS_VERZE = 2  # 2 = zápis obsahuje i hráče na ledě při gólech
+ZAPIS_VERZE = 3  # 2 = hráči na ledě při gólech, 3 = navíc nejlepší hráči utkání
 ZAPIS_MAX_PER_RUN = 80  # strop stažených zápisů za jeden běh (zpětné doplnění)
 
 # Zkratky důvodů trestů — některé potvrzené přímo Gafferem (NROZ, PODR,
@@ -1162,6 +1162,37 @@ def _resolve_on_ice(goly: list, own: dict, opp: dict) -> None:
         g["na_ledu_proti"] = [opp[n][0] for n in g.pop("_n") if n in opp and opp[n][1] != "GK"]
 
 
+def _parse_best_players(soup) -> dict:
+    """Nejlepší hráči utkání ze zápisu: řádek s buňkami
+    'Nejlepší hráč utkání tým - A' | jméno | '... tým - B' | jméno.
+    Hledá se podle textu buňky, ne podle CSS tříd. Vrací {"A": jméno,
+    "B": jméno} ve tvaru ze zápisu (Jméno Příjmení); chybějící strana
+    se vynechá."""
+    out = {}
+    for td in soup.find_all(["td", "th"]):
+        label = td.get_text(" ", strip=True)
+        m = re.search(r"nejlepší hráč utkání.*?-\s*([AB])\s*$", label, re.I)
+        if not m:
+            continue
+        nxt = td.find_next_sibling(["td", "th"])
+        name = nxt.get_text(" ", strip=True) if nxt else ""
+        if name and "nejlepší" not in name.lower():
+            out[m.group(1).upper()] = name
+    return out
+
+
+def _match_roster_name(name: str, roster: dict) -> str:
+    """'Milan Klouček' -> 'Klouček Milan' podle soupisky (porovnává se
+    množina slov bez ohledu na pořadí a velikost písmen). Když se nenajde,
+    vrátí jméno prohozené na tvar Příjmení Jméno."""
+    key = sorted(name.lower().split())
+    for jm, _post in roster.values():
+        if sorted(jm.lower().split()) == key:
+            return jm
+    parts = name.split()
+    return " ".join(parts[-1:] + parts[:-1]) if len(parts) > 1 else name
+
+
 def fetch_zapis(hokejcz_id: str) -> dict | None:
     """Stáhne a rozparsuje oficiální zápis o utkání. Vrací None, pokud
     zápis ještě není k dispozici / nejde rozparsovat (např. zápas se
@@ -1185,6 +1216,7 @@ def fetch_zapis(hokejcz_id: str) -> dict | None:
         # smysl ho zpracovávat jako odehraný.
         return None
 
+    best = _parse_best_players(soup)
     _resolve_on_ice(domaci["goly"], domaci["soupiska"], hoste["soupiska"])
     _resolve_on_ice(hoste["goly"], hoste["soupiska"], domaci["soupiska"])
     goly = sorted(domaci["goly"] + hoste["goly"], key=lambda g: g["vteriny"])
@@ -1207,6 +1239,14 @@ def fetch_zapis(hokejcz_id: str) -> dict | None:
         "misto": misto,
         "goly": goly,
         "tresty": tresty,
+        "nejlepsi": {
+            strana: {"tym": t["nazev"], "hrac": _match_roster_name(jm, t["soupiska"])}
+            for strana, t, jm in (
+                (s, t, best.get(s))
+                for s, t in (("A", domaci), ("B", hoste))
+            )
+            if jm
+        },
     }
 
 
@@ -1284,6 +1324,28 @@ def _penalty_incidents(tresty: list) -> list:
         else:
             out.append({**t, "min": int(t["min"]) if str(t["min"]).isdigit() else 0})
     return out
+
+
+def build_best_players(zapasy: list) -> list:
+    """Kolikrát byl který hráč Motoru vyhlášen nejlepším hráčem utkání.
+    [{'jmeno', 'pocet', 'kola': [..]}] seřazené podle počtu."""
+    acc = {}
+    for z in zapasy:
+        for v in (z.get("nejlepsi") or {}).values():
+            if _is_motor(v["tym"]):
+                e = acc.setdefault(v["hrac"], {"jmeno": v["hrac"], "pocet": 0, "kola": []})
+                e["pocet"] += 1
+                e["kola"].append(z["kolo"])
+    return sorted(acc.values(), key=lambda e: (-e["pocet"], e["jmeno"]))
+
+
+def _best_line(z: dict) -> str:
+    """Krátký text 'Motor: X · soupeř: Y' pro jeden zápas (Motor první)."""
+    nb = list((z.get("nejlepsi") or {}).values())
+    nb.sort(key=lambda v: not _is_motor(v["tym"]))
+    return " · ".join(
+        f'{"Motor" if _is_motor(v["tym"]) else "soupeř"}: {v["hrac"]}' for v in nb
+    )
 
 
 def build_discipline(zapasy: list) -> dict:
@@ -1566,6 +1628,7 @@ def render_html(
     <details{" open" if i == 0 else ""}>
       <summary>{z["kolo"]}. kolo: {esc(z["domaci"])} {z["skore_domaci"]}:{z["skore_hoste"]} {esc(z["hoste"])}
         <span class="muted small">({esc(z["datum"])}, {esc(z["divaci"])} diváků)</span></summary>
+      {f'<p class="small">⭐ Nejlepší hráči: {esc(_best_line(z))}</p>' if z.get("nejlepsi") else ""}
       <ul class="changes">{"".join(timeline_items) or "<li class='muted'>Bez gólů a trestů.</li>"}</ul>
     </details>""")
         zapas_html = f"""
@@ -1579,6 +1642,26 @@ def render_html(
 """
     else:
         zapas_html = ""
+
+    best = build_best_players(zapis_all)
+    best_games = sum(1 for z in zapis_all if z.get("nejlepsi"))
+    if best:
+        best_rows = "".join(
+            f"<tr><td>{esc(e['jmeno'])}</td><td><strong>{e['pocet']}</strong></td>"
+            f"<td>{esc(', '.join(str(k) for k in sorted(e['kola'])))}</td></tr>"
+            for e in best
+        )
+        best_html = f"""
+    <div class="card">
+      <h2>⭐ Nejlepší hráč utkání (Motor)</h2>
+      <p class="muted small">Podle oficiálních zápisů ({best_games} zápasů s vyhlášením).</p>
+      <table class="tbl-best">
+        <thead><tr><th>Hráč</th><th>×</th><th>Kola</th></tr></thead>
+        <tbody>{best_rows}</tbody>
+      </table>
+    </div>"""
+    else:
+        best_html = ""
 
     disc = build_discipline(zapis_all)
     on_ice = build_on_ice(zapis_all)
@@ -2044,7 +2127,7 @@ def render_html(
         <tbody>{gk_rows}</tbody>
       </table>
     </div>
-    {on_ice_html}{discipline_html}
+    {best_html}{on_ice_html}{discipline_html}
   </section>
 
   <section class="tabsection" data-tab="bilance">
@@ -2384,7 +2467,17 @@ def main() -> None:
     streaks = build_streaks(games) if games else {}
 
     if games:
+        best_changes = []
+        pred = {z["kolo"]: bool(z.get("nejlepsi")) for z in zapis_state.get("zapasy", [])}
         zapis_state = update_zapis_state(zapis_state, games)
+        # Hlášení jen u zápasů, které jsme ještě nikdy neměli (ne při
+        # zpětném přestahování starých zápisů kvůli nové verzi).
+        for z in zapis_state.get("zapasy", []):
+            if z["kolo"] not in pred and z.get("nejlepsi"):
+                best_changes.append(f'⭐ {z["kolo"]}. kolo — nejlepší hráči: {_best_line(z)}')
+        if best_changes:
+            changes.extend(best_changes)
+            history = update_history(history, best_changes, [])
 
     if games:
         # Živé doplnění stránky "Bilance proti týmům" (docs/bilance-proti-tymum.html)
