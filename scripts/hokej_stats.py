@@ -979,7 +979,7 @@ HOKEJCZ_IDS_FILE = SCRIPT_DIR / "hokejcz_zapasy.json"  # ID zápasů dodaná sta
 HOKEJOVYZAPIS_URL_TMPL = "https://hokejovyzapis.cz/pdf/print/cs-html/?hokejczId={id}"
 ZAPIS_STATE_FILE = SCRIPT_DIR / "zapis_state.json"
 ZAPIS_GAMES_SHOWN = 5  # kolik posledních zápasů se zobrazuje v záložce Zápas
-ZAPIS_VERZE = 4  # 2 = hráči na ledě, 3 = nejlepší hráči, 4 = soupiska/třetiny/nájezdy/rozhodčí
+ZAPIS_VERZE = 5  # 2 = hráči na ledě, 3 = nejlepší hráči, 4 = soupiska/třetiny/nájezdy/rozhodčí, 5 = pozice hráčů
 ZAPIS_MAX_PER_RUN = 80  # strop stažených zápisů za jeden běh (zpětné doplnění)
 
 # Zkratky důvodů trestů — některé potvrzené přímo Gafferem (NROZ, PODR,
@@ -1352,6 +1352,8 @@ def fetch_zapis(hokejcz_id: str) -> dict | None:
             if jm
         },
         "nastoupili": {"domaci": domaci["nastoupili"], "hoste": hoste["nastoupili"]},
+        "pozice": {"domaci": {jm: post for jm, post in domaci["soupiska"].values()},
+                   "hoste": {jm: post for jm, post in hoste["soupiska"].values()}},
         "tretiny": _parse_periods(soup),
         "najezdy_raw": najezdy_raw,
         "najezdy": _build_shootout(najezdy_raw, domaci, hoste),
@@ -1543,6 +1545,89 @@ def build_gwg(zapasy: list, games: list) -> list:
         if len(mine) > opp:  # při nerozhodném stavu rozhodly nájezdy → bez GWG
             x = e(mine[opp]["strelec"]); x["gwg"] += 1; x["gwg_kola"].append(z["kolo"])
     return sorted(acc.values(), key=lambda r: (-r["gwg"], -r["prvni"], r["jmeno"]))
+
+
+def build_assist_pairs(zapasy: list) -> dict:
+    """Spolupráce u gólů Motoru (ze zápisů).
+    'dvojice': [{'nahravac','strelec','n','prim','kola'}] — kolikrát nahrávač
+      asistoval střelci (prim = z toho jako první asistence),
+    'trojice': [{'hraci': (3 jména), 'n', 'kola'}] — gól, u kterého byli
+      všichni tři (střelec + obě asistence), bez ohledu na role."""
+    dv, tr = {}, {}
+    for z in zapasy:
+        for g in _game_goals(z):
+            if not _is_motor(g["tym"]):
+                continue
+            for i, a in enumerate(g.get("asistence") or []):
+                e = dv.setdefault((a, g["strelec"]), {"nahravac": a, "strelec": g["strelec"],
+                                                      "n": 0, "prim": 0, "kola": []})
+                e["n"] += 1
+                e["prim"] += i == 0
+                e["kola"].append(z["kolo"])
+            if len(g.get("asistence") or []) == 2:
+                key = tuple(sorted([g["strelec"], *g["asistence"]]))
+                e = tr.setdefault(key, {"hraci": key, "n": 0, "kola": []})
+                e["n"] += 1
+                e["kola"].append(z["kolo"])
+    return {
+        "dvojice": sorted(dv.values(), key=lambda e: (-e["n"], -e["prim"], e["strelec"])),
+        "trojice": sorted(tr.values(), key=lambda e: (-e["n"], e["hraci"])),
+    }
+
+
+def _goal_strength(g: dict, motor_gol: bool) -> str:
+    """'ev' / 'pp' / 'sh' z pohledu Motoru podle situace '5/4' apod."""
+    m = re.match(r"(\d+)/(\d+)", g.get("situace", ""))
+    if not m:
+        return "ev"
+    a, b = int(m.group(1)), int(m.group(2))
+    if a == b:
+        return "ev"
+    return ("pp" if a > b else "sh") if motor_gol else ("sh" if a > b else "pp")
+
+
+def build_formations(zapasy: list) -> dict:
+    """Formace Motoru na ledě při gólech (ze zápisů, brankáři se nepočítají).
+    Obranná dvojice = přesně 2 obránci na ledě, útočná trojice = přesně
+    3 útočníci, pětka = 2 obránci + 3 útočníci. Jiné složení (přesilovka
+    4F+1D, hra bez brankáře) se do dané kategorie nezapočítá.
+    Každá položka: {'hraci', 'gf', 'ga', 'gf_ev', 'ga_ev', 'gf_pp', 'ga_sh', 'kola'}"""
+    out = {"dvojice": {}, "trojice": {}, "petky": {}}
+    zapasu = 0
+    for z in zapasy:
+        poz = (z.get("pozice") or {}).get(_motor_side(z))
+        if not poz:
+            continue
+        zapasu += 1
+        for g in _game_goals(z):
+            if "na_ledu_za" not in g:
+                continue
+            motor_gol = _is_motor(g["tym"])
+            hraci = g["na_ledu_za"] if motor_gol else g["na_ledu_proti"]
+            d = sorted(h for h in hraci if poz.get(h) == "D")
+            f = sorted(h for h in hraci if poz.get(h) == "F")
+            typ = _goal_strength(g, motor_gol)
+            keys = []
+            if len(d) == 2:
+                keys.append(("dvojice", tuple(d)))
+            if len(f) == 3:
+                keys.append(("trojice", tuple(f)))
+            if len(d) == 2 and len(f) == 3:
+                keys.append(("petky", tuple(d) + tuple(f)))
+            for kat, key in keys:
+                e = out[kat].setdefault(key, {"hraci": key, "gf": 0, "ga": 0, "gf_ev": 0, "ga_ev": 0,
+                                              "gf_pp": 0, "ga_sh": 0, "kola": set()})
+                if motor_gol:
+                    e["gf"] += 1
+                    e["gf_ev"] += typ == "ev"
+                    e["gf_pp"] += typ == "pp"
+                else:
+                    e["ga"] += 1
+                    e["ga_ev"] += typ == "ev"
+                    e["ga_sh"] += typ == "sh"
+                e["kola"].add(z["kolo"])
+    srt = lambda d: sorted(d.values(), key=lambda e: (-(e["gf"] + e["ga"]), -(e["gf"] - e["ga"]), e["hraci"]))
+    return {k: srt(v) for k, v in out.items()} | {"zapasu": zapasu}
 
 
 def build_periods(zapasy: list, games: list) -> dict:
@@ -2003,6 +2088,85 @@ def render_html(
     </div>"""
     else:
         best_html = ""
+
+    # --- Dvojice nahrávač → střelec
+    pairs = build_assist_pairs(zapis_all)
+    PAIRS_SHOWN = 15
+    if pairs["dvojice"]:
+        kk = lambda ks: esc(", ".join(str(k) for k in sorted(set(ks))))
+        def pair_row(e):
+            return (f"<tr><td>{esc(e['nahravac'])}</td><td>{esc(e['strelec'])}</td>"
+                    f"<td><strong>{e['n']}</strong></td><td>{e['prim']}</td>"
+                    f"<td class='muted'>{kk(e['kola'])}</td></tr>")
+        top = pairs["dvojice"][:PAIRS_SHOWN]
+        rest = pairs["dvojice"][PAIRS_SHOWN:]
+        pair_head = (f"<thead><tr><th>{lbl('Nahrávač','Nahr.')}</th><th>{lbl('Střelec','Stř.')}</th>"
+                     f"<th>{lbl('Góly','G')}</th><th>{lbl('z toho 1. asist.','A1')}</th><th>{lbl('Kola','K.')}</th></tr></thead>")
+        rest_html = (f"""
+      <details>
+        <summary>Další dvojice <span class="muted small">({len(rest)})</span></summary>
+        <table class="tbl-pairs">{pair_head}<tbody>{"".join(pair_row(e) for e in rest)}</tbody></table>
+      </details>""" if rest else "")
+        trios = [e for e in pairs["trojice"] if e["n"] >= 2]
+        trio_html = (f"""
+      <h2 style="margin-top:18px">Trojice u gólu</h2>
+      <p class="muted small">Střelec + obě asistence, bez ohledu na to, kdo měl jakou roli
+      (jen trojice, které spolu byly u gólu aspoň 2×).</p>
+      <table class="tbl-trios">
+        <thead><tr><th>{lbl("Hráči","H")}</th><th>{lbl("Góly","G")}</th><th>{lbl("Kola","K.")}</th></tr></thead>
+        <tbody>{"".join(f"<tr><td>{esc(' · '.join(e['hraci']))}</td><td><strong>{e['n']}</strong></td><td class='muted'>{kk(e['kola'])}</td></tr>" for e in trios)}</tbody>
+      </table>""" if trios else "")
+        pairs_html = f"""
+    <div class="card">
+      <h2>🤝 Nejčastější dvojice nahrávač → střelec</h2>
+      <p class="muted small">Z oficiálních zápisů — kolikrát hráč nahrával na gól
+      konkrétnímu střelci (první i druhá asistence; sloupec A1 = z toho jako první).</p>
+      <table class="tbl-pairs">{pair_head}<tbody>{"".join(pair_row(e) for e in top)}</tbody></table>
+      {rest_html}{trio_html}
+    </div>"""
+    else:
+        pairs_html = ""
+
+    # --- Formace na ledě
+    form = build_formations(zapis_all)
+    FORM_SHOWN = 12
+    if any(form[k] for k in ("dvojice", "trojice", "petky")):
+        def form_table(rows: list, label: str, cls: str) -> str:
+            rows = [e for e in rows if e["gf"] + e["ga"] >= 2]
+            if not rows:
+                return "<p class='muted small'>Zatím žádná formace s aspoň 2 góly.</p>"
+            head = (f"<thead><tr><th>{label}</th><th>GF</th><th>GA</th><th>+/-</th>"
+                    f"<th>{lbl('GF 5/5','GF EV')}</th><th>{lbl('GA 5/5','GA EV')}</th>"
+                    f"<th>{lbl('GF přesil.','PP')}</th><th>{lbl('GA oslab.','SH')}</th><th>Z</th></tr></thead>")
+            def row(e):
+                diff = e["gf"] - e["ga"]
+                return (f"<tr><td>{esc(' · '.join(e['hraci']))}</td><td>{e['gf']}</td><td>{e['ga']}</td>"
+                        f"<td><strong>{'+' if diff > 0 else ''}{diff}</strong></td>"
+                        f"<td>{e['gf_ev']}</td><td>{e['ga_ev']}</td><td>{e['gf_pp']}</td><td>{e['ga_sh']}</td>"
+                        f"<td>{len(e['kola'])}</td></tr>")
+            top, rest = rows[:FORM_SHOWN], rows[FORM_SHOWN:]
+            html = f'<table class="{cls}">{head}<tbody>{"".join(row(e) for e in top)}</tbody></table>'
+            if rest:
+                html += (f'<details><summary>Další <span class="muted small">({len(rest)})</span></summary>'
+                         f'<table class="{cls}">{head}<tbody>{"".join(row(e) for e in rest)}</tbody></table></details>')
+            return html
+        formations_html = f"""
+    <div class="card">
+      <h2>🧩 Formace na ledě</h2>
+      <p class="muted small">Kdo byl spolu na ledě, když padl gól (z oficiálních zápisů,
+      {form['zapasu']} zápasů; brankáři se nepočítají). GF = vstřelené, GA = obdržené,
+      Z = v kolika zápasech formace byla u gólu. Dvojice = přesně 2 obránci na ledě,
+      trojice = přesně 3 útočníci — přesilovky ve složení 4+1 nebo hra bez brankáře se
+      do trojic a pětek nedostanou. Ukazují se formace s aspoň 2 góly.</p>
+      <h2 style="margin-top:14px">Obranné dvojice</h2>
+      {form_table(form["dvojice"], lbl("Obránci","O"), "tbl-form-d")}
+      <h2 style="margin-top:18px">Útočné trojice</h2>
+      {form_table(form["trojice"], lbl("Útočníci","Ú"), "tbl-form-f")}
+      <h2 style="margin-top:18px">Celé pětky (2 + 3)</h2>
+      {form_table(form["petky"], lbl("Pětka","5"), "tbl-form-5")}
+    </div>"""
+    else:
+        formations_html = ""
 
     # --- Kdo chyběl na soupisce
     if absences["hraci"]:
@@ -2661,7 +2825,7 @@ def render_html(
         <tbody>{gk_rows}</tbody>
       </table>
     </div>
-    {best_html}{gwg_html}{absence_html}{on_ice_html}{discipline_html}
+    {best_html}{gwg_html}{pairs_html}{formations_html}{absence_html}{on_ice_html}{discipline_html}
   </section>
 
   <section class="tabsection" data-tab="bilance">
