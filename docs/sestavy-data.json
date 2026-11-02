@@ -1,0 +1,6470 @@
+{
+ "aktualizovano": "02.11.2026 16:09",
+ "zapasy": [
+  {
+   "kolo": 1,
+   "datum": "středa 16.9.",
+   "domaci": "České Budějovice",
+   "hoste": "Mladá Boleslav",
+   "odehrano": true,
+   "vysledek": "2:3p",
+   "hokejcz_id": "2928256",
+   "sestava": {
+    "A": {
+     "nazev": "BANES Motor České Budějovice",
+     "hraci": [
+      {
+       "c": "35",
+       "jmeno": "KLOUČEK Milan",
+       "post": "GK",
+       "hral": true
+      },
+      {
+       "c": "2",
+       "jmeno": "STRMEŇ Jan",
+       "post": "GK",
+       "hral": false
+      },
+      {
+       "c": "14",
+       "jmeno": "VÁLA Ondřej",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "84",
+       "jmeno": "KUNDRÁTEK Tomáš",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "7",
+       "jmeno": "ŠTENCEL Jan",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "69",
+       "jmeno": "VRÁBLÍK Roman",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "12",
+       "jmeno": "PÝCHA Pavel",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "8",
+       "jmeno": "NORDSÄTER Lucas",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "98",
+       "jmeno": "KACHYŇA Ondřej",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "45",
+       "jmeno": "ORDOŠ Jan",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "88",
+       "jmeno": "BULÍŘ Michal",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "16",
+       "jmeno": "LANTOŠI Róbert",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "95",
+       "jmeno": "OLESEN Nick Alexander",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "92",
+       "jmeno": "BELL Parker",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "29",
+       "jmeno": "KRASTENBERGS Renars",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "61",
+       "jmeno": "AHL Filip",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "42",
+       "jmeno": "HOCH Štěpán",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "64",
+       "jmeno": "POUR Jakub",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "56",
+       "jmeno": "BERÁNEK Martin",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "26",
+       "jmeno": "ZACHAR Marek",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "37",
+       "jmeno": "HEJDUK Marek",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "20",
+       "jmeno": "TOMAN Matěj",
+       "post": "F",
+       "hral": true
+      }
+     ],
+     "brankari": [
+      {
+       "c": "35",
+       "od": "00:00"
+      }
+     ],
+     "lavicka": [
+      {
+       "jmeno": "Róbert Petrovický",
+       "funkce": "Hlavní trenér"
+      },
+      {
+       "jmeno": "David Vrbata",
+       "funkce": "Asistent trenéra"
+      },
+      {
+       "jmeno": "Valdemar Jiruš",
+       "funkce": "Asistent trenéra"
+      },
+      {
+       "jmeno": "Pavel Bláha",
+       "funkce": "Vedoucí týmu"
+      },
+      {
+       "jmeno": "Pavel Vlašic",
+       "funkce": "Kustod"
+      },
+      {
+       "jmeno": "Jiří Rotbauer",
+       "funkce": "Kustod"
+      },
+      {
+       "jmeno": "Stanislav Hrubec",
+       "funkce": "Trenér brankářů"
+      },
+      {
+       "jmeno": "Filip Krejčí",
+       "funkce": "Lékař"
+      }
+     ]
+    },
+    "B": {
+     "nazev": "BK Mladá Boleslav",
+     "hraci": [
+      {
+       "c": "93",
+       "jmeno": "MOKRY Vojtěch",
+       "post": "GK",
+       "hral": true
+      },
+      {
+       "c": "38",
+       "jmeno": "FURCH Dominik",
+       "post": "GK",
+       "hral": false
+      },
+      {
+       "c": "3",
+       "jmeno": "JÁNOŠÍK Adam",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "20",
+       "jmeno": "ZÁMORSKÝ Petr",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "85",
+       "jmeno": "BUDÍK Vojtěch",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "45",
+       "jmeno": "PAVLÍK Filip",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "71",
+       "jmeno": "MORAVEC David",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "5",
+       "jmeno": "KUBÍČEK Šimon",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "33",
+       "jmeno": "SKARBERG Martin",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "28",
+       "jmeno": "SKALICKÝ Pavol",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "16",
+       "jmeno": "GRÍGER Dávid",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "47",
+       "jmeno": "BUCHTELE Jan",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "77",
+       "jmeno": "JANDRIC Steven Nicholas",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "89",
+       "jmeno": "MORAND Antoine",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "51",
+       "jmeno": "MARTEL Jordan",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "81",
+       "jmeno": "KOBLÍŽEK Radek",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "12",
+       "jmeno": "FOŘT Tomáš",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "18",
+       "jmeno": "REKONEN Aleksi Oskari",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "94",
+       "jmeno": "LICHTAG Jakub",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "15",
+       "jmeno": "GAVARS Felikss",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "88",
+       "jmeno": "GARDOŇ Matěj",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "10",
+       "jmeno": "MALÍNEK Vojtěch",
+       "post": "F",
+       "hral": true
+      }
+     ],
+     "brankari": [
+      {
+       "c": "93",
+       "od": "00:00"
+      }
+     ],
+     "lavicka": [
+      {
+       "jmeno": "Petr Haken",
+       "funkce": "Hlavní trenér"
+      },
+      {
+       "jmeno": "Martin Tondr",
+       "funkce": "Fyzioterapeut"
+      },
+      {
+       "jmeno": "Andrej Dančák",
+       "funkce": "Kustod"
+      },
+      {
+       "jmeno": "Filip Šindelář",
+       "funkce": "Vedoucí týmu"
+      },
+      {
+       "jmeno": "František Ptáček",
+       "funkce": "Asistent trenéra"
+      },
+      {
+       "jmeno": "Jakub Klepiš",
+       "funkce": "Asistent trenéra"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "kolo": 2,
+   "datum": "pátek 18.9.",
+   "domaci": "Hradec Králové",
+   "hoste": "České Budějovice",
+   "odehrano": true,
+   "vysledek": "0:2",
+   "hokejcz_id": "2928264",
+   "sestava": {
+    "A": {
+     "nazev": "Mountfield HK, a.s.",
+     "hraci": [
+      {
+       "c": "31",
+       "jmeno": "ŠKORVÁNEK Stanislav",
+       "post": "GK",
+       "hral": true
+      },
+      {
+       "c": "33",
+       "jmeno": "VOMÁČKA Tomáš",
+       "post": "GK",
+       "hral": false
+      },
+      {
+       "c": "29",
+       "jmeno": "KALINA Petr",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "12",
+       "jmeno": "MCCORMACK Graeme",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "51",
+       "jmeno": "VUKOJEVIC Michael Gabriel",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "23",
+       "jmeno": "MELANCON Thomas Joseph",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "40",
+       "jmeno": "KOCH Anders Gøbel",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "89",
+       "jmeno": "MUDRÁK Dávid",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "9",
+       "jmeno": "PLÁNĚK Martin",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "94",
+       "jmeno": "PERRET Jordann",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "25",
+       "jmeno": "TAMÁŠI Alex",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "96",
+       "jmeno": "ZDRÁHAL Patrik",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "98",
+       "jmeno": "PAVLÍK Radovan",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "56",
+       "jmeno": "MIŠKÁŘ Patrik",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "69",
+       "jmeno": "RADIL Lukáš",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "90",
+       "jmeno": "KOUSAL Robert",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "34",
+       "jmeno": "KLIMA Kevin Petr",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "26",
+       "jmeno": "JERGL Aleš",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "46",
+       "jmeno": "KOHOUT Martin",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "48",
+       "jmeno": "ČACHO Viliam",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "7",
+       "jmeno": "NENONEN Markus",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "62",
+       "jmeno": "PILAŘ Radek",
+       "post": "F",
+       "hral": true
+      }
+     ],
+     "brankari": [
+      {
+       "c": "31",
+       "od": "00:00"
+      }
+     ],
+     "lavicka": [
+      {
+       "jmeno": "Tomáš Martinec",
+       "funkce": "Hlavní trenér"
+      },
+      {
+       "jmeno": "Martin Vágner",
+       "funkce": "Asistent trenéra"
+      },
+      {
+       "jmeno": "Petr Koukal",
+       "funkce": "Funkcionář"
+      },
+      {
+       "jmeno": "Petr Pluhař",
+       "funkce": "Kustod"
+      },
+      {
+       "jmeno": "Tomáš Bartoň",
+       "funkce": "Masér"
+      },
+      {
+       "jmeno": "Bohdan Višňák",
+       "funkce": "Vedoucí týmu"
+      },
+      {
+       "jmeno": "Robert Horyna",
+       "funkce": "Funkcionář"
+      },
+      {
+       "jmeno": "Jan Vícha",
+       "funkce": "Lékař"
+      }
+     ]
+    },
+    "B": {
+     "nazev": "BANES Motor České Budějovice",
+     "hraci": [
+      {
+       "c": "35",
+       "jmeno": "KLOUČEK Milan",
+       "post": "GK",
+       "hral": true
+      },
+      {
+       "c": "2",
+       "jmeno": "STRMEŇ Jan",
+       "post": "GK",
+       "hral": false
+      },
+      {
+       "c": "14",
+       "jmeno": "VÁLA Ondřej",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "84",
+       "jmeno": "KUNDRÁTEK Tomáš",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "7",
+       "jmeno": "ŠTENCEL Jan",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "69",
+       "jmeno": "VRÁBLÍK Roman",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "12",
+       "jmeno": "PÝCHA Pavel",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "8",
+       "jmeno": "NORDSÄTER Lucas",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "79",
+       "jmeno": "ANDERSEN Ole Einar",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "45",
+       "jmeno": "ORDOŠ Jan",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "88",
+       "jmeno": "BULÍŘ Michal",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "16",
+       "jmeno": "LANTOŠI Róbert",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "95",
+       "jmeno": "OLESEN Nick Alexander",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "92",
+       "jmeno": "BELL Parker",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "29",
+       "jmeno": "KRASTENBERGS Renars",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "61",
+       "jmeno": "AHL Filip",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "42",
+       "jmeno": "HOCH Štěpán",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "64",
+       "jmeno": "POUR Jakub",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "56",
+       "jmeno": "BERÁNEK Martin",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "26",
+       "jmeno": "ZACHAR Marek",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "37",
+       "jmeno": "HEJDUK Marek",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "20",
+       "jmeno": "TOMAN Matěj",
+       "post": "F",
+       "hral": true
+      }
+     ],
+     "brankari": [
+      {
+       "c": "35",
+       "od": "00:00"
+      }
+     ],
+     "lavicka": [
+      {
+       "jmeno": "Róbert Petrovický",
+       "funkce": "Hlavní trenér"
+      },
+      {
+       "jmeno": "Valdemar Jiruš",
+       "funkce": "Asistent trenéra"
+      },
+      {
+       "jmeno": "Pavel Bláha",
+       "funkce": "Vedoucí týmu"
+      },
+      {
+       "jmeno": "Pavel Vlašic",
+       "funkce": "Kustod"
+      },
+      {
+       "jmeno": "Jiří Rotbauer",
+       "funkce": "Kustod"
+      },
+      {
+       "jmeno": "Stanislav Hrubec",
+       "funkce": "Trenér brankářů"
+      },
+      {
+       "jmeno": "David Vrbata",
+       "funkce": "Asistent trenéra"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "kolo": 3,
+   "datum": "neděle 20.9.",
+   "domaci": "České Budějovice",
+   "hoste": "Olomouc",
+   "odehrano": true,
+   "vysledek": "3:2",
+   "hokejcz_id": "2928272",
+   "sestava": {
+    "A": {
+     "nazev": "BANES Motor České Budějovice",
+     "hraci": [
+      {
+       "c": "35",
+       "jmeno": "KLOUČEK Milan",
+       "post": "GK",
+       "hral": true
+      },
+      {
+       "c": "2",
+       "jmeno": "STRMEŇ Jan",
+       "post": "GK",
+       "hral": false
+      },
+      {
+       "c": "14",
+       "jmeno": "VÁLA Ondřej",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "8",
+       "jmeno": "NORDSÄTER Lucas",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "7",
+       "jmeno": "ŠTENCEL Jan",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "69",
+       "jmeno": "VRÁBLÍK Roman",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "12",
+       "jmeno": "PÝCHA Pavel",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "79",
+       "jmeno": "ANDERSEN Ole Einar",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "98",
+       "jmeno": "KACHYŇA Ondřej",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "56",
+       "jmeno": "BERÁNEK Martin",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "45",
+       "jmeno": "ORDOŠ Jan",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "88",
+       "jmeno": "BULÍŘ Michal",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "16",
+       "jmeno": "LANTOŠI Róbert",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "95",
+       "jmeno": "OLESEN Nick Alexander",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "92",
+       "jmeno": "BELL Parker",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "29",
+       "jmeno": "KRASTENBERGS Renars",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "61",
+       "jmeno": "AHL Filip",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "42",
+       "jmeno": "HOCH Štěpán",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "64",
+       "jmeno": "POUR Jakub",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "26",
+       "jmeno": "ZACHAR Marek",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "37",
+       "jmeno": "HEJDUK Marek",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "20",
+       "jmeno": "TOMAN Matěj",
+       "post": "F",
+       "hral": true
+      }
+     ],
+     "brankari": [
+      {
+       "c": "35",
+       "od": "00:00"
+      }
+     ],
+     "lavicka": [
+      {
+       "jmeno": "Róbert Petrovický",
+       "funkce": "Hlavní trenér"
+      },
+      {
+       "jmeno": "David Vrbata",
+       "funkce": "Asistent trenéra"
+      },
+      {
+       "jmeno": "Valdemar Jiruš",
+       "funkce": "Asistent trenéra"
+      },
+      {
+       "jmeno": "Pavel Bláha",
+       "funkce": "Vedoucí týmu"
+      },
+      {
+       "jmeno": "Pavel Vlašic",
+       "funkce": "Kustod"
+      },
+      {
+       "jmeno": "Jiří Rotbauer",
+       "funkce": "Kustod"
+      },
+      {
+       "jmeno": "Stanislav Hrubec",
+       "funkce": "Trenér brankářů"
+      },
+      {
+       "jmeno": "Filip Krejčí",
+       "funkce": "Lékař"
+      }
+     ]
+    },
+    "B": {
+     "nazev": "HC Olomouc",
+     "hraci": [
+      {
+       "c": "1",
+       "jmeno": "MACHOVSKÝ Matěj",
+       "post": "GK",
+       "hral": true
+      },
+      {
+       "c": "29",
+       "jmeno": "CICHOŇ Oldřich",
+       "post": "GK",
+       "hral": false
+      },
+      {
+       "c": "17",
+       "jmeno": "FREIBERGS Ralfs",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "37",
+       "jmeno": "STELLA Evan",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "44",
+       "jmeno": "GEWIESE Petr",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "48",
+       "jmeno": "ČERNÝ Tomáš",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "23",
+       "jmeno": "ONDRUŠEK Jiří",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "4",
+       "jmeno": "RUTAR Adam",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "61",
+       "jmeno": "COSGROVE Trevor",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "25",
+       "jmeno": "KOS Jakub",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "62",
+       "jmeno": "PLÁŠEK Karel",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "18",
+       "jmeno": "BERGLUND Carl Gunnar",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "88",
+       "jmeno": "NAVRÁTIL Jakub",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "97",
+       "jmeno": "HERČÍK Daniel",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "21",
+       "jmeno": "VITOUCH David",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "32",
+       "jmeno": "ORSAVA Jakub",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "78",
+       "jmeno": "SPODNIAK Matúš",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "47",
+       "jmeno": "MACUH Rok",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "81",
+       "jmeno": "MATÝS Ondřej",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "86",
+       "jmeno": "ŠTOHANZL Martin",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "34",
+       "jmeno": "VITOUCH Michal",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "24",
+       "jmeno": "ANDĚL Lukáš",
+       "post": "F",
+       "hral": true
+      }
+     ],
+     "brankari": [
+      {
+       "c": "1",
+       "od": "00:00"
+      }
+     ],
+     "lavicka": [
+      {
+       "jmeno": "Petr Fiala",
+       "funkce": "Hlavní trenér"
+      },
+      {
+       "jmeno": "Petr Svoboda",
+       "funkce": "Asistent trenéra"
+      },
+      {
+       "jmeno": "Josef Podlaha",
+       "funkce": "Vedoucí týmu"
+      },
+      {
+       "jmeno": "Marek Čech",
+       "funkce": "Fyzioterapeut"
+      },
+      {
+       "jmeno": "Jakub Jarolím",
+       "funkce": "Fyzioterapeut"
+      },
+      {
+       "jmeno": "Tomáš Kalman",
+       "funkce": "Masér"
+      },
+      {
+       "jmeno": "Petr Přecechtěl",
+       "funkce": "Kustod"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "kolo": 4,
+   "datum": "pátek 25.9.",
+   "domaci": "Karlovy Vary",
+   "hoste": "České Budějovice",
+   "odehrano": true,
+   "vysledek": "5:1",
+   "hokejcz_id": "2928280",
+   "sestava": {
+    "A": {
+     "nazev": "BYD Energie Karlovy Vary",
+     "hraci": [
+      {
+       "c": "0",
+       "jmeno": "FRODL Dominik",
+       "post": "GK",
+       "hral": true
+      },
+      {
+       "c": "31",
+       "jmeno": "KRÁL Daniel",
+       "post": "GK",
+       "hral": false
+      },
+      {
+       "c": "9",
+       "jmeno": "BRICKLEY Daniel",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "6",
+       "jmeno": "KOČÍ Matteo",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "27",
+       "jmeno": "WINBERG Tobias",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "55",
+       "jmeno": "MAMČICS Roberts",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "4",
+       "jmeno": "SCHMIEMANN Quinn Emanuel",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "7",
+       "jmeno": "ERONEN Elmeri",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "24",
+       "jmeno": "MYŠÁK Josef",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "23",
+       "jmeno": "JISKRA Vít",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "21",
+       "jmeno": "ČERNOCH Jiří",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "8",
+       "jmeno": "BERÁNEK Ondřej",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "29",
+       "jmeno": "ŠŤASTNÝ David",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "18",
+       "jmeno": "JONES Nicholas",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "86",
+       "jmeno": "BAMBULA Jan",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "19",
+       "jmeno": "KOFFER Filip",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "10",
+       "jmeno": "EGLE Haralds",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "12",
+       "jmeno": "TOMEK Petr",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "17",
+       "jmeno": "REDLICH Tomáš",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "15",
+       "jmeno": "MINÁRIK Jakub",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "70",
+       "jmeno": "LUKOŠIK Adam",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "5",
+       "jmeno": "VÁŇA Matyáš",
+       "post": "F",
+       "hral": false
+      }
+     ],
+     "brankari": [
+      {
+       "c": "0",
+       "od": "00:00"
+      }
+     ],
+     "lavicka": [
+      {
+       "jmeno": "Pavel Patera",
+       "funkce": "Hlavní trenér"
+      },
+      {
+       "jmeno": "Miloslav Hořava",
+       "funkce": "Asistent trenéra"
+      },
+      {
+       "jmeno": "Tomáš Polák",
+       "funkce": "Kustod"
+      },
+      {
+       "jmeno": "Petr Benda",
+       "funkce": "Fyzioterapeut"
+      },
+      {
+       "jmeno": "Lukáš Mensator",
+       "funkce": "Vedoucí týmu"
+      },
+      {
+       "jmeno": "Marek Halamka",
+       "funkce": "Kondiční trenér"
+      },
+      {
+       "jmeno": "Tomáš Lengö",
+       "funkce": "Masér"
+      },
+      {
+       "jmeno": "Jakub Frček",
+       "funkce": "Lékař"
+      }
+     ]
+    },
+    "B": {
+     "nazev": "BANES Motor České Budějovice",
+     "hraci": [
+      {
+       "c": "35",
+       "jmeno": "KLOUČEK Milan",
+       "post": "GK",
+       "hral": true
+      },
+      {
+       "c": "2",
+       "jmeno": "STRMEŇ Jan",
+       "post": "GK",
+       "hral": false
+      },
+      {
+       "c": "14",
+       "jmeno": "VÁLA Ondřej",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "8",
+       "jmeno": "NORDSÄTER Lucas",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "7",
+       "jmeno": "ŠTENCEL Jan",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "69",
+       "jmeno": "VRÁBLÍK Roman",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "12",
+       "jmeno": "PÝCHA Pavel",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "98",
+       "jmeno": "KACHYŇA Ondřej",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "79",
+       "jmeno": "ANDERSEN Ole Einar",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "45",
+       "jmeno": "ORDOŠ Jan",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "88",
+       "jmeno": "BULÍŘ Michal",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "29",
+       "jmeno": "KRASTENBERGS Renars",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "64",
+       "jmeno": "POUR Jakub",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "42",
+       "jmeno": "HOCH Štěpán",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "16",
+       "jmeno": "LANTOŠI Róbert",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "61",
+       "jmeno": "AHL Filip",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "92",
+       "jmeno": "BELL Parker",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "37",
+       "jmeno": "HEJDUK Marek",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "56",
+       "jmeno": "BERÁNEK Martin",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "20",
+       "jmeno": "TOMAN Matěj",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "26",
+       "jmeno": "ZACHAR Marek",
+       "post": "F",
+       "hral": true
+      }
+     ],
+     "brankari": [
+      {
+       "c": "35",
+       "od": "00:00"
+      }
+     ],
+     "lavicka": [
+      {
+       "jmeno": "Róbert Petrovický",
+       "funkce": "Hlavní trenér"
+      },
+      {
+       "jmeno": "Valdemar Jiruš",
+       "funkce": "Asistent trenéra"
+      },
+      {
+       "jmeno": "Pavel Bláha",
+       "funkce": "Vedoucí týmu"
+      },
+      {
+       "jmeno": "Pavel Vlašic",
+       "funkce": "Kustod"
+      },
+      {
+       "jmeno": "Jiří Rotbauer",
+       "funkce": "Kustod"
+      },
+      {
+       "jmeno": "Stanislav Hrubec",
+       "funkce": "Trenér brankářů"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "kolo": 5,
+   "datum": "neděle 27.9.",
+   "domaci": "České Budějovice",
+   "hoste": "Litvínov",
+   "odehrano": true,
+   "vysledek": "5:4",
+   "hokejcz_id": "2928285",
+   "sestava": {
+    "A": {
+     "nazev": "BANES Motor České Budějovice",
+     "hraci": [
+      {
+       "c": "2",
+       "jmeno": "STRMEŇ Jan",
+       "post": "GK",
+       "hral": true
+      },
+      {
+       "c": "35",
+       "jmeno": "KLOUČEK Milan",
+       "post": "GK",
+       "hral": false
+      },
+      {
+       "c": "7",
+       "jmeno": "ŠTENCEL Jan",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "69",
+       "jmeno": "VRÁBLÍK Roman",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "14",
+       "jmeno": "VÁLA Ondřej",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "8",
+       "jmeno": "NORDSÄTER Lucas",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "12",
+       "jmeno": "PÝCHA Pavel",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "98",
+       "jmeno": "KACHYŇA Ondřej",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "79",
+       "jmeno": "ANDERSEN Ole Einar",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "95",
+       "jmeno": "OLESEN Nick Alexander",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "88",
+       "jmeno": "BULÍŘ Michal",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "16",
+       "jmeno": "LANTOŠI Róbert",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "64",
+       "jmeno": "POUR Jakub",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "42",
+       "jmeno": "HOCH Štěpán",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "45",
+       "jmeno": "ORDOŠ Jan",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "61",
+       "jmeno": "AHL Filip",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "92",
+       "jmeno": "BELL Parker",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "29",
+       "jmeno": "KRASTENBERGS Renars",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "56",
+       "jmeno": "BERÁNEK Martin",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "26",
+       "jmeno": "ZACHAR Marek",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "37",
+       "jmeno": "HEJDUK Marek",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "20",
+       "jmeno": "TOMAN Matěj",
+       "post": "F",
+       "hral": true
+      }
+     ],
+     "brankari": [
+      {
+       "c": "2",
+       "od": "00:00"
+      }
+     ],
+     "lavicka": [
+      {
+       "jmeno": "Róbert Petrovický",
+       "funkce": "Hlavní trenér"
+      },
+      {
+       "jmeno": "David Vrbata",
+       "funkce": "Asistent trenéra"
+      },
+      {
+       "jmeno": "Valdemar Jiruš",
+       "funkce": "Asistent trenéra"
+      },
+      {
+       "jmeno": "Pavel Bláha",
+       "funkce": "Vedoucí týmu"
+      },
+      {
+       "jmeno": "Pavel Vlašic",
+       "funkce": "Kustod"
+      },
+      {
+       "jmeno": "Jiří Rotbauer",
+       "funkce": "Kustod"
+      },
+      {
+       "jmeno": "Stanislav Hrubec",
+       "funkce": "Trenér brankářů"
+      },
+      {
+       "jmeno": "Filip Krejčí",
+       "funkce": "Lékař"
+      }
+     ]
+    },
+    "B": {
+     "nazev": "HC Litvínov",
+     "hraci": [
+      {
+       "c": "30",
+       "jmeno": "ČAJAN Pavel",
+       "post": "GK",
+       "hral": true
+      },
+      {
+       "c": "32",
+       "jmeno": "KUBÍK Adam",
+       "post": "GK",
+       "hral": false
+      },
+      {
+       "c": "11",
+       "jmeno": "MORAVČÍK Michal",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "4",
+       "jmeno": "HUSINECKÝ Vojtěch",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "27",
+       "jmeno": "CZUCZMAN Kevin Paul",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "72",
+       "jmeno": "JAKS Janis",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "3",
+       "jmeno": "POLÁŠEK Adam",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "21",
+       "jmeno": "BALÁŽ Ondřej",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "36",
+       "jmeno": "BERAN Vít",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "18",
+       "jmeno": "TITTL Filip",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "73",
+       "jmeno": "KAŠE Ondřej",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "13",
+       "jmeno": "KÄMPF David",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "74",
+       "jmeno": "MAŠTALÍŘSKÝ Matěj",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "10",
+       "jmeno": "KOBLASA Petr",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "91",
+       "jmeno": "SUKEĽ Matúš",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "34",
+       "jmeno": "PIŠTĚK Theodor",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "8",
+       "jmeno": "ŠÁMAL Viktor",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "62",
+       "jmeno": "GUT Michal",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "12",
+       "jmeno": "ZYGMUNT Pawel",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "20",
+       "jmeno": "URBAN Tomáš",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "87",
+       "jmeno": "JÍCHA Josef",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "64",
+       "jmeno": "JURČÍK Ondřej",
+       "post": "F",
+       "hral": true
+      }
+     ],
+     "brankari": [
+      {
+       "c": "30",
+       "od": "00:00"
+      }
+     ],
+     "lavicka": [
+      {
+       "jmeno": "Robert Reichel",
+       "funkce": "Hlavní trenér"
+      },
+      {
+       "jmeno": "Ivan Švarný",
+       "funkce": "Asistent trenéra"
+      },
+      {
+       "jmeno": "Jakub Petružálek",
+       "funkce": "Asistent trenéra"
+      },
+      {
+       "jmeno": "Radko Goga",
+       "funkce": "Vedoucí týmu"
+      },
+      {
+       "jmeno": "Roman Lauko",
+       "funkce": "Kustod"
+      },
+      {
+       "jmeno": "Vladimír Brož",
+       "funkce": "Kustod"
+      },
+      {
+       "jmeno": "Zdeněk Orct",
+       "funkce": "Trenér brankářů"
+      },
+      {
+       "jmeno": "Pavel Wildumetz",
+       "funkce": "Fyzioterapeut"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "kolo": 6,
+   "datum": "úterý 29.9.",
+   "domaci": "Pardubice",
+   "hoste": "České Budějovice",
+   "odehrano": true,
+   "vysledek": "5:2",
+   "hokejcz_id": "2928290",
+   "sestava": {
+    "A": {
+     "nazev": "HC DYNAMO PARDUBICE",
+     "hraci": [
+      {
+       "c": "32",
+       "jmeno": "SUBBAN Malcolm",
+       "post": "GK",
+       "hral": true
+      },
+      {
+       "c": "35",
+       "jmeno": "WILL Roman",
+       "post": "GK",
+       "hral": false
+      },
+      {
+       "c": "79",
+       "jmeno": "TOURIGNY Miguël",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "33",
+       "jmeno": "KOŠŤÁLEK Jan",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "7",
+       "jmeno": "DVOŘÁK Tomáš",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "41",
+       "jmeno": "ČEREŠŇÁK Peter",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "4",
+       "jmeno": "MIKLIŠ Ondřej",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "43",
+       "jmeno": "GAZDA Daniel",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "34",
+       "jmeno": "CHABADA Ondřej",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "19",
+       "jmeno": "ČERVENKA Roman",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "23",
+       "jmeno": "SEDLÁK Lukáš",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "89",
+       "jmeno": "MANDÁT Jan",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "96",
+       "jmeno": "SMEJKAL Jiří",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "98",
+       "jmeno": "TOMÁŠEK David",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "93",
+       "jmeno": "STRÁNSKÝ Matěj",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "29",
+       "jmeno": "KELEMEN Miloš",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "92",
+       "jmeno": "NOSEK Tomáš",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "55",
+       "jmeno": "VONDRÁČEK Tomáš",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "12",
+       "jmeno": "VÁLEK Matúš",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "71",
+       "jmeno": "SOBOTKA Vladimír",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "44",
+       "jmeno": "POULÍČEK Patrik",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "28",
+       "jmeno": "MACEK Vít",
+       "post": "F",
+       "hral": false
+      }
+     ],
+     "brankari": [
+      {
+       "c": "32",
+       "od": "00:00"
+      }
+     ],
+     "lavicka": [
+      {
+       "jmeno": "Filip Pešán",
+       "funkce": "Hlavní trenér"
+      },
+      {
+       "jmeno": "Karel Mlejnek",
+       "funkce": "Asistent trenéra"
+      },
+      {
+       "jmeno": "Václav Kočí",
+       "funkce": "Asistent trenéra"
+      },
+      {
+       "jmeno": "Aleš Bílek",
+       "funkce": "Kustod"
+      },
+      {
+       "jmeno": "Michal Borovička",
+       "funkce": "Kustod"
+      },
+      {
+       "jmeno": "Pavel Holeka",
+       "funkce": "Lékař"
+      },
+      {
+       "jmeno": "Tomáš Hrubý",
+       "funkce": "Vedoucí týmu"
+      },
+      {
+       "jmeno": "Jiří Sklenář",
+       "funkce": "Trenér brankářů"
+      }
+     ]
+    },
+    "B": {
+     "nazev": "BANES Motor České Budějovice",
+     "hraci": [
+      {
+       "c": "2",
+       "jmeno": "STRMEŇ Jan",
+       "post": "GK",
+       "hral": true
+      },
+      {
+       "c": "35",
+       "jmeno": "KLOUČEK Milan",
+       "post": "GK",
+       "hral": false
+      },
+      {
+       "c": "7",
+       "jmeno": "ŠTENCEL Jan",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "69",
+       "jmeno": "VRÁBLÍK Roman",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "14",
+       "jmeno": "VÁLA Ondřej",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "8",
+       "jmeno": "NORDSÄTER Lucas",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "12",
+       "jmeno": "PÝCHA Pavel",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "98",
+       "jmeno": "KACHYŇA Ondřej",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "79",
+       "jmeno": "ANDERSEN Ole Einar",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "95",
+       "jmeno": "OLESEN Nick Alexander",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "88",
+       "jmeno": "BULÍŘ Michal",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "16",
+       "jmeno": "LANTOŠI Róbert",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "64",
+       "jmeno": "POUR Jakub",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "42",
+       "jmeno": "HOCH Štěpán",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "45",
+       "jmeno": "ORDOŠ Jan",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "61",
+       "jmeno": "AHL Filip",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "26",
+       "jmeno": "ZACHAR Marek",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "29",
+       "jmeno": "KRASTENBERGS Renars",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "56",
+       "jmeno": "BERÁNEK Martin",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "20",
+       "jmeno": "TOMAN Matěj",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "37",
+       "jmeno": "HEJDUK Marek",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "92",
+       "jmeno": "BELL Parker",
+       "post": "F",
+       "hral": true
+      }
+     ],
+     "brankari": [
+      {
+       "c": "2",
+       "od": "00:00"
+      }
+     ],
+     "lavicka": [
+      {
+       "jmeno": "Róbert Petrovický",
+       "funkce": "Hlavní trenér"
+      },
+      {
+       "jmeno": "Valdemar Jiruš",
+       "funkce": "Asistent trenéra"
+      },
+      {
+       "jmeno": "Pavel Bláha",
+       "funkce": "Vedoucí týmu"
+      },
+      {
+       "jmeno": "Pavel Vlašic",
+       "funkce": "Kustod"
+      },
+      {
+       "jmeno": "Jiří Rotbauer",
+       "funkce": "Kustod"
+      },
+      {
+       "jmeno": "Stanislav Hrubec",
+       "funkce": "Trenér brankářů"
+      },
+      {
+       "jmeno": "David Vrbata",
+       "funkce": "Asistent trenéra"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "kolo": 7,
+   "datum": "čtvrtek 1.10.",
+   "domaci": "Sparta Praha",
+   "hoste": "České Budějovice",
+   "odehrano": true,
+   "vysledek": "4:2",
+   "hokejcz_id": "2928299",
+   "sestava": {
+    "A": {
+     "nazev": "HC Sparta Praha",
+     "hraci": [
+      {
+       "c": "43",
+       "jmeno": "KOVÁŘ Jakub",
+       "post": "GK",
+       "hral": true
+      },
+      {
+       "c": "32",
+       "jmeno": "KOŘENÁŘ Josef",
+       "post": "GK",
+       "hral": false
+      },
+      {
+       "c": "36",
+       "jmeno": "KREJČÍK Jakub",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "10",
+       "jmeno": "PYSYK Mark",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "4",
+       "jmeno": "SIROTA Jakub",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "5",
+       "jmeno": "SEPPÄLÄ Mikael",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "7",
+       "jmeno": "KNOT Ronald",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "97",
+       "jmeno": "MAŠÍN Dominik",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "6",
+       "jmeno": "MICHÁLEK Matyáš",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "92",
+       "jmeno": "SEKÁČ Jiří",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "34",
+       "jmeno": "ŠPAČEK Michael",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "14",
+       "jmeno": "CHLAPÍK Filip",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "26",
+       "jmeno": "ŘEPÍK Michal",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "94",
+       "jmeno": "SHORE Devin",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "28",
+       "jmeno": "BLÜMEL Matěj",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "41",
+       "jmeno": "DANÍČEK Marek",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "91",
+       "jmeno": "VESALAINEN Kristian",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "23",
+       "jmeno": "KOUSAL Pavel",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "38",
+       "jmeno": "HYKA Tomáš",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "46",
+       "jmeno": "NAJMAN Ondřej",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "11",
+       "jmeno": "HRABÍK Kryštof",
+       "post": "F",
+       "hral": true
+      }
+     ],
+     "brankari": [
+      {
+       "c": "43",
+       "od": "00:00"
+      }
+     ],
+     "lavicka": [
+      {
+       "jmeno": "Patrik Augusta",
+       "funkce": "Hlavní trenér"
+      },
+      {
+       "jmeno": "Ladislav Šmíd",
+       "funkce": "Asistent trenéra"
+      },
+      {
+       "jmeno": "Tomáš Netík",
+       "funkce": "Asistent trenéra"
+      },
+      {
+       "jmeno": "Filip Zelenka",
+       "funkce": "Kustod"
+      },
+      {
+       "jmeno": "Michal Hučík",
+       "funkce": "Kustod"
+      },
+      {
+       "jmeno": "Josef Toma",
+       "funkce": "Kustod"
+      },
+      {
+       "jmeno": "Michal Neuvirth",
+       "funkce": "Asistent trenéra"
+      },
+      {
+       "jmeno": "David Jonáš",
+       "funkce": "Lékař"
+      }
+     ]
+    },
+    "B": {
+     "nazev": "BANES Motor České Budějovice",
+     "hraci": [
+      {
+       "c": "35",
+       "jmeno": "KLOUČEK Milan",
+       "post": "GK",
+       "hral": true
+      },
+      {
+       "c": "2",
+       "jmeno": "STRMEŇ Jan",
+       "post": "GK",
+       "hral": true
+      },
+      {
+       "c": "7",
+       "jmeno": "ŠTENCEL Jan",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "69",
+       "jmeno": "VRÁBLÍK Roman",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "14",
+       "jmeno": "VÁLA Ondřej",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "8",
+       "jmeno": "NORDSÄTER Lucas",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "12",
+       "jmeno": "PÝCHA Pavel",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "98",
+       "jmeno": "KACHYŇA Ondřej",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "13",
+       "jmeno": "NEDOROST Václav",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "95",
+       "jmeno": "OLESEN Nick Alexander",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "88",
+       "jmeno": "BULÍŘ Michal",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "16",
+       "jmeno": "LANTOŠI Róbert",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "64",
+       "jmeno": "POUR Jakub",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "42",
+       "jmeno": "HOCH Štěpán",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "45",
+       "jmeno": "ORDOŠ Jan",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "61",
+       "jmeno": "AHL Filip",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "92",
+       "jmeno": "BELL Parker",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "29",
+       "jmeno": "KRASTENBERGS Renars",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "56",
+       "jmeno": "BERÁNEK Martin",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "20",
+       "jmeno": "TOMAN Matěj",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "26",
+       "jmeno": "ZACHAR Marek",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "37",
+       "jmeno": "HEJDUK Marek",
+       "post": "F",
+       "hral": true
+      }
+     ],
+     "brankari": [
+      {
+       "c": "35",
+       "od": "00:00"
+      },
+      {
+       "c": "2",
+       "od": "20:00"
+      }
+     ],
+     "lavicka": [
+      {
+       "jmeno": "Róbert Petrovický",
+       "funkce": "Hlavní trenér"
+      },
+      {
+       "jmeno": "David Vrbata",
+       "funkce": "Asistent trenéra"
+      },
+      {
+       "jmeno": "Valdemar Jiruš",
+       "funkce": "Asistent trenéra"
+      },
+      {
+       "jmeno": "Pavel Bláha",
+       "funkce": "Vedoucí týmu"
+      },
+      {
+       "jmeno": "Pavel Vlašic",
+       "funkce": "Kustod"
+      },
+      {
+       "jmeno": "Jiří Rotbauer",
+       "funkce": "Kustod"
+      },
+      {
+       "jmeno": "Stanislav Hrubec",
+       "funkce": "Trenér brankářů"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "kolo": 8,
+   "datum": "pondělí 5.10.",
+   "domaci": "České Budějovice",
+   "hoste": "Kometa Brno",
+   "odehrano": true,
+   "vysledek": "5:1",
+   "hokejcz_id": "2928310",
+   "sestava": {
+    "A": {
+     "nazev": "BANES Motor České Budějovice",
+     "hraci": [
+      {
+       "c": "2",
+       "jmeno": "STRMEŇ Jan",
+       "post": "GK",
+       "hral": true
+      },
+      {
+       "c": "21",
+       "jmeno": "MAŘÍK Matyáš",
+       "post": "GK",
+       "hral": false
+      },
+      {
+       "c": "7",
+       "jmeno": "ŠTENCEL Jan",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "69",
+       "jmeno": "VRÁBLÍK Roman",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "14",
+       "jmeno": "VÁLA Ondřej",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "12",
+       "jmeno": "PÝCHA Pavel",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "8",
+       "jmeno": "NORDSÄTER Lucas",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "98",
+       "jmeno": "KACHYŇA Ondřej",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "13",
+       "jmeno": "NEDOROST Václav",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "45",
+       "jmeno": "ORDOŠ Jan",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "42",
+       "jmeno": "HOCH Štěpán",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "16",
+       "jmeno": "LANTOŠI Róbert",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "95",
+       "jmeno": "OLESEN Nick Alexander",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "92",
+       "jmeno": "BELL Parker",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "22",
+       "jmeno": "KOLÁČEK Josef",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "61",
+       "jmeno": "AHL Filip",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "88",
+       "jmeno": "BULÍŘ Michal",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "64",
+       "jmeno": "POUR Jakub",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "56",
+       "jmeno": "BERÁNEK Martin",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "20",
+       "jmeno": "TOMAN Matěj",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "26",
+       "jmeno": "ZACHAR Marek",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "37",
+       "jmeno": "HEJDUK Marek",
+       "post": "F",
+       "hral": true
+      }
+     ],
+     "brankari": [
+      {
+       "c": "2",
+       "od": "00:00"
+      }
+     ],
+     "lavicka": [
+      {
+       "jmeno": "Róbert Petrovický",
+       "funkce": "Hlavní trenér"
+      },
+      {
+       "jmeno": "David Vrbata",
+       "funkce": "Asistent trenéra"
+      },
+      {
+       "jmeno": "Valdemar Jiruš",
+       "funkce": "Asistent trenéra"
+      },
+      {
+       "jmeno": "Pavel Bláha",
+       "funkce": "Vedoucí týmu"
+      },
+      {
+       "jmeno": "Pavel Vlašic",
+       "funkce": "Kustod"
+      },
+      {
+       "jmeno": "Jiří Rotbauer",
+       "funkce": "Kustod"
+      },
+      {
+       "jmeno": "Stanislav Hrubec",
+       "funkce": "Trenér brankářů"
+      },
+      {
+       "jmeno": "Filip Krejčí",
+       "funkce": "Lékař"
+      }
+     ]
+    },
+    "B": {
+     "nazev": "HC KOMETA BRNO",
+     "hraci": [
+      {
+       "c": "33",
+       "jmeno": "RABČAN Eugen",
+       "post": "GK",
+       "hral": true
+      },
+      {
+       "c": "30",
+       "jmeno": "STEZKA Aleš",
+       "post": "GK",
+       "hral": true
+      },
+      {
+       "c": "23",
+       "jmeno": "ŠČOTKA Jan",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "28",
+       "jmeno": "ZÁBRANSKÝ Libor",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "21",
+       "jmeno": "KUČEŘÍK Radek",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "53",
+       "jmeno": "WITKOWSKI Luke",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "24",
+       "jmeno": "GULAŠI Michal",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "92",
+       "jmeno": "IRVING Aaron James",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "77",
+       "jmeno": "NEDOMLEL Richard",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "22",
+       "jmeno": "POSPÍŠIL Kristián",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "62",
+       "jmeno": "LEINO Robert",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "20",
+       "jmeno": "ZOHORNA Hynek",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "71",
+       "jmeno": "KUNC Michal",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "72",
+       "jmeno": "KOLLÁR Andrej",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "9",
+       "jmeno": "FLEK Jakub",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "91",
+       "jmeno": "KUSKO Silvester",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "75",
+       "jmeno": "ILOMÄKI Arttu",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "18",
+       "jmeno": "ZBOŘIL Adam",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "6",
+       "jmeno": "CINGEL Lukáš",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "80",
+       "jmeno": "ZOHORNA Tomáš",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "81",
+       "jmeno": "BRABENEC Jakub",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "27",
+       "jmeno": "ČAJKOVIČ Maxim",
+       "post": "F",
+       "hral": true
+      }
+     ],
+     "brankari": [
+      {
+       "c": "33",
+       "od": "00:00"
+      },
+      {
+       "c": "30",
+       "od": "22:05"
+      }
+     ],
+     "lavicka": [
+      {
+       "jmeno": "Libor Zábranský",
+       "funkce": "Hlavní trenér"
+      },
+      {
+       "jmeno": "Kamil Pokorný",
+       "funkce": "Asistent trenéra"
+      },
+      {
+       "jmeno": "Jiří Horáček",
+       "funkce": "Asistent trenéra"
+      },
+      {
+       "jmeno": "Martin Erat",
+       "funkce": "Asistent trenéra"
+      },
+      {
+       "jmeno": "Tomáš Dyčka",
+       "funkce": "Kustod"
+      },
+      {
+       "jmeno": "Kamil Skopal",
+       "funkce": "Masér"
+      },
+      {
+       "jmeno": "Filip Ondráček",
+       "funkce": "Vedoucí týmu"
+      },
+      {
+       "jmeno": "Jan Sedláček",
+       "funkce": "Kondiční trenér"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "kolo": 9,
+   "datum": "čtvrtek 8.10.",
+   "domaci": "Plzeň",
+   "hoste": "České Budějovice",
+   "odehrano": true,
+   "vysledek": "4:1",
+   "hokejcz_id": "2928315",
+   "sestava": {
+    "A": {
+     "nazev": "HC ŠKODA PLZEŇ",
+     "hraci": [
+      {
+       "c": "31",
+       "jmeno": "MALÍK Nick Oliver",
+       "post": "GK",
+       "hral": true
+      },
+      {
+       "c": "33",
+       "jmeno": "RŮŽIČKA Jan",
+       "post": "GK",
+       "hral": false
+      },
+      {
+       "c": "94",
+       "jmeno": "RUBINS Kristians",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "2",
+       "jmeno": "MACPHERSON Patrick Dylan",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "5",
+       "jmeno": "JEŘÁBEK Jakub",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "3",
+       "jmeno": "CHROMIAK Jakub",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "27",
+       "jmeno": "ROBERTSON Carter Aj",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "13",
+       "jmeno": "MEREZHKO Igor",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "8",
+       "jmeno": "MALÁK Daniel",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "92",
+       "jmeno": "TEPLÝ Michal",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "23",
+       "jmeno": "PETMAN Ville Emil",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "63",
+       "jmeno": "PETMAN Mikko Artturi",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "11",
+       "jmeno": "KATIC Michael Danny",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "12",
+       "jmeno": "LALANCETTE Christophe",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "17",
+       "jmeno": "ROHLÍK Ondřej",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "22",
+       "jmeno": "MĚCHURA Adam",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "42",
+       "jmeno": "FILIP Matyáš",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "18",
+       "jmeno": "STRNAD Lukáš",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "49",
+       "jmeno": "SIMON Dominik",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "30",
+       "jmeno": "LEV Jakub",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "84",
+       "jmeno": "SCHLEISS Jan",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "44",
+       "jmeno": "ŽEMLIČKA Richard",
+       "post": "F",
+       "hral": true
+      }
+     ],
+     "brankari": [
+      {
+       "c": "31",
+       "od": "00:00"
+      }
+     ],
+     "lavicka": [
+      {
+       "jmeno": "Jiří Veber",
+       "funkce": "Hlavní trenér"
+      },
+      {
+       "jmeno": "Václav Pletka",
+       "funkce": "Asistent trenéra"
+      },
+      {
+       "jmeno": "Rudolf Pejchar",
+       "funkce": "Asistent trenéra"
+      },
+      {
+       "jmeno": "Pavel Mastný",
+       "funkce": "Kustod"
+      },
+      {
+       "jmeno": "Joan Alexandr Nedelchev",
+       "funkce": "Kustod"
+      },
+      {
+       "jmeno": "Václav Karnos",
+       "funkce": "Lékař"
+      },
+      {
+       "jmeno": "Adam Havel",
+       "funkce": "Fyzioterapeut"
+      }
+     ]
+    },
+    "B": {
+     "nazev": "BANES Motor České Budějovice",
+     "hraci": [
+      {
+       "c": "2",
+       "jmeno": "STRMEŇ Jan",
+       "post": "GK",
+       "hral": true
+      },
+      {
+       "c": "21",
+       "jmeno": "MAŘÍK Matyáš",
+       "post": "GK",
+       "hral": true
+      },
+      {
+       "c": "7",
+       "jmeno": "ŠTENCEL Jan",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "69",
+       "jmeno": "VRÁBLÍK Roman",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "14",
+       "jmeno": "VÁLA Ondřej",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "12",
+       "jmeno": "PÝCHA Pavel",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "8",
+       "jmeno": "NORDSÄTER Lucas",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "98",
+       "jmeno": "KACHYŇA Ondřej",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "13",
+       "jmeno": "NEDOROST Václav",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "45",
+       "jmeno": "ORDOŠ Jan",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "42",
+       "jmeno": "HOCH Štěpán",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "16",
+       "jmeno": "LANTOŠI Róbert",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "95",
+       "jmeno": "OLESEN Nick Alexander",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "92",
+       "jmeno": "BELL Parker",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "22",
+       "jmeno": "KOLÁČEK Josef",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "61",
+       "jmeno": "AHL Filip",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "88",
+       "jmeno": "BULÍŘ Michal",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "64",
+       "jmeno": "POUR Jakub",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "56",
+       "jmeno": "BERÁNEK Martin",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "20",
+       "jmeno": "TOMAN Matěj",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "26",
+       "jmeno": "ZACHAR Marek",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "79",
+       "jmeno": "LEV Jakub",
+       "post": "F",
+       "hral": true
+      }
+     ],
+     "brankari": [
+      {
+       "c": "2",
+       "od": "00:00"
+      },
+      {
+       "c": "21",
+       "od": "08:02"
+      }
+     ],
+     "lavicka": [
+      {
+       "jmeno": "Róbert Petrovický",
+       "funkce": "Hlavní trenér"
+      },
+      {
+       "jmeno": "Valdemar Jiruš",
+       "funkce": "Asistent trenéra"
+      },
+      {
+       "jmeno": "Pavel Bláha",
+       "funkce": "Vedoucí týmu"
+      },
+      {
+       "jmeno": "Pavel Vlašic",
+       "funkce": "Kustod"
+      },
+      {
+       "jmeno": "Jiří Rotbauer",
+       "funkce": "Kustod"
+      },
+      {
+       "jmeno": "Stanislav Hrubec",
+       "funkce": "Trenér brankářů"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "kolo": 10,
+   "datum": "neděle 11.10.",
+   "domaci": "České Budějovice",
+   "hoste": "Liberec",
+   "odehrano": true,
+   "vysledek": "4:3",
+   "hokejcz_id": "2928320",
+   "sestava": {
+    "A": {
+     "nazev": "BANES Motor České Budějovice",
+     "hraci": [
+      {
+       "c": "21",
+       "jmeno": "MAŘÍK Matyáš",
+       "post": "GK",
+       "hral": true
+      },
+      {
+       "c": "30",
+       "jmeno": "BOGAČ Štěpán",
+       "post": "GK",
+       "hral": false
+      },
+      {
+       "c": "7",
+       "jmeno": "ŠTENCEL Jan",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "69",
+       "jmeno": "VRÁBLÍK Roman",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "14",
+       "jmeno": "VÁLA Ondřej",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "12",
+       "jmeno": "PÝCHA Pavel",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "8",
+       "jmeno": "NORDSÄTER Lucas",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "13",
+       "jmeno": "NEDOROST Václav",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "98",
+       "jmeno": "KACHYŇA Ondřej",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "95",
+       "jmeno": "OLESEN Nick Alexander",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "42",
+       "jmeno": "HOCH Štěpán",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "16",
+       "jmeno": "LANTOŠI Róbert",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "61",
+       "jmeno": "AHL Filip",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "92",
+       "jmeno": "BELL Parker",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "64",
+       "jmeno": "POUR Jakub",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "45",
+       "jmeno": "ORDOŠ Jan",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "88",
+       "jmeno": "BULÍŘ Michal",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "29",
+       "jmeno": "KRASTENBERGS Renars",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "56",
+       "jmeno": "BERÁNEK Martin",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "20",
+       "jmeno": "TOMAN Matěj",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "26",
+       "jmeno": "ZACHAR Marek",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "37",
+       "jmeno": "HEJDUK Marek",
+       "post": "F",
+       "hral": true
+      }
+     ],
+     "brankari": [
+      {
+       "c": "21",
+       "od": "00:00"
+      }
+     ],
+     "lavicka": [
+      {
+       "jmeno": "Róbert Petrovický",
+       "funkce": "Hlavní trenér"
+      },
+      {
+       "jmeno": "Valdemar Jiruš",
+       "funkce": "Asistent trenéra"
+      },
+      {
+       "jmeno": "Pavel Bláha",
+       "funkce": "Vedoucí týmu"
+      },
+      {
+       "jmeno": "Pavel Vlašic",
+       "funkce": "Kustod"
+      },
+      {
+       "jmeno": "Jiří Rotbauer",
+       "funkce": "Kustod"
+      },
+      {
+       "jmeno": "Stanislav Hrubec",
+       "funkce": "Trenér brankářů"
+      },
+      {
+       "jmeno": "Zdeněk Vodička",
+       "funkce": "Lékař"
+      },
+      {
+       "jmeno": "David Vrbata",
+       "funkce": "Asistent trenéra"
+      }
+     ]
+    },
+    "B": {
+     "nazev": "Bílí Tygři Liberec",
+     "hraci": [
+      {
+       "c": "60",
+       "jmeno": "KVÁČA Petr",
+       "post": "GK",
+       "hral": true
+      },
+      {
+       "c": "1",
+       "jmeno": "HAMALČÍK Petr",
+       "post": "GK",
+       "hral": false
+      },
+      {
+       "c": "79",
+       "jmeno": "GALVAS Tomáš",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "44",
+       "jmeno": "ŠIMEK Radim",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "8",
+       "jmeno": "ZILE Kristaps",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "19",
+       "jmeno": "KACHLÍŘ Lukáš",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "24",
+       "jmeno": "HAVLÍN Tomáš",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "90",
+       "jmeno": "ZEMAN Denis",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "21",
+       "jmeno": "PILÍŠEK Vojtěch",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "25",
+       "jmeno": "LENC Radan",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "71",
+       "jmeno": "NAJMAN Adam",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "43",
+       "jmeno": "SANDBERG Filip",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "18",
+       "jmeno": "RYCHLOVSKÝ Jakub",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "14",
+       "jmeno": "MUSIL Adam",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "20",
+       "jmeno": "PYTLÍK Jaromír",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "82",
+       "jmeno": "PROCHÁZKA Ondřej",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "83",
+       "jmeno": "PETROVSKÝ Servác",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "77",
+       "jmeno": "FAŠKO-RUDÁŠ Martin",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "53",
+       "jmeno": "VLACH Jaroslav",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "81",
+       "jmeno": "JANSA Filip",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "27",
+       "jmeno": "ŠPILKA Vasyl",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "13",
+       "jmeno": "PÉREZ LISA Jaromír",
+       "post": "F",
+       "hral": true
+      }
+     ],
+     "brankari": [
+      {
+       "c": "60",
+       "od": "00:00"
+      }
+     ],
+     "lavicka": [
+      {
+       "jmeno": "Jiří Kudrna",
+       "funkce": "Hlavní trenér"
+      },
+      {
+       "jmeno": "Adam Balatka",
+       "funkce": "Fyzioterapeut"
+      },
+      {
+       "jmeno": "Jan Plodek",
+       "funkce": "Kustod"
+      },
+      {
+       "jmeno": "Vlastimil Pospíšil",
+       "funkce": "Kustod"
+      },
+      {
+       "jmeno": "Tomáš Krupka",
+       "funkce": "Vedoucí týmu"
+      },
+      {
+       "jmeno": "Roman Mizera",
+       "funkce": "Lékař"
+      },
+      {
+       "jmeno": "David Kočí",
+       "funkce": "Asistent trenéra"
+      },
+      {
+       "jmeno": "Martin Láska",
+       "funkce": "Asistent trenéra"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "kolo": 11,
+   "datum": "pátek 16.10.",
+   "domaci": "Vítkovice",
+   "hoste": "České Budějovice",
+   "odehrano": true,
+   "vysledek": "1:3",
+   "hokejcz_id": "2928327",
+   "sestava": {
+    "A": {
+     "nazev": "HC VÍTKOVICE RIDERA",
+     "hraci": [
+      {
+       "c": "49",
+       "jmeno": "HRACHOVINA Dominik",
+       "post": "GK",
+       "hral": true
+      },
+      {
+       "c": "31",
+       "jmeno": "ŠVANČARA Patrik",
+       "post": "GK",
+       "hral": false
+      },
+      {
+       "c": "38",
+       "jmeno": "ZBOŘIL Jakub",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "93",
+       "jmeno": "HOLLAND Rhett",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "79",
+       "jmeno": "PAVELKA Tomáš",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "8",
+       "jmeno": "DEMEL Patrik",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "12",
+       "jmeno": "KŇAŽKO Samuel",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "26",
+       "jmeno": "PORT Vojtěch",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "5",
+       "jmeno": "BRŮNA Patrik",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "11",
+       "jmeno": "KALUS Marek",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "19",
+       "jmeno": "NELLIS Anthony",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "21",
+       "jmeno": "YETMAN Chad",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "24",
+       "jmeno": "ABDUL Jindřich",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "27",
+       "jmeno": "HRIVÍK Marek",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "22",
+       "jmeno": "FASNER Šimon",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "81",
+       "jmeno": "CIENCIALA David",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "67",
+       "jmeno": "HLADONIK Jan",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "47",
+       "jmeno": "LACKA Jakub",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "34",
+       "jmeno": "MACIAS Krzysztof Tomasz",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "89",
+       "jmeno": "ŠÍR Jan",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "28",
+       "jmeno": "BERNOVSKÝ Jan",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "82",
+       "jmeno": "PETR Dominik",
+       "post": "F",
+       "hral": false
+      }
+     ],
+     "brankari": [
+      {
+       "c": "49",
+       "od": "00:00"
+      }
+     ],
+     "lavicka": [
+      {
+       "jmeno": "Yorick Treille",
+       "funkce": "Hlavní trenér"
+      },
+      {
+       "jmeno": "Pavel Trnka",
+       "funkce": "Asistent trenéra"
+      },
+      {
+       "jmeno": "Martin Prusek",
+       "funkce": "Trenér brankářů"
+      },
+      {
+       "jmeno": "Jan Lamacz",
+       "funkce": "Kustod"
+      },
+      {
+       "jmeno": "Enriko Petrík",
+       "funkce": "Masér"
+      },
+      {
+       "jmeno": "Luděk Krayzel",
+       "funkce": "Asistent trenéra"
+      },
+      {
+       "jmeno": "David Travinský",
+       "funkce": "Fyzioterapeut"
+      },
+      {
+       "jmeno": "Radek Philipp",
+       "funkce": "Asistent trenéra"
+      }
+     ]
+    },
+    "B": {
+     "nazev": "BANES Motor České Budějovice",
+     "hraci": [
+      {
+       "c": "21",
+       "jmeno": "MAŘÍK Matyáš",
+       "post": "GK",
+       "hral": true
+      },
+      {
+       "c": "35",
+       "jmeno": "KLOUČEK Milan",
+       "post": "GK",
+       "hral": false
+      },
+      {
+       "c": "7",
+       "jmeno": "ŠTENCEL Jan",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "69",
+       "jmeno": "VRÁBLÍK Roman",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "8",
+       "jmeno": "NORDSÄTER Lucas",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "84",
+       "jmeno": "KUNDRÁTEK Tomáš",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "12",
+       "jmeno": "PÝCHA Pavel",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "13",
+       "jmeno": "NEDOROST Václav",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "14",
+       "jmeno": "VÁLA Ondřej",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "95",
+       "jmeno": "OLESEN Nick Alexander",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "42",
+       "jmeno": "HOCH Štěpán",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "16",
+       "jmeno": "LANTOŠI Róbert",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "61",
+       "jmeno": "AHL Filip",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "92",
+       "jmeno": "BELL Parker",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "64",
+       "jmeno": "POUR Jakub",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "45",
+       "jmeno": "ORDOŠ Jan",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "88",
+       "jmeno": "BULÍŘ Michal",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "22",
+       "jmeno": "KOLÁČEK Josef",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "56",
+       "jmeno": "BERÁNEK Martin",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "20",
+       "jmeno": "TOMAN Matěj",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "26",
+       "jmeno": "ZACHAR Marek",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "37",
+       "jmeno": "HEJDUK Marek",
+       "post": "F",
+       "hral": true
+      }
+     ],
+     "brankari": [
+      {
+       "c": "21",
+       "od": "00:00"
+      }
+     ],
+     "lavicka": [
+      {
+       "jmeno": "Róbert Petrovický",
+       "funkce": "Hlavní trenér"
+      },
+      {
+       "jmeno": "David Vrbata",
+       "funkce": "Asistent trenéra"
+      },
+      {
+       "jmeno": "Valdemar Jiruš",
+       "funkce": "Asistent trenéra"
+      },
+      {
+       "jmeno": "Pavel Bláha",
+       "funkce": "Vedoucí týmu"
+      },
+      {
+       "jmeno": "Pavel Vlašic",
+       "funkce": "Kustod"
+      },
+      {
+       "jmeno": "Jiří Rotbauer",
+       "funkce": "Kustod"
+      },
+      {
+       "jmeno": "Stanislav Hrubec",
+       "funkce": "Trenér brankářů"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "kolo": 12,
+   "datum": "neděle 18.10.",
+   "domaci": "České Budějovice",
+   "hoste": "Kladno",
+   "odehrano": true,
+   "vysledek": "2:3",
+   "hokejcz_id": "2928335",
+   "sestava": {
+    "A": {
+     "nazev": "BANES Motor České Budějovice",
+     "hraci": [
+      {
+       "c": "21",
+       "jmeno": "MAŘÍK Matyáš",
+       "post": "GK",
+       "hral": true
+      },
+      {
+       "c": "35",
+       "jmeno": "KLOUČEK Milan",
+       "post": "GK",
+       "hral": false
+      },
+      {
+       "c": "7",
+       "jmeno": "ŠTENCEL Jan",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "69",
+       "jmeno": "VRÁBLÍK Roman",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "8",
+       "jmeno": "NORDSÄTER Lucas",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "84",
+       "jmeno": "KUNDRÁTEK Tomáš",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "12",
+       "jmeno": "PÝCHA Pavel",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "13",
+       "jmeno": "NEDOROST Václav",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "14",
+       "jmeno": "VÁLA Ondřej",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "95",
+       "jmeno": "OLESEN Nick Alexander",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "42",
+       "jmeno": "HOCH Štěpán",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "16",
+       "jmeno": "LANTOŠI Róbert",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "61",
+       "jmeno": "AHL Filip",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "26",
+       "jmeno": "ZACHAR Marek",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "64",
+       "jmeno": "POUR Jakub",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "45",
+       "jmeno": "ORDOŠ Jan",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "88",
+       "jmeno": "BULÍŘ Michal",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "22",
+       "jmeno": "KOLÁČEK Josef",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "56",
+       "jmeno": "BERÁNEK Martin",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "20",
+       "jmeno": "TOMAN Matěj",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "37",
+       "jmeno": "HEJDUK Marek",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "79",
+       "jmeno": "LEV Jakub",
+       "post": "F",
+       "hral": false
+      }
+     ],
+     "brankari": [
+      {
+       "c": "21",
+       "od": "00:00"
+      }
+     ],
+     "lavicka": [
+      {
+       "jmeno": "Róbert Petrovický",
+       "funkce": "Hlavní trenér"
+      },
+      {
+       "jmeno": "David Vrbata",
+       "funkce": "Asistent trenéra"
+      },
+      {
+       "jmeno": "Valdemar Jiruš",
+       "funkce": "Asistent trenéra"
+      },
+      {
+       "jmeno": "Pavel Bláha",
+       "funkce": "Vedoucí týmu"
+      },
+      {
+       "jmeno": "Pavel Vlašic",
+       "funkce": "Kustod"
+      },
+      {
+       "jmeno": "Jiří Rotbauer",
+       "funkce": "Kustod"
+      },
+      {
+       "jmeno": "Stanislav Hrubec",
+       "funkce": "Trenér brankářů"
+      },
+      {
+       "jmeno": "Filip Krejčí",
+       "funkce": "Lékař"
+      }
+     ]
+    },
+    "B": {
+     "nazev": "Rytíři Kladno",
+     "hraci": [
+      {
+       "c": "39",
+       "jmeno": "PAVLÁT Dominik",
+       "post": "GK",
+       "hral": true
+      },
+      {
+       "c": "1",
+       "jmeno": "BRÍZGALA Adam",
+       "post": "GK",
+       "hral": false
+      },
+      {
+       "c": "5",
+       "jmeno": "KEMPNÝ Michal",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "63",
+       "jmeno": "JANDUS Martin",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "25",
+       "jmeno": "RULÍK Adam",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "77",
+       "jmeno": "MENDEL Griffin Jameson",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "13",
+       "jmeno": "TOMEK Tomáš",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "37",
+       "jmeno": "PIETRONIRO Phil",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "44",
+       "jmeno": "VANDAS Tomáš",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "28",
+       "jmeno": "AUDETTE Daniel",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "21",
+       "jmeno": "VIGNEAULT Samuel",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "20",
+       "jmeno": "OJAMÄKI Niko Juhani",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "59",
+       "jmeno": "KUBÍK Adam",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "9",
+       "jmeno": "KONEČNÝ Jakub",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "67",
+       "jmeno": "KLIMA Kelly Philip",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "53",
+       "jmeno": "MARCEL Marcel",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "97",
+       "jmeno": "PŘIKRYL Filip",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "7",
+       "jmeno": "HLAVA Nicolas",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "88",
+       "jmeno": "FORMAN Miroslav",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "16",
+       "jmeno": "MCGREGOR Ryan Michael",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "23",
+       "jmeno": "PROCHÁZKA Martin",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "19",
+       "jmeno": "RYŠAVÝ Martin",
+       "post": "F",
+       "hral": true
+      }
+     ],
+     "brankari": [
+      {
+       "c": "39",
+       "od": "00:00"
+      }
+     ],
+     "lavicka": [
+      {
+       "jmeno": "Radim Rulík",
+       "funkce": "Hlavní trenér"
+      },
+      {
+       "jmeno": "Tomáš Plekanec",
+       "funkce": "Asistent trenéra"
+      },
+      {
+       "jmeno": "Marek Židlický",
+       "funkce": "Asistent trenéra"
+      },
+      {
+       "jmeno": "Ondřej Pavelec",
+       "funkce": "Asistent trenéra"
+      },
+      {
+       "jmeno": "Jiří Jelínek",
+       "funkce": "Kustod"
+      },
+      {
+       "jmeno": "Marek Mudra",
+       "funkce": "Kustod"
+      },
+      {
+       "jmeno": "Radek Jirátko",
+       "funkce": "Vedoucí týmu"
+      },
+      {
+       "jmeno": "Michaela Darsová",
+       "funkce": "Fyzioterapeut"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "kolo": 13,
+   "datum": "pátek 23.10.",
+   "domaci": "Třinec",
+   "hoste": "České Budějovice",
+   "odehrano": true,
+   "vysledek": "2:6",
+   "hokejcz_id": "2928339",
+   "sestava": {
+    "A": {
+     "nazev": "HC Oceláři Třinec",
+     "hraci": [
+      {
+       "c": "90",
+       "jmeno": "KACETL Ondřej",
+       "post": "GK",
+       "hral": true
+      },
+      {
+       "c": "37",
+       "jmeno": "DOLEJŠ Daniel",
+       "post": "GK",
+       "hral": false
+      },
+      {
+       "c": "72",
+       "jmeno": "PRŮŠEK Pavel",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "55",
+       "jmeno": "ADÁMEK Marian",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "64",
+       "jmeno": "KOCH Patrik",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "76",
+       "jmeno": "GALVAS Jakub",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "24",
+       "jmeno": "PYROCHTA Filip",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "6",
+       "jmeno": "MUSIL David",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "39",
+       "jmeno": "PETROVICKÝ Rayen",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "34",
+       "jmeno": "KOVAŘČÍK Ondřej",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "87",
+       "jmeno": "KOVAŘČÍK Michal",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "94",
+       "jmeno": "NESTRAŠIL Andrej",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "56",
+       "jmeno": "DAŇO Marko",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "79",
+       "jmeno": "HUDÁČEK Libor",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "9",
+       "jmeno": "KUBIESA Matěj",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "96",
+       "jmeno": "VOŽENÍLEK Daniel",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "40",
+       "jmeno": "ROMAN Miloš",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "27",
+       "jmeno": "RŮŽIČKA Martin",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "19",
+       "jmeno": "HREHORČÁK Patrik",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "78",
+       "jmeno": "CHLÁN Petr",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "43",
+       "jmeno": "KUROVSKÝ Daniel",
+       "post": "F",
+       "hral": true
+      }
+     ],
+     "brankari": [
+      {
+       "c": "90",
+       "od": "00:00"
+      }
+     ],
+     "lavicka": [
+      {
+       "jmeno": "Boris Žabka",
+       "funkce": "Hlavní trenér"
+      },
+      {
+       "jmeno": "Jiří Raszka",
+       "funkce": "Asistent trenéra"
+      },
+      {
+       "jmeno": "Vladimír Dravecký",
+       "funkce": "Asistent trenéra"
+      },
+      {
+       "jmeno": "Petr Srbecký",
+       "funkce": "Masér"
+      },
+      {
+       "jmeno": "Michael Bujňák",
+       "funkce": "Kustod"
+      },
+      {
+       "jmeno": "Tomáš Sikora",
+       "funkce": "Fyzioterapeut"
+      },
+      {
+       "jmeno": "Pavel Smelík",
+       "funkce": "Kustod"
+      },
+      {
+       "jmeno": "Martin Beier",
+       "funkce": "Lékař"
+      }
+     ]
+    },
+    "B": {
+     "nazev": "BANES Motor České Budějovice",
+     "hraci": [
+      {
+       "c": "35",
+       "jmeno": "KLOUČEK Milan",
+       "post": "GK",
+       "hral": true
+      },
+      {
+       "c": "21",
+       "jmeno": "MAŘÍK Matyáš",
+       "post": "GK",
+       "hral": false
+      },
+      {
+       "c": "7",
+       "jmeno": "ŠTENCEL Jan",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "69",
+       "jmeno": "VRÁBLÍK Roman",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "8",
+       "jmeno": "NORDSÄTER Lucas",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "84",
+       "jmeno": "KUNDRÁTEK Tomáš",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "12",
+       "jmeno": "PÝCHA Pavel",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "13",
+       "jmeno": "NEDOROST Václav",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "14",
+       "jmeno": "VÁLA Ondřej",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "95",
+       "jmeno": "OLESEN Nick Alexander",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "42",
+       "jmeno": "HOCH Štěpán",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "16",
+       "jmeno": "LANTOŠI Róbert",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "61",
+       "jmeno": "AHL Filip",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "26",
+       "jmeno": "ZACHAR Marek",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "64",
+       "jmeno": "POUR Jakub",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "45",
+       "jmeno": "ORDOŠ Jan",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "88",
+       "jmeno": "BULÍŘ Michal",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "29",
+       "jmeno": "KRASTENBERGS Renars",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "56",
+       "jmeno": "BERÁNEK Martin",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "20",
+       "jmeno": "TOMAN Matěj",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "22",
+       "jmeno": "KOLÁČEK Josef",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "37",
+       "jmeno": "HEJDUK Marek",
+       "post": "F",
+       "hral": true
+      }
+     ],
+     "brankari": [
+      {
+       "c": "35",
+       "od": "00:00"
+      }
+     ],
+     "lavicka": [
+      {
+       "jmeno": "Róbert Petrovický",
+       "funkce": "Hlavní trenér"
+      },
+      {
+       "jmeno": "Valdemar Jiruš",
+       "funkce": "Asistent trenéra"
+      },
+      {
+       "jmeno": "Pavel Bláha",
+       "funkce": "Vedoucí týmu"
+      },
+      {
+       "jmeno": "Pavel Vlašic",
+       "funkce": "Kustod"
+      },
+      {
+       "jmeno": "Jiří Rotbauer",
+       "funkce": "Kustod"
+      },
+      {
+       "jmeno": "Stanislav Hrubec",
+       "funkce": "Trenér brankářů"
+      },
+      {
+       "jmeno": "David Vrbata",
+       "funkce": "Asistent trenéra"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "kolo": 14,
+   "datum": "neděle 25.10.",
+   "domaci": "Mladá Boleslav",
+   "hoste": "České Budějovice",
+   "odehrano": true,
+   "vysledek": "3:2sn",
+   "hokejcz_id": "2928347",
+   "sestava": {
+    "A": {
+     "nazev": "BK Mladá Boleslav",
+     "hraci": [
+      {
+       "c": "93",
+       "jmeno": "MOKRY Vojtěch",
+       "post": "GK",
+       "hral": true
+      },
+      {
+       "c": "38",
+       "jmeno": "FURCH Dominik",
+       "post": "GK",
+       "hral": false
+      },
+      {
+       "c": "85",
+       "jmeno": "BUDÍK Vojtěch",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "20",
+       "jmeno": "ZÁMORSKÝ Petr",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "71",
+       "jmeno": "MORAVEC David",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "45",
+       "jmeno": "PAVLÍK Filip",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "3",
+       "jmeno": "JÁNOŠÍK Adam",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "5",
+       "jmeno": "KUBÍČEK Šimon",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "21",
+       "jmeno": "VLASÁK Adam",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "17",
+       "jmeno": "HYKA Tomáš",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "16",
+       "jmeno": "GRÍGER Dávid",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "28",
+       "jmeno": "SKALICKÝ Pavol",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "18",
+       "jmeno": "REKONEN Aleksi Oskari",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "12",
+       "jmeno": "FOŘT Tomáš",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "81",
+       "jmeno": "KOBLÍŽEK Radek",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "77",
+       "jmeno": "JANDRIC Steven Nicholas",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "89",
+       "jmeno": "MORAND Antoine",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "51",
+       "jmeno": "MARTEL Jordan",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "94",
+       "jmeno": "LICHTAG Jakub",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "15",
+       "jmeno": "GAVARS Felikss",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "88",
+       "jmeno": "GARDOŇ Matěj",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "49",
+       "jmeno": "ZÁVORA Jan",
+       "post": "F",
+       "hral": false
+      }
+     ],
+     "brankari": [
+      {
+       "c": "93",
+       "od": "00:00"
+      }
+     ],
+     "lavicka": [
+      {
+       "jmeno": "Petr Haken",
+       "funkce": "Hlavní trenér"
+      },
+      {
+       "jmeno": "Jakub Klepiš",
+       "funkce": "Asistent trenéra"
+      },
+      {
+       "jmeno": "František Ptáček",
+       "funkce": "Asistent trenéra"
+      },
+      {
+       "jmeno": "Andrej Dančák",
+       "funkce": "Kustod"
+      },
+      {
+       "jmeno": "Filip Šindelář",
+       "funkce": "Vedoucí týmu"
+      },
+      {
+       "jmeno": "Petr Routner",
+       "funkce": "Fyzioterapeut"
+      },
+      {
+       "jmeno": "Martin Tondr",
+       "funkce": "Masér"
+      },
+      {
+       "jmeno": "Libor Blažek",
+       "funkce": "Lékař"
+      }
+     ]
+    },
+    "B": {
+     "nazev": "BANES Motor České Budějovice",
+     "hraci": [
+      {
+       "c": "35",
+       "jmeno": "KLOUČEK Milan",
+       "post": "GK",
+       "hral": true
+      },
+      {
+       "c": "21",
+       "jmeno": "MAŘÍK Matyáš",
+       "post": "GK",
+       "hral": false
+      },
+      {
+       "c": "7",
+       "jmeno": "ŠTENCEL Jan",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "69",
+       "jmeno": "VRÁBLÍK Roman",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "8",
+       "jmeno": "NORDSÄTER Lucas",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "84",
+       "jmeno": "KUNDRÁTEK Tomáš",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "12",
+       "jmeno": "PÝCHA Pavel",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "13",
+       "jmeno": "NEDOROST Václav",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "14",
+       "jmeno": "VÁLA Ondřej",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "95",
+       "jmeno": "OLESEN Nick Alexander",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "42",
+       "jmeno": "HOCH Štěpán",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "16",
+       "jmeno": "LANTOŠI Róbert",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "61",
+       "jmeno": "AHL Filip",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "26",
+       "jmeno": "ZACHAR Marek",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "64",
+       "jmeno": "POUR Jakub",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "45",
+       "jmeno": "ORDOŠ Jan",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "88",
+       "jmeno": "BULÍŘ Michal",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "29",
+       "jmeno": "KRASTENBERGS Renars",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "56",
+       "jmeno": "BERÁNEK Martin",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "20",
+       "jmeno": "TOMAN Matěj",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "22",
+       "jmeno": "KOLÁČEK Josef",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "37",
+       "jmeno": "HEJDUK Marek",
+       "post": "F",
+       "hral": true
+      }
+     ],
+     "brankari": [
+      {
+       "c": "35",
+       "od": "00:00"
+      }
+     ],
+     "lavicka": [
+      {
+       "jmeno": "Róbert Petrovický",
+       "funkce": "Hlavní trenér"
+      },
+      {
+       "jmeno": "Valdemar Jiruš",
+       "funkce": "Asistent trenéra"
+      },
+      {
+       "jmeno": "Pavel Bláha",
+       "funkce": "Vedoucí týmu"
+      },
+      {
+       "jmeno": "Pavel Vlašic",
+       "funkce": "Kustod"
+      },
+      {
+       "jmeno": "Jiří Rotbauer",
+       "funkce": "Kustod"
+      },
+      {
+       "jmeno": "Stanislav Hrubec",
+       "funkce": "Trenér brankářů"
+      },
+      {
+       "jmeno": "David Vrbata",
+       "funkce": "Asistent trenéra"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "kolo": 15,
+   "datum": "úterý 27.10.",
+   "domaci": "České Budějovice",
+   "hoste": "Hradec Králové",
+   "odehrano": true,
+   "vysledek": "3:0",
+   "hokejcz_id": "2928356",
+   "sestava": {
+    "A": {
+     "nazev": "BANES Motor České Budějovice",
+     "hraci": [
+      {
+       "c": "35",
+       "jmeno": "KLOUČEK Milan",
+       "post": "GK",
+       "hral": true
+      },
+      {
+       "c": "21",
+       "jmeno": "MAŘÍK Matyáš",
+       "post": "GK",
+       "hral": false
+      },
+      {
+       "c": "7",
+       "jmeno": "ŠTENCEL Jan",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "69",
+       "jmeno": "VRÁBLÍK Roman",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "8",
+       "jmeno": "NORDSÄTER Lucas",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "84",
+       "jmeno": "KUNDRÁTEK Tomáš",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "12",
+       "jmeno": "PÝCHA Pavel",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "13",
+       "jmeno": "NEDOROST Václav",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "98",
+       "jmeno": "KACHYŇA Ondřej",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "95",
+       "jmeno": "OLESEN Nick Alexander",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "42",
+       "jmeno": "HOCH Štěpán",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "16",
+       "jmeno": "LANTOŠI Róbert",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "61",
+       "jmeno": "AHL Filip",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "92",
+       "jmeno": "BELL Parker",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "26",
+       "jmeno": "ZACHAR Marek",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "45",
+       "jmeno": "ORDOŠ Jan",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "88",
+       "jmeno": "BULÍŘ Michal",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "29",
+       "jmeno": "KRASTENBERGS Renars",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "56",
+       "jmeno": "BERÁNEK Martin",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "20",
+       "jmeno": "TOMAN Matěj",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "22",
+       "jmeno": "KOLÁČEK Josef",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "37",
+       "jmeno": "HEJDUK Marek",
+       "post": "F",
+       "hral": true
+      }
+     ],
+     "brankari": [
+      {
+       "c": "35",
+       "od": "00:00"
+      }
+     ],
+     "lavicka": [
+      {
+       "jmeno": "Róbert Petrovický",
+       "funkce": "Hlavní trenér"
+      },
+      {
+       "jmeno": "David Vrbata",
+       "funkce": "Asistent trenéra"
+      },
+      {
+       "jmeno": "Valdemar Jiruš",
+       "funkce": "Asistent trenéra"
+      },
+      {
+       "jmeno": "Pavel Bláha",
+       "funkce": "Vedoucí týmu"
+      },
+      {
+       "jmeno": "Pavel Vlašic",
+       "funkce": "Kustod"
+      },
+      {
+       "jmeno": "Jiří Rotbauer",
+       "funkce": "Kustod"
+      },
+      {
+       "jmeno": "Stanislav Hrubec",
+       "funkce": "Trenér brankářů"
+      },
+      {
+       "jmeno": "Zdeněk Vodička",
+       "funkce": "Lékař"
+      }
+     ]
+    },
+    "B": {
+     "nazev": "Mountfield HK, a.s.",
+     "hraci": [
+      {
+       "c": "31",
+       "jmeno": "ŠKORVÁNEK Stanislav",
+       "post": "GK",
+       "hral": true
+      },
+      {
+       "c": "33",
+       "jmeno": "VOMÁČKA Tomáš",
+       "post": "GK",
+       "hral": false
+      },
+      {
+       "c": "29",
+       "jmeno": "KALINA Petr",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "9",
+       "jmeno": "PLÁNĚK Martin",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "40",
+       "jmeno": "KOCH Anders Gøbel",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "4",
+       "jmeno": "SÝKORA David",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "51",
+       "jmeno": "VUKOJEVIC Michael Gabriel",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "23",
+       "jmeno": "MELANCON Thomas Joseph",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "62",
+       "jmeno": "PILAŘ Radek",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "98",
+       "jmeno": "PAVLÍK Radovan",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "56",
+       "jmeno": "MIŠKÁŘ Patrik",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "69",
+       "jmeno": "RADIL Lukáš",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "94",
+       "jmeno": "PERRET Jordann",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "25",
+       "jmeno": "TAMÁŠI Alex",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "26",
+       "jmeno": "JERGL Aleš",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "46",
+       "jmeno": "KOHOUT Martin",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "34",
+       "jmeno": "KLIMA Kevin Petr",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "7",
+       "jmeno": "NENONEN Markus",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "96",
+       "jmeno": "ZDRÁHAL Patrik",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "48",
+       "jmeno": "ČACHO Viliam",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "90",
+       "jmeno": "KOUSAL Robert",
+       "post": "F",
+       "hral": true
+      }
+     ],
+     "brankari": [
+      {
+       "c": "31",
+       "od": "00:00"
+      }
+     ],
+     "lavicka": [
+      {
+       "jmeno": "Tomáš Martinec",
+       "funkce": "Hlavní trenér"
+      },
+      {
+       "jmeno": "Martin Vágner",
+       "funkce": "Asistent trenéra"
+      },
+      {
+       "jmeno": "Petr Koukal",
+       "funkce": "Funkcionář"
+      },
+      {
+       "jmeno": "Petr Pluhař",
+       "funkce": "Kustod"
+      },
+      {
+       "jmeno": "Tomáš Bartoň",
+       "funkce": "Masér"
+      },
+      {
+       "jmeno": "Bohdan Višňák",
+       "funkce": "Vedoucí týmu"
+      },
+      {
+       "jmeno": "Robert Horyna",
+       "funkce": "Funkcionář"
+      },
+      {
+       "jmeno": "Ivana Sahánková",
+       "funkce": "Fyzioterapeut"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "kolo": 16,
+   "datum": "pátek 30.10.",
+   "domaci": "Olomouc",
+   "hoste": "České Budějovice",
+   "odehrano": true,
+   "vysledek": "4:0",
+   "hokejcz_id": "2928363",
+   "sestava": {
+    "A": {
+     "nazev": "HC Olomouc",
+     "hraci": [
+      {
+       "c": "29",
+       "jmeno": "CICHOŇ Oldřich",
+       "post": "GK",
+       "hral": true
+      },
+      {
+       "c": "60",
+       "jmeno": "BROŽ Jan",
+       "post": "GK",
+       "hral": false
+      },
+      {
+       "c": "17",
+       "jmeno": "FREIBERGS Ralfs",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "37",
+       "jmeno": "STELLA Evan",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "61",
+       "jmeno": "COSGROVE Trevor",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "48",
+       "jmeno": "ČERNÝ Tomáš",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "44",
+       "jmeno": "GEWIESE Petr",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "4",
+       "jmeno": "RUTAR Adam",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "23",
+       "jmeno": "ONDRUŠEK Jiří",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "81",
+       "jmeno": "MATÝS Ondřej",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "18",
+       "jmeno": "BERGLUND Carl Gunnar",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "88",
+       "jmeno": "NAVRÁTIL Jakub",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "25",
+       "jmeno": "KOS Jakub",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "86",
+       "jmeno": "ŠTOHANZL Martin",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "32",
+       "jmeno": "ORSAVA Jakub",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "65",
+       "jmeno": "TOMEČEK Michal",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "21",
+       "jmeno": "VITOUCH David",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "34",
+       "jmeno": "VITOUCH Michal",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "97",
+       "jmeno": "HERČÍK Daniel",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "47",
+       "jmeno": "MACUH Rok",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "9",
+       "jmeno": "SENYSHYN Zachary",
+       "post": "F",
+       "hral": true
+      }
+     ],
+     "brankari": [
+      {
+       "c": "29",
+       "od": "00:00"
+      }
+     ],
+     "lavicka": [
+      {
+       "jmeno": "Petr Fiala",
+       "funkce": "Hlavní trenér"
+      },
+      {
+       "jmeno": "Petr Svoboda",
+       "funkce": "Asistent trenéra"
+      },
+      {
+       "jmeno": "Josef Podlaha",
+       "funkce": "Vedoucí týmu"
+      },
+      {
+       "jmeno": "Marek Čech",
+       "funkce": "Fyzioterapeut"
+      },
+      {
+       "jmeno": "Jakub Jarolím",
+       "funkce": "Fyzioterapeut"
+      },
+      {
+       "jmeno": "Matej Smižanský",
+       "funkce": "Funkcionář"
+      },
+      {
+       "jmeno": "Petr Přecechtěl",
+       "funkce": "Kustod"
+      },
+      {
+       "jmeno": "Petr Utíkal",
+       "funkce": "Lékař"
+      }
+     ]
+    },
+    "B": {
+     "nazev": "BANES Motor České Budějovice",
+     "hraci": [
+      {
+       "c": "35",
+       "jmeno": "KLOUČEK Milan",
+       "post": "GK",
+       "hral": true
+      },
+      {
+       "c": "21",
+       "jmeno": "MAŘÍK Matyáš",
+       "post": "GK",
+       "hral": true
+      },
+      {
+       "c": "7",
+       "jmeno": "ŠTENCEL Jan",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "72",
+       "jmeno": "MCCORMACK Graeme",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "8",
+       "jmeno": "NORDSÄTER Lucas",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "84",
+       "jmeno": "KUNDRÁTEK Tomáš",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "69",
+       "jmeno": "VRÁBLÍK Roman",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "13",
+       "jmeno": "NEDOROST Václav",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "12",
+       "jmeno": "PÝCHA Pavel",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "95",
+       "jmeno": "OLESEN Nick Alexander",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "42",
+       "jmeno": "HOCH Štěpán",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "16",
+       "jmeno": "LANTOŠI Róbert",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "37",
+       "jmeno": "HEJDUK Marek",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "92",
+       "jmeno": "BELL Parker",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "26",
+       "jmeno": "ZACHAR Marek",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "45",
+       "jmeno": "ORDOŠ Jan",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "88",
+       "jmeno": "BULÍŘ Michal",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "29",
+       "jmeno": "KRASTENBERGS Renars",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "56",
+       "jmeno": "BERÁNEK Martin",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "20",
+       "jmeno": "TOMAN Matěj",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "22",
+       "jmeno": "KOLÁČEK Josef",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "64",
+       "jmeno": "POUR Jakub",
+       "post": "F",
+       "hral": true
+      }
+     ],
+     "brankari": [
+      {
+       "c": "35",
+       "od": "00:00"
+      },
+      {
+       "c": "21",
+       "od": "40:00"
+      }
+     ],
+     "lavicka": [
+      {
+       "jmeno": "Róbert Petrovický",
+       "funkce": "Hlavní trenér"
+      },
+      {
+       "jmeno": "David Vrbata",
+       "funkce": "Asistent trenéra"
+      },
+      {
+       "jmeno": "Valdemar Jiruš",
+       "funkce": "Asistent trenéra"
+      },
+      {
+       "jmeno": "Pavel Bláha",
+       "funkce": "Vedoucí týmu"
+      },
+      {
+       "jmeno": "Pavel Vlašic",
+       "funkce": "Kustod"
+      },
+      {
+       "jmeno": "Jiří Rotbauer",
+       "funkce": "Kustod"
+      },
+      {
+       "jmeno": "Stanislav Hrubec",
+       "funkce": "Trenér brankářů"
+      },
+      {
+       "jmeno": "Zdeněk Vodička",
+       "funkce": "Lékař"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "kolo": 17,
+   "datum": "neděle 1.11.",
+   "domaci": "České Budějovice",
+   "hoste": "Karlovy Vary",
+   "odehrano": true,
+   "vysledek": "2:3",
+   "hokejcz_id": "2928371",
+   "sestava": {
+    "A": {
+     "nazev": "BANES Motor České Budějovice",
+     "hraci": [
+      {
+       "c": "35",
+       "jmeno": "KLOUČEK Milan",
+       "post": "GK",
+       "hral": true
+      },
+      {
+       "c": "21",
+       "jmeno": "MAŘÍK Matyáš",
+       "post": "GK",
+       "hral": false
+      },
+      {
+       "c": "7",
+       "jmeno": "ŠTENCEL Jan",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "84",
+       "jmeno": "KUNDRÁTEK Tomáš",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "69",
+       "jmeno": "VRÁBLÍK Roman",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "72",
+       "jmeno": "MCCORMACK Graeme",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "8",
+       "jmeno": "NORDSÄTER Lucas",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "13",
+       "jmeno": "NEDOROST Václav",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "12",
+       "jmeno": "PÝCHA Pavel",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "95",
+       "jmeno": "OLESEN Nick Alexander",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "42",
+       "jmeno": "HOCH Štěpán",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "16",
+       "jmeno": "LANTOŠI Róbert",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "29",
+       "jmeno": "KRASTENBERGS Renars",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "22",
+       "jmeno": "KOLÁČEK Josef",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "45",
+       "jmeno": "ORDOŠ Jan",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "56",
+       "jmeno": "BERÁNEK Martin",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "20",
+       "jmeno": "TOMAN Matěj",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "79",
+       "jmeno": "LEV Jakub",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "64",
+       "jmeno": "POUR Jakub",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "92",
+       "jmeno": "BELL Parker",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "37",
+       "jmeno": "HEJDUK Marek",
+       "post": "F",
+       "hral": true
+      }
+     ],
+     "brankari": [
+      {
+       "c": "35",
+       "od": "00:00"
+      }
+     ],
+     "lavicka": [
+      {
+       "jmeno": "Róbert Petrovický",
+       "funkce": "Hlavní trenér"
+      },
+      {
+       "jmeno": "David Vrbata",
+       "funkce": "Asistent trenéra"
+      },
+      {
+       "jmeno": "Valdemar Jiruš",
+       "funkce": "Asistent trenéra"
+      },
+      {
+       "jmeno": "Pavel Bláha",
+       "funkce": "Vedoucí týmu"
+      },
+      {
+       "jmeno": "Pavel Vlašic",
+       "funkce": "Kustod"
+      },
+      {
+       "jmeno": "Jiří Rotbauer",
+       "funkce": "Kustod"
+      },
+      {
+       "jmeno": "Stanislav Hrubec",
+       "funkce": "Trenér brankářů"
+      },
+      {
+       "jmeno": "Zdeněk Vodička",
+       "funkce": "Lékař"
+      }
+     ]
+    },
+    "B": {
+     "nazev": "BYD Energie Karlovy Vary",
+     "hraci": [
+      {
+       "c": "0",
+       "jmeno": "FRODL Dominik",
+       "post": "GK",
+       "hral": true
+      },
+      {
+       "c": "31",
+       "jmeno": "KRÁL Daniel",
+       "post": "GK",
+       "hral": false
+      },
+      {
+       "c": "9",
+       "jmeno": "BRICKLEY Daniel",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "6",
+       "jmeno": "KOČÍ Matteo",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "4",
+       "jmeno": "SCHMIEMANN Quinn Emanuel",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "55",
+       "jmeno": "MAMČICS Roberts",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "24",
+       "jmeno": "MYŠÁK Josef",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "7",
+       "jmeno": "ERONEN Elmeri",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "15",
+       "jmeno": "MINÁRIK Jakub",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "21",
+       "jmeno": "ČERNOCH Jiří",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "8",
+       "jmeno": "BERÁNEK Ondřej",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "29",
+       "jmeno": "ŠŤASTNÝ David",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "18",
+       "jmeno": "JONES Nicholas",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "86",
+       "jmeno": "BAMBULA Jan",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "11",
+       "jmeno": "SAPOUŠEK Robin",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "10",
+       "jmeno": "EGLE Haralds",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "12",
+       "jmeno": "TOMEK Petr",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "17",
+       "jmeno": "REDLICH Tomáš",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "23",
+       "jmeno": "JISKRA Vít",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "70",
+       "jmeno": "LUKOŠIK Adam",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "19",
+       "jmeno": "KOFFER Filip",
+       "post": "F",
+       "hral": false
+      }
+     ],
+     "brankari": [
+      {
+       "c": "0",
+       "od": "00:00"
+      }
+     ],
+     "lavicka": [
+      {
+       "jmeno": "Pavel Patera",
+       "funkce": "Hlavní trenér"
+      },
+      {
+       "jmeno": "Lukáš Mensator",
+       "funkce": "Vedoucí týmu"
+      },
+      {
+       "jmeno": "Tomáš Lengö",
+       "funkce": "Masér"
+      },
+      {
+       "jmeno": "Petr Benda",
+       "funkce": "Fyzioterapeut"
+      },
+      {
+       "jmeno": "Tomáš Polák",
+       "funkce": "Kustod"
+      },
+      {
+       "jmeno": "Miloslav Hořava",
+       "funkce": "Asistent trenéra"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "kolo": 18,
+   "datum": "pátek 13.11.",
+   "domaci": "Litvínov",
+   "hoste": "České Budějovice",
+   "odehrano": false,
+   "vysledek": "",
+   "hokejcz_id": "2928376",
+   "sestava": null
+  },
+  {
+   "kolo": 19,
+   "datum": "neděle 15.11.",
+   "domaci": "České Budějovice",
+   "hoste": "Pardubice",
+   "odehrano": false,
+   "vysledek": "",
+   "hokejcz_id": "2928381",
+   "sestava": null
+  },
+  {
+   "kolo": 20,
+   "datum": "čtvrtek 19.11.",
+   "domaci": "České Budějovice",
+   "hoste": "Sparta Praha",
+   "odehrano": false,
+   "vysledek": "",
+   "hokejcz_id": "2928390",
+   "sestava": null
+  },
+  {
+   "kolo": 21,
+   "datum": "neděle 22.11.",
+   "domaci": "Kometa Brno",
+   "hoste": "České Budějovice",
+   "odehrano": false,
+   "vysledek": "",
+   "hokejcz_id": "2928401",
+   "sestava": null
+  },
+  {
+   "kolo": 22,
+   "datum": "úterý 24.11.",
+   "domaci": "České Budějovice",
+   "hoste": "Plzeň",
+   "odehrano": false,
+   "vysledek": "",
+   "hokejcz_id": "2928406",
+   "sestava": null
+  },
+  {
+   "kolo": 23,
+   "datum": "pátek 27.11.",
+   "domaci": "Liberec",
+   "hoste": "České Budějovice",
+   "odehrano": false,
+   "vysledek": "",
+   "hokejcz_id": null,
+   "sestava": null
+  },
+  {
+   "kolo": 24,
+   "datum": "neděle 29.11.",
+   "domaci": "České Budějovice",
+   "hoste": "Vítkovice",
+   "odehrano": false,
+   "vysledek": "",
+   "hokejcz_id": "2928418",
+   "sestava": null
+  },
+  {
+   "kolo": 25,
+   "datum": "pátek 4.12.",
+   "domaci": "Kladno",
+   "hoste": "České Budějovice",
+   "odehrano": false,
+   "vysledek": "",
+   "hokejcz_id": "2928426",
+   "sestava": null
+  },
+  {
+   "kolo": 26,
+   "datum": "neděle 6.12.",
+   "domaci": "České Budějovice",
+   "hoste": "Třinec",
+   "odehrano": false,
+   "vysledek": "",
+   "hokejcz_id": "2928430",
+   "sestava": null
+  },
+  {
+   "kolo": 27,
+   "datum": "pátek 18.12.",
+   "domaci": "České Budějovice",
+   "hoste": "Mladá Boleslav",
+   "odehrano": false,
+   "vysledek": "",
+   "hokejcz_id": "2928438",
+   "sestava": null
+  },
+  {
+   "kolo": 28,
+   "datum": "neděle 20.12.",
+   "domaci": "Hradec Králové",
+   "hoste": "České Budějovice",
+   "odehrano": false,
+   "vysledek": "",
+   "hokejcz_id": "2928448",
+   "sestava": null
+  },
+  {
+   "kolo": 29,
+   "datum": "úterý 22.12.",
+   "domaci": "České Budějovice",
+   "hoste": "Olomouc",
+   "odehrano": false,
+   "vysledek": "",
+   "hokejcz_id": "2928454",
+   "sestava": null
+  },
+  {
+   "kolo": 30,
+   "datum": "sobota 26.12.",
+   "domaci": "Karlovy Vary",
+   "hoste": "České Budějovice",
+   "odehrano": false,
+   "vysledek": "",
+   "hokejcz_id": "2928462",
+   "sestava": null
+  },
+  {
+   "kolo": 31,
+   "datum": "pondělí 28.12.",
+   "domaci": "České Budějovice",
+   "hoste": "Litvínov",
+   "odehrano": false,
+   "vysledek": "",
+   "hokejcz_id": "2928467",
+   "sestava": null
+  },
+  {
+   "kolo": 32,
+   "datum": "středa 30.12.",
+   "domaci": "Pardubice",
+   "hoste": "České Budějovice",
+   "odehrano": false,
+   "vysledek": "",
+   "hokejcz_id": "2928472",
+   "sestava": null
+  },
+  {
+   "kolo": 33,
+   "datum": "neděle 3.1.",
+   "domaci": "Sparta Praha",
+   "hoste": "České Budějovice",
+   "odehrano": false,
+   "vysledek": "",
+   "hokejcz_id": "2928481",
+   "sestava": null
+  },
+  {
+   "kolo": 34,
+   "datum": "středa 13.1.",
+   "domaci": "Kometa Brno",
+   "hoste": "České Budějovice",
+   "odehrano": false,
+   "vysledek": "",
+   "hokejcz_id": "2928492",
+   "sestava": null
+  },
+  {
+   "kolo": 35,
+   "datum": "neděle 10.1.",
+   "domaci": "Plzeň",
+   "hoste": "České Budějovice",
+   "odehrano": false,
+   "vysledek": "",
+   "hokejcz_id": "2928497",
+   "sestava": null
+  },
+  {
+   "kolo": 36,
+   "datum": "pátek 15.1.",
+   "domaci": "České Budějovice",
+   "hoste": "Liberec",
+   "odehrano": false,
+   "vysledek": "",
+   "hokejcz_id": "2928502",
+   "sestava": null
+  },
+  {
+   "kolo": 37,
+   "datum": "neděle 17.1.",
+   "domaci": "Vítkovice",
+   "hoste": "České Budějovice",
+   "odehrano": false,
+   "vysledek": "",
+   "hokejcz_id": "2928509",
+   "sestava": null
+  },
+  {
+   "kolo": 38,
+   "datum": "pátek 22.1.",
+   "domaci": "České Budějovice",
+   "hoste": "Kladno",
+   "odehrano": false,
+   "vysledek": "",
+   "hokejcz_id": "2928517",
+   "sestava": null
+  },
+  {
+   "kolo": 39,
+   "datum": "neděle 24.1.",
+   "domaci": "Třinec",
+   "hoste": "České Budějovice",
+   "odehrano": false,
+   "vysledek": "",
+   "hokejcz_id": "2928521",
+   "sestava": null
+  },
+  {
+   "kolo": 40,
+   "datum": "úterý 26.1.",
+   "domaci": "Mladá Boleslav",
+   "hoste": "České Budějovice",
+   "odehrano": false,
+   "vysledek": "",
+   "hokejcz_id": "2928529",
+   "sestava": null
+  },
+  {
+   "kolo": 41,
+   "datum": "pátek 29.1.",
+   "domaci": "České Budějovice",
+   "hoste": "Hradec Králové",
+   "odehrano": false,
+   "vysledek": "",
+   "hokejcz_id": "2928539",
+   "sestava": null
+  },
+  {
+   "kolo": 42,
+   "datum": "neděle 31.1.",
+   "domaci": "Olomouc",
+   "hoste": "České Budějovice",
+   "odehrano": false,
+   "vysledek": "",
+   "hokejcz_id": "2928545",
+   "sestava": null
+  },
+  {
+   "kolo": 43,
+   "datum": "úterý 2.2.",
+   "domaci": "České Budějovice",
+   "hoste": "Karlovy Vary",
+   "odehrano": false,
+   "vysledek": "",
+   "hokejcz_id": "2928553",
+   "sestava": null
+  },
+  {
+   "kolo": 44,
+   "datum": "pátek 5.2.",
+   "domaci": "Litvínov",
+   "hoste": "České Budějovice",
+   "odehrano": false,
+   "vysledek": "",
+   "hokejcz_id": "2928558",
+   "sestava": null
+  },
+  {
+   "kolo": 45,
+   "datum": "neděle 7.2.",
+   "domaci": "České Budějovice",
+   "hoste": "Pardubice",
+   "odehrano": false,
+   "vysledek": "",
+   "hokejcz_id": "2928563",
+   "sestava": null
+  },
+  {
+   "kolo": 46,
+   "datum": "středa 17.2.",
+   "domaci": "České Budějovice",
+   "hoste": "Sparta Praha",
+   "odehrano": false,
+   "vysledek": "",
+   "hokejcz_id": "2928572",
+   "sestava": null
+  },
+  {
+   "kolo": 47,
+   "datum": "pátek 19.2.",
+   "domaci": "České Budějovice",
+   "hoste": "Kometa Brno",
+   "odehrano": false,
+   "vysledek": "",
+   "hokejcz_id": "2928583",
+   "sestava": null
+  },
+  {
+   "kolo": 48,
+   "datum": "neděle 21.2.",
+   "domaci": "České Budějovice",
+   "hoste": "Plzeň",
+   "odehrano": false,
+   "vysledek": "",
+   "hokejcz_id": "2928588",
+   "sestava": null
+  },
+  {
+   "kolo": 49,
+   "datum": "pátek 26.2.",
+   "domaci": "Liberec",
+   "hoste": "České Budějovice",
+   "odehrano": false,
+   "vysledek": "",
+   "hokejcz_id": "2928593",
+   "sestava": null
+  },
+  {
+   "kolo": 50,
+   "datum": "neděle 28.2.",
+   "domaci": "České Budějovice",
+   "hoste": "Vítkovice",
+   "odehrano": false,
+   "vysledek": "",
+   "hokejcz_id": "2928600",
+   "sestava": null
+  },
+  {
+   "kolo": 51,
+   "datum": "úterý 2.3.",
+   "domaci": "Kladno",
+   "hoste": "České Budějovice",
+   "odehrano": false,
+   "vysledek": "",
+   "hokejcz_id": "2928608",
+   "sestava": null
+  },
+  {
+   "kolo": 52,
+   "datum": "pátek 5.3.",
+   "domaci": "České Budějovice",
+   "hoste": "Třinec",
+   "odehrano": false,
+   "vysledek": "",
+   "hokejcz_id": "2928612",
+   "sestava": null
+  }
+ ]
+}
