@@ -126,10 +126,12 @@ def parse_goalkeepers(table) -> dict:
         cells = row.find_all("td")
         if len(cells) < 11:
             continue
-        pid = _player_id(cells[1])
         name = _text(cells[1])
-        if not pid or not name:
+        if not name or not re.search(r"[A-Za-zÀ-ž]", name):
             continue
+        # Nový hráč často ještě nemá na hcmotor.cz profil (jméno bez odkazu)
+        # — dřív se takový řádek zahodil. Teď dostane náhradní ID podle jména.
+        pid = _player_id(cells[1]) or f"jm:{name}"
         players[pid] = {
             "jmeno": name,
             "cislo": _text(cells[0]),
@@ -159,10 +161,12 @@ def parse_skaters(table) -> dict:
         cells = row.find_all("td")
         if len(cells) < 8:
             continue
-        pid = _player_id(cells[1])
         name = _text(cells[1])
-        if not pid or not name:
+        if not name or not re.search(r"[A-Za-zÀ-ž]", name):
             continue
+        # Nový hráč často ještě nemá na hcmotor.cz profil (jméno bez odkazu)
+        # — dřív se takový řádek zahodil. Teď dostane náhradní ID podle jména.
+        pid = _player_id(cells[1]) or f"jm:{name}"
         players[pid] = {
             "jmeno": name,
             "cislo": _text(cells[0]),
@@ -362,6 +366,17 @@ METRIC_LABELS = {"z": "zápas", "g": "gól", "b": "bod"}
 SCOPE_LABELS = {"motor": "za Motor", "extraliga": "v Extralize"}
 
 
+def _old_stats(old_group: dict, pid: str, name: str):
+    """Předchozí stav hráče — podle ID, a když nesedí (hráč mezitím
+    dostal na hcmotor.cz profil, nebo ho naopak ztratil), podle jména."""
+    if pid in old_group:
+        return old_group[pid]
+    for s in old_group.values():
+        if s.get("jmeno") == name:
+            return s
+    return None
+
+
 def build_changes(old: dict, new: dict, baseline: dict) -> list:
     """Vrátí seznam textových řádků se změnami od minulého běhu."""
     changes = []
@@ -370,7 +385,7 @@ def build_changes(old: dict, new: dict, baseline: dict) -> list:
     old_skaters = old.get("skaters", {})
     new_skaters = new.get("skaters", {})
     for pid, stats in new_skaters.items():
-        old_stats = old_skaters.get(pid)
+        old_stats = _old_stats(old_skaters, pid, stats["jmeno"])
         if old_stats is None:
             debut = (
                 f" — debut: {stats['z']} zápas, {stats['g']}G {stats['a']}A, {stats['b']}b"
@@ -412,7 +427,7 @@ def build_changes(old: dict, new: dict, baseline: dict) -> list:
     old_gk = old.get("goalkeepers", {})
     new_gk = new.get("goalkeepers", {})
     for pid, stats in new_gk.items():
-        old_stats = old_gk.get(pid)
+        old_stats = _old_stats(old_gk, pid, stats["jmeno"])
         if old_stats is None:
             debut = (
                 f" — debut: {stats['z']} zápas, {stats['usp']:.1f}% úspěšnost"
@@ -462,7 +477,7 @@ def build_corrections(old: dict, new: dict) -> list:
 
     old_skaters = old.get("skaters", {})
     for pid, stats in new.get("skaters", {}).items():
-        old_stats = old_skaters.get(pid)
+        old_stats = _old_stats(old_skaters, pid, stats["jmeno"])
         if old_stats is None:
             continue  # nový hráč — není s čím srovnávat
         dz = stats["z"] - old_stats.get("z", 0)
@@ -478,7 +493,7 @@ def build_corrections(old: dict, new: dict) -> list:
 
     old_gk = old.get("goalkeepers", {})
     for pid, stats in new.get("goalkeepers", {}).items():
-        old_stats = old_gk.get(pid)
+        old_stats = _old_stats(old_gk, pid, stats["jmeno"])
         if old_stats is None:
             continue
         dz = stats["z"] - old_stats.get("z", 0)
@@ -524,7 +539,7 @@ def build_milestone_crossings(old: dict, new: dict, baseline: dict) -> list:
         b = baseline.get(name)
         if not b or b.get("typ") != "skater":
             continue
-        old_stats = old_skaters.get(pid, {})
+        old_stats = _old_stats(old_skaters, pid, name) or {}
         for scope in ("motor", "extraliga"):
             base_scope = b.get(scope)
             if not base_scope:
@@ -539,7 +554,7 @@ def build_milestone_crossings(old: dict, new: dict, baseline: dict) -> list:
         b = baseline.get(name)
         if not b or b.get("typ") != "goalkeeper":
             continue
-        old_stats = old_gk.get(pid, {})
+        old_stats = _old_stats(old_gk, pid, name) or {}
         for scope in ("motor", "extraliga"):
             base_scope = b.get(scope)
             if not base_scope:
@@ -979,8 +994,9 @@ HOKEJCZ_IDS_FILE = SCRIPT_DIR / "hokejcz_zapasy.json"  # ID zápasů dodaná sta
 HOKEJOVYZAPIS_URL_TMPL = "https://hokejovyzapis.cz/pdf/print/cs-html/?hokejczId={id}"
 ZAPIS_STATE_FILE = SCRIPT_DIR / "zapis_state.json"
 ZAPIS_GAMES_SHOWN = 5  # kolik posledních zápasů se zobrazuje v záložce Zápas
-ZAPIS_VERZE = 5  # 2 = hráči na ledě, 3 = nejlepší hráči, 4 = soupiska/třetiny/nájezdy/rozhodčí, 5 = pozice hráčů
+ZAPIS_VERZE = 6  # 2 = hráči na ledě, 3 = nejlepší hráči, 4 = soupiska/třetiny/nájezdy/rozhodčí, 5 = pozice hráčů, 6 = sestavy
 ZAPIS_MAX_PER_RUN = 80  # strop stažených zápisů za jeden běh (zpětné doplnění)
+LINEUPS_JSON = DOCS_DIR / "sestavy-data.json"  # data pro docs/sestavy.html
 
 # Zkratky důvodů trestů — některé potvrzené přímo Gafferem (NROZ, PODR,
 # ZHK, NBR), zbytek je odhad podle obvyklých kódů ČSLH a NENÍ oficiálně
@@ -1101,6 +1117,7 @@ def _parse_zapis_team_table(table) -> dict:
 
     roster = {}
     nastoupili = []
+    poradi = []  # soupiska v pořadí zápisu (= po formacích) pro docs/sestavy.html
     for r in rows:
         no = _text(r.select_one("td.value_no"))
         attended = r.select_one("td.value_name")
@@ -1109,6 +1126,7 @@ def _parse_zapis_team_table(table) -> dict:
             roster[no] = (_norm_name(_text(name)), _text(r.select_one("td.value_pos")))
             if attended:
                 nastoupili.append(roster[no][0])
+            poradi.append({"c": no, "jmeno": _text(name), "post": roster[no][1], "hral": bool(attended)})
 
     def rn(no):
         return roster[no][0] if no in roster else f"č. {no}"
@@ -1155,7 +1173,7 @@ def _parse_zapis_team_table(table) -> dict:
                 "do": end,
             })
 
-    return {"nazev": nazev, "soupiska": roster, "nastoupili": nastoupili,
+    return {"nazev": nazev, "soupiska": roster, "nastoupili": nastoupili, "poradi": poradi,
             "goly": goly, "tresty": tresty}
 
 
@@ -1284,6 +1302,41 @@ def _parse_referees(soup) -> dict:
     return out
 
 
+def _parse_goalie_changes(soup) -> dict:
+    """Tabulka 'Střídání brankářů' (čas | BA | BB) -> {"A": [{"c", "od"}],
+    "B": [...]}: kdo chytal od kdy. '--' (hra bez brankáře) se přeskočí,
+    takže návrat téhož gólmana do brány se nepočítá jako střídání."""
+    for tr in soup.find_all("tr"):
+        if _direct_cells(tr)[:3] != ["čas", "BA", "BB"]:
+            continue
+        out = {"A": [], "B": []}
+        for row in _rows_after(tr):
+            if len(row) < 3 or not re.match(r"\d+:\d\d$", row[0]):
+                continue
+            for side, no in (("A", row[1]), ("B", row[2])):
+                if no and no.isdigit() and (not out[side] or out[side][-1]["c"] != no):
+                    out[side].append({"c": no, "od": row[0]})
+        if out["A"] or out["B"]:
+            return out
+    return {"A": [], "B": []}
+
+
+def _parse_bench(soup) -> dict:
+    """'Osoby na hráčské lavici' -> {"A": [{"jmeno", "funkce"}], "B": [...]}.
+    První tabulka je domácích, druhá hostů; jméno je ve tvaru Jméno Příjmení."""
+    out, sides = {"A": [], "B": []}, iter(("A", "B"))
+    for tr in soup.find_all("tr"):
+        if _direct_cells(tr)[:2] != ["Příjmení, jméno", "Funkce"]:
+            continue
+        side = next(sides, None)
+        if not side:
+            break
+        for row in _rows_after(tr):
+            if len(row) >= 2 and row[0] and row[1]:
+                out[side].append({"jmeno": row[0], "funkce": row[1]})
+    return out
+
+
 def _match_roster_name(name: str, roster: dict) -> str:
     """'Milan Klouček' -> 'Klouček Milan' podle soupisky (porovnává se
     množina slov bez ohledu na pořadí a velikost písmen). Když se nenajde,
@@ -1358,7 +1411,49 @@ def fetch_zapis(hokejcz_id: str) -> dict | None:
         "najezdy_raw": najezdy_raw,
         "najezdy": _build_shootout(najezdy_raw, domaci, hoste),
         "rozhodci": _parse_referees(soup),
+        "sestava": _lineup_payload(soup, domaci, hoste),
     }
+
+
+def _lineup_payload(soup, domaci: dict, hoste: dict) -> dict:
+    """Surová data sestav pro docs/sestavy.html (formátování řeší stránka)."""
+    gch, bench = _parse_goalie_changes(soup), _parse_bench(soup)
+    return {
+        side: {"nazev": t["nazev"], "hraci": t["poradi"], "brankari": gch[side], "lavicka": bench[side]}
+        for side, t in (("A", domaci), ("B", hoste))
+    }
+
+
+def write_lineups_json(games: list, zapis_state: dict) -> None:
+    """docs/sestavy-data.json: všechna kola Motoru (i budoucí) s hokejczId,
+    u odehraných i se sestavou ze zápisu. Stránka sestavy.html si z toho
+    nabídne výběr kola. Nesmí shodit běh."""
+    try:
+        try:
+            hk = fetch_hokejcz_matches()
+        except Exception as exc:
+            print(f"Sestavy: rozpis na hokej.cz nedostupný ({exc}), ID zápasů chybí.")
+            hk = []
+        zk = {z["kolo"]: z for z in zapis_state.get("zapasy", [])}
+        out = []
+        for g in sorted(games, key=lambda g: g["kolo"]):
+            z = zk.get(g["kolo"]) or {}
+            out.append({
+                "kolo": g["kolo"],
+                "datum": g.get("datum", ""),
+                "domaci": g.get("domaci", ""),
+                "hoste": g.get("hoste", ""),
+                "odehrano": bool(g.get("odehrano")),
+                "vysledek": g.get("vysledek") or "",
+                "hokejcz_id": z.get("hokejcz_id") or find_hokejcz_id(g, hk),
+                "sestava": z.get("sestava"),
+            })
+        LINEUPS_JSON.write_text(json.dumps(
+            {"aktualizovano": datetime.now(ZoneInfo("Europe/Prague")).strftime("%d.%m.%Y %H:%M"), "zapasy": out},
+            ensure_ascii=False, indent=1), encoding="utf-8")
+        print(f"Sestavy: zapsáno {len(out)} kol, se sestavou {sum(1 for x in out if x['sestava'])}.")
+    except Exception as exc:
+        print(f"Varování: data sestav se nepodařilo zapsat ({exc}).")
 
 
 def load_zapis_state() -> dict:
@@ -3168,6 +3263,7 @@ def main() -> None:
         best_changes = []
         pred = {z["kolo"]: bool(z.get("nejlepsi")) for z in zapis_state.get("zapasy", [])}
         zapis_state = update_zapis_state(zapis_state, games)
+        write_lineups_json(games, zapis_state)
         # Hlášení jen u zápasů, které jsme ještě nikdy neměli (ne při
         # zpětném přestahování starých zápisů kvůli nové verzi).
         zapasy_vse = zapis_state.get("zapasy", [])
