@@ -140,5 +140,164 @@
         "z": 2
       }
     }
+  },
+  "2026-11": {
+    "skaters": {
+      "Štencel Jan": {
+        "z": 16,
+        "g": 4,
+        "a": 8,
+        "b": 12
+      },
+      "Vráblík Roman": {
+        "z": 16,
+        "g": 2,
+        "a": 2,
+        "b": 4
+      },
+      "Pýcha Pavel": {
+        "z": 16,
+        "g": 0,
+        "a": 3,
+        "b": 3
+      },
+      "Vála Ondřej": {
+        "z": 14,
+        "g": 0,
+        "a": 3,
+        "b": 3
+      },
+      "Kundrátek Tomáš": {
+        "z": 8,
+        "g": 0,
+        "a": 2,
+        "b": 2
+      },
+      "Nedorost Václav": {
+        "z": 10,
+        "g": 0,
+        "a": 2,
+        "b": 2
+      },
+      "Nordsäter Lucas": {
+        "z": 16,
+        "g": 0,
+        "a": 2,
+        "b": 2
+      },
+      "Andersen Ole Einar Engeland": {
+        "z": 5,
+        "g": 0,
+        "a": 1,
+        "b": 1
+      },
+      "Kachyňa Ondřej": {
+        "z": 10,
+        "g": 0,
+        "a": 1,
+        "b": 1
+      },
+      "Lantoši Róbert": {
+        "z": 16,
+        "g": 2,
+        "a": 12,
+        "b": 14
+      },
+      "Olesen Nick Alexander": {
+        "z": 15,
+        "g": 8,
+        "a": 4,
+        "b": 12
+      },
+      "Hoch Štěpán": {
+        "z": 16,
+        "g": 1,
+        "a": 10,
+        "b": 11
+      },
+      "Ordoš Jan": {
+        "z": 16,
+        "g": 6,
+        "a": 2,
+        "b": 8
+      },
+      "Ahl Filip": {
+        "z": 15,
+        "g": 3,
+        "a": 4,
+        "b": 7
+      },
+      "Beránek Martin": {
+        "z": 16,
+        "g": 4,
+        "a": 1,
+        "b": 5
+      },
+      "Bell Parker": {
+        "z": 13,
+        "g": 3,
+        "a": 2,
+        "b": 5
+      },
+      "Toman Matěj": {
+        "z": 16,
+        "g": 1,
+        "a": 4,
+        "b": 5
+      },
+      "Pour Jakub": {
+        "z": 15,
+        "g": 4,
+        "a": 0,
+        "b": 4
+      },
+      "Koláček Josef": {
+        "z": 8,
+        "g": 3,
+        "a": 1,
+        "b": 4
+      },
+      "Krastenbergs Renars": {
+        "z": 12,
+        "g": 1,
+        "a": 3,
+        "b": 4
+      },
+      "Bulíř Michal": {
+        "z": 16,
+        "g": 0,
+        "a": 4,
+        "b": 4
+      },
+      "Zachar Marek": {
+        "z": 16,
+        "g": 1,
+        "a": 0,
+        "b": 1
+      },
+      "Hejduk Marek": {
+        "z": 15,
+        "g": 0,
+        "a": 1,
+        "b": 1
+      },
+      "Lev Jakub": {
+        "z": 1,
+        "g": 0,
+        "a": 0,
+        "b": 0
+      }
+    },
+    "goalkeepers": {
+      "Klouček Milan": {
+        "z": 9
+      },
+      "Mařík Matyáš": {
+        "z": 5
+      },
+      "Strmeň Jan": {
+        "z": 5
+      }
+    }
   }
 }

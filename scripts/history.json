@@ -1,5 +1,22 @@
 [
   {
+    "date": "2026-11-02",
+    "changes": [
+      "🆕 Nový hráč v tabulce: McCormack Graeme — debut: 1 zápas, 0G 0A, 0b",
+      "🏒 Lantoši Róbert: +2b (2A) → celkem 16b (2G 14A, 17 zápasů)",
+      "🏒 Olesen Nick Alexander: +1b (1A) → celkem 13b (8G 5A, 16 zápasů)",
+      "🏒 Hoch Štěpán: +1b (1G) → celkem 12b (2G 10A, 17 zápasů)",
+      "🏒 Bell Parker: +1b (1G) → celkem 6b (4G 2A, 14 zápasů)",
+      "▫️ Bez bodu odehráli zápas (14): Beránek Martin, Hejduk Marek, Koláček Josef, Krastenbergs Renars, Kundrátek Tomáš, Lev Jakub, Nedorost Václav, Nordsäter Lucas, Ordoš Jan, Pour Jakub, Pýcha Pavel, Toman Matěj, Vráblík Roman, Štencel Jan",
+      "🥅 Klouček Milan: odchytal další zápas — 92.5% úspěšnost, 2.41 průměr (10 zápasů celkem)",
+      "🎯 Klouček Milan: dosáhl/a 200. zápasu v Extralize!",
+      "⭐ 17. kolo — nejlepší hráči: Motor: Hoch Štěpán · soupeř: Šťastný David",
+      "🚑 17. kolo — na soupisce chyběli: Ahl Filip, Andersen Ole Einar, Bulíř Michal, Kachyňa Ondřej, Mařík Matyáš, Strmeň Jan, Vála Ondřej, Zachar Marek",
+      "↩️ Lev Jakub: návrat do sestavy po 7 zápasech (17. kolo)"
+    ],
+    "corrections": []
+  },
+  {
     "date": "2026-10-30",
     "changes": [
       "▫️ Bez bodu odehráli zápas (19): Bell Parker, Beránek Martin, Bulíř Michal, Hejduk Marek, Hoch Štěpán, Koláček Josef, Krastenbergs Renars, Kundrátek Tomáš, Lantoši Róbert, Nedorost Václav, Nordsäter Lucas, Olesen Nick Alexander, Ordoš Jan, Pour Jakub, Pýcha Pavel, Toman Matěj, Vráblík Roman, Zachar Marek, Štencel Jan",
@@ -90,21 +107,5 @@
       "📝 Klouček Milan: oprava statistik (-1Zás) — beze změny počtu zápasů",
       "📝 Mařík Matyáš: oprava statistik (-1Zás) — beze změny počtu zápasů"
     ]
-  },
-  {
-    "date": "2026-10-17",
-    "changes": [
-      "🏒 Štencel Jan: +2b (1G+1A) → celkem 11b (4G 7A, 11 zápasů)",
-      "🏒 Vráblík Roman: +1b (1G) → celkem 3b (1G 2A, 11 zápasů)",
-      "🏒 Lantoši Róbert: +1b (1A) → celkem 10b (2G 8A, 11 zápasů)",
-      "🏒 Hoch Štěpán: +1b (1A) → celkem 8b (1G 7A, 11 zápasů)",
-      "🏒 Ordoš Jan: +1b (1G) → celkem 6b (5G 1A, 11 zápasů)",
-      "🏒 Bell Parker: +1b (1A) → celkem 4b (3G 1A, 11 zápasů)",
-      "🏒 Hejduk Marek: +1b (1A) → celkem 1b (0G 1A, 10 zápasů)",
-      "▫️ Bez bodu odehráli zápas (13): Ahl Filip, Beránek Martin, Bulíř Michal, Koláček Josef, Kundrátek Tomáš, Nedorost Václav, Nordsäter Lucas, Olesen Nick Alexander, Pour Jakub, Pýcha Pavel, Toman Matěj, Vála Ondřej, Zachar Marek",
-      "🥅 Mařík Matyáš: odchytal další zápas — 91.5% úspěšnost, 2.45 průměr (3 zápasů celkem)",
-      "🎯 Vála Ondřej: dosáhl/a 350. zápasu v Extralize!"
-    ],
-    "corrections": []
   }
 ]
