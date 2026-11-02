@@ -194,8 +194,91 @@ function rowsAfter(headerTr) {
   return rows.slice(rows.indexOf(headerTr) + 1).map(cells);
 }
 
-function parseZapisHtml(html) {
-  const doc = new DOMParser().parseFromString(html, "text/html");
+// Vstup ze schránky: prohlížeč při kopírování často zahodí CSS třídy,
+// proto se zkouší třikrát — podle tříd (stažený zápis), podle obsahu
+// (registrační číslo + pozice) a nakonec z čistého textu.
+function parseZapis(html, text) {
+  let r = null;
+  if (html) {
+    const doc = new DOMParser().parseFromString(html, "text/html");
+    r = parseByClasses(doc) || parseByContent(doc);
+    if (r) addBenchAndGoalies(doc, r);
+  }
+  if (!ok(r) && text) r = parseText(text);
+  return ok(r) ? r : null;
+}
+const ok = r => r && r.A.hraci.length && r.B.hraci.length;
+const parseZapisHtml = html => parseZapis(html, "");
+
+const notAttended = el => {
+  for (let e = el; e && e.tagName !== "TR"; e = e.parentElement) {
+    if (/not_attended/.test(e.className || "")) return true;
+    if (/line-through/.test(e.getAttribute && e.getAttribute("style") || "")) return true;
+  }
+  return !!el.querySelector?.("[class*=not_attended], [style*=line-through]");
+};
+
+function teamNames(doc) {
+  const out = {};
+  for (const td of doc.querySelectorAll("td, th")) {
+    const t = clean(td.textContent);
+    const side = /^Domácí tým \(A\)$/.test(t) ? "A" : /^Hostující tým \(B\)$/.test(t) ? "B" : null;
+    if (side && !out[side]) {
+      const next = td.nextElementSibling;
+      out[side] = { el: td, nazev: next ? clean(next.textContent).replace(/\s+\d+\s*$/, "") : "" };
+    }
+  }
+  return out;
+}
+
+function parseByContent(doc) {
+  const names = teamNames(doc);
+  const res = { A: { nazev: names.A?.nazev || "Domácí", hraci: [], brankari: [], lavicka: [] },
+                B: { nazev: names.B?.nazev || "Hosté", hraci: [], brankari: [], lavicka: [] } };
+  const regs = [...doc.querySelectorAll("td, th")].filter(c => !c.querySelector("table") && /^\d{10}$/.test(clean(c.textContent)));
+  for (const reg of regs) {
+    const row = [...reg.parentElement.children];
+    const i = row.indexOf(reg);
+    const post = clean(row[i + 1]?.textContent);
+    if (!/^(GK|D|F)$/.test(post)) continue;
+    const no = clean(row[0]?.textContent);
+    let nameCell = row.slice(1, i).find(c => /\p{Lu}{2,}/u.test(c.textContent));
+    if (!/^\d{1,3}$/.test(no) || !nameCell) continue;
+    const inner = nameCell.querySelector("td");
+    const jmeno = clean((inner || nameCell).textContent).replace(/(\s+[CAJ])+$/, "");
+    const side = names.B && (names.B.el.compareDocumentPosition(reg) & Node.DOCUMENT_POSITION_FOLLOWING) ? "B" : "A";
+    res[side].hraci.push({ c: no, jmeno, post, hral: !notAttended(nameCell) });
+  }
+  return ok(res) ? res : null;
+}
+
+function parseText(text) {
+  const t = text.replace(/\u00a0/g, " ");
+  const cut = t.search(/Hostující tým \(B\)/);
+  const res = { A: { nazev: "Domácí", hraci: [], brankari: [], lavicka: [] },
+                B: { nazev: "Hosté", hraci: [], brankari: [], lavicka: [] } };
+  const mA = /Domácí tým \(A\)\s*([^\n\t]+)/.exec(t), mB = /Hostující tým \(B\)\s*([^\n\t]+)/.exec(t);
+  if (mA) res.A.nazev = clean(mA[1]).replace(/\s+\d+\s*$/, "");
+  if (mB) res.B.nazev = clean(mB[1]).replace(/\s+\d+\s*$/, "");
+  const re = /(?:^|\s)(\d{1,3})\s+(\p{Lu}[\p{Lu}'’\- ]*\p{Lu}\s+[^\t\n\d]*?)\s+(\d{10})\s+(GK|D|F)(?=\s|$)/gu;
+  let m;
+  while ((m = re.exec(t))) {
+    const side = cut >= 0 && m.index > cut ? "B" : "A";
+    res[side].hraci.push({ c: m[1], jmeno: clean(m[2]).replace(/(\s+[CAJ])+$/, ""), post: m[4], hral: true });
+  }
+  // lavička: řádky „Jméno Příjmení <tab> funkce“ za nadpisem, 1. blok = A, 2. = B
+  const blocks = t.split(/Příjmení, jméno\s+Funkce/).slice(1, 3);
+  blocks.forEach((blk, k) => {
+    for (const line of blk.split(/\n/)) {
+      const p = line.split(/\t+/).map(clean).filter(Boolean);
+      if (p.length >= 2 && /trenér|asist/i.test(p[1])) res[k ? "B" : "A"].lavicka.push({ jmeno: p[0], funkce: p[1] });
+      if (/Hostující tým|Hlavní pořadatel|Rozhodčí/.test(line)) break;
+    }
+  });
+  return res;
+}
+
+function parseByClasses(doc) {
   const tables = [...doc.querySelectorAll("td.team_name")].map(td => td.closest("table")).filter(Boolean);
   if (tables.length < 2) return null;
 
@@ -212,7 +295,10 @@ function parseZapisHtml(html) {
     return { nazev, hraci, brankari: [], lavicka: [] };
   };
   const out = { A: team(tables[0]), B: team(tables[1]) };
+  return ok(out) ? out : null;
+}
 
+function addBenchAndGoalies(doc, out) {
   for (const tr of doc.querySelectorAll("tr")) {
     const c = cells(tr);
     if (c[0] === "čas" && c[1] === "BA" && c[2] === "BB") {
@@ -235,7 +321,6 @@ function parseZapisHtml(html) {
       out[s].lavicka = rowsAfter(tr).filter(r => r[0] && r[1]).map(r => ({ jmeno: r[0], funkce: r[1] }));
     }
   }
-  return out;
 }
 
 // ===== Skládání textu =======================================================
@@ -361,13 +446,12 @@ async function loadLive(id) {
   setStatus("Stahuji zápis…");
   try {
     const ctl = new AbortController();
-    const timer = setTimeout(() => ctl.abort(), 8000);
+    const timer = setTimeout(() => ctl.abort(), 4000);
     const res = await fetch(ZAPIS_URL(id), { signal: ctl.signal });
     clearTimeout(timer);
     if (!res.ok) throw new Error(res.status);
     const parsed = parseZapisHtml(await res.text());
-    if (!parsed) throw new Error("bez soupisek");
-    if (!parsed.A.hraci.length || !parsed.B.hraci.length) {
+    if (!parsed) {
       setStatus("Zápis zatím nemá vyplněné soupisky (vyplňují se zhruba hodinu před zápasem).", "warn");
       return;
     }
@@ -376,7 +460,7 @@ async function loadLive(id) {
   } catch (err) {
     // Typicky CORS — web zápisu cizí stránce stažení nedovolí.
     $("paste-box").style.display = "block";
-    setStatus("Zápis se nepodařilo stáhnout přímo z prohlížeče — vlož ho prosím ze schránky (návod níže).", "warn");
+    setStatus("Web zápisu nedovolí stažení z jiné stránky — vlož zápis ze schránky (návod níže).", "warn");
   }
 }
 
@@ -413,10 +497,12 @@ $("load-manual").addEventListener("click", () => {
 });
 
 $("paste").addEventListener("paste", e => {
-  const html = e.clipboardData && e.clipboardData.getData("text/html");
+  const cd = e.clipboardData;
+  const html = cd ? cd.getData("text/html") : "";
+  const text = cd ? cd.getData("text/plain") : "";
   e.preventDefault();
-  const parsed = html ? parseZapisHtml(html) : null;
-  if (!parsed || !parsed.A.hraci.length) {
+  const parsed = parseZapis(html, text);
+  if (!parsed) {
     setStatus("Ve vloženém obsahu nejsou soupisky zápisu — zkopíruj celou stránku zápisu (Ctrl+A, Ctrl+C).", "warn");
     return;
   }
