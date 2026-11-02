@@ -1,0 +1,467 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sestavy ze zápisu</title>
+<style>
+  :root {
+    --bg: #f4f3ef; --card: #ffffff; --ink: #16202e; --muted: #6a7280; --line: #dcd9d0;
+    --accent: #0f3d75; --accent-ink: #ffffff; --ok: #1f7a46; --warn: #a1520c; --field: #fbfaf7;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #10151d; --card: #18202b; --ink: #e6e9ee; --muted: #8f99a8; --line: #2b3646;
+      --accent: #5d9be8; --accent-ink: #0b1220; --ok: #5cc48a; --warn: #e3a35c; --field: #131a24;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font: 15px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  main { max-width: 920px; margin: 0 auto; padding: 16px 16px 48px; }
+  header { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }
+  h1 { font-size: 18px; margin: 0; letter-spacing: .01em; }
+  header a { color: var(--muted); font-size: 13px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 14px; margin-bottom: 12px; }
+  .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  label.small, .small { font-size: 13px; color: var(--muted); }
+  select, input[type=text], textarea {
+    font: inherit; color: var(--ink); background: var(--field);
+    border: 1px solid var(--line); border-radius: 6px; padding: 7px 9px;
+  }
+  select { flex: 1 1 340px; min-width: 0; }
+  input[type=text] { flex: 1 1 220px; min-width: 0; }
+  button, .btn {
+    font: inherit; font-size: 14px; border: 1px solid var(--accent); background: var(--accent); color: var(--accent-ink);
+    border-radius: 6px; padding: 7px 12px; cursor: pointer; text-decoration: none; white-space: nowrap;
+  }
+  button.ghost, .btn.ghost { background: transparent; color: var(--accent); }
+  button:disabled { opacity: .5; cursor: default; }
+  #status { margin: 10px 0 0; font-size: 13px; color: var(--muted); min-height: 1.2em; }
+  #status.ok { color: var(--ok); } #status.warn { color: var(--warn); }
+  .team { margin-bottom: 14px; }
+  .team:last-child { margin-bottom: 0; }
+  .team-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; margin-bottom: 6px; }
+  .team-head strong { font-size: 14px; }
+  textarea.out { width: 100%; min-height: 92px; resize: vertical; line-height: 1.5; }
+  .check { font-size: 12.5px; color: var(--muted); margin-top: 4px; }
+  .check b { color: var(--ink); font-weight: 600; }
+  #paste-box { display: none; }
+  #paste-box ol { margin: 6px 0 10px 18px; padding: 0; font-size: 14px; }
+  #paste { width: 100%; min-height: 70px; }
+  details { margin-top: 4px; }
+  summary { cursor: pointer; font-size: 13px; color: var(--muted); }
+  code { font-size: 12.5px; }
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>Sestavy ze zápisu o utkání</h1>
+    <a href="stats.html">← statistiky</a>
+  </header>
+
+  <div class="card">
+    <div class="row">
+      <select id="kolo" aria-label="Zápas"><option>Načítám rozpis…</option></select>
+      <button id="load">Načíst</button>
+    </div>
+    <div class="row" style="margin-top:8px">
+      <input type="text" id="manual" placeholder="nebo ID / odkaz na zápis (hokejczId=…)">
+      <button class="ghost" id="load-manual">Načíst podle ID</button>
+      <a class="btn ghost hidden" id="open-zapis" target="_blank" rel="noopener">Otevřít zápis ↗</a>
+    </div>
+    <div class="row small" style="margin-top:8px">
+      <label><input type="checkbox" id="motor-first"> Motor vždy první</label>
+    </div>
+    <p id="status"></p>
+  </div>
+
+  <div class="card" id="paste-box">
+    <strong style="font-size:14px">Zápis nejde stáhnout přímo — vlož ho ze schránky</strong>
+    <ol>
+      <li>Klepni na <em>Otevřít zápis ↗</em> výše.</li>
+      <li>Na stránce zápisu označ vše (<code>Ctrl+A</code> / <code>⌘A</code>) a zkopíruj (<code>Ctrl+C</code>).</li>
+      <li>Klepni do pole níže a vlož (<code>Ctrl+V</code>).</li>
+    </ol>
+    <textarea id="paste" placeholder="sem vlož zkopírovaný zápis"></textarea>
+  </div>
+
+  <div class="card hidden" id="result">
+    <div id="teams"></div>
+    <div class="row" style="margin-top:10px">
+      <button id="copy-all">Kopírovat obě sestavy</button>
+    </div>
+  </div>
+
+  <details class="small">
+    <summary>Jak se sestava skládá</summary>
+    <p>Hráči jdou v pořadí ze zápisu: brankář, který začínal (střídání se dopíše do závorky s minutou),
+    obránci, útočníci po trojicích. Kdo je v zápisu veden jako nenastoupivší, se vynechá.
+    Trenéři = hlavní trenér a asistenti. Iniciála se přidá, když se příjmení v zápase opakuje
+    (v obou týmech, včetně trenérů); stálé výjimky typu „V. Nedorost ml.“ jsou v tabulce
+    <code>JMENA</code> na začátku skriptu této stránky. Text v polích lze před zkopírováním ručně upravit.</p>
+  </details>
+</main>
+
+<script>
+// ===== Nastavení (uprav podle potřeby) =====================================
+
+// Stálé výjimky ve jménech — klíč „Příjmení Jméno“ (jak je v zápisu),
+// hodnota = přesně to, co se vypíše. Mají přednost před automatickými iniciálami.
+const JMENA = {
+  "Nedorost Václav": "V. Nedorost ml.",
+  "Vrbata David": "D. Vrbata",
+  "Hořava Miloslav": "M. Hořava mladší",
+};
+
+// Krátké názvy týmů — první shoda s oficiálním názvem v zápisu vyhrává.
+const TYMY = [
+  [/motor|budějovice/i, "Motor"],
+  [/sparta/i, "Sparta"],
+  [/pardubice|dynamo/i, "Pardubice"],
+  [/třinec|oceláři/i, "Třinec"],
+  [/vítkovice/i, "Vítkovice"],
+  [/plzeň|škoda/i, "Plzeň"],
+  [/liberec|tygři/i, "Liberec"],
+  [/hradec|mountfield/i, "Hradec"],
+  [/kometa|brno/i, "Kometa"],
+  [/olomouc/i, "Olomouc"],
+  [/litvínov|verva/i, "Litvínov"],
+  [/kladno|rytíři/i, "Kladno"],
+  [/boleslav/i, "Ml. Boleslav"],
+  [/vary|energie/i, "Vary"],
+  [/zlín|berani/i, "Zlín"],
+  [/jihlava|dukla/i, "Jihlava"],
+];
+
+const ZAPIS_URL = id => `https://hokejovyzapis.cz/pdf/print/cs-html/?hokejczId=${id}`;
+const DATA_URL = "sestavy-data.json";
+
+// ===== Pomocné ==============================================================
+
+const $ = id => document.getElementById(id);
+const clean = t => (t || "").replace(/\s+/g, " ").trim();
+const cells = tr => [...tr.children].filter(c => /^T[DH]$/.test(c.tagName)).map(c => clean(c.textContent));
+const isUpperTok = t => /\p{Lu}/u.test(t) && t === t.toLocaleUpperCase("cs");
+
+function properCase(tok) {
+  return tok.toLocaleLowerCase("cs")
+    .replace(/(^|[-'’])(\p{L})/gu, (m, p, ch) => p + ch.toLocaleUpperCase("cs"))
+    .replace(/^Mc(\p{L})/u, (m, ch) => "Mc" + ch.toLocaleUpperCase("cs"));
+}
+
+// „KLOUČEK Milan“ -> {prijmeni: "Klouček", jmeno: "Milan"}
+function splitPlayer(raw) {
+  const toks = clean(raw).split(" ");
+  const sur = [];
+  while (toks.length && isUpperTok(toks[0])) sur.push(properCase(toks.shift()));
+  if (!sur.length && toks.length) sur.push(toks.shift());
+  return { prijmeni: sur.join(" "), jmeno: toks.join(" ") };
+}
+
+// „Róbert Petrovický“ / „Miloslav Hořava ml.“ -> {prijmeni, jmeno, pripona}
+function splitCoach(raw) {
+  const toks = clean(raw).split(" ");
+  let pripona = "";
+  if (toks.length > 2 && /^(ml\.?|st\.?|mladší|starší|jr\.?|sr\.?)$/i.test(toks[toks.length - 1])) pripona = toks.pop();
+  const prijmeni = toks.pop() || "";
+  return { prijmeni, jmeno: toks.join(" "), pripona };
+}
+
+function shortTeam(nazev) {
+  for (const [re, kratce] of TYMY) if (re.test(nazev)) return kratce;
+  return nazev;
+}
+const isMotor = nazev => shortTeam(nazev) === "Motor";
+
+function joinCs(list) {
+  return list.length < 2 ? list.join("") : list.slice(0, -1).join(", ") + " a " + list[list.length - 1];
+}
+
+function minuteOf(t) {
+  const m = /^(\d+):(\d\d)$/.exec(t || "");
+  return m ? Math.floor((+m[1] * 60 + +m[2]) / 60) + 1 : null;
+}
+
+// ===== Parsování HTML zápisu (stejná struktura jako sestavy-data.json) ======
+
+function rowsAfter(headerTr) {
+  const rows = [...headerTr.closest("table").rows];
+  return rows.slice(rows.indexOf(headerTr) + 1).map(cells);
+}
+
+function parseZapisHtml(html) {
+  const doc = new DOMParser().parseFromString(html, "text/html");
+  const tables = [...doc.querySelectorAll("td.team_name")].map(td => td.closest("table")).filter(Boolean);
+  if (tables.length < 2) return null;
+
+  const team = table => {
+    const nazev = clean(table.querySelector("td.team_name").textContent).replace(/\s+\d+\s*$/, "");
+    const hraci = [];
+    for (const r of table.querySelectorAll("tr.values")) {
+      const no = clean(r.querySelector("td.value_no")?.textContent);
+      const played = r.querySelector("td.value_name");
+      const name = played || r.querySelector("td.value_name_not_attended");
+      if (!no || !name || !clean(name.textContent)) continue;
+      hraci.push({ c: no, jmeno: clean(name.textContent), post: clean(r.querySelector("td.value_pos")?.textContent), hral: !!played });
+    }
+    return { nazev, hraci, brankari: [], lavicka: [] };
+  };
+  const out = { A: team(tables[0]), B: team(tables[1]) };
+
+  for (const tr of doc.querySelectorAll("tr")) {
+    const c = cells(tr);
+    if (c[0] === "čas" && c[1] === "BA" && c[2] === "BB") {
+      const gk = { A: [], B: [] };
+      for (const row of rowsAfter(tr)) {
+        if (!/^\d+:\d\d$/.test(row[0] || "")) continue;
+        [["A", row[1]], ["B", row[2]]].forEach(([s, no]) => {
+          if (/^\d+$/.test(no || "") && (!gk[s].length || gk[s][gk[s].length - 1].c !== no)) gk[s].push({ c: no, od: row[0] });
+        });
+      }
+      if (gk.A.length || gk.B.length) { out.A.brankari = gk.A; out.B.brankari = gk.B; break; }
+    }
+  }
+  const sides = ["A", "B"];
+  for (const tr of doc.querySelectorAll("tr")) {
+    const c = cells(tr);
+    if (c[0] === "Příjmení, jméno" && c[1] === "Funkce") {
+      const s = sides.shift();
+      if (!s) break;
+      out[s].lavicka = rowsAfter(tr).filter(r => r[0] && r[1]).map(r => ({ jmeno: r[0], funkce: r[1] }));
+    }
+  }
+  return out;
+}
+
+// ===== Skládání textu =======================================================
+
+function buildLines(sestava, motorFirst) {
+  const sideData = ["A", "B"].map(side => {
+    const t = sestava[side];
+    const byNo = Object.fromEntries(t.hraci.map(h => [h.c, h]));
+    const played = t.hraci.filter(h => h.hral);
+    const gkSeq = (t.brankari || []).filter(b => byNo[b.c]);
+    if (!gkSeq.length) {  // zápis před zápasem: bez střídání → první brankář v soupisce
+      const first = played.find(h => h.post === "GK");
+      if (first) gkSeq.push({ c: first.c, od: "00:00" });
+    }
+    const coaches = [];
+    const lav = t.lavicka || [];
+    lav.filter(o => /hlavní\s*trenér/i.test(o.funkce)).forEach(o => coaches.push({ ...splitCoach(o.jmeno), head: true }));
+    lav.filter(o => /asist/i.test(o.funkce)).forEach(o => coaches.push({ ...splitCoach(o.jmeno), head: false }));
+    return { side, t, byNo, played, gkSeq, coaches };
+  });
+
+  // Kolize příjmení napříč celým zápasem (hráči, kteří hráli, + trenéři)
+  const count = {};
+  const bump = p => { const k = p.prijmeni.toLocaleLowerCase("cs"); count[k] = (count[k] || 0) + 1; };
+  sideData.forEach(d => {
+    d.played.filter(h => h.post !== "GK" || d.gkSeq.some(g => g.c === h.c)).forEach(h => bump(splitPlayer(h.jmeno)));
+    d.coaches.forEach(bump);
+  });
+  const display = (p, extra = "") => {
+    const alias = JMENA[`${p.prijmeni} ${p.jmeno}`.trim()];
+    if (alias) return alias;
+    const dup = count[p.prijmeni.toLocaleLowerCase("cs")] > 1 && p.jmeno;
+    return (dup ? p.jmeno[0] + ". " : "") + p.prijmeni + (extra ? " " + extra : "");
+  };
+  const pl = h => display(splitPlayer(h.jmeno));
+
+  let out = sideData.map(d => {
+    const { t, byNo, played, gkSeq } = d;
+    let gk = gkSeq.length ? pl(byNo[gkSeq[0].c]) : "?";
+    if (gkSeq.length > 1) gk += " (" + gkSeq.slice(1).map(g => `${minuteOf(g.od)}. ${pl(byNo[g.c])}`).join(", ") + ")";
+    const obr = played.filter(h => h.post === "D").map(pl);
+    const uto = played.filter(h => h.post === "F").map(pl);
+    const lines = [];
+    for (let i = 0; i < uto.length; i += 3) lines.push(uto.slice(i, i + 3));
+    if (lines.length > 1 && lines[lines.length - 1].length === 1) lines[lines.length - 2].push(lines.pop()[0]);
+
+    const assist = d.coaches.filter(c => !c.head).sort((a, b) => a.prijmeni.localeCompare(b.prijmeni, "cs"));
+    const coachNames = [...d.coaches.filter(c => c.head), ...assist].map(c => display(c, c.pripona));
+    const trener = coachNames.length === 0 ? "" : (coachNames.length === 1 ? " Trenér " : " Trenéři ") + joinCs(coachNames) + ".";
+
+    const parts = [gk];
+    if (obr.length) parts.push(obr.join(", "));
+    lines.forEach(l => parts.push(l.join(", ")));
+    const text = `${shortTeam(t.nazev)}: ${parts.join(" – ")}.${trener}`;
+
+    const nehrali = t.hraci.filter(h => !h.hral).map(pl);
+    const zalozni = played.filter(h => h.post === "GK" && !gkSeq.some(g => g.c === h.c)).map(pl);
+    return { nazev: t.nazev, kratce: shortTeam(t.nazev), text,
+             check: { g: gkSeq.length, d: obr.length, f: uto.length, nehrali, zalozni, trenéři: coachNames.length } };
+  });
+  if (motorFirst && !isMotor(out[0].nazev) && isMotor(out[1].nazev)) out = [out[1], out[0]];
+  return out;
+}
+
+// ===== UI ===================================================================
+
+let DATA = null;          // obsah sestavy-data.json
+let current = null;       // aktuálně zobrazená sestava (surová data)
+
+function setStatus(msg, cls = "") { const s = $("status"); s.textContent = msg; s.className = cls; }
+
+function showZapisLink(id) {
+  const a = $("open-zapis");
+  if (id) { a.href = ZAPIS_URL(id); a.classList.remove("hidden"); } else a.classList.add("hidden");
+}
+
+function render(sestava) {
+  current = sestava;
+  const lines = buildLines(sestava, $("motor-first").checked);
+  const box = $("teams");
+  box.innerHTML = "";
+  lines.forEach((l, i) => {
+    const div = document.createElement("div");
+    div.className = "team";
+    const c = l.check;
+    const warn = [];
+    if (c.f % 3) warn.push(`útočníků je ${c.f} — poslední formace je neúplná, zkontroluj`);
+    if (!c.trenéři) warn.push("v zápisu nejsou trenéři");
+    div.innerHTML = `
+      <div class="team-head"><strong></strong><button class="ghost" data-i="${i}">Kopírovat</button></div>
+      <textarea class="out" spellcheck="false"></textarea>
+      <div class="check"></div>`;
+    div.querySelector("strong").textContent = l.nazev;
+    div.querySelector("textarea").value = l.text;
+    div.querySelector(".check").innerHTML =
+      `brankář <b>${c.g ? 1 : 0}</b>${c.g > 1 ? ` (+${c.g - 1} střídání)` : ""} · obránci <b>${c.d}</b> · útočníci <b>${c.f}</b>` +
+      (c.zalozni.length ? ` · náhradní brankář: ${esc(c.zalozni.join(", "))}` : "") +
+      (c.nehrali.length ? ` · nenastoupili: ${esc(c.nehrali.join(", "))}` : "") +
+      (warn.length ? `<br>⚠️ ${esc(warn.join("; "))}` : "");
+    box.appendChild(div);
+  });
+  $("result").classList.remove("hidden");
+}
+
+function esc(s) { return String(s).replace(/[&<>"]/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[ch])); }
+
+async function copyText(text, btn) {
+  try { await navigator.clipboard.writeText(text); }
+  catch { const ta = document.createElement("textarea"); ta.value = text; document.body.appendChild(ta); ta.select(); document.execCommand("copy"); ta.remove(); }
+  const old = btn.textContent; btn.textContent = "Zkopírováno ✓"; setTimeout(() => (btn.textContent = old), 1400);
+}
+
+$("teams").addEventListener("click", e => {
+  const b = e.target.closest("button[data-i]");
+  if (b) copyText(b.closest(".team").querySelector("textarea").value, b);
+});
+$("copy-all").addEventListener("click", e =>
+  copyText([...document.querySelectorAll("textarea.out")].map(t => t.value).join("\n"), e.target));
+
+async function loadLive(id) {
+  showZapisLink(id);
+  $("paste-box").style.display = "none";
+  setStatus("Stahuji zápis…");
+  try {
+    const ctl = new AbortController();
+    const timer = setTimeout(() => ctl.abort(), 8000);
+    const res = await fetch(ZAPIS_URL(id), { signal: ctl.signal });
+    clearTimeout(timer);
+    if (!res.ok) throw new Error(res.status);
+    const parsed = parseZapisHtml(await res.text());
+    if (!parsed) throw new Error("bez soupisek");
+    if (!parsed.A.hraci.length || !parsed.B.hraci.length) {
+      setStatus("Zápis zatím nemá vyplněné soupisky (vyplňují se zhruba hodinu před zápasem).", "warn");
+      return;
+    }
+    render(parsed);
+    setStatus("Načteno přímo ze zápisu.", "ok");
+  } catch (err) {
+    // Typicky CORS — web zápisu cizí stránce stažení nedovolí.
+    $("paste-box").style.display = "block";
+    setStatus("Zápis se nepodařilo stáhnout přímo z prohlížeče — vlož ho prosím ze schránky (návod níže).", "warn");
+  }
+}
+
+function selectedGame() {
+  const i = $("kolo").value;
+  return DATA && i !== "" ? DATA.zapasy[+i] : null;
+}
+
+function loadSelected() {
+  const g = selectedGame();
+  if (!g) return;
+  showZapisLink(g.hokejcz_id);
+  $("paste-box").style.display = "none";
+  if (g.sestava) {
+    render(g.sestava);
+    setStatus(`Sestava ze zápisu uloženého při denní aktualizaci (${DATA.aktualizovano}).`, "ok");
+  } else if (g.hokejcz_id) {
+    $("result").classList.add("hidden");
+    loadLive(g.hokejcz_id);
+  } else {
+    $("result").classList.add("hidden");
+    setStatus("K tomuto kolu zatím není známé ID zápisu — zadej ho ručně.", "warn");
+  }
+}
+
+$("load").addEventListener("click", loadSelected);
+$("kolo").addEventListener("change", loadSelected);
+$("load-manual").addEventListener("click", () => {
+  const v = $("manual").value;
+  const m = /hokejczId=(\d+)/i.exec(v) || /(\d{5,})/.exec(v);
+  if (!m) return setStatus("Zadej číslo zápasu nebo celý odkaz na zápis.", "warn");
+  $("result").classList.add("hidden");
+  loadLive(m[1]);
+});
+
+$("paste").addEventListener("paste", e => {
+  const html = e.clipboardData && e.clipboardData.getData("text/html");
+  e.preventDefault();
+  const parsed = html ? parseZapisHtml(html) : null;
+  if (!parsed || !parsed.A.hraci.length) {
+    setStatus("Ve vloženém obsahu nejsou soupisky zápisu — zkopíruj celou stránku zápisu (Ctrl+A, Ctrl+C).", "warn");
+    return;
+  }
+  $("paste").value = "";
+  render(parsed);
+  setStatus("Sestava ze zkopírovaného zápisu.", "ok");
+});
+
+try { $("motor-first").checked = localStorage.getItem("sestavy-motor-first") === "1"; } catch {}
+$("motor-first").addEventListener("change", e => {
+  try { localStorage.setItem("sestavy-motor-first", e.target.checked ? "1" : "0"); } catch {}
+  if (current) render(current);
+});
+
+function dayMonth(datum) {
+  const m = /(\d{1,2})\.\s*(\d{1,2})\./.exec(datum || "");
+  return m ? [+m[1], +m[2]] : null;
+}
+
+(async function init() {
+  try {
+    const res = await fetch(DATA_URL, { cache: "no-store" });
+    DATA = await res.json();
+  } catch {
+    $("kolo").innerHTML = "<option value=''>Rozpis není k dispozici — použij ID zápisu</option>";
+    return;
+  }
+  const sel = $("kolo");
+  sel.innerHTML = "";
+  const now = new Date(), today = [now.getDate(), now.getMonth() + 1];
+  let pick = null;
+  [...DATA.zapasy.keys()].reverse().forEach(i => {
+    const g = DATA.zapasy[i];
+    const o = document.createElement("option");
+    o.value = i;
+    o.textContent = `${g.kolo}. kolo · ${g.datum} · ${g.domaci} – ${g.hoste}` +
+      (g.vysledek ? ` ${g.vysledek}` : "") + (g.sestava ? "" : g.odehrano ? "" : " (nehráno)");
+    sel.appendChild(o);
+    const dm = dayMonth(g.datum);
+    if (dm && dm[0] === today[0] && dm[1] === today[1]) pick = i;           // dnešní zápas má přednost
+    if (pick === null && g.odehrano) pick = i;                               // jinak poslední odehraný
+  });
+  if (pick !== null) sel.value = pick;
+  setStatus(`Rozpis z ${DATA.aktualizovano}. Vyber kolo a klepni na Načíst.`);
+})();
+</script>
+</body>
+</html>
