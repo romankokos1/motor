@@ -1984,6 +1984,15 @@ PAGE_CSS = """
   .kpi-stack .kpi-num-md { padding-top: 14px; }
   .kpi-split { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding-top: 16px; border-top: 1px solid var(--line); margin-top: auto; }
 
+  /* Přehled: příští zápas / body / forma jen jako nenápadný pruh */
+  .tabsection[data-tab="prehled"] .kpi { min-height: 0; padding: 14px 18px; }
+  .tabsection[data-tab="prehled"] .kpi-title { font-size: 17px; font-weight: 650; letter-spacing: -.015em; padding-top: 6px; margin-top: 0; }
+  .tabsection[data-tab="prehled"] .kpi-num { font-size: 22px; font-weight: 700; letter-spacing: -.02em; padding-top: 6px; margin-top: 0; }
+  .tabsection[data-tab="prehled"] .kpi-sub { margin-top: 4px; }
+  .tabsection[data-tab="prehled"] .kpi-foot { margin-top: 6px; padding-top: 0; border-top: 0; }
+  .tabsection[data-tab="prehled"] .form-dots { margin-top: 8px; gap: 6px; }
+  .tabsection[data-tab="prehled"] .form-dots .dot-lg { width: 8px; height: 8px; }
+
   /* ===== Graf ===== */
   .chart { position: relative; margin-top: 16px; }
   .chart svg { display: block; width: 100%; height: auto; overflow: visible; touch-action: pan-y; }
@@ -2101,8 +2110,8 @@ PAGE_CSS = """
   }
   @media (min-width: 980px) {
     .bento > .kpi { grid-column: span 2; }
-    .bento > .kpi-next { grid-column: span 3; }
-    .bento > .kpi-form { grid-column: span 1; }
+    .bento > .kpi-next { grid-column: span 2; }
+    .bento > .kpi-form { grid-column: span 2; }
     .bento > .card-changes { grid-column: span 2; }
     .bento > .card:has(.tbl-milestones) { grid-column: span 4; }
     .bento > .card-chart { grid-column: span 4; }
@@ -2130,6 +2139,9 @@ PAGE_CSS = """
     .bento > .kpi:not(.kpi-next):not(.kpi-stack) { grid-column: span 3; }
     .card { padding: 14px 14px; border-radius: 14px; }
     .kpi { min-height: 140px; }
+    .tabsection[data-tab="prehled"] .kpi { min-height: 0; padding: 12px 14px; }
+    .tabsection[data-tab="prehled"] .kpi-num { font-size: 20px; }
+    .tabsection[data-tab="prehled"] .kpi-title { font-size: 16px; }
     .kpi-num { font-size: 46px; }
     .kpi-num-md { font-size: 36px; }
     .kpi-num-sm { font-size: 28px; }
@@ -2271,7 +2283,7 @@ def render_html(
     <h2>Příští zápas</h2>
     <div class="kpi-title">{esc(nm["soupeř"])}</div>
     <div class="kpi-sub"><span class="dot {"dot-pos" if nm["doma"] else "dot-ring"}"></span>{"Doma" if nm["doma"] else "Venku"}, {nm["kolo"]}. kolo</div>
-    <div class="kpi-foot">{esc(nm["datum"])}, {esc(cas_lbl)}<br>{esc(nm["misto"])}</div>
+    <div class="kpi-foot">{esc(nm["datum"])}, {esc(cas_lbl)}, {esc(nm["misto"])}</div>
   </div>
 """
     else:
