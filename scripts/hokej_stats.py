@@ -894,41 +894,41 @@ def update_schedule_watch(old: dict, games: list) -> dict:
 
 def build_record_svg(games: list) -> str:
     """
-    SVG graf průběžné bilance Motoru: výhra +1, prohra -1 (jakýmkoliv
+    Graf průběžné bilance Motoru: výhra +1, prohra -1 (jakýmkoliv
     způsobem, i po prodloužení/nájezdech), kumulativně od 1. do
     SEASON_ROUNDS kola. Nehraná kola zatím do grafu nepřidávají bod —
     graf se tak den po dni "dokresluje", jak přibývají odehrané zápasy.
+
+    Barvy bere z CSS proměnných stránky (--accent, --surface…), takže
+    funguje ve světlém i tmavém režimu. Pod linkou je přechod do ztracena,
+    mřížka jen vodorovná; data bodů jsou v data-pts pro tooltip (JS).
     """
     played = sorted((g for g in games if g["odehrano"]), key=lambda g: g["kolo"])
     if not played:
         return ""
 
-    cumulative = []
     total = 0
+    pts = [(0, 0, "Start sezóny")]
     for g in played:
         if g["vyhra"]:
             total += 1
         elif g["prohra"]:
             total -= 1
-        cumulative.append((g["kolo"], total))
+        doma = g["domaci"] == CLUB_NAME
+        souper = g["hoste"] if doma else g["domaci"]
+        pts.append((g["kolo"], total,
+                    f'{g["kolo"]}. kolo: {souper} ({"doma" if doma else "venku"}) {g.get("vysledek") or ""}'.strip()))
 
-    # Bod (0, 0) jako výchozí stav před 1. kolem — pak jeden bod za
-    # každé odehrané kolo, přesně jak chtěl Gaffer ("začíná se na 0").
-    points_xy = [(0, 0)] + cumulative
-
-    width, height = 760, 340
-    pad_l, pad_r, pad_t, pad_b = 34, 14, 14, 26
+    width, height = 760, 300
+    pad_l, pad_r, pad_t, pad_b = 42, 18, 18, 30
     plot_w = width - pad_l - pad_r
     plot_h = height - pad_t - pad_b
 
     x_max = ((SEASON_ROUNDS + 9) // 10) * 10  # zaokrouhlit nahoru na desítku (52 -> 60)
-    x_step = 10
-
-    values = [v for _, v in points_xy]
-    raw_min, raw_max = min(values), max(values)
+    values = [v for _, v, _ in pts]
     y_step = 2
-    y_min = (min(0, raw_min) // y_step) * y_step - y_step
-    y_max = -(-(max(0, raw_max)) // y_step) * y_step + y_step
+    y_min = (min(0, min(values)) // y_step) * y_step - y_step
+    y_max = -(-(max(0, max(values))) // y_step) * y_step + y_step
 
     def x_for(kolo) -> float:
         return pad_l + kolo / x_max * plot_w
@@ -936,41 +936,48 @@ def build_record_svg(games: list) -> str:
     def y_for(val) -> float:
         return pad_t + (y_max - val) / (y_max - y_min) * plot_h
 
-    # Vodorovné (Y) a svislé (X) mřížkové čáry, jako v Excelu.
-    y_ticks = list(range(y_min, y_max + 1, y_step))
-    x_ticks = list(range(0, x_max + 1, x_step))
-
-    hgrid = "".join(
-        f'<line x1="{pad_l}" y1="{y_for(t):.1f}" x2="{width - pad_r}" y2="{y_for(t):.1f}" '
-        f'stroke="#e5e7eb" stroke-width="1"/>'
-        f'<text x="{pad_l - 8}" y="{y_for(t) + 4:.1f}" font-size="11" fill="#6b7280" '
-        f'text-anchor="end">{t}</text>'
-        for t in y_ticks
+    bottom = height - pad_b
+    grid = "".join(
+        f'<line class="{"g-zero" if t == 0 else "g-grid"}" x1="{pad_l}" y1="{y_for(t):.1f}" '
+        f'x2="{width - pad_r}" y2="{y_for(t):.1f}"/>'
+        f'<text class="g-axis" x="{pad_l - 8}" y="{y_for(t) + 4:.1f}" text-anchor="end">'
+        f'{"+" if t > 0 else ""}{t}</text>'
+        for t in range(y_min, y_max + 1, y_step)
     )
-    vgrid = "".join(
-        f'<line x1="{x_for(t):.1f}" y1="{pad_t}" x2="{x_for(t):.1f}" y2="{height - pad_b}" '
-        f'stroke="#e5e7eb" stroke-width="1"/>'
-        f'<text x="{x_for(t):.1f}" y="{height - pad_b + 16}" font-size="11" fill="#6b7280" '
-        f'text-anchor="middle">{t}</text>'
-        for t in x_ticks
+    xlabels = "".join(
+        f'<text class="g-axis" x="{x_for(t):.1f}" y="{bottom + 18}" text-anchor="middle">{t}</text>'
+        for t in range(0, x_max + 1, 10)
     )
-
-    points_str = " ".join(f"{x_for(k):.1f},{y_for(v):.1f}" for k, v in points_xy)
-    dots = "".join(
-        f'<circle cx="{x_for(k):.1f}" cy="{y_for(v):.1f}" r="3.5" fill="#0b1f3a"/>'
-        for k, v in points_xy
-    )
+    line = " ".join(f"{x_for(k):.1f},{y_for(v):.1f}" for k, v, _ in pts)
+    area = (f"M{x_for(pts[0][0]):.1f},{bottom} L" + line.replace(" ", " L")
+            + f" L{x_for(pts[-1][0]):.1f},{bottom} Z")
+    lk, lv, _ = pts[-1]
+    data = json.dumps([[round(x_for(k), 1), round(y_for(v), 1), v, lab] for k, v, lab in pts],
+                      ensure_ascii=False).replace("'", "&#39;")
 
     return f"""
-    <svg viewBox="0 0 {width} {height}" width="100%" height="auto" role="img"
-         aria-label="Průběžná bilance výher a proher HC Motor">
-      <rect x="0.5" y="0.5" width="{width - 1}" height="{height - 1}" fill="#ffffff"
-            stroke="#e5e7eb"/>
-      {hgrid}
-      {vgrid}
-      <polyline points="{points_str}" fill="none" stroke="#0b1f3a" stroke-width="2"/>
-      {dots}
-    </svg>
+    <div class="chart" data-w="{width}" data-pts='{data}'>
+      <svg viewBox="0 0 {width} {height}" role="img"
+           aria-label="Průběžná bilance výher a proher HC Motor, aktuálně {lv:+d} po {lk}. kole">
+        <defs>
+          <linearGradient id="g-fade" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" style="stop-color:var(--accent);stop-opacity:.28"/>
+            <stop offset="1" style="stop-color:var(--accent);stop-opacity:0"/>
+          </linearGradient>
+        </defs>
+        {grid}{xlabels}
+        <path class="g-area" d="{area}" fill="url(#g-fade)"/>
+        <polyline class="g-line" points="{line}"/>
+        <circle class="g-halo" cx="{x_for(lk):.1f}" cy="{y_for(lv):.1f}" r="10"/>
+        <circle class="g-end" cx="{x_for(lk):.1f}" cy="{y_for(lv):.1f}" r="4.5"/>
+        <g class="g-hover" visibility="hidden">
+          <line class="g-cross" x1="0" y1="{pad_t}" x2="0" y2="{bottom}"/>
+          <circle class="g-end" cx="0" cy="0" r="4.5"/>
+        </g>
+        <rect x="{pad_l}" y="{pad_t}" width="{plot_w}" height="{plot_h}" fill="transparent" class="g-hit"/>
+      </svg>
+      <div class="chart-tip" hidden></div>
+    </div>
 """
 
 
@@ -1881,6 +1888,290 @@ def build_on_ice(zapasy: list) -> dict:
     return out
 
 
+PAGE_CSS = """
+  /* ===== Tokeny: světlý režim (výchozí), tmavý podle systému ===== */
+  :root {
+    --bg: #f4f6f8; --surface: #ffffff; --surface-2: #f8f9fb;
+    --line: rgba(14, 22, 33, .065); --line-strong: rgba(14, 22, 33, .10);
+    --text: #0e1621; --text-2: rgba(14, 22, 33, .68); --text-3: rgba(14, 22, 33, .45);
+    --accent: #2f88bb; --neg: #c4687a; --warn: #b88a2e; --hover: rgba(14, 22, 33, .022);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #090c11; --surface: #0f141b; --surface-2: #151b24;
+      --line: rgba(255, 255, 255, .05); --line-strong: rgba(255, 255, 255, .085);
+      --text: #e8edf3; --text-2: rgba(232, 237, 243, .66); --text-3: rgba(232, 237, 243, .42);
+      --accent: #8fd3ff; --neg: #f2a0ad; --warn: #eec872; --hover: rgba(255, 255, 255, .022);
+      color-scheme: dark;
+    }
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font: 14px/1.5 "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    -webkit-font-smoothing: antialiased; -webkit-tap-highlight-color: transparent;
+  }
+  a { color: var(--text-2); text-decoration: none; border-bottom: 1px solid var(--line-strong); }
+  a:hover { color: var(--text); border-color: var(--text-3); }
+  p { margin: 8px 0; }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 28px 24px 72px; }
+
+  /* ===== Hlavička ===== */
+  .app-header { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px 24px; flex-wrap: wrap; margin-bottom: 16px; }
+  h1 { font-size: 20px; font-weight: 650; letter-spacing: -.02em; margin: 0; line-height: 1.25; }
+  .meta { color: var(--text-3); font-size: 13px; margin-top: 2px; }
+  .header-side { display: flex; gap: 6px 18px; align-items: center; flex-wrap: wrap; font-size: 13px; color: var(--text-3); }
+  .live { display: inline-flex; align-items: center; color: var(--text-2); font-variant-numeric: tabular-nums; }
+
+  /* ===== Záložky (na počítači nahoře, na mobilu dole) ===== */
+  .tabbar {
+    position: sticky; top: 0; z-index: 30; display: flex; gap: 2px; overflow-x: auto;
+    margin: 0 -24px 22px; padding: 10px 24px;
+    background: color-mix(in oklab, var(--bg) 84%, transparent);
+    -webkit-backdrop-filter: saturate(1.3) blur(12px); backdrop-filter: saturate(1.3) blur(12px);
+    border-bottom: 1px solid var(--line);
+  }
+  .tab-btn {
+    position: relative; display: inline-flex; align-items: center; gap: 7px; flex: none;
+    padding: 7px 12px; border-radius: 9px; border: 1px solid transparent; background: none;
+    color: var(--text-3); font: inherit; font-size: 13px; font-weight: 500; cursor: pointer;
+  }
+  .tab-btn svg { width: 15px; height: 15px; flex-shrink: 0; }
+  .tab-btn:hover { color: var(--text); }
+  .tab-btn.is-active { color: var(--text); background: var(--surface); border-color: var(--line-strong); }
+  .tab-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .badge-dot {
+    display: none; position: absolute; top: 5px; right: 5px; width: 6px; height: 6px; border-radius: 50%;
+    background: var(--accent); box-shadow: 0 0 8px var(--accent);
+  }
+  .tab-btn.has-badge .badge-dot { display: block; }
+  .tabsection.is-hidden { display: none; }
+
+  /* ===== Bento mřížka ===== */
+  .bento { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 14px; align-items: stretch; }
+  .bento > * { grid-column: span 6; min-width: 0; }
+  .card {
+    background: var(--surface); border: 1px solid var(--line-strong); border-radius: 16px;
+    padding: 20px 22px; overflow-x: auto;
+  }
+  .card h2 { font-size: 13px; font-weight: 600; color: var(--text); margin: 0 0 2px; letter-spacing: -.005em; }
+  .card h2 + p.muted.small { margin-top: 2px; }
+  .muted { color: var(--text-3); margin: 0; }
+  .small { font-size: 12.5px; margin: 8px 0 0; line-height: 1.5; }
+  .card > p.small:not(.muted) { color: var(--text-2); }
+  .section-title { font-size: 13px; font-weight: 600; color: var(--text-3); margin: 14px 0 -4px; }
+
+  /* ===== KPI ===== */
+  .kpi { display: flex; flex-direction: column; min-height: 176px; }
+  .kpi h2 { color: var(--text-3); font-weight: 500; font-size: 12.5px; }
+  .kpi-num {
+    font-size: 60px; line-height: .95; font-weight: 800; letter-spacing: -.05em;
+    margin-top: auto; padding-top: 20px; font-variant-numeric: tabular-nums;
+  }
+  .kpi-num i { font-style: normal; color: var(--text-3); font-weight: 300; font-size: .62em; margin: 0 .26em; position: relative; top: -.16em; }
+  .kpi-quad { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+  .kpi-quad .kpi-sub { margin-top: 8px; }
+  .kpi-num-md { font-size: 46px; }
+  .kpi-num-sm { font-size: 32px; padding-top: 6px; letter-spacing: -.04em; }
+  .kpi-sub { color: var(--text-3); font-size: 12.5px; margin-top: 10px; display: flex; align-items: center; }
+  .kpi-title { font-size: 32px; font-weight: 750; letter-spacing: -.035em; line-height: 1.05; margin-top: auto; padding-top: 20px; }
+  .kpi-foot { color: var(--text-3); font-size: 12.5px; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); }
+  .form-dots { display: flex; gap: 8px; margin-top: 14px; }
+  .kpi-stack { gap: 18px; }
+  .kpi-stack .kpi-num-md { padding-top: 14px; }
+  .kpi-split { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding-top: 16px; border-top: 1px solid var(--line); margin-top: auto; }
+
+  /* ===== Graf ===== */
+  .chart { position: relative; margin-top: 16px; }
+  .chart svg { display: block; width: 100%; height: auto; overflow: visible; touch-action: pan-y; }
+  .g-grid, .g-zero, .g-line, .g-cross { vector-effect: non-scaling-stroke; }
+  .g-grid { stroke: var(--line); stroke-width: 1; }
+  .g-zero { stroke: var(--line-strong); stroke-width: 1; stroke-dasharray: 3 4; }
+  .g-axis { fill: var(--text-3); font-size: 11px; font-family: inherit; font-variant-numeric: tabular-nums; }
+  .g-line { fill: none; stroke: var(--accent); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+  .g-end { fill: var(--accent); stroke: var(--surface); stroke-width: 2; }
+  .g-halo { fill: var(--accent); opacity: .16; }
+  .g-cross { stroke: var(--text-3); stroke-width: 1; stroke-dasharray: 2 3; }
+  .chart-tip {
+    position: absolute; top: 0; transform: translate(-50%, 0); pointer-events: none;
+    background: var(--surface-2); border: 1px solid var(--line-strong); border-radius: 9px;
+    padding: 7px 10px; font-size: 12px; color: var(--text-2); white-space: nowrap;
+  }
+  .chart-tip b { color: var(--text); font-weight: 700; font-size: 14px; margin-right: 6px; font-variant-numeric: tabular-nums; }
+
+  /* ===== Tabulky ===== */
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; margin-top: 12px; }
+  th, td { text-align: left; padding: 12px 12px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+  th { color: var(--text-3); font-weight: 500; font-size: 12px; padding-top: 4px; padding-bottom: 10px; }
+  th:first-child, td:first-child { padding-left: 2px; }
+  th:last-child, td:last-child { padding-right: 2px; }
+  tbody tr:last-child td { border-bottom: 0; }
+  tbody tr:hover td { background: var(--hover); }
+  th.num, td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  td.num { color: var(--text-2); }
+  td strong { font-weight: 650; color: var(--text); }
+  tr.no-baseline td { color: var(--text-3); font-style: italic; }
+  th.sortable { cursor: pointer; user-select: none; }
+  th.sortable:hover { color: var(--text-2); }
+  th.sortable::after {
+    content: ""; display: inline-block; margin-left: 5px; vertical-align: middle;
+    border: 3.5px solid transparent; border-top-color: currentColor; opacity: 0; transform: translateY(2px);
+  }
+  th.sortable:hover::after { opacity: .5; }
+  th.sort-desc::after { opacity: 1; border-top-color: var(--accent); }
+  th.sort-asc::after { opacity: 1; border-top-color: transparent; border-bottom-color: var(--accent); transform: translateY(-2px); }
+  .lbl-short { display: none; }
+  a.bil { border: 0; margin-left: 6px; color: var(--text-3); font-size: .9em; }
+  a.bil:hover { color: var(--accent); }
+  .small.kv { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 12px; color: var(--text-2); margin: 6px 0 0; }
+  .small.kv:first-of-type { margin-top: 4px; }
+
+  /* ===== Seznamy, časová osa, rozbalovací bloky ===== */
+  .changes { list-style: none; margin: 10px 0 0; padding: 0; }
+  .changes li { padding: 10px 0; border-bottom: 1px solid var(--line); color: var(--text-2); }
+  .changes li:last-child { border-bottom: 0; }
+  .changes li strong { color: var(--text); font-weight: 600; }
+  .ev { display: grid; grid-template-columns: 46px 10px minmax(0, 1fr); align-items: baseline; gap: 10px; }
+  .ev .dot { margin: 0; align-self: center; }
+  .ev-t { color: var(--text-3); font-size: 12.5px; font-variant-numeric: tabular-nums; }
+  .ev-x { white-space: normal; }
+  .ev-x .muted { font-size: 12.5px; margin-left: 6px; }
+  details { border-bottom: 1px solid var(--line); }
+  details:last-child { border-bottom: 0; }
+  summary {
+    cursor: pointer; list-style: none; padding: 12px 0; font-weight: 550; color: var(--text);
+    display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap;
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary::before {
+    content: ""; width: 6px; height: 6px; flex: none; position: relative; top: -2px;
+    border-right: 1.5px solid var(--text-3); border-bottom: 1.5px solid var(--text-3);
+    transform: rotate(-45deg); transition: transform .15s ease;
+  }
+  details[open] > summary::before { transform: rotate(45deg); }
+  summary .muted.small { font-weight: 400; margin: 0; }
+  details > :last-child { margin-bottom: 12px; }
+
+  /* ===== Stavové tečky ===== */
+  .dot {
+    display: inline-block; width: 7px; height: 7px; border-radius: 50%; flex: none;
+    background: var(--text-3); margin: 0 8px 1px 0; vertical-align: middle;
+  }
+  .dot-lg { width: 10px; height: 10px; margin: 0; }
+  .dot-after { margin: 0 2px 1px 6px; }
+  .dot-pos { background: var(--accent); box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent) 14%, transparent), 0 0 10px color-mix(in oklab, var(--accent) 55%, transparent); }
+  .dot-neg { background: var(--neg); box-shadow: 0 0 0 3px color-mix(in oklab, var(--neg) 14%, transparent), 0 0 10px color-mix(in oklab, var(--neg) 45%, transparent); }
+  .dot-warn { background: var(--warn); box-shadow: 0 0 8px color-mix(in oklab, var(--warn) 45%, transparent); }
+  .dot-pos-ring { background: transparent; box-shadow: inset 0 0 0 2px var(--accent); }
+  .dot-neg-ring { background: transparent; box-shadow: inset 0 0 0 2px var(--neg); }
+  .dot-ring { background: transparent; box-shadow: inset 0 0 0 1.5px var(--text-3); }
+
+  /* ===== Vyhledávání ===== */
+  .search-box {
+    display: block; width: 100%; padding: 10px 14px; font: inherit; font-size: 13.5px; color: var(--text);
+    background: var(--surface); border: 1px solid var(--line-strong); border-radius: 11px;
+  }
+  .search-box::placeholder { color: var(--text-3); }
+  .search-box:focus { outline: none; border-color: var(--accent); }
+  tr.search-hidden, details.search-hidden, li.search-hidden { display: none; }
+
+  /* ===== Potáhni-pro-obnovení, skeleton ===== */
+  .pull-indicator {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 55; display: flex; align-items: center; justify-content: center;
+    height: 46px; margin-top: -46px; color: var(--text-3); font-size: 12.5px;
+    background: var(--bg); border-bottom: 1px solid var(--line); transition: margin-top .15s ease, color .15s ease;
+  }
+  .pull-indicator.is-ready { color: var(--accent); font-weight: 600; }
+  .skeleton-overlay { position: fixed; inset: 0; z-index: 60; background: var(--bg); padding: 28px 24px; transition: opacity .25s ease; }
+  .skeleton-overlay.is-hidden { opacity: 0; pointer-events: none; }
+  .skeleton-block {
+    background: linear-gradient(90deg, var(--surface) 25%, var(--surface-2) 37%, var(--surface) 63%);
+    background-size: 400% 100%; animation: skeleton-shimmer 1.4s ease infinite;
+    border: 1px solid var(--line); border-radius: 16px; margin: 0 auto 14px; max-width: 1132px;
+  }
+  @keyframes skeleton-shimmer { 0% { background-position: 100% 50%; } 100% { background-position: 0 50%; } }
+  @media (prefers-reduced-motion: reduce) { .skeleton-block { animation: none; } summary::before { transition: none; } }
+
+  /* ===== Rozvržení bento podle šířky ===== */
+  @media (min-width: 641px) {
+    .bento > .kpi { grid-column: span 3; }
+  }
+  @media (min-width: 980px) {
+    .bento > .kpi { grid-column: span 2; }
+    .bento > .kpi-next { grid-column: span 3; }
+    .bento > .kpi-form { grid-column: span 1; }
+    .bento > .card-changes { grid-column: span 2; }
+    .bento > .card:has(.tbl-milestones) { grid-column: span 4; }
+    .bento > .card-chart { grid-column: span 4; }
+    .bento > .kpi-stack { grid-column: span 2; }
+    .bento > .card:has(.tbl-best) { grid-column: span 2; }
+    .bento > .card:has(.tbl-gwg) { grid-column: span 4; }
+    .bento > .card:has(.tbl-periods), .bento > .card:has(.tbl-state) { grid-column: span 3; }
+    .bento > .card:has(.tbl-so) { grid-column: span 4; }
+    .bento > .card:has(.tbl-att) { grid-column: span 2; }
+  }
+
+  /* ===== Mobil: obsah se posouvá, záložky dole ===== */
+  @media (max-width: 640px) {
+    html, body { height: 100%; touch-action: manipulation; }
+    body { display: flex; flex-direction: column; height: 100vh; height: 100dvh; overflow: hidden; }
+    .wrap { max-width: 100%; flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; padding: 0; }
+    .app-header { order: 0; flex: 0 0 auto; padding: 14px 14px 10px; padding-top: calc(14px + env(safe-area-inset-top)); margin: 0; align-items: flex-start; }
+    .header-side { font-size: 12px; gap: 4px 12px; }
+    .app-content {
+      order: 1; flex: 1 1 auto; min-height: 0; overflow-y: auto; -webkit-overflow-scrolling: touch;
+      padding: 4px 10px calc(24px + env(safe-area-inset-bottom));
+    }
+    h1 { font-size: 17px; }
+    .bento { gap: 10px; }
+    .bento > .kpi:not(.kpi-next):not(.kpi-stack) { grid-column: span 3; }
+    .card { padding: 14px 14px; border-radius: 14px; }
+    .kpi { min-height: 140px; }
+    .kpi-num { font-size: 46px; }
+    .kpi-num-md { font-size: 36px; }
+    .kpi-num-sm { font-size: 28px; }
+    .g-axis { font-size: 22px; }
+    .kpi-title { font-size: 26px; }
+    table { font-size: 12.5px; }
+    th, td { padding: 10px 6px; }
+    th { font-size: 11px; }
+    .lbl-full { display: none; }
+    .lbl-short { display: inline; }
+    .hide-m { display: none; }
+    .small.kv { grid-template-columns: 1fr; gap: 0; }
+
+    /* Hráči v poli: jméno + Z/G/A/B */
+    .tbl-skaters th:nth-child(1), .tbl-skaters td:nth-child(1),
+    .tbl-skaters th:nth-child(3), .tbl-skaters td:nth-child(3),
+    .tbl-skaters th:nth-child(8), .tbl-skaters td:nth-child(8),
+    .tbl-skaters th:nth-child(9), .tbl-skaters td:nth-child(9) { display: none; }
+    /* Brankáři: jméno + Z / Úsp % / SO */
+    .tbl-goalkeepers th:nth-child(1), .tbl-goalkeepers td:nth-child(1),
+    .tbl-goalkeepers th:nth-child(4), .tbl-goalkeepers td:nth-child(4),
+    .tbl-goalkeepers th:nth-child(5), .tbl-goalkeepers td:nth-child(5),
+    .tbl-goalkeepers th:nth-child(6), .tbl-goalkeepers td:nth-child(6),
+    .tbl-goalkeepers th:nth-child(7), .tbl-goalkeepers td:nth-child(7),
+    .tbl-goalkeepers th:nth-child(8), .tbl-goalkeepers td:nth-child(8),
+    .tbl-goalkeepers th:nth-child(11), .tbl-goalkeepers td:nth-child(11),
+    .tbl-goalkeepers th:nth-child(12), .tbl-goalkeepers td:nth-child(12) { display: none; }
+
+    .tabbar {
+      order: 2; position: static; flex: 0 0 auto; margin: 0; padding: 4px 4px calc(4px + env(safe-area-inset-bottom));
+      gap: 0; overflow: visible; border-bottom: 0; border-top: 1px solid var(--line-strong);
+      background: var(--surface); -webkit-backdrop-filter: none; backdrop-filter: none;
+    }
+    .tab-btn { flex: 1; min-width: 0; flex-direction: column; gap: 3px; padding: 7px 2px 5px; border: 0; border-radius: 10px; }
+    .tab-btn.is-active { background: none; color: var(--accent); }
+    .tab-btn svg { width: 20px; height: 20px; }
+    .tab-btn span { font-size: 10px; line-height: 1.1; white-space: nowrap; }
+    .badge-dot { top: 3px; right: calc(50% - 15px); }
+  }
+"""
+
+
 def render_html(
     new: dict,
     changes: list,
@@ -1974,13 +2265,13 @@ def render_html(
 
     if next_match:
         nm = next_match
-        misto_lbl = "🏠 doma" if nm["doma"] else "🚌 venku"
         cas_lbl = nm["cas"] if nm["cas"] else "čas bude upřesněn"
         next_match_html = f"""
-  <div class="card">
-    <h2>🏒 Příští zápas</h2>
-    <p><strong>{nm["kolo"]}. kolo:</strong> {esc(nm["soupeř"])} ({misto_lbl})</p>
-    <p class="muted small">{esc(nm["datum"])} · {esc(cas_lbl)} · {esc(nm["misto"])}</p>
+  <div class="card kpi kpi-next">
+    <h2>Příští zápas</h2>
+    <div class="kpi-title">{esc(nm["soupeř"])}</div>
+    <div class="kpi-sub"><span class="dot {"dot-pos" if nm["doma"] else "dot-ring"}"></span>{"Doma" if nm["doma"] else "Venku"}, {nm["kolo"]}. kolo</div>
+    <div class="kpi-foot">{esc(nm["datum"])}, {esc(cas_lbl)}<br>{esc(nm["misto"])}</div>
   </div>
 """
     else:
@@ -2009,13 +2300,13 @@ def render_html(
         if streaks.get("misto_pocet", 0) >= 2:
             serie_bits.append(f'{streaks["misto_pocet"]}× {streaks["misto_typ"]} v řadě')
         serie_html = (
-            f'<p class="muted small">Aktuální série: {" · ".join(serie_bits)}</p>'
+            f'<p class="muted small">Aktuální série: {", ".join(serie_bits)}</p>'
             if serie_bits else ""
         )
         record_html = f"""
-  <div class="card">
-    <h2>📈 Bilance výher a proher</h2>
-    <p class="muted small">Výhra +1, prohra -1 (jakýmkoliv způsobem), kumulativně od 1. kola.
+  <div class="card card-chart">
+    <h2>Bilance výher a proher</h2>
+    <p class="muted small">Výhra +1, prohra −1 (jakýmkoliv způsobem), kumulativně od 1. kola.
     Body v tabulce (systém 3-2-1-0): <strong>{league_points}</strong></p>
     {record_svg}
     {serie_html}
@@ -2024,19 +2315,64 @@ def render_html(
     else:
         record_html = ""
 
+    # --- KPI dlaždice (Přehled + Bilance)
+    played_g = sorted((g for g in (games or []) if g.get("odehrano")), key=lambda g: g["kolo"])
+    res_counts = {"V": 0, "VP": 0, "PP": 0, "P": 0}
+    for g in played_g:
+        rt = _result_type(g)
+        if rt:
+            res_counts[rt] += 1
+    DOT_FOR = {"V": "dot-pos", "VP": "dot-pos-ring", "PP": "dot-neg-ring", "P": "dot-neg"}
+    RES_WORD = {"V": "výhra", "VP": "výhra po prodl./SN", "PP": "prohra po prodl./SN", "P": "prohra"}
+
+    def _opp(g):
+        return g["hoste"] if g["domaci"] == CLUB_NAME else g["domaci"]
+
+    form_dots = "".join(
+        f'<span class="dot dot-lg {DOT_FOR.get(_result_type(g), "")}" '
+        f'title="{g["kolo"]}. kolo: {esc(_opp(g))} {esc(g.get("vysledek") or "")} ({RES_WORD.get(_result_type(g), "")})"></span>'
+        for g in played_g[-5:]
+    )
+    if played_g:
+        streaks = streaks or {}
+        s_n, s_t = streaks.get("vysledek_pocet", 0), streaks.get("vysledek_typ")
+        ppg = f"{league_points / len(played_g):.2f}".replace(".", ",")
+        kpi_points_html = f"""
+  <div class="card kpi">
+    <h2>Body v tabulce</h2>
+    <div class="kpi-num">{league_points}</div>
+    <div class="kpi-sub">{ppg} na zápas, {len(played_g)} odehraných</div>
+  </div>
+"""
+        kpi_form_html = f"""
+  <div class="card kpi kpi-form">
+    <h2>Forma</h2>
+    <div class="kpi-num">{s_n}×</div>
+    <div class="kpi-sub">{esc(s_t or "")} v řadě</div>
+    <div class="form-dots" aria-label="Posledních 5 zápasů">{form_dots}</div>
+  </div>
+"""
+    else:
+        kpi_points_html = kpi_form_html = ""
+
     home_away = home_away or {}
     if home_away and (home_away.get("doma", {}).get("z", 0) or home_away.get("venku", {}).get("z", 0)):
         d, v = home_away["doma"], home_away["venku"]
         home_away_html = f"""
-  <div class="card">
-    <h2>🏠 Bilance doma / venku</h2>
-    <table>
-      <thead><tr><th></th><th>Z</th><th>V</th><th>P</th></tr></thead>
-      <tbody>
-        <tr><td>🏠 Doma</td><td>{d["z"]}</td><td>{d["v"]}</td><td>{d["p"]}</td></tr>
-        <tr><td>🚌 Venku</td><td>{v["z"]}</td><td>{v["v"]}</td><td>{v["p"]}</td></tr>
-      </tbody>
-    </table>
+  <div class="card kpi kpi-stack">
+    <div>
+      <h2>Bilance</h2>
+      <div class="kpi-quad">
+        <div><div class="kpi-num kpi-num-md">{res_counts["V"]}</div><div class="kpi-sub"><span class="dot dot-pos"></span>V</div></div>
+        <div><div class="kpi-num kpi-num-md">{res_counts["VP"]}</div><div class="kpi-sub"><span class="dot dot-pos-ring"></span>VP</div></div>
+        <div><div class="kpi-num kpi-num-md">{res_counts["PP"]}</div><div class="kpi-sub"><span class="dot dot-neg-ring"></span>PP</div></div>
+        <div><div class="kpi-num kpi-num-md">{res_counts["P"]}</div><div class="kpi-sub"><span class="dot dot-neg"></span>P</div></div>
+      </div>
+    </div>
+    <div class="kpi-split">
+      <div><h2>Doma</h2><div class="kpi-num kpi-num-sm">{d["v"]}<i>–</i>{d["p"]}</div><div class="kpi-sub">{d["z"]} zápasů</div></div>
+      <div><h2>Venku</h2><div class="kpi-num kpi-num-sm">{v["v"]}<i>–</i>{v["p"]}</div><div class="kpi-sub">{v["z"]} zápasů</div></div>
+    </div>
   </div>
 """
     else:
@@ -2112,7 +2448,7 @@ def render_html(
             f = lambda r: f'{r["strely"][0 if ma else 1]}:{r["strely"][1 if ma else 0]}'
             sf = sum(r["strely"][0 if ma else 1] for r in tr)
             sa = sum(r["strely"][1 if ma else 0] for r in tr)
-            bits.append(f'Střely Motor:soupeř {sf}:{sa} ({", ".join(f(r) for r in tr)})')
+            bits.append(f'Střely Motor–soupeř: {sf}:{sa} ({", ".join(f(r) for r in tr)})')
         rz = z.get("rozhodci") or {}
         if rz.get("hlavni"):
             bits.append(f'🦓 Rozhodčí: {", ".join(rz["hlavni"])}'
@@ -2134,15 +2470,17 @@ def render_html(
                 if "strelec" in g:
                     asist = f" ({', '.join(g['asistence'])})" if g["asistence"] else ""
                     timeline_items.append(
-                        f'<li>🥅 <strong>{g["cas"]}</strong> — {esc(g["tym"])}: '
-                        f'{esc(g["strelec"])}{esc(asist)} '
-                        f'<span class="muted small">{esc(g["situace"])}</span></li>'
+                        f'<li class="ev"><span class="ev-t">{g["cas"]}</span>'
+                        f'<span class="dot {"dot-pos" if _is_motor(g["tym"]) else "dot-neg"}" title="gól"></span>'
+                        f'<span class="ev-x"><strong>{esc(g["strelec"])}</strong>{esc(asist)} '
+                        f'<span class="muted">{esc(g["tym"])}, {esc(g["situace"])}</span></span></li>'
                     )
                 else:
                     timeline_items.append(
-                        f'<li>🟨 <strong>{g["od"]}–{g["do"]}</strong> — {esc(g["tym"])}: '
-                        f'{esc(g["hrac"])}, {esc(g["min"])} min '
-                        f'<span class="muted small">({esc(g["duvod"])})</span></li>'
+                        f'<li class="ev ev-pen"><span class="ev-t">{g["od"]}</span>'
+                        f'<span class="dot dot-warn" title="trest"></span>'
+                        f'<span class="ev-x">{esc(g["hrac"])}, {esc(g["min"])} min '
+                        f'<span class="muted">{esc(g["tym"])}, {esc(g["duvod"])}, do {g["do"]}</span></span></li>'
                     )
             game_blocks.append(f"""
     <details{" open" if i == 0 else ""}>
@@ -2607,13 +2945,13 @@ def render_html(
             f"<td>{esc(SCOPE_LABELS[i['scope']])}</td>"
             f"<td>{i['hodnota']}</td>"
             f"<td><strong>{i['milestone']}</strong></td>"
-            f"<td>{i['chybi']}</td></tr>"
+            f"<td>{'<span class=\"dot dot-pos\"></span>' if i['chybi'] <= 1 else ''}{i['chybi']}</td></tr>"
             for i in upcoming
         )
         milestones_html = f"""
   <div class="card">
     <h2>🎯 Blížící se milníky (do {MILESTONE_LOOKAHEAD})</h2>
-    <table>
+    <table class="tbl-milestones">
       <thead><tr><th>Hráč</th><th>Co</th><th>Kde</th><th>{lbl("Teď","T")}</th><th>{lbl("Milník","Mil.")}</th><th>{lbl("Chybí","Chy.")}</th></tr></thead>
       <tbody>{milestone_rows}</tbody>
     </table>
@@ -2680,7 +3018,7 @@ def render_html(
   </div>
 """
 
-    return f"""<!DOCTYPE html>
+    page = f"""<!DOCTYPE html>
 <html lang="cs">
 <head>
 <meta charset="UTF-8">
@@ -2691,189 +3029,16 @@ def render_html(
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" href="icon-192.png" type="image/png">
-<meta name="theme-color" content="#c8102e">
+<meta name="theme-color" content="#f4f6f8" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#090c11" media="(prefers-color-scheme: dark)">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="HC Motor stats">
-<style>
-  :root {{
-    --red: #c8102e; --navy: #0b1f3a; --bg: #f4f5f7; --card: #ffffff;
-    --muted: #6b7280; --border: #e5e7eb;
-  }}
-  * {{ box-sizing: border-box; }}
-  body {{
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    background: var(--bg); color: var(--navy); margin: 0; padding: 24px 16px;
-    -webkit-tap-highlight-color: transparent;
-  }}
-  .hide-m {{ }}
-  .tabbar {{ display: none; }}
-  .wrap {{ max-width: 900px; margin: 0 auto; }}
-  h1 {{ font-size: 1.5rem; margin-bottom: 4px; }}
-  .updated {{ color: var(--muted); font-size: 0.85rem; margin-bottom: 4px; }}
-  .season {{ color: var(--muted); font-size: 0.85rem; margin-bottom: 24px; }}
-  .section-title {{
-    font-size: 1.15rem; margin: 32px 0 12px; color: var(--navy);
-    border-bottom: 2px solid var(--red); padding-bottom: 6px;
-  }}
-  .card {{
-    background: var(--card); border: 1px solid var(--border); border-radius: 12px;
-    padding: 18px 20px; margin-bottom: 20px; box-shadow: 0 1px 2px rgba(0,0,0,0.04);
-    overflow-x: auto;
-  }}
-  .card h2 {{ font-size: 1.05rem; margin: 0 0 12px; color: var(--red); }}
-  table {{ width: 100%; border-collapse: collapse; font-size: 0.88rem; }}
-  th, td {{ text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--border); white-space: nowrap; }}
-  th {{ color: var(--muted); font-weight: 600; font-size: 0.76rem; text-transform: uppercase; }}
-  tr.no-baseline {{ color: var(--muted); font-style: italic; }}
-  .changes {{ list-style: none; margin: 0; padding: 0; }}
-  .changes li {{ padding: 6px 0; border-bottom: 1px solid var(--border); }}
-  .changes li:last-child {{ border-bottom: none; }}
-  .muted {{ color: var(--muted); margin: 0; }}
-  .small {{ font-size: 0.78rem; margin-top: 10px; }}
-  .lbl-short {{ display: none; }}
-  details {{ border-bottom: 1px solid var(--border); padding: 8px 0; }}
-  details:last-child {{ border-bottom: none; }}
-  details > summary {{
-    cursor: pointer; font-weight: 600; list-style: none; padding: 4px 0;
-  }}
-  details > summary::-webkit-details-marker {{ display: none; }}
-  details > summary::before {{ content: "▸ "; color: var(--red); }}
-  details[open] > summary::before {{ content: "▾ "; }}
-  details .changes {{ margin-top: 6px; }}
-
-  /* řazení tabulek klepnutím na hlavičku */
-  th.sortable {{ cursor: pointer; user-select: none; white-space: nowrap; }}
-  th.sortable::after {{ content: "⇅"; opacity: 0.35; margin-left: 4px; font-size: 0.85em; display: inline-block; }}
-  th.sort-asc::after {{ content: "▲"; opacity: 1; color: var(--red); }}
-  th.sort-desc::after {{ content: "▼"; opacity: 1; color: var(--red); }}
-
-  /* vyhledávání hráče */
-  .search-box {{
-    display: block; width: 100%; padding: 9px 12px; margin-bottom: 14px;
-    font-size: 0.88rem; font-family: inherit; color: var(--navy);
-    background: var(--card); border: 1px solid var(--border); border-radius: 8px;
-  }}
-  .search-box:focus {{ outline: 2px solid var(--red); outline-offset: 1px; }}
-  tr.search-hidden, details.search-hidden, li.search-hidden {{ display: none; }}
-
-  /* tečka-upozornění na záložce Přehled */
-  .badge-dot {{
-    display: none; position: absolute; top: 2px; right: calc(50% - 15px);
-    width: 8px; height: 8px; border-radius: 50%; background: var(--red);
-    border: 1.5px solid var(--card);
-  }}
-  .tab-btn.has-badge .badge-dot {{ display: block; }}
-
-  /* potáhni-pro-obnovení */
-  .pull-indicator {{
-    position: fixed; top: 0; left: 0; right: 0; z-index: 55;
-    display: flex; align-items: center; justify-content: center;
-    height: 46px; margin-top: -46px; color: var(--muted); font-size: 0.78rem;
-    background: var(--bg); border-bottom: 1px solid var(--border);
-    transition: margin-top 0.15s ease, color 0.15s ease;
-  }}
-  .pull-indicator.is-ready {{ color: var(--red); font-weight: 600; }}
-
-  /* skeleton při prvním načtení */
-  .skeleton-overlay {{
-    position: fixed; inset: 0; z-index: 60; background: var(--bg);
-    padding: 24px 16px; transition: opacity 0.25s ease;
-  }}
-  .skeleton-overlay.is-hidden {{ opacity: 0; pointer-events: none; }}
-  .skeleton-block {{
-    background: linear-gradient(90deg, var(--border) 25%, #eef0f2 37%, var(--border) 63%);
-    background-size: 400% 100%; animation: skeleton-shimmer 1.4s ease infinite;
-    border-radius: 10px; margin-bottom: 16px; max-width: 900px; margin-left: auto; margin-right: auto;
-  }}
-  @keyframes skeleton-shimmer {{
-    0% {{ background-position: 100% 50%; }}
-    100% {{ background-position: 0 50%; }}
-  }}
-
-  /* kompaktnější zobrazení na výšku na mobilu + spodní lišta se záložkami */
-  @media (max-width: 640px) {{
-    html, body {{
-      height: 100%;
-      touch-action: manipulation;
-    }}
-    body {{
-      display: flex;
-      flex-direction: column;
-      height: 100vh;
-      height: 100dvh;
-      padding: 0;
-      overflow: hidden;
-    }}
-    .wrap {{
-      max-width: 100%;
-      flex: 1 1 auto;
-      min-height: 0;
-      display: flex;
-      flex-direction: column;
-    }}
-    .app-header {{
-      flex: 0 0 auto;
-      padding: 14px 8px 4px;
-      padding-top: calc(14px + env(safe-area-inset-top));
-    }}
-    .app-content {{
-      flex: 1 1 auto;
-      min-height: 0;
-      overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
-      padding: 0 8px calc(84px + env(safe-area-inset-bottom));
-    }}
-    h1 {{ font-size: 1.2rem; }}
-    .section-title {{ font-size: 1rem; margin: 24px 0 10px; }}
-    .card {{ padding: 12px 10px; margin-bottom: 14px; border-radius: 10px; overflow-x: auto; }}
-    .card h2 {{ font-size: 0.95rem; }}
-    table {{ font-size: 0.72rem; }}
-    th, td {{ padding: 4px 5px; }}
-    th {{ font-size: 0.62rem; }}
-    .lbl-full {{ display: none; }}
-    .lbl-short {{ display: inline; }}
-    .hide-m {{ display: none; }}
-
-    /* Tabulka "Hráči v poli": necháme jméno + Z/G/A/B, schováme # / post / +- / TM */
-    .tbl-skaters th:nth-child(1), .tbl-skaters td:nth-child(1),
-    .tbl-skaters th:nth-child(3), .tbl-skaters td:nth-child(3),
-    .tbl-skaters th:nth-child(8), .tbl-skaters td:nth-child(8),
-    .tbl-skaters th:nth-child(9), .tbl-skaters td:nth-child(9) {{ display: none; }}
-
-    /* Tabulka "Brankáři": necháme jméno + Z / Úsp % / SO, schováme zbytek */
-    .tbl-goalkeepers th:nth-child(1), .tbl-goalkeepers td:nth-child(1),
-    .tbl-goalkeepers th:nth-child(4), .tbl-goalkeepers td:nth-child(4),
-    .tbl-goalkeepers th:nth-child(5), .tbl-goalkeepers td:nth-child(5),
-    .tbl-goalkeepers th:nth-child(6), .tbl-goalkeepers td:nth-child(6),
-    .tbl-goalkeepers th:nth-child(7), .tbl-goalkeepers td:nth-child(7),
-    .tbl-goalkeepers th:nth-child(8), .tbl-goalkeepers td:nth-child(8),
-    .tbl-goalkeepers th:nth-child(11), .tbl-goalkeepers td:nth-child(11),
-    .tbl-goalkeepers th:nth-child(12), .tbl-goalkeepers td:nth-child(12) {{ display: none; }}
-
-    /* Sekce přepínané spodní lištou — na mobilu vidět jen ta aktivní */
-    .tabsection.is-hidden {{ display: none; }}
-    a.bil {{ text-decoration: none; margin-left: 6px; opacity: .55; font-size: .9em; }}
-    a.bil:hover {{ opacity: 1; }}
-
-    .tabbar {{
-      display: flex; flex: 0 0 auto; z-index: 40;
-      background: var(--card); border-top: 1px solid var(--border);
-      box-shadow: 0 -4px 20px rgba(0,0,0,0.13);
-      padding-bottom: calc(4px + env(safe-area-inset-bottom));
-    }}
-    .tab-btn {{
-      position: relative;
-      flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: center;
-      gap: 2px; background: none; border: none; color: var(--muted);
-      font-family: inherit; padding: 6px 2px 4px; cursor: pointer;
-    }}
-    .tab-btn svg {{ width: 20px; height: 20px; flex-shrink: 0; }}
-    .tab-btn span {{ font-size: 10px; line-height: 1.1; white-space: nowrap; }}
-    .tab-btn.is-active {{ color: var(--red); }}
-  }}
-</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>{PAGE_CSS}</style>
 </head>
 <body>
 <div id="pull-indicator" class="pull-indicator">↓ Potáhni pro obnovení</div>
@@ -2885,65 +3050,19 @@ def render_html(
   <div class="skeleton-block" style="height:140px;"></div>
 </div>
 <div class="wrap">
- <div class="app-header">
-  <h1>🏒 Statistiky hráčů — HC Motor České Budějovice</h1>
-  <div class="updated">Naposledy aktualizováno: {now}</div>
-  <div class="season">{esc(SEASON_LABEL)} · zdroj: <a href="{STATS_URL}">hcmotor.cz</a> · <a href="bilance-proti-tymum.html">Bilance proti týmům →</a></div>
- </div>
- <div class="app-content" id="app-content">
-  <section class="tabsection" data-tab="prehled">
-    <div class="card">
-      <h2>Změny od minulé aktualizace</h2>
-      {changes_html}
-    </div>
-{milestones_html}{next_match_html}{schedule_html}{corrections_html}
-  </section>
-
-  <section class="tabsection" data-tab="zapas">
-    {zapas_html or '<div class="card"><p class="muted">Zatím žádný zpracovaný zápis odehraného zápasu.</p></div>'}
-  </section>
-
-  <section class="tabsection" data-tab="sezona">
-    <h2 class="section-title">Aktuální sezóna</h2>
-    <div class="card">
-      <h2>Hráči v poli</h2>
-      <table class="tbl-skaters">
-        <thead><tr><th>#</th><th>Hráč</th><th>{lbl("Post","P")}</th><th>Z</th><th>G</th><th>A</th><th>B</th><th>+/-</th><th>{lbl("TM","T")}</th></tr></thead>
-        <tbody>{skater_rows}</tbody>
-      </table>
-    </div>
-
-    <div class="card">
-      <h2>Brankáři</h2>
-      <table class="tbl-goalkeepers">
-        <thead><tr><th>#</th><th>{lbl("Brankář","GK")}</th><th>Z</th><th>{lbl("Min","M")}</th><th>{lbl("Stř","S")}</th><th>{lbl("Ink","I")}</th><th>{lbl("Zás","Zá")}</th><th>{lbl("Prů","Pr")}</th><th>{lbl("Úsp %","Úsp")}</th><th>SO</th><th>A</th><th>{lbl("TM","T")}</th></tr></thead>
-        <tbody>{gk_rows}</tbody>
-      </table>
-    </div>
-    {best_html}{gwg_html}{pairs_html}{formations_html}{absence_html}{on_ice_html}{discipline_html}
-  </section>
-
-  <section class="tabsection" data-tab="bilance">
-    {record_html}{home_away_html}{periods_html}{shootout_html}{referees_html}{attendance_html}
-  </section>
-
-  <section class="tabsection" data-tab="historie">
-    <input type="search" class="search-box" id="search-historie" placeholder="Hledat hráče…" autocomplete="off">
-    {history_html}{schedule_log_html}
-  </section>
-
-  <section class="tabsection" data-tab="mesice">
-    <input type="search" class="search-box" id="search-mesice" placeholder="Hledat hráče…" autocomplete="off">
-    {monthly_html}
-  </section>
-
-  <section class="tabsection" data-tab="kariera">
-{career_html}
-  </section>
- </div>
-</div>
-
-<nav class="tabbar" id="tabbar" aria-label="Navigace sekcí">
+ <header class="app-header">
+  <div>
+   <h1>HC Motor České Budějovice</h1>
+   <div class="meta">Statistiky hráčů, {esc(SEASON_LABEL)}</div>
+  </div>
+  <div class="header-side">
+   <span class="live"><span class="dot dot-pos"></span>Aktualizováno {now}</span>
+   <a href="{STATS_URL}">hcmotor.cz</a>
+   <a href="bilance-proti-tymum.html">Bilance proti týmům</a>
+   <a href="sestavy.html">Sestavy</a>
+  </div>
+ </header>
+ <nav class="tabbar" id="tabbar" aria-label="Navigace sekcí">
   <button class="tab-btn is-active" type="button" data-tab="prehled">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
     <span class="badge-dot"></span>
@@ -2974,6 +3093,58 @@ def render_html(
     <span>Kariéra</span>
   </button>
 </nav>
+ <div class="app-content" id="app-content">
+  <section class="tabsection bento" data-tab="prehled">
+    {next_match_html}{kpi_points_html}{kpi_form_html}
+    <div class="card card-changes">
+      <h2>Změny od minulé aktualizace</h2>
+      {changes_html}
+    </div>
+{milestones_html}{schedule_html}{corrections_html}
+  </section>
+
+  <section class="tabsection bento" data-tab="zapas">
+    {zapas_html or '<div class="card"><p class="muted">Zatím žádný zpracovaný zápis odehraného zápasu.</p></div>'}
+  </section>
+
+  <section class="tabsection bento" data-tab="sezona">
+    <div class="card">
+      <h2>Hráči v poli</h2>
+      <table class="tbl-skaters">
+        <thead><tr><th>#</th><th>Hráč</th><th>{lbl("Post","P")}</th><th>Z</th><th>G</th><th>A</th><th>B</th><th>+/-</th><th>{lbl("TM","T")}</th></tr></thead>
+        <tbody>{skater_rows}</tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>Brankáři</h2>
+      <table class="tbl-goalkeepers">
+        <thead><tr><th>#</th><th>{lbl("Brankář","GK")}</th><th>Z</th><th>{lbl("Min","M")}</th><th>{lbl("Stř","S")}</th><th>{lbl("Ink","I")}</th><th>{lbl("Zás","Zá")}</th><th>{lbl("Prů","Pr")}</th><th>{lbl("Úsp %","Úsp")}</th><th>SO</th><th>A</th><th>{lbl("TM","T")}</th></tr></thead>
+        <tbody>{gk_rows}</tbody>
+      </table>
+    </div>
+    {best_html}{gwg_html}{pairs_html}{absence_html}{formations_html}{on_ice_html}{discipline_html}
+  </section>
+
+  <section class="tabsection bento" data-tab="bilance">
+    {record_html}{home_away_html}{periods_html}{shootout_html}{attendance_html}{referees_html}
+  </section>
+
+  <section class="tabsection bento" data-tab="historie">
+    <input type="search" class="search-box" id="search-historie" placeholder="Hledat hráče" autocomplete="off">
+    {history_html}{schedule_log_html}
+  </section>
+
+  <section class="tabsection bento" data-tab="mesice">
+    <input type="search" class="search-box" id="search-mesice" placeholder="Hledat hráče" autocomplete="off">
+    {monthly_html}
+  </section>
+
+  <section class="tabsection bento" data-tab="kariera">
+{career_html}
+  </section>
+ </div>
+</div>
 
 <script>
 var CURRENT_UPDATED = {json.dumps(now)};
@@ -3187,7 +3358,80 @@ function hideSkeleton() {{
   }} catch (e) {{}}
 }}
 
+// Sloupce, kde jsou skoro jen čísla, se zarovnají doprava (tabulková čísla).
+function initNumericColumns() {{
+  try {{
+    var re = /^[+\\-−]?\\d[\\d\\s\\u00a0]*([.,]\\d+)?(\\s*:\\s*\\d+([.,]\\d+)?)?\\s*%?×?$/;
+    var tables = document.querySelectorAll('table');
+    for (var t = 0; t < tables.length; t++) {{
+      var ths = tables[t].querySelectorAll('thead th');
+      var rows = tables[t].querySelectorAll('tbody tr');
+      for (var c = 0; c < ths.length; c++) {{
+        if (/^(Kola|K\\.)$/.test(ths[c].textContent.trim())) continue;
+        var filled = 0, nums = 0;
+        for (var r = 0; r < rows.length; r++) {{
+          var cell = rows[r].children[c];
+          var v = cell ? cell.textContent.trim() : '';
+          if (!v || v === '–' || v === '-') continue;
+          filled++;
+          if (re.test(v)) nums++;
+        }}
+        if (filled && nums >= filled * 0.8) {{
+          ths[c].classList.add('num');
+          for (var r2 = 0; r2 < rows.length; r2++) {{
+            if (rows[r2].children[c]) rows[r2].children[c].classList.add('num');
+          }}
+        }}
+      }}
+    }}
+  }} catch (e) {{}}
+}}
+
+// Tooltip s křížem u grafu bilance (myš i dotyk).
+function initChart() {{
+  try {{
+    var charts = document.querySelectorAll('.chart[data-pts]');
+    for (var i = 0; i < charts.length; i++) {{
+      (function(box) {{
+        var pts = JSON.parse(box.getAttribute('data-pts'));
+        var W = +box.getAttribute('data-w');
+        var svg = box.querySelector('svg');
+        var hover = svg.querySelector('.g-hover');
+        var cross = hover.querySelector('line');
+        var dot = hover.querySelector('circle');
+        var tip = box.querySelector('.chart-tip');
+        function show(clientX) {{
+          var rect = svg.getBoundingClientRect();
+          var vx = (clientX - rect.left) / rect.width * W;
+          var best = pts[0];
+          for (var k = 1; k < pts.length; k++) {{
+            if (Math.abs(pts[k][0] - vx) < Math.abs(best[0] - vx)) best = pts[k];
+          }}
+          cross.setAttribute('x1', best[0]); cross.setAttribute('x2', best[0]);
+          dot.setAttribute('cx', best[0]); dot.setAttribute('cy', best[1]);
+          hover.setAttribute('visibility', 'visible');
+          tip.innerHTML = '<b>' + (best[2] > 0 ? '+' : '') + best[2] + '</b>';
+          tip.appendChild(document.createTextNode(best[3]));
+          tip.hidden = false;
+          var px = best[0] / W * rect.width;
+          var half = tip.offsetWidth / 2;
+          tip.style.left = Math.min(Math.max(px, half), rect.width - half) + 'px';
+          tip.style.top = '0px';
+        }}
+        function hide() {{ hover.setAttribute('visibility', 'hidden'); tip.hidden = true; }}
+        svg.addEventListener('pointermove', function(e) {{ show(e.clientX); }});
+        svg.addEventListener('pointerdown', function(e) {{ show(e.clientX); }});
+        svg.addEventListener('pointerleave', hide);
+      }})(charts[i]);
+    }}
+  }} catch (e) {{
+    if (window.console && window.console.error) {{ window.console.error('graf selhal:', e); }}
+  }}
+}}
+
 function initAll() {{
+  initNumericColumns();
+  initChart();
   initTabbar();
   initBadge();
   initSortableTables();
@@ -3206,6 +3450,16 @@ if (document.readyState === 'loading') {{
 </body>
 </html>
 """
+    # Emoji na začátku nadpisů karet pryč (nadpis nese text, ne ikonku),
+    # stavové ✅/❌ (nájezdy, výsledky) jako barevné tečky.
+    page = re.sub(r'(<h2[^>]*>)\s*(?:[\U0001F000-\U0001FAFF\u2600-\u27BF\u2B00-\u2BFF\u2190-\u21FF\u2300-\u23FF][\ufe0f\u200d]?)+\s*',
+                  r'\1', page)
+    page = re.sub(r'<p class="small">\s*(?:[\U0001F000-\U0001FAFF\u2600-\u27BF\u2300-\u23FF][\ufe0f\u200d]?\s*)?([^<:]{3,40}):\s*',
+                  r'<p class="small kv"><span class="muted">\1</span><span>', page)
+    page = re.sub(r'(<p class="small kv"><span class="muted">[^<]*</span><span>)(.*?)</p>', r'\1\2</span></p>', page)
+    page = page.replace("✅", '<span class="dot dot-pos dot-after" title="ano"></span>')
+    page = page.replace("❌", '<span class="dot dot-neg dot-after" title="ne"></span>')
+    return page
 
 
 def main() -> None:
