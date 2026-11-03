@@ -114,6 +114,15 @@
   .kpi-stack .kpi-num-md { padding-top: 14px; }
   .kpi-split { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding-top: 16px; border-top: 1px solid var(--line); margin-top: auto; }
 
+  /* Přehled: příští zápas / body / forma jen jako nenápadný pruh */
+  .tabsection[data-tab="prehled"] .kpi { min-height: 0; padding: 14px 18px; }
+  .tabsection[data-tab="prehled"] .kpi-title { font-size: 17px; font-weight: 650; letter-spacing: -.015em; padding-top: 6px; margin-top: 0; }
+  .tabsection[data-tab="prehled"] .kpi-num { font-size: 22px; font-weight: 700; letter-spacing: -.02em; padding-top: 6px; margin-top: 0; }
+  .tabsection[data-tab="prehled"] .kpi-sub { margin-top: 4px; }
+  .tabsection[data-tab="prehled"] .kpi-foot { margin-top: 6px; padding-top: 0; border-top: 0; }
+  .tabsection[data-tab="prehled"] .form-dots { margin-top: 8px; gap: 6px; }
+  .tabsection[data-tab="prehled"] .form-dots .dot-lg { width: 8px; height: 8px; }
+
   /* ===== Graf ===== */
   .chart { position: relative; margin-top: 16px; }
   .chart svg { display: block; width: 100%; height: auto; overflow: visible; touch-action: pan-y; }
@@ -231,8 +240,8 @@
   }
   @media (min-width: 980px) {
     .bento > .kpi { grid-column: span 2; }
-    .bento > .kpi-next { grid-column: span 3; }
-    .bento > .kpi-form { grid-column: span 1; }
+    .bento > .kpi-next { grid-column: span 2; }
+    .bento > .kpi-form { grid-column: span 2; }
     .bento > .card-changes { grid-column: span 2; }
     .bento > .card:has(.tbl-milestones) { grid-column: span 4; }
     .bento > .card-chart { grid-column: span 4; }
@@ -260,6 +269,9 @@
     .bento > .kpi:not(.kpi-next):not(.kpi-stack) { grid-column: span 3; }
     .card { padding: 14px 14px; border-radius: 14px; }
     .kpi { min-height: 140px; }
+    .tabsection[data-tab="prehled"] .kpi { min-height: 0; padding: 12px 14px; }
+    .tabsection[data-tab="prehled"] .kpi-num { font-size: 20px; }
+    .tabsection[data-tab="prehled"] .kpi-title { font-size: 16px; }
     .kpi-num { font-size: 46px; }
     .kpi-num-md { font-size: 36px; }
     .kpi-num-sm { font-size: 28px; }
@@ -317,7 +329,7 @@
    <div class="meta">Statistiky hráčů, Tipsport extraliga 2026/2027</div>
   </div>
   <div class="header-side">
-   <span class="live"><span class="dot dot-pos"></span>Aktualizováno 03.11.2026 18:44</span>
+   <span class="live"><span class="dot dot-pos"></span>Aktualizováno 03.11.2026 21:06</span>
    <a href="https://hcmotor.cz/stats.asp?sezona=2027">hcmotor.cz</a>
    <a href="bilance-proti-tymum.html">Bilance proti týmům</a>
    <a href="sestavy.html">Sestavy</a>
@@ -361,7 +373,7 @@
     <h2>Příští zápas</h2>
     <div class="kpi-title">Litvínov</div>
     <div class="kpi-sub"><span class="dot dot-ring"></span>Venku, 18. kolo</div>
-    <div class="kpi-foot">pátek 13.11., 17:30<br>Litvínov, Zimní stadion Ivana Hlinky</div>
+    <div class="kpi-foot">pátek 13.11., 17:30, Litvínov, Zimní stadion Ivana Hlinky</div>
   </div>
 
   <div class="card kpi">
@@ -721,7 +733,7 @@
       <summary>listopad 2026 <span class="muted small">(20 hráčů)</span></summary>
       <table>
         <thead><tr><th>Hráč</th><th>Z</th><th>G</th><th>A</th><th>B</th></tr></thead>
-        <tbody><tr><td>Lantoši Róbert</td><td>1</td><td>0</td><td>2</td><td><strong>2</strong></td></tr><tr><td>Bell Parker</td><td>1</td><td>1</td><td>0</td><td><strong>1</strong></td></tr><tr><td>Hoch Štěpán</td><td>1</td><td>1</td><td>0</td><td><strong>1</strong></td></tr><tr><td>Olesen Nick Alexander</td><td>1</td><td>0</td><td>1</td><td><strong>1</strong></td></tr><tr><td>Koláček Josef</td><td>1</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>McCormack Graeme</td><td>1</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>Pýcha Pavel</td><td>1</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>Beránek Martin</td><td>1</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>Kundrátek Tomáš</td><td>1</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>Toman Matěj</td><td>1</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>Pour Jakub</td><td>1</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>Lev Jakub</td><td>1</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>Nordsäter Lucas</td><td>1</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>Štencel Jan</td><td>1</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>Nedorost Václav</td><td>1</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>Ordoš Jan</td><td>1</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>Krastenbergs Renars</td><td>1</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>Vráblík Roman</td><td>1</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>Hejduk Marek</td><td>1</td><td>0</td><td>0</td><td><strong>0</strong></td></tr></tbody>
+        <tbody><tr><td>Lantoši Róbert</td><td>1</td><td>0</td><td>2</td><td><strong>2</strong></td></tr><tr><td>Bell Parker</td><td>1</td><td>1</td><td>0</td><td><strong>1</strong></td></tr><tr><td>Hoch Štěpán</td><td>1</td><td>1</td><td>0</td><td><strong>1</strong></td></tr><tr><td>Olesen Nick Alexander</td><td>1</td><td>0</td><td>1</td><td><strong>1</strong></td></tr><tr><td>Hejduk Marek</td><td>1</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>Ordoš Jan</td><td>1</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>Vráblík Roman</td><td>1</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>Lev Jakub</td><td>1</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>Krastenbergs Renars</td><td>1</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>McCormack Graeme</td><td>1</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>Nordsäter Lucas</td><td>1</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>Beránek Martin</td><td>1</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>Pour Jakub</td><td>1</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>Toman Matěj</td><td>1</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>Štencel Jan</td><td>1</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>Kundrátek Tomáš</td><td>1</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>Nedorost Václav</td><td>1</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>Koláček Josef</td><td>1</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>Pýcha Pavel</td><td>1</td><td>0</td><td>0</td><td><strong>0</strong></td></tr></tbody>
       </table>
       <table>
         <thead><tr><th>Brankář</th><th>Z</th></tr></thead>
@@ -732,18 +744,18 @@
       <summary>říjen 2026 <span class="muted small">(27 hráčů)</span></summary>
       <table>
         <thead><tr><th>Hráč</th><th>Z</th><th>G</th><th>A</th><th>B</th></tr></thead>
-        <tbody><tr><td>Lantoši Róbert</td><td>10</td><td>2</td><td>8</td><td><strong>10</strong></td></tr><tr><td>Štencel Jan</td><td>10</td><td>2</td><td>5</td><td><strong>7</strong></td></tr><tr><td>Olesen Nick Alexander</td><td>10</td><td>5</td><td>2</td><td><strong>7</strong></td></tr><tr><td>Ahl Filip</td><td>9</td><td>3</td><td>3</td><td><strong>6</strong></td></tr><tr><td>Hoch Štěpán</td><td>10</td><td>0</td><td>6</td><td><strong>6</strong></td></tr><tr><td>Koláček Josef</td><td>8</td><td>3</td><td>1</td><td><strong>4</strong></td></tr><tr><td>Beránek Martin</td><td>10</td><td>3</td><td>1</td><td><strong>4</strong></td></tr><tr><td>Toman Matěj</td><td>10</td><td>1</td><td>3</td><td><strong>4</strong></td></tr><tr><td>Ordoš Jan</td><td>10</td><td>3</td><td>1</td><td><strong>4</strong></td></tr><tr><td>Bell Parker</td><td>7</td><td>1</td><td>2</td><td><strong>3</strong></td></tr><tr><td>Vála Ondřej</td><td>8</td><td>0</td><td>2</td><td><strong>2</strong></td></tr><tr><td>Kundrátek Tomáš</td><td>6</td><td>0</td><td>2</td><td><strong>2</strong></td></tr><tr><td>Nedorost Václav</td><td>10</td><td>0</td><td>2</td><td><strong>2</strong></td></tr><tr><td>Krastenbergs Renars</td><td>6</td><td>1</td><td>1</td><td><strong>2</strong></td></tr><tr><td>Vráblík Roman</td><td>10</td><td>2</td><td>0</td><td><strong>2</strong></td></tr><tr><td>Andersen Ole Einar Engeland</td><td>0</td><td>0</td><td>1</td><td><strong>1</strong></td></tr><tr><td>Pýcha Pavel</td><td>10</td><td>0</td><td>1</td><td><strong>1</strong></td></tr><tr><td>Pour Jakub</td><td>9</td><td>1</td><td>0</td><td><strong>1</strong></td></tr><tr><td>Nordsäter Lucas</td><td>10</td><td>0</td><td>1</td><td><strong>1</strong></td></tr><tr><td>Zachar Marek</td><td>10</td><td>1</td><td>0</td><td><strong>1</strong></td></tr><tr><td>Hejduk Marek</td><td>9</td><td>0</td><td>1</td><td><strong>1</strong></td></tr><tr><td>Bulíř Michal</td><td>10</td><td>0</td><td>1</td><td><strong>1</strong></td></tr><tr><td>Kachyňa Ondřej</td><td>5</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>Lev Jakub</td><td>1</td><td>0</td><td>0</td><td><strong>0</strong></td></tr></tbody>
+        <tbody><tr><td>Lantoši Róbert</td><td>10</td><td>2</td><td>8</td><td><strong>10</strong></td></tr><tr><td>Štencel Jan</td><td>10</td><td>2</td><td>5</td><td><strong>7</strong></td></tr><tr><td>Olesen Nick Alexander</td><td>10</td><td>5</td><td>2</td><td><strong>7</strong></td></tr><tr><td>Hoch Štěpán</td><td>10</td><td>0</td><td>6</td><td><strong>6</strong></td></tr><tr><td>Ahl Filip</td><td>9</td><td>3</td><td>3</td><td><strong>6</strong></td></tr><tr><td>Ordoš Jan</td><td>10</td><td>3</td><td>1</td><td><strong>4</strong></td></tr><tr><td>Beránek Martin</td><td>10</td><td>3</td><td>1</td><td><strong>4</strong></td></tr><tr><td>Toman Matěj</td><td>10</td><td>1</td><td>3</td><td><strong>4</strong></td></tr><tr><td>Koláček Josef</td><td>8</td><td>3</td><td>1</td><td><strong>4</strong></td></tr><tr><td>Bell Parker</td><td>7</td><td>1</td><td>2</td><td><strong>3</strong></td></tr><tr><td>Vráblík Roman</td><td>10</td><td>2</td><td>0</td><td><strong>2</strong></td></tr><tr><td>Krastenbergs Renars</td><td>6</td><td>1</td><td>1</td><td><strong>2</strong></td></tr><tr><td>Vála Ondřej</td><td>8</td><td>0</td><td>2</td><td><strong>2</strong></td></tr><tr><td>Kundrátek Tomáš</td><td>6</td><td>0</td><td>2</td><td><strong>2</strong></td></tr><tr><td>Nedorost Václav</td><td>10</td><td>0</td><td>2</td><td><strong>2</strong></td></tr><tr><td>Hejduk Marek</td><td>9</td><td>0</td><td>1</td><td><strong>1</strong></td></tr><tr><td>Andersen Ole Einar Engeland</td><td>0</td><td>0</td><td>1</td><td><strong>1</strong></td></tr><tr><td>Zachar Marek</td><td>10</td><td>1</td><td>0</td><td><strong>1</strong></td></tr><tr><td>Nordsäter Lucas</td><td>10</td><td>0</td><td>1</td><td><strong>1</strong></td></tr><tr><td>Bulíř Michal</td><td>10</td><td>0</td><td>1</td><td><strong>1</strong></td></tr><tr><td>Pour Jakub</td><td>9</td><td>1</td><td>0</td><td><strong>1</strong></td></tr><tr><td>Pýcha Pavel</td><td>10</td><td>0</td><td>1</td><td><strong>1</strong></td></tr><tr><td>Kachyňa Ondřej</td><td>5</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>Lev Jakub</td><td>1</td><td>0</td><td>0</td><td><strong>0</strong></td></tr></tbody>
       </table>
       <table>
         <thead><tr><th>Brankář</th><th>Z</th></tr></thead>
-        <tbody><tr><td>Mařík Matyáš</td><td>5</td></tr><tr><td>Klouček Milan</td><td>5</td></tr><tr><td>Strmeň Jan</td><td>3</td></tr></tbody>
+        <tbody><tr><td>Klouček Milan</td><td>5</td></tr><tr><td>Mařík Matyáš</td><td>5</td></tr><tr><td>Strmeň Jan</td><td>3</td></tr></tbody>
       </table>
     </details>
     <details>
       <summary>září 2026 <span class="muted small">(23 hráčů)</span></summary>
       <table>
         <thead><tr><th>Hráč</th><th>Z</th><th>G</th><th>A</th><th>B</th></tr></thead>
-        <tbody><tr><td>Štencel Jan</td><td>6</td><td>2</td><td>3</td><td><strong>5</strong></td></tr><tr><td>Hoch Štěpán</td><td>6</td><td>1</td><td>4</td><td><strong>5</strong></td></tr><tr><td>Olesen Nick Alexander</td><td>5</td><td>3</td><td>2</td><td><strong>5</strong></td></tr><tr><td>Ordoš Jan</td><td>6</td><td>3</td><td>1</td><td><strong>4</strong></td></tr><tr><td>Lantoši Róbert</td><td>6</td><td>0</td><td>4</td><td><strong>4</strong></td></tr><tr><td>Pour Jakub</td><td>6</td><td>3</td><td>0</td><td><strong>3</strong></td></tr><tr><td>Bulíř Michal</td><td>6</td><td>0</td><td>3</td><td><strong>3</strong></td></tr><tr><td>Krastenbergs Renars</td><td>6</td><td>0</td><td>2</td><td><strong>2</strong></td></tr><tr><td>Pýcha Pavel</td><td>6</td><td>0</td><td>2</td><td><strong>2</strong></td></tr><tr><td>Vráblík Roman</td><td>6</td><td>0</td><td>2</td><td><strong>2</strong></td></tr><tr><td>Bell Parker</td><td>6</td><td>2</td><td>0</td><td><strong>2</strong></td></tr><tr><td>Toman Matěj</td><td>6</td><td>0</td><td>1</td><td><strong>1</strong></td></tr><tr><td>Ahl Filip</td><td>6</td><td>0</td><td>1</td><td><strong>1</strong></td></tr><tr><td>Nordsäter Lucas</td><td>6</td><td>0</td><td>1</td><td><strong>1</strong></td></tr><tr><td>Kachyňa Ondřej</td><td>5</td><td>0</td><td>1</td><td><strong>1</strong></td></tr><tr><td>Vála Ondřej</td><td>6</td><td>0</td><td>1</td><td><strong>1</strong></td></tr><tr><td>Beránek Martin</td><td>6</td><td>1</td><td>0</td><td><strong>1</strong></td></tr><tr><td>Kundrátek Tomáš</td><td>2</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>Zachar Marek</td><td>6</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>Andersen Ole Einar Engeland</td><td>5</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>Hejduk Marek</td><td>6</td><td>0</td><td>0</td><td><strong>0</strong></td></tr></tbody>
+        <tbody><tr><td>Hoch Štěpán</td><td>6</td><td>1</td><td>4</td><td><strong>5</strong></td></tr><tr><td>Štencel Jan</td><td>6</td><td>2</td><td>3</td><td><strong>5</strong></td></tr><tr><td>Olesen Nick Alexander</td><td>5</td><td>3</td><td>2</td><td><strong>5</strong></td></tr><tr><td>Lantoši Róbert</td><td>6</td><td>0</td><td>4</td><td><strong>4</strong></td></tr><tr><td>Ordoš Jan</td><td>6</td><td>3</td><td>1</td><td><strong>4</strong></td></tr><tr><td>Bulíř Michal</td><td>6</td><td>0</td><td>3</td><td><strong>3</strong></td></tr><tr><td>Pour Jakub</td><td>6</td><td>3</td><td>0</td><td><strong>3</strong></td></tr><tr><td>Bell Parker</td><td>6</td><td>2</td><td>0</td><td><strong>2</strong></td></tr><tr><td>Vráblík Roman</td><td>6</td><td>0</td><td>2</td><td><strong>2</strong></td></tr><tr><td>Krastenbergs Renars</td><td>6</td><td>0</td><td>2</td><td><strong>2</strong></td></tr><tr><td>Pýcha Pavel</td><td>6</td><td>0</td><td>2</td><td><strong>2</strong></td></tr><tr><td>Nordsäter Lucas</td><td>6</td><td>0</td><td>1</td><td><strong>1</strong></td></tr><tr><td>Ahl Filip</td><td>6</td><td>0</td><td>1</td><td><strong>1</strong></td></tr><tr><td>Kachyňa Ondřej</td><td>5</td><td>0</td><td>1</td><td><strong>1</strong></td></tr><tr><td>Beránek Martin</td><td>6</td><td>1</td><td>0</td><td><strong>1</strong></td></tr><tr><td>Vála Ondřej</td><td>6</td><td>0</td><td>1</td><td><strong>1</strong></td></tr><tr><td>Toman Matěj</td><td>6</td><td>0</td><td>1</td><td><strong>1</strong></td></tr><tr><td>Hejduk Marek</td><td>6</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>Andersen Ole Einar Engeland</td><td>5</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>Zachar Marek</td><td>6</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>Kundrátek Tomáš</td><td>2</td><td>0</td><td>0</td><td><strong>0</strong></td></tr></tbody>
       </table>
       <table>
         <thead><tr><th>Brankář</th><th>Z</th></tr></thead>
@@ -797,7 +809,7 @@
 </div>
 
 <script>
-var CURRENT_UPDATED = "03.11.2026 18:44";
+var CURRENT_UPDATED = "03.11.2026 21:06";
 
 function initTabbar() {
   try {
