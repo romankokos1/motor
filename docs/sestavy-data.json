@@ -1,5 +1,5 @@
 {
- "aktualizovano": "06.11.2026 15:14",
+ "aktualizovano": "06.11.2026 23:09",
  "zapasy": [
   {
    "kolo": 1,
@@ -356,6 +356,201 @@
       }
      ]
     }
+   },
+   "zapis": {
+    "goly": [
+     {
+      "cas": "10:38",
+      "vteriny": 638,
+      "tym": "BANES Motor České Budějovice",
+      "strelec": "Bell Parker",
+      "asistence": [
+       "Ahl Filip"
+      ],
+      "situace": "5/4"
+     },
+     {
+      "cas": "25:08",
+      "vteriny": 1508,
+      "tym": "BK Mladá Boleslav",
+      "strelec": "Jandric Steven Nicholas",
+      "asistence": [
+       "Morand Antoine",
+       "Martel Jordan"
+      ],
+      "situace": "5/5"
+     },
+     {
+      "cas": "27:39",
+      "vteriny": 1659,
+      "tym": "BANES Motor České Budějovice",
+      "strelec": "Pour Jakub",
+      "asistence": [
+       "Krastenbergs Renars",
+       "Bulíř Michal"
+      ],
+      "situace": "5/4"
+     },
+     {
+      "cas": "45:17",
+      "vteriny": 2717,
+      "tym": "BK Mladá Boleslav",
+      "strelec": "Gavars Felikss",
+      "asistence": [
+       "Skalický Pavol",
+       "Koblížek Radek"
+      ],
+      "situace": "5/4"
+     },
+     {
+      "cas": "62:13",
+      "vteriny": 3733,
+      "tym": "BK Mladá Boleslav",
+      "strelec": "Martel Jordan",
+      "asistence": [
+       "Morand Antoine",
+       "Zámorský Petr"
+      ],
+      "situace": "4/3"
+     }
+    ],
+    "tresty": [
+     {
+      "cas": "07:43",
+      "vteriny": 463,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "lavička (HL)",
+      "min": "2"
+     },
+     {
+      "cas": "09:58",
+      "vteriny": 598,
+      "tym": "BK Mladá Boleslav",
+      "hrac": "Kubíček Šimon",
+      "min": "2"
+     },
+     {
+      "cas": "25:51",
+      "vteriny": 1551,
+      "tym": "BK Mladá Boleslav",
+      "hrac": "Pavlík Filip",
+      "min": "2"
+     },
+     {
+      "cas": "34:12",
+      "vteriny": 2052,
+      "tym": "BK Mladá Boleslav",
+      "hrac": "Gardoň Matěj",
+      "min": "2"
+     },
+     {
+      "cas": "36:38",
+      "vteriny": 2198,
+      "tym": "BK Mladá Boleslav",
+      "hrac": "Gavars Felikss",
+      "min": "2"
+     },
+     {
+      "cas": "39:15",
+      "vteriny": 2355,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Zachar Marek",
+      "min": "2"
+     },
+     {
+      "cas": "44:11",
+      "vteriny": 2651,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Olesen Nick Alexander",
+      "min": "2"
+     },
+     {
+      "cas": "44:11",
+      "vteriny": 2651,
+      "tym": "BK Mladá Boleslav",
+      "hrac": "Jandric Steven Nicholas",
+      "min": "2"
+     },
+     {
+      "cas": "44:32",
+      "vteriny": 2672,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Hoch Štěpán",
+      "min": "2"
+     },
+     {
+      "cas": "54:06",
+      "vteriny": 3246,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Pour Jakub",
+      "min": "2"
+     },
+     {
+      "cas": "61:57",
+      "vteriny": 3717,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Pour Jakub",
+      "min": "2"
+     }
+    ],
+    "rozhodci": {
+     "hlavni": [
+      "Antonín Jeřábek (BM82)",
+      "Jiří Ondráček (TR97)"
+     ],
+     "carovi": [
+      "Daniel Hynek",
+      "Jiří Svoboda (AA82)"
+     ]
+    },
+    "divaci": "6024",
+    "tretiny": [
+     {
+      "tretina": "1",
+      "goly": [
+       1,
+       0
+      ],
+      "strely": [
+       8,
+       11
+      ]
+     },
+     {
+      "tretina": "2",
+      "goly": [
+       1,
+       1
+      ],
+      "strely": [
+       19,
+       13
+      ]
+     },
+     {
+      "tretina": "3",
+      "goly": [
+       0,
+       1
+      ],
+      "strely": [
+       7,
+       11
+      ]
+     },
+     {
+      "tretina": "P",
+      "goly": [
+       0,
+       1
+      ],
+      "strely": [
+       0,
+       2
+      ]
+     }
+    ],
+    "najezdy": []
    }
   },
   {
@@ -717,6 +912,109 @@
       }
      ]
     }
+   },
+   "zapis": {
+    "goly": [
+     {
+      "cas": "22:20",
+      "vteriny": 1340,
+      "tym": "BANES Motor České Budějovice",
+      "strelec": "Pour Jakub",
+      "asistence": [
+       "Pýcha Pavel",
+       "Nordsäter Lucas"
+      ],
+      "situace": "5/5"
+     },
+     {
+      "cas": "24:32",
+      "vteriny": 1472,
+      "tym": "BANES Motor České Budějovice",
+      "strelec": "Olesen Nick Alexander",
+      "asistence": [
+       "Toman Matěj",
+       "Vráblík Roman"
+      ],
+      "situace": "5/5"
+     }
+    ],
+    "tresty": [
+     {
+      "cas": "15:21",
+      "vteriny": 921,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Pour Jakub",
+      "min": "2"
+     },
+     {
+      "cas": "18:32",
+      "vteriny": 1112,
+      "tym": "Mountfield HK, a.s.",
+      "hrac": "Mudrák Dávid",
+      "min": "2"
+     },
+     {
+      "cas": "26:41",
+      "vteriny": 1601,
+      "tym": "Mountfield HK, a.s.",
+      "hrac": "Mudrák Dávid",
+      "min": "2"
+     },
+     {
+      "cas": "30:16",
+      "vteriny": 1816,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Nordsäter Lucas",
+      "min": "2"
+     }
+    ],
+    "rozhodci": {
+     "hlavni": [
+      "Luděk Pilný",
+      "Jakub Šindel"
+     ],
+     "carovi": [
+      "Lukáš Rampír",
+      "Dominik Brož"
+     ]
+    },
+    "divaci": "3938",
+    "tretiny": [
+     {
+      "tretina": "1",
+      "goly": [
+       0,
+       0
+      ],
+      "strely": [
+       10,
+       8
+      ]
+     },
+     {
+      "tretina": "2",
+      "goly": [
+       0,
+       2
+      ],
+      "strely": [
+       8,
+       12
+      ]
+     },
+     {
+      "tretina": "3",
+      "goly": [
+       0,
+       0
+      ],
+      "strely": [
+       10,
+       1
+      ]
+     }
+    ],
+    "najezdy": []
    }
   },
   {
@@ -1078,6 +1376,204 @@
       }
      ]
     }
+   },
+   "zapis": {
+    "goly": [
+     {
+      "cas": "36:45",
+      "vteriny": 2205,
+      "tym": "HC Olomouc",
+      "strelec": "Plášek Karel",
+      "asistence": [
+       "Freibergs Ralfs",
+       "Navrátil Jakub"
+      ],
+      "situace": "5/5"
+     },
+     {
+      "cas": "37:03",
+      "vteriny": 2223,
+      "tym": "BANES Motor České Budějovice",
+      "strelec": "Bell Parker",
+      "asistence": [
+       "Štencel Jan",
+       "Lantoši Róbert"
+      ],
+      "situace": "5/4"
+     },
+     {
+      "cas": "38:16",
+      "vteriny": 2296,
+      "tym": "HC Olomouc",
+      "strelec": "Navrátil Jakub",
+      "asistence": [
+       "Plášek Karel"
+      ],
+      "situace": "5/5"
+     },
+     {
+      "cas": "46:45",
+      "vteriny": 2805,
+      "tym": "BANES Motor České Budějovice",
+      "strelec": "Štencel Jan",
+      "asistence": [
+       "Krastenbergs Renars",
+       "Bulíř Michal"
+      ],
+      "situace": "5/5"
+     },
+     {
+      "cas": "54:22",
+      "vteriny": 3262,
+      "tym": "BANES Motor České Budějovice",
+      "strelec": "Pour Jakub",
+      "asistence": [
+       "Hoch Štěpán",
+       "Lantoši Róbert"
+      ],
+      "situace": "5/5"
+     }
+    ],
+    "tresty": [
+     {
+      "cas": "06:35",
+      "vteriny": 395,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Krastenbergs Renars",
+      "min": "2"
+     },
+     {
+      "cas": "08:58",
+      "vteriny": 538,
+      "tym": "HC Olomouc",
+      "hrac": "Spodniak Matúš",
+      "min": "2"
+     },
+     {
+      "cas": "11:19",
+      "vteriny": 679,
+      "tym": "HC Olomouc",
+      "hrac": "Gewiese Petr",
+      "min": "2"
+     },
+     {
+      "cas": "18:45",
+      "vteriny": 1125,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Kachyňa Ondřej",
+      "min": "2"
+     },
+     {
+      "cas": "24:52",
+      "vteriny": 1492,
+      "tym": "HC Olomouc",
+      "hrac": "Matýs Ondřej",
+      "min": "2"
+     },
+     {
+      "cas": "28:03",
+      "vteriny": 1683,
+      "tym": "HC Olomouc",
+      "hrac": "Plášek Karel",
+      "min": "2"
+     },
+     {
+      "cas": "29:23",
+      "vteriny": 1763,
+      "tym": "HC Olomouc",
+      "hrac": "Anděl Lukáš",
+      "min": "2"
+     },
+     {
+      "cas": "29:29",
+      "vteriny": 1769,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Lantoši Róbert",
+      "min": "2"
+     },
+     {
+      "cas": "36:57",
+      "vteriny": 2217,
+      "tym": "HC Olomouc",
+      "hrac": "Matýs Ondřej",
+      "min": "2"
+     },
+     {
+      "cas": "39:40",
+      "vteriny": 2380,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Vála Ondřej",
+      "min": "2"
+     },
+     {
+      "cas": "39:40",
+      "vteriny": 2380,
+      "tym": "HC Olomouc",
+      "hrac": "Kos Jakub",
+      "min": "2"
+     },
+     {
+      "cas": "48:12",
+      "vteriny": 2892,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Vála Ondřej",
+      "min": "2"
+     },
+     {
+      "cas": "56:36",
+      "vteriny": 3396,
+      "tym": "HC Olomouc",
+      "hrac": "Herčík Daniel",
+      "min": "2"
+     }
+    ],
+    "rozhodci": {
+     "hlavni": [
+      "Daniel Pražák",
+      "Jan Jaroš"
+     ],
+     "carovi": [
+      "Jakub Frodl",
+      "Stanislav Hnát"
+     ]
+    },
+    "divaci": "5640",
+    "tretiny": [
+     {
+      "tretina": "1",
+      "goly": [
+       0,
+       0
+      ],
+      "strely": [
+       11,
+       7
+      ]
+     },
+     {
+      "tretina": "2",
+      "goly": [
+       1,
+       2
+      ],
+      "strely": [
+       10,
+       11
+      ]
+     },
+     {
+      "tretina": "3",
+      "goly": [
+       2,
+       0
+      ],
+      "strely": [
+       14,
+       14
+      ]
+     }
+    ],
+    "najezdy": []
    }
   },
   {
@@ -1429,6 +1925,171 @@
       }
      ]
     }
+   },
+   "zapis": {
+    "goly": [
+     {
+      "cas": "03:41",
+      "vteriny": 221,
+      "tym": "BYD Energie Karlovy Vary",
+      "strelec": "Mamčics Roberts",
+      "asistence": [],
+      "situace": "5/5"
+     },
+     {
+      "cas": "16:15",
+      "vteriny": 975,
+      "tym": "BYD Energie Karlovy Vary",
+      "strelec": "Jones Nicholas",
+      "asistence": [
+       "Egle Haralds",
+       "Tomek Petr"
+      ],
+      "situace": "5/4"
+     },
+     {
+      "cas": "18:26",
+      "vteriny": 1106,
+      "tym": "BYD Energie Karlovy Vary",
+      "strelec": "Tomek Petr",
+      "asistence": [
+       "Brickley Daniel",
+       "Egle Haralds"
+      ],
+      "situace": "5/5"
+     },
+     {
+      "cas": "22:06",
+      "vteriny": 1326,
+      "tym": "BANES Motor České Budějovice",
+      "strelec": "Hoch Štěpán",
+      "asistence": [
+       "Ordoš Jan",
+       "Pýcha Pavel"
+      ],
+      "situace": "5/4"
+     },
+     {
+      "cas": "32:12",
+      "vteriny": 1932,
+      "tym": "BYD Energie Karlovy Vary",
+      "strelec": "Jones Nicholas",
+      "asistence": [
+       "Minárik Jakub",
+       "Kočí Matteo"
+      ],
+      "situace": "5/4"
+     },
+     {
+      "cas": "43:24",
+      "vteriny": 2604,
+      "tym": "BYD Energie Karlovy Vary",
+      "strelec": "Černoch Jiří",
+      "asistence": [
+       "Beránek Ondřej",
+       "Jiskra Vít"
+      ],
+      "situace": "5/5"
+     }
+    ],
+    "tresty": [
+     {
+      "cas": "00:14",
+      "vteriny": 14,
+      "tym": "BYD Energie Karlovy Vary",
+      "hrac": "Jiskra Vít",
+      "min": "2"
+     },
+     {
+      "cas": "14:26",
+      "vteriny": 866,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "lavička (HL)",
+      "min": "2"
+     },
+     {
+      "cas": "20:33",
+      "vteriny": 1233,
+      "tym": "BYD Energie Karlovy Vary",
+      "hrac": "lavička (HL)",
+      "min": "2"
+     },
+     {
+      "cas": "31:16",
+      "vteriny": 1876,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Krastenbergs Renars",
+      "min": "2"
+     },
+     {
+      "cas": "43:24",
+      "vteriny": 2604,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "lavička (HL)",
+      "min": "2"
+     },
+     {
+      "cas": "50:02",
+      "vteriny": 3002,
+      "tym": "BYD Energie Karlovy Vary",
+      "hrac": "Egle Haralds",
+      "min": "2"
+     },
+     {
+      "cas": "50:32",
+      "vteriny": 3032,
+      "tym": "BYD Energie Karlovy Vary",
+      "hrac": "Minárik Jakub",
+      "min": "2"
+     }
+    ],
+    "rozhodci": {
+     "hlavni": [
+      "Josef Barek",
+      "Tomáš Mejzlík"
+     ],
+     "carovi": [
+      "Josef Špůr",
+      "David Thuma"
+     ]
+    },
+    "divaci": "4237",
+    "tretiny": [
+     {
+      "tretina": "1",
+      "goly": [
+       3,
+       0
+      ],
+      "strely": [
+       9,
+       5
+      ]
+     },
+     {
+      "tretina": "2",
+      "goly": [
+       1,
+       1
+      ],
+      "strely": [
+       5,
+       12
+      ]
+     },
+     {
+      "tretina": "3",
+      "goly": [
+       1,
+       0
+      ],
+      "strely": [
+       9,
+       6
+      ]
+     }
+    ],
+    "najezdy": []
    }
   },
   {
@@ -1794,6 +2455,253 @@
       }
      ]
     }
+   },
+   "zapis": {
+    "goly": [
+     {
+      "cas": "06:33",
+      "vteriny": 393,
+      "tym": "HC Litvínov",
+      "strelec": "Šámal Viktor",
+      "asistence": [],
+      "situace": "5/5"
+     },
+     {
+      "cas": "06:50",
+      "vteriny": 410,
+      "tym": "BANES Motor České Budějovice",
+      "strelec": "Ordoš Jan",
+      "asistence": [
+       "Vála Ondřej",
+       "Hoch Štěpán"
+      ],
+      "situace": "5/5"
+     },
+     {
+      "cas": "22:21",
+      "vteriny": 1341,
+      "tym": "BANES Motor České Budějovice",
+      "strelec": "Štencel Jan",
+      "asistence": [
+       "Olesen Nick Alexander",
+       "Lantoši Róbert"
+      ],
+      "situace": "5/4"
+     },
+     {
+      "cas": "25:56",
+      "vteriny": 1556,
+      "tym": "HC Litvínov",
+      "strelec": "Kämpf David",
+      "asistence": [
+       "Kaše Ondřej",
+       "Moravčík Michal"
+      ],
+      "situace": "5/5"
+     },
+     {
+      "cas": "34:26",
+      "vteriny": 2066,
+      "tym": "HC Litvínov",
+      "strelec": "Jaks Janis",
+      "asistence": [
+       "Kaše Ondřej",
+       "Kämpf David"
+      ],
+      "situace": "5/4"
+     },
+     {
+      "cas": "44:25",
+      "vteriny": 2665,
+      "tym": "BANES Motor České Budějovice",
+      "strelec": "Ordoš Jan",
+      "asistence": [
+       "Hoch Štěpán",
+       "Olesen Nick Alexander"
+      ],
+      "situace": "5/5"
+     },
+     {
+      "cas": "45:42",
+      "vteriny": 2742,
+      "tym": "HC Litvínov",
+      "strelec": "Koblasa Petr",
+      "asistence": [
+       "Kaše Ondřej",
+       "Jaks Janis"
+      ],
+      "situace": "5/4"
+     },
+     {
+      "cas": "52:38",
+      "vteriny": 3158,
+      "tym": "BANES Motor České Budějovice",
+      "strelec": "Olesen Nick Alexander",
+      "asistence": [
+       "Štencel Jan",
+       "Bulíř Michal"
+      ],
+      "situace": "5/4"
+     },
+     {
+      "cas": "59:31",
+      "vteriny": 3571,
+      "tym": "BANES Motor České Budějovice",
+      "strelec": "Olesen Nick Alexander",
+      "asistence": [
+       "Štencel Jan",
+       "Lantoši Róbert"
+      ],
+      "situace": "5/4"
+     }
+    ],
+    "tresty": [
+     {
+      "cas": "---",
+      "vteriny": 0,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Olesen Nick Alexander",
+      "min": "TS"
+     },
+     {
+      "cas": "00:56",
+      "vteriny": 56,
+      "tym": "HC Litvínov",
+      "hrac": "Czuczman Kevin Paul",
+      "min": "2"
+     },
+     {
+      "cas": "01:46",
+      "vteriny": 106,
+      "tym": "HC Litvínov",
+      "hrac": "Sukeľ Matúš",
+      "min": "2"
+     },
+     {
+      "cas": "07:19",
+      "vteriny": 439,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Toman Matěj",
+      "min": "2"
+     },
+     {
+      "cas": "07:19",
+      "vteriny": 439,
+      "tym": "HC Litvínov",
+      "hrac": "Czuczman Kevin Paul",
+      "min": "2"
+     },
+     {
+      "cas": "12:51",
+      "vteriny": 771,
+      "tym": "HC Litvínov",
+      "hrac": "Sukeľ Matúš",
+      "min": "2"
+     },
+     {
+      "cas": "16:17",
+      "vteriny": 977,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Vráblík Roman",
+      "min": "2"
+     },
+     {
+      "cas": "21:00",
+      "vteriny": 1260,
+      "tym": "HC Litvínov",
+      "hrac": "Šámal Viktor",
+      "min": "2"
+     },
+     {
+      "cas": "31:47",
+      "vteriny": 1907,
+      "tym": "HC Litvínov",
+      "hrac": "Koblasa Petr",
+      "min": "2"
+     },
+     {
+      "cas": "33:26",
+      "vteriny": 2006,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Olesen Nick Alexander",
+      "min": "2"
+     },
+     {
+      "cas": "44:52",
+      "vteriny": 2692,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Ahl Filip",
+      "min": "2"
+     },
+     {
+      "cas": "46:23",
+      "vteriny": 2783,
+      "tym": "HC Litvínov",
+      "hrac": "Jurčík Ondřej",
+      "min": "2"
+     },
+     {
+      "cas": "51:15",
+      "vteriny": 3075,
+      "tym": "HC Litvínov",
+      "hrac": "Koblasa Petr",
+      "min": "2"
+     },
+     {
+      "cas": "59:02",
+      "vteriny": 3542,
+      "tym": "HC Litvínov",
+      "hrac": "Jaks Janis",
+      "min": "2"
+     }
+    ],
+    "rozhodci": {
+     "hlavni": [
+      "Jakub Zeliska",
+      "Tomáš Hacaperka"
+     ],
+     "carovi": [
+      "Michal Zíka",
+      "Jiří Svoboda (AA82)"
+     ]
+    },
+    "divaci": "6308",
+    "tretiny": [
+     {
+      "tretina": "1",
+      "goly": [
+       1,
+       1
+      ],
+      "strely": [
+       13,
+       17
+      ]
+     },
+     {
+      "tretina": "2",
+      "goly": [
+       1,
+       2
+      ],
+      "strely": [
+       10,
+       10
+      ]
+     },
+     {
+      "tretina": "3",
+      "goly": [
+       3,
+       1
+      ],
+      "strely": [
+       10,
+       7
+      ]
+     }
+    ],
+    "najezdy": []
    }
   },
   {
@@ -2155,6 +3063,184 @@
       }
      ]
     }
+   },
+   "zapis": {
+    "goly": [
+     {
+      "cas": "07:23",
+      "vteriny": 443,
+      "tym": "HC DYNAMO PARDUBICE",
+      "strelec": "Košťálek Jan",
+      "asistence": [
+       "Červenka Roman",
+       "Mandát Jan"
+      ],
+      "situace": "5/5"
+     },
+     {
+      "cas": "16:01",
+      "vteriny": 961,
+      "tym": "BANES Motor České Budějovice",
+      "strelec": "Ordoš Jan",
+      "asistence": [
+       "Andersen Ole Einar",
+       "Hoch Štěpán"
+      ],
+      "situace": "5/5"
+     },
+     {
+      "cas": "27:56",
+      "vteriny": 1676,
+      "tym": "HC DYNAMO PARDUBICE",
+      "strelec": "Stránský Matěj",
+      "asistence": [
+       "Tomášek David"
+      ],
+      "situace": "5/5"
+     },
+     {
+      "cas": "34:39",
+      "vteriny": 2079,
+      "tym": "BANES Motor České Budějovice",
+      "strelec": "Beránek Martin",
+      "asistence": [
+       "Vráblík Roman",
+       "Kachyňa Ondřej"
+      ],
+      "situace": "5/5"
+     },
+     {
+      "cas": "44:41",
+      "vteriny": 2681,
+      "tym": "HC DYNAMO PARDUBICE",
+      "strelec": "Sedlák Lukáš",
+      "asistence": [
+       "Košťálek Jan",
+       "Gazda Daniel"
+      ],
+      "situace": "5/5"
+     },
+     {
+      "cas": "55:18",
+      "vteriny": 3318,
+      "tym": "HC DYNAMO PARDUBICE",
+      "strelec": "Smejkal Jiří",
+      "asistence": [
+       "Čerešňák Peter",
+       "Tourigny Miguël"
+      ],
+      "situace": "5/4"
+     },
+     {
+      "cas": "58:22",
+      "vteriny": 3502,
+      "tym": "HC DYNAMO PARDUBICE",
+      "strelec": "Nosek Tomáš",
+      "asistence": [
+       "Gazda Daniel",
+       "Kelemen Miloš"
+      ],
+      "situace": "5/5"
+     }
+    ],
+    "tresty": [
+     {
+      "cas": "08:45",
+      "vteriny": 525,
+      "tym": "HC DYNAMO PARDUBICE",
+      "hrac": "Poulíček Patrik",
+      "min": "2"
+     },
+     {
+      "cas": "11:11",
+      "vteriny": 671,
+      "tym": "HC DYNAMO PARDUBICE",
+      "hrac": "Tourigny Miguël",
+      "min": "2"
+     },
+     {
+      "cas": "11:11",
+      "vteriny": 671,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Hejduk Marek",
+      "min": "2"
+     },
+     {
+      "cas": "13:11",
+      "vteriny": 791,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Hejduk Marek",
+      "min": "2"
+     },
+     {
+      "cas": "32:03",
+      "vteriny": 1923,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Vála Ondřej",
+      "min": "2"
+     },
+     {
+      "cas": "53:23",
+      "vteriny": 3203,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Hejduk Marek",
+      "min": "2"
+     },
+     {
+      "cas": "58:59",
+      "vteriny": 3539,
+      "tym": "HC DYNAMO PARDUBICE",
+      "hrac": "Poulíček Patrik",
+      "min": "2"
+     }
+    ],
+    "rozhodci": {
+     "hlavni": [
+      "Luděk Pilný",
+      "Jakub Zeliska"
+     ],
+     "carovi": [
+      "Jakub Frodl",
+      "František Štěpánek"
+     ]
+    },
+    "divaci": "7871",
+    "tretiny": [
+     {
+      "tretina": "1",
+      "goly": [
+       1,
+       1
+      ],
+      "strely": [
+       16,
+       8
+      ]
+     },
+     {
+      "tretina": "2",
+      "goly": [
+       1,
+       1
+      ],
+      "strely": [
+       16,
+       5
+      ]
+     },
+     {
+      "tretina": "3",
+      "goly": [
+       3,
+       0
+      ],
+      "strely": [
+       16,
+       3
+      ]
+     }
+    ],
+    "najezdy": []
    }
   },
   {
@@ -2514,6 +3600,213 @@
       }
      ]
     }
+   },
+   "zapis": {
+    "goly": [
+     {
+      "cas": "12:45",
+      "vteriny": 765,
+      "tym": "BANES Motor České Budějovice",
+      "strelec": "Olesen Nick Alexander",
+      "asistence": [
+       "Lantoši Róbert"
+      ],
+      "situace": "5/5"
+     },
+     {
+      "cas": "31:16",
+      "vteriny": 1876,
+      "tym": "HC Sparta Praha",
+      "strelec": "Špaček Michael",
+      "asistence": [
+       "Chlapík Filip",
+       "Sekáč Jiří"
+      ],
+      "situace": "5/5"
+     },
+     {
+      "cas": "41:16",
+      "vteriny": 2476,
+      "tym": "HC Sparta Praha",
+      "strelec": "Hyka Tomáš",
+      "asistence": [
+       "Najman Ondřej"
+      ],
+      "situace": "4/5"
+     },
+     {
+      "cas": "53:01",
+      "vteriny": 3181,
+      "tym": "BANES Motor České Budějovice",
+      "strelec": "Ahl Filip",
+      "asistence": [
+       "Štencel Jan"
+      ],
+      "situace": "5/5"
+     },
+     {
+      "cas": "53:27",
+      "vteriny": 3207,
+      "tym": "HC Sparta Praha",
+      "strelec": "Shore Devin",
+      "asistence": [
+       "Kousal Pavel",
+       "Chlapík Filip"
+      ],
+      "situace": "5/5"
+     },
+     {
+      "cas": "59:39",
+      "vteriny": 3579,
+      "tym": "HC Sparta Praha",
+      "strelec": "Chlapík Filip",
+      "asistence": [
+       "Blümel Matěj",
+       "Knot Ronald"
+      ],
+      "situace": "5/5"
+     }
+    ],
+    "tresty": [
+     {
+      "cas": "10:23",
+      "vteriny": 623,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "lavička (HL)",
+      "min": "2"
+     },
+     {
+      "cas": "16:21",
+      "vteriny": 981,
+      "tym": "HC Sparta Praha",
+      "hrac": "Shore Devin",
+      "min": "2"
+     },
+     {
+      "cas": "22:11",
+      "vteriny": 1331,
+      "tym": "HC Sparta Praha",
+      "hrac": "Mašín Dominik",
+      "min": "2"
+     },
+     {
+      "cas": "27:42",
+      "vteriny": 1662,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Bell Parker",
+      "min": "2"
+     },
+     {
+      "cas": "31:16",
+      "vteriny": 1876,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Olesen Nick Alexander",
+      "min": "2"
+     },
+     {
+      "cas": "35:20",
+      "vteriny": 2120,
+      "tym": "HC Sparta Praha",
+      "hrac": "Pysyk Mark",
+      "min": "2"
+     },
+     {
+      "cas": "36:58",
+      "vteriny": 2218,
+      "tym": "HC Sparta Praha",
+      "hrac": "Sekáč Jiří",
+      "min": "5"
+     },
+     {
+      "cas": "41:58",
+      "vteriny": 2518,
+      "tym": "HC Sparta Praha",
+      "hrac": "Sekáč Jiří",
+      "min": "20"
+     },
+     {
+      "cas": "41:58",
+      "vteriny": 2518,
+      "tym": "HC Sparta Praha",
+      "hrac": "Sirota Jakub",
+      "min": "2"
+     },
+     {
+      "cas": "44:58",
+      "vteriny": 2698,
+      "tym": "HC Sparta Praha",
+      "hrac": "Pysyk Mark",
+      "min": "2"
+     },
+     {
+      "cas": "49:17",
+      "vteriny": 2957,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Olesen Nick Alexander",
+      "min": "2"
+     },
+     {
+      "cas": "55:18",
+      "vteriny": 3318,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Nordsäter Lucas",
+      "min": "2"
+     },
+     {
+      "cas": "56:28",
+      "vteriny": 3388,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Štencel Jan",
+      "min": "2"
+     }
+    ],
+    "rozhodci": {
+     "hlavni": [
+      "Jan Jaroš",
+      "Matěj Sýkora"
+     ],
+     "carovi": [
+      "Vít Lederer",
+      "Jakub Maňák"
+     ]
+    },
+    "divaci": "11672",
+    "tretiny": [
+     {
+      "tretina": "1",
+      "goly": [
+       0,
+       1
+      ],
+      "strely": [
+       18,
+       8
+      ]
+     },
+     {
+      "tretina": "2",
+      "goly": [
+       1,
+       0
+      ],
+      "strely": [
+       9,
+       7
+      ]
+     },
+     {
+      "tretina": "3",
+      "goly": [
+       3,
+       1
+      ],
+      "strely": [
+       10,
+       7
+      ]
+     }
+    ],
+    "najezdy": []
    }
   },
   {
@@ -2883,6 +4176,199 @@
       }
      ]
     }
+   },
+   "zapis": {
+    "goly": [
+     {
+      "cas": "12:58",
+      "vteriny": 778,
+      "tym": "BANES Motor České Budějovice",
+      "strelec": "Lantoši Róbert",
+      "asistence": [
+       "Hoch Štěpán",
+       "Vála Ondřej"
+      ],
+      "situace": "5/5"
+     },
+     {
+      "cas": "19:58",
+      "vteriny": 1198,
+      "tym": "BANES Motor České Budějovice",
+      "strelec": "Olesen Nick Alexander",
+      "asistence": [
+       "Lantoši Róbert",
+       "Štencel Jan"
+      ],
+      "situace": "5/4"
+     },
+     {
+      "cas": "22:05",
+      "vteriny": 1325,
+      "tym": "BANES Motor České Budějovice",
+      "strelec": "Pour Jakub",
+      "asistence": [
+       "Ahl Filip",
+       "Bulíř Michal"
+      ],
+      "situace": "5/5"
+     },
+     {
+      "cas": "49:25",
+      "vteriny": 2965,
+      "tym": "HC KOMETA BRNO",
+      "strelec": "Irving Aaron James",
+      "asistence": [
+       "Zbořil Adam",
+       "Cingel Lukáš"
+      ],
+      "situace": "5/4"
+     },
+     {
+      "cas": "50:35",
+      "vteriny": 3035,
+      "tym": "BANES Motor České Budějovice",
+      "strelec": "Bell Parker",
+      "asistence": [
+       "Ahl Filip",
+       "Lantoši Róbert"
+      ],
+      "situace": "5/4"
+     },
+     {
+      "cas": "57:35",
+      "vteriny": 3455,
+      "tym": "BANES Motor České Budějovice",
+      "strelec": "Štencel Jan",
+      "asistence": [],
+      "situace": "4/5"
+     }
+    ],
+    "tresty": [
+     {
+      "cas": "19:14",
+      "vteriny": 1154,
+      "tym": "HC KOMETA BRNO",
+      "hrac": "Kusko Silvester",
+      "min": "2"
+     },
+     {
+      "cas": "23:29",
+      "vteriny": 1409,
+      "tym": "HC KOMETA BRNO",
+      "hrac": "Irving Aaron James",
+      "min": "2"
+     },
+     {
+      "cas": "24:42",
+      "vteriny": 1482,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Pour Jakub",
+      "min": "2"
+     },
+     {
+      "cas": "37:58",
+      "vteriny": 2278,
+      "tym": "HC KOMETA BRNO",
+      "hrac": "Zbořil Adam",
+      "min": "2"
+     },
+     {
+      "cas": "46:12",
+      "vteriny": 2772,
+      "tym": "HC KOMETA BRNO",
+      "hrac": "Ilomäki Arttu",
+      "min": "2"
+     },
+     {
+      "cas": "49:16",
+      "vteriny": 2956,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Vála Ondřej",
+      "min": "2"
+     },
+     {
+      "cas": "49:42",
+      "vteriny": 2982,
+      "tym": "HC KOMETA BRNO",
+      "hrac": "Brabenec Jakub",
+      "min": "2"
+     },
+     {
+      "cas": "50:53",
+      "vteriny": 3053,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Beránek Martin",
+      "min": "2"
+     },
+     {
+      "cas": "50:53",
+      "vteriny": 3053,
+      "tym": "HC KOMETA BRNO",
+      "hrac": "Kusko Silvester",
+      "min": "2"
+     },
+     {
+      "cas": "53:33",
+      "vteriny": 3213,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Hoch Štěpán",
+      "min": "2"
+     },
+     {
+      "cas": "56:18",
+      "vteriny": 3378,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Vála Ondřej",
+      "min": "2"
+     }
+    ],
+    "rozhodci": {
+     "hlavni": [
+      "Tomáš Mejzlík",
+      "Jiří Ondráček (TR97)"
+     ],
+     "carovi": [
+      "Michal Zíka",
+      "Jakub Maňák"
+     ]
+    },
+    "divaci": "5817",
+    "tretiny": [
+     {
+      "tretina": "1",
+      "goly": [
+       2,
+       0
+      ],
+      "strely": [
+       15,
+       10
+      ]
+     },
+     {
+      "tretina": "2",
+      "goly": [
+       1,
+       0
+      ],
+      "strely": [
+       8,
+       12
+      ]
+     },
+     {
+      "tretina": "3",
+      "goly": [
+       2,
+       1
+      ],
+      "strely": [
+       6,
+       17
+      ]
+     }
+    ],
+    "najezdy": []
    }
   },
   {
@@ -3240,6 +4726,146 @@
       }
      ]
     }
+   },
+   "zapis": {
+    "goly": [
+     {
+      "cas": "22:17",
+      "vteriny": 1337,
+      "tym": "HC ŠKODA PLZEŇ",
+      "strelec": "Robertson Carter Aj",
+      "asistence": [
+       "Filip Matyáš"
+      ],
+      "situace": "5/5"
+     },
+     {
+      "cas": "36:05",
+      "vteriny": 2165,
+      "tym": "BANES Motor České Budějovice",
+      "strelec": "Ordoš Jan",
+      "asistence": [
+       "Vála Ondřej"
+      ],
+      "situace": "4/5"
+     },
+     {
+      "cas": "37:11",
+      "vteriny": 2231,
+      "tym": "HC ŠKODA PLZEŇ",
+      "strelec": "Petman Ville Emil",
+      "asistence": [
+       "Robertson Carter Aj",
+       "Teplý Michal"
+      ],
+      "situace": "5/5"
+     },
+     {
+      "cas": "39:57",
+      "vteriny": 2397,
+      "tym": "HC ŠKODA PLZEŇ",
+      "strelec": "Robertson Carter Aj",
+      "asistence": [
+       "Lalancette Christophe"
+      ],
+      "situace": "5/4"
+     },
+     {
+      "cas": "57:55",
+      "vteriny": 3475,
+      "tym": "HC ŠKODA PLZEŇ",
+      "strelec": "Schleiss Jan",
+      "asistence": [
+       "Rohlík Ondřej",
+       "Merezhko Igor"
+      ],
+      "situace": "5/5"
+     }
+    ],
+    "tresty": [
+     {
+      "cas": "03:51",
+      "vteriny": 231,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Strmeň Jan",
+      "min": "2"
+     },
+     {
+      "cas": "15:00",
+      "vteriny": 900,
+      "tym": "HC ŠKODA PLZEŇ",
+      "hrac": "Filip Matyáš",
+      "min": "2"
+     },
+     {
+      "cas": "26:03",
+      "vteriny": 1563,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Hoch Štěpán",
+      "min": "2"
+     },
+     {
+      "cas": "34:58",
+      "vteriny": 2098,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Pour Jakub",
+      "min": "2"
+     },
+     {
+      "cas": "39:37",
+      "vteriny": 2377,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Bulíř Michal",
+      "min": "2"
+     }
+    ],
+    "rozhodci": {
+     "hlavni": [
+      "Tomáš Mejzlík",
+      "Denis Turhobr"
+     ],
+     "carovi": [
+      "Jiří Ondráček (KD90)",
+      "David Thuma"
+     ]
+    },
+    "divaci": "3946",
+    "tretiny": [
+     {
+      "tretina": "1",
+      "goly": [
+       0,
+       0
+      ],
+      "strely": [
+       9,
+       12
+      ]
+     },
+     {
+      "tretina": "2",
+      "goly": [
+       3,
+       1
+      ],
+      "strely": [
+       13,
+       5
+      ]
+     },
+     {
+      "tretina": "3",
+      "goly": [
+       1,
+       0
+      ],
+      "strely": [
+       7,
+       8
+      ]
+     }
+    ],
+    "najezdy": []
    }
   },
   {
@@ -3605,6 +5231,210 @@
       }
      ]
     }
+   },
+   "zapis": {
+    "goly": [
+     {
+      "cas": "03:53",
+      "vteriny": 233,
+      "tym": "BANES Motor České Budějovice",
+      "strelec": "Beránek Martin",
+      "asistence": [],
+      "situace": "4/5"
+     },
+     {
+      "cas": "04:49",
+      "vteriny": 289,
+      "tym": "Bílí Tygři Liberec",
+      "strelec": "Lenc Radan",
+      "asistence": [
+       "Galvas Tomáš",
+       "Najman Adam"
+      ],
+      "situace": "5/4"
+     },
+     {
+      "cas": "09:02",
+      "vteriny": 542,
+      "tym": "Bílí Tygři Liberec",
+      "strelec": "Procházka Ondřej",
+      "asistence": [
+       "Petrovský Servác",
+       "Faško-Rudáš Martin"
+      ],
+      "situace": "5/5"
+     },
+     {
+      "cas": "19:35",
+      "vteriny": 1175,
+      "tym": "BANES Motor České Budějovice",
+      "strelec": "Lantoši Róbert",
+      "asistence": [
+       "Hoch Štěpán",
+       "Pýcha Pavel"
+      ],
+      "situace": "5/5"
+     },
+     {
+      "cas": "38:32",
+      "vteriny": 2312,
+      "tym": "BANES Motor České Budějovice",
+      "strelec": "Ahl Filip",
+      "asistence": [
+       "Olesen Nick Alexander",
+       "Štencel Jan"
+      ],
+      "situace": "5/4"
+     },
+     {
+      "cas": "43:35",
+      "vteriny": 2615,
+      "tym": "Bílí Tygři Liberec",
+      "strelec": "Kachlíř Lukáš",
+      "asistence": [
+       "Rychlovský Jakub",
+       "Musil Adam"
+      ],
+      "situace": "5/5"
+     },
+     {
+      "cas": "46:58",
+      "vteriny": 2818,
+      "tym": "BANES Motor České Budějovice",
+      "strelec": "Zachar Marek",
+      "asistence": [
+       "Nordsäter Lucas",
+       "Toman Matěj"
+      ],
+      "situace": "5/5"
+     }
+    ],
+    "tresty": [
+     {
+      "cas": "01:09",
+      "vteriny": 69,
+      "tym": "Bílí Tygři Liberec",
+      "hrac": "lavička (HL)",
+      "min": "2"
+     },
+     {
+      "cas": "03:46",
+      "vteriny": 226,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Toman Matěj",
+      "min": "2"
+     },
+     {
+      "cas": "10:34",
+      "vteriny": 634,
+      "tym": "Bílí Tygři Liberec",
+      "hrac": "Pilíšek Vojtěch",
+      "min": "2"
+     },
+     {
+      "cas": "17:31",
+      "vteriny": 1051,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Beránek Martin",
+      "min": "5"
+     },
+     {
+      "cas": "17:31",
+      "vteriny": 1051,
+      "tym": "Bílí Tygři Liberec",
+      "hrac": "Zile Kristaps",
+      "min": "5"
+     },
+     {
+      "cas": "27:57",
+      "vteriny": 1677,
+      "tym": "Bílí Tygři Liberec",
+      "hrac": "Pytlík Jaromír",
+      "min": "2"
+     },
+     {
+      "cas": "37:42",
+      "vteriny": 2262,
+      "tym": "Bílí Tygři Liberec",
+      "hrac": "Šimek Radim",
+      "min": "2"
+     },
+     {
+      "cas": "48:07",
+      "vteriny": 2887,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Ordoš Jan",
+      "min": "2"
+     },
+     {
+      "cas": "59:42",
+      "vteriny": 3582,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Beránek Martin",
+      "min": "2"
+     },
+     {
+      "cas": "60:00",
+      "vteriny": 3600,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Toman Matěj",
+      "min": "2"
+     },
+     {
+      "cas": "60:00",
+      "vteriny": 3600,
+      "tym": "Bílí Tygři Liberec",
+      "hrac": "Lenc Radan",
+      "min": "2"
+     }
+    ],
+    "rozhodci": {
+     "hlavni": [
+      "Antonín Jeřábek (BM82)",
+      "Filip Vrba"
+     ],
+     "carovi": [
+      "David Thuma",
+      "Michal Zíka"
+     ]
+    },
+    "divaci": "5806",
+    "tretiny": [
+     {
+      "tretina": "1",
+      "goly": [
+       2,
+       2
+      ],
+      "strely": [
+       19,
+       7
+      ]
+     },
+     {
+      "tretina": "2",
+      "goly": [
+       1,
+       0
+      ],
+      "strely": [
+       8,
+       11
+      ]
+     },
+     {
+      "tretina": "3",
+      "goly": [
+       1,
+       1
+      ],
+      "strely": [
+       6,
+       15
+      ]
+     }
+    ],
+    "najezdy": []
    }
   },
   {
@@ -3966,6 +5796,143 @@
       }
      ]
     }
+   },
+   "zapis": {
+    "goly": [
+     {
+      "cas": "10:48",
+      "vteriny": 648,
+      "tym": "BANES Motor České Budějovice",
+      "strelec": "Vráblík Roman",
+      "asistence": [
+       "Štencel Jan",
+       "Hoch Štěpán"
+      ],
+      "situace": "5/5"
+     },
+     {
+      "cas": "34:41",
+      "vteriny": 2081,
+      "tym": "HC VÍTKOVICE RIDERA",
+      "strelec": "Macias Krzysztof Tomasz",
+      "asistence": [
+       "Bernovský Jan"
+      ],
+      "situace": "5/5"
+     },
+     {
+      "cas": "48:08",
+      "vteriny": 2888,
+      "tym": "BANES Motor České Budějovice",
+      "strelec": "Štencel Jan",
+      "asistence": [
+       "Bell Parker"
+      ],
+      "situace": "5/4"
+     },
+     {
+      "cas": "59:57",
+      "vteriny": 3597,
+      "tym": "BANES Motor České Budějovice",
+      "strelec": "Ordoš Jan",
+      "asistence": [
+       "Hejduk Marek",
+       "Hoch Štěpán"
+      ],
+      "situace": "5/5"
+     }
+    ],
+    "tresty": [
+     {
+      "cas": "19:08",
+      "vteriny": 1148,
+      "tym": "HC VÍTKOVICE RIDERA",
+      "hrac": "Pavelka Tomáš",
+      "min": "2"
+     },
+     {
+      "cas": "23:19",
+      "vteriny": 1399,
+      "tym": "HC VÍTKOVICE RIDERA",
+      "hrac": "Holland Rhett",
+      "min": "2"
+     },
+     {
+      "cas": "35:32",
+      "vteriny": 2132,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Pour Jakub",
+      "min": "2"
+     },
+     {
+      "cas": "48:03",
+      "vteriny": 2883,
+      "tym": "HC VÍTKOVICE RIDERA",
+      "hrac": "Macias Krzysztof Tomasz",
+      "min": "2"
+     },
+     {
+      "cas": "50:58",
+      "vteriny": 3058,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Nedorost Václav",
+      "min": "2"
+     },
+     {
+      "cas": "57:19",
+      "vteriny": 3439,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Bell Parker",
+      "min": "20"
+     }
+    ],
+    "rozhodci": {
+     "hlavni": [
+      "Robin Šír",
+      "Adam Kika"
+     ],
+     "carovi": [
+      "Michal Axman",
+      "Jaroslav Peluha"
+     ]
+    },
+    "divaci": "3754",
+    "tretiny": [
+     {
+      "tretina": "1",
+      "goly": [
+       0,
+       1
+      ],
+      "strely": [
+       6,
+       8
+      ]
+     },
+     {
+      "tretina": "2",
+      "goly": [
+       1,
+       0
+      ],
+      "strely": [
+       9,
+       11
+      ]
+     },
+     {
+      "tretina": "3",
+      "goly": [
+       0,
+       2
+      ],
+      "strely": [
+       8,
+       6
+      ]
+     }
+    ],
+    "najezdy": []
    }
   },
   {
@@ -4331,6 +6298,190 @@
       }
      ]
     }
+   },
+   "zapis": {
+    "goly": [
+     {
+      "cas": "09:08",
+      "vteriny": 548,
+      "tym": "Rytíři Kladno",
+      "strelec": "Mendel Griffin Jameson",
+      "asistence": [
+       "Klima Kelly Philip"
+      ],
+      "situace": "5/5"
+     },
+     {
+      "cas": "13:53",
+      "vteriny": 833,
+      "tym": "BANES Motor České Budějovice",
+      "strelec": "Koláček Josef",
+      "asistence": [
+       "Ahl Filip",
+       "Lantoši Róbert"
+      ],
+      "situace": "5/4"
+     },
+     {
+      "cas": "17:09",
+      "vteriny": 1029,
+      "tym": "Rytíři Kladno",
+      "strelec": "Ojamäki Niko Juhani",
+      "asistence": [
+       "Konečný Jakub",
+       "Audette Daniel"
+      ],
+      "situace": "5/4"
+     },
+     {
+      "cas": "43:25",
+      "vteriny": 2605,
+      "tym": "Rytíři Kladno",
+      "strelec": "Ojamäki Niko Juhani",
+      "asistence": [
+       "Konečný Jakub",
+       "Vigneault Samuel"
+      ],
+      "situace": "5/4"
+     },
+     {
+      "cas": "57:36",
+      "vteriny": 3456,
+      "tym": "BANES Motor České Budějovice",
+      "strelec": "Olesen Nick Alexander",
+      "asistence": [
+       "Beránek Martin",
+       "Ordoš Jan"
+      ],
+      "situace": "5/5"
+     }
+    ],
+    "tresty": [
+     {
+      "cas": "13:18",
+      "vteriny": 798,
+      "tym": "Rytíři Kladno",
+      "hrac": "lavička (HL)",
+      "min": "2"
+     },
+     {
+      "cas": "15:47",
+      "vteriny": 947,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Lantoši Róbert",
+      "min": "2"
+     },
+     {
+      "cas": "18:50",
+      "vteriny": 1130,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Olesen Nick Alexander",
+      "min": "2"
+     },
+     {
+      "cas": "27:46",
+      "vteriny": 1666,
+      "tym": "Rytíři Kladno",
+      "hrac": "Rulík Adam",
+      "min": "2"
+     },
+     {
+      "cas": "29:12",
+      "vteriny": 1752,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Kundrátek Tomáš",
+      "min": "2"
+     },
+     {
+      "cas": "30:20",
+      "vteriny": 1820,
+      "tym": "Rytíři Kladno",
+      "hrac": "Přikryl Filip",
+      "min": "2"
+     },
+     {
+      "cas": "32:42",
+      "vteriny": 1962,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Koláček Josef",
+      "min": "2"
+     },
+     {
+      "cas": "42:46",
+      "vteriny": 2566,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Nordsäter Lucas",
+      "min": "2"
+     },
+     {
+      "cas": "53:28",
+      "vteriny": 3208,
+      "tym": "Rytíři Kladno",
+      "hrac": "Marcel Marcel",
+      "min": "2"
+     },
+     {
+      "cas": "55:28",
+      "vteriny": 3328,
+      "tym": "Rytíři Kladno",
+      "hrac": "Marcel Marcel",
+      "min": "2"
+     },
+     {
+      "cas": "60:00",
+      "vteriny": 3600,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Olesen Nick Alexander",
+      "min": "2"
+     }
+    ],
+    "rozhodci": {
+     "hlavni": [
+      "Josef Barek",
+      "Jiří Ondráček (TR97)"
+     ],
+     "carovi": [
+      "Lukáš Rampír",
+      "Jakub Frodl"
+     ]
+    },
+    "divaci": "6295",
+    "tretiny": [
+     {
+      "tretina": "1",
+      "goly": [
+       1,
+       2
+      ],
+      "strely": [
+       4,
+       7
+      ]
+     },
+     {
+      "tretina": "2",
+      "goly": [
+       0,
+       0
+      ],
+      "strely": [
+       10,
+       15
+      ]
+     },
+     {
+      "tretina": "3",
+      "goly": [
+       1,
+       1
+      ],
+      "strely": [
+       10,
+       3
+      ]
+     }
+    ],
+    "najezdy": []
    }
   },
   {
@@ -4686,6 +6837,227 @@
       }
      ]
     }
+   },
+   "zapis": {
+    "goly": [
+     {
+      "cas": "12:13",
+      "vteriny": 733,
+      "tym": "BANES Motor České Budějovice",
+      "strelec": "Krastenbergs Renars",
+      "asistence": [],
+      "situace": "5/5"
+     },
+     {
+      "cas": "13:34",
+      "vteriny": 814,
+      "tym": "BANES Motor České Budějovice",
+      "strelec": "Ahl Filip",
+      "asistence": [
+       "Nedorost Václav",
+       "Klouček Milan"
+      ],
+      "situace": "5/5"
+     },
+     {
+      "cas": "17:14",
+      "vteriny": 1034,
+      "tym": "BANES Motor České Budějovice",
+      "strelec": "Olesen Nick Alexander",
+      "asistence": [
+       "Lantoši Róbert",
+       "Hoch Štěpán"
+      ],
+      "situace": "5/5"
+     },
+     {
+      "cas": "19:20",
+      "vteriny": 1160,
+      "tym": "HC Oceláři Třinec",
+      "strelec": "Daňo Marko",
+      "asistence": [
+       "Kovařčík Michal",
+       "Kubiesa Matěj"
+      ],
+      "situace": "5/4"
+     },
+     {
+      "cas": "39:11",
+      "vteriny": 2351,
+      "tym": "BANES Motor České Budějovice",
+      "strelec": "Koláček Josef",
+      "asistence": [
+       "Štencel Jan",
+       "Lantoši Róbert"
+      ],
+      "situace": "5/4"
+     },
+     {
+      "cas": "55:23",
+      "vteriny": 3323,
+      "tym": "BANES Motor České Budějovice",
+      "strelec": "Toman Matěj",
+      "asistence": [
+       "Koláček Josef",
+       "Kundrátek Tomáš"
+      ],
+      "situace": "5/5"
+     },
+     {
+      "cas": "58:09",
+      "vteriny": 3489,
+      "tym": "BANES Motor České Budějovice",
+      "strelec": "Koláček Josef",
+      "asistence": [
+       "Lantoši Róbert"
+      ],
+      "situace": "5/4"
+     },
+     {
+      "cas": "58:48",
+      "vteriny": 3528,
+      "tym": "HC Oceláři Třinec",
+      "strelec": "Pyrochta Filip",
+      "asistence": [
+       "Růžička Martin",
+       "Chlán Petr"
+      ],
+      "situace": "5/5"
+     }
+    ],
+    "tresty": [
+     {
+      "cas": "04:01",
+      "vteriny": 241,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Nedorost Václav",
+      "min": "2"
+     },
+     {
+      "cas": "13:10",
+      "vteriny": 790,
+      "tym": "HC Oceláři Třinec",
+      "hrac": "Koch Patrik",
+      "min": "2"
+     },
+     {
+      "cas": "13:10",
+      "vteriny": 790,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Olesen Nick Alexander",
+      "min": "2"
+     },
+     {
+      "cas": "18:41",
+      "vteriny": 1121,
+      "tym": "HC Oceláři Třinec",
+      "hrac": "Voženílek Daniel",
+      "min": "2"
+     },
+     {
+      "cas": "18:41",
+      "vteriny": 1121,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Bulíř Michal",
+      "min": "2"
+     },
+     {
+      "cas": "19:20",
+      "vteriny": 1160,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Bulíř Michal",
+      "min": "2"
+     },
+     {
+      "cas": "20:54",
+      "vteriny": 1254,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "lavička (HL)",
+      "min": "2"
+     },
+     {
+      "cas": "35:49",
+      "vteriny": 2149,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Toman Matěj",
+      "min": "2"
+     },
+     {
+      "cas": "39:06",
+      "vteriny": 2346,
+      "tym": "HC Oceláři Třinec",
+      "hrac": "Koch Patrik",
+      "min": "2"
+     },
+     {
+      "cas": "39:40",
+      "vteriny": 2380,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Beránek Martin",
+      "min": "2"
+     },
+     {
+      "cas": "55:23",
+      "vteriny": 3323,
+      "tym": "HC Oceláři Třinec",
+      "hrac": "Kovařčík Michal",
+      "min": "2"
+     },
+     {
+      "cas": "57:10",
+      "vteriny": 3430,
+      "tym": "HC Oceláři Třinec",
+      "hrac": "Nestrašil Andrej",
+      "min": "2"
+     }
+    ],
+    "rozhodci": {
+     "hlavni": [
+      "Robin Šír",
+      "Pavel Obadal"
+     ],
+     "carovi": [
+      "Michal Axman",
+      "Pavel Blažek"
+     ]
+    },
+    "divaci": "5296",
+    "tretiny": [
+     {
+      "tretina": "1",
+      "goly": [
+       1,
+       3
+      ],
+      "strely": [
+       13,
+       10
+      ]
+     },
+     {
+      "tretina": "2",
+      "goly": [
+       0,
+       1
+      ],
+      "strely": [
+       17,
+       4
+      ]
+     },
+     {
+      "tretina": "3",
+      "goly": [
+       1,
+       2
+      ],
+      "strely": [
+       13,
+       10
+      ]
+     }
+    ],
+    "najezdy": []
    }
   },
   {
@@ -5047,6 +7419,265 @@
       }
      ]
     }
+   },
+   "zapis": {
+    "goly": [
+     {
+      "cas": "14:18",
+      "vteriny": 858,
+      "tym": "BK Mladá Boleslav",
+      "strelec": "Skalický Pavol",
+      "asistence": [
+       "Hyka Tomáš",
+       "Gardoň Matěj"
+      ],
+      "situace": "5/4"
+     },
+     {
+      "cas": "32:49",
+      "vteriny": 1969,
+      "tym": "BK Mladá Boleslav",
+      "strelec": "Skalický Pavol",
+      "asistence": [
+       "Hyka Tomáš",
+       "Fořt Tomáš"
+      ],
+      "situace": "5/4"
+     },
+     {
+      "cas": "50:10",
+      "vteriny": 3010,
+      "tym": "BANES Motor České Budějovice",
+      "strelec": "Beránek Martin",
+      "asistence": [
+       "Kundrátek Tomáš",
+       "Toman Matěj"
+      ],
+      "situace": "5/5"
+     },
+     {
+      "cas": "56:33",
+      "vteriny": 3393,
+      "tym": "BANES Motor České Budějovice",
+      "strelec": "Vráblík Roman",
+      "asistence": [
+       "Nedorost Václav",
+       "Olesen Nick Alexander"
+      ],
+      "situace": "5/5"
+     },
+     {
+      "cas": "65:00",
+      "vteriny": 3900,
+      "tym": "BK Mladá Boleslav",
+      "strelec": "Gavars Felikss",
+      "asistence": [],
+      "situace": "SN"
+     }
+    ],
+    "tresty": [
+     {
+      "cas": "13:12",
+      "vteriny": 792,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Lantoši Róbert",
+      "min": "2"
+     },
+     {
+      "cas": "20:00",
+      "vteriny": 1200,
+      "tym": "BK Mladá Boleslav",
+      "hrac": "Kubíček Šimon",
+      "min": "2"
+     },
+     {
+      "cas": "20:00",
+      "vteriny": 1200,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Beránek Martin",
+      "min": "2"
+     },
+     {
+      "cas": "24:00",
+      "vteriny": 1440,
+      "tym": "BK Mladá Boleslav",
+      "hrac": "Kubíček Šimon",
+      "min": "5"
+     },
+     {
+      "cas": "24:00",
+      "vteriny": 1440,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Beránek Martin",
+      "min": "5"
+     },
+     {
+      "cas": "31:09",
+      "vteriny": 1869,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Pour Jakub",
+      "min": "2"
+     },
+     {
+      "cas": "38:33",
+      "vteriny": 2313,
+      "tym": "BK Mladá Boleslav",
+      "hrac": "lavička (HL)",
+      "min": "2"
+     },
+     {
+      "cas": "43:12",
+      "vteriny": 2592,
+      "tym": "BK Mladá Boleslav",
+      "hrac": "Moravec David",
+      "min": "2"
+     },
+     {
+      "cas": "45:01",
+      "vteriny": 2701,
+      "tym": "BK Mladá Boleslav",
+      "hrac": "Lichtag Jakub",
+      "min": "2"
+     },
+     {
+      "cas": "51:29",
+      "vteriny": 3089,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Hejduk Marek",
+      "min": "2"
+     },
+     {
+      "cas": "52:37",
+      "vteriny": 3157,
+      "tym": "BK Mladá Boleslav",
+      "hrac": "Gardoň Matěj",
+      "min": "2"
+     }
+    ],
+    "rozhodci": {
+     "hlavni": [
+      "Matěj Sýkora",
+      "Jan Jaroš"
+     ],
+     "carovi": [
+      "Jiří Ondráček (KD90)",
+      "Michal Zíka"
+     ]
+    },
+    "divaci": "2799",
+    "tretiny": [
+     {
+      "tretina": "1",
+      "goly": [
+       1,
+       0
+      ],
+      "strely": [
+       13,
+       13
+      ]
+     },
+     {
+      "tretina": "2",
+      "goly": [
+       1,
+       0
+      ],
+      "strely": [
+       13,
+       3
+      ]
+     },
+     {
+      "tretina": "3",
+      "goly": [
+       0,
+       2
+      ],
+      "strely": [
+       7,
+       13
+      ]
+     },
+     {
+      "tretina": "P",
+      "goly": [
+       0,
+       0
+      ],
+      "strely": [
+       1,
+       1
+      ]
+     },
+     {
+      "tretina": "SN",
+      "goly": [
+       1,
+       0
+      ],
+      "strely": [
+       0,
+       0
+      ]
+     }
+    ],
+    "najezdy": [
+     {
+      "kolo_n": 1,
+      "tym": "BK Mladá Boleslav",
+      "strelec": "Gardoň Matěj",
+      "gol": false
+     },
+     {
+      "kolo_n": 1,
+      "tym": "BANES Motor České Budějovice",
+      "strelec": "Koláček Josef",
+      "gol": false
+     },
+     {
+      "kolo_n": 2,
+      "tym": "BK Mladá Boleslav",
+      "strelec": "Gavars Felikss",
+      "gol": true
+     },
+     {
+      "kolo_n": 2,
+      "tym": "BANES Motor České Budějovice",
+      "strelec": "Olesen Nick Alexander",
+      "gol": false
+     },
+     {
+      "kolo_n": 3,
+      "tym": "BK Mladá Boleslav",
+      "strelec": "Zámorský Petr",
+      "gol": false
+     },
+     {
+      "kolo_n": 3,
+      "tym": "BANES Motor České Budějovice",
+      "strelec": "Lantoši Róbert",
+      "gol": false
+     },
+     {
+      "kolo_n": 4,
+      "tym": "BK Mladá Boleslav",
+      "strelec": "Morand Antoine",
+      "gol": false
+     },
+     {
+      "kolo_n": 4,
+      "tym": "BANES Motor České Budějovice",
+      "strelec": "Štencel Jan",
+      "gol": false
+     },
+     {
+      "kolo_n": 5,
+      "tym": "BANES Motor České Budějovice",
+      "strelec": "Krastenbergs Renars",
+      "gol": false
+     }
+    ]
    }
   },
   {
@@ -5406,6 +8037,147 @@
       }
      ]
     }
+   },
+   "zapis": {
+    "goly": [
+     {
+      "cas": "37:54",
+      "vteriny": 2274,
+      "tym": "BANES Motor České Budějovice",
+      "strelec": "Olesen Nick Alexander",
+      "asistence": [
+       "Lantoši Róbert",
+       "Hoch Štěpán"
+      ],
+      "situace": "5/5"
+     },
+     {
+      "cas": "38:51",
+      "vteriny": 2331,
+      "tym": "BANES Motor České Budějovice",
+      "strelec": "Ordoš Jan",
+      "asistence": [
+       "Krastenbergs Renars",
+       "Bell Parker"
+      ],
+      "situace": "5/5"
+     },
+     {
+      "cas": "58:12",
+      "vteriny": 3492,
+      "tym": "BANES Motor České Budějovice",
+      "strelec": "Beránek Martin",
+      "asistence": [
+       "Toman Matěj"
+      ],
+      "situace": "5/5"
+     }
+    ],
+    "tresty": [
+     {
+      "cas": "16:47",
+      "vteriny": 1007,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Krastenbergs Renars",
+      "min": "2"
+     },
+     {
+      "cas": "30:55",
+      "vteriny": 1855,
+      "tym": "Mountfield HK, a.s.",
+      "hrac": "Klima Kevin Petr",
+      "min": "2"
+     },
+     {
+      "cas": "31:28",
+      "vteriny": 1888,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Krastenbergs Renars",
+      "min": "2"
+     },
+     {
+      "cas": "35:07",
+      "vteriny": 2107,
+      "tym": "Mountfield HK, a.s.",
+      "hrac": "Pláněk Martin",
+      "min": "2"
+     },
+     {
+      "cas": "39:03",
+      "vteriny": 2343,
+      "tym": "Mountfield HK, a.s.",
+      "hrac": "Kalina Petr",
+      "min": "2"
+     },
+     {
+      "cas": "42:05",
+      "vteriny": 2525,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Ordoš Jan",
+      "min": "2"
+     },
+     {
+      "cas": "44:05",
+      "vteriny": 2645,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Ordoš Jan",
+      "min": "2"
+     },
+     {
+      "cas": "49:19",
+      "vteriny": 2959,
+      "tym": "Mountfield HK, a.s.",
+      "hrac": "lavička (HL)",
+      "min": "2"
+     }
+    ],
+    "rozhodci": {
+     "hlavni": [
+      "Robin Šír",
+      "Filip Vrba"
+     ],
+     "carovi": [
+      "Michal Axman",
+      "Patrik Augusta"
+     ]
+    },
+    "divaci": "6318",
+    "tretiny": [
+     {
+      "tretina": "1",
+      "goly": [
+       0,
+       0
+      ],
+      "strely": [
+       8,
+       8
+      ]
+     },
+     {
+      "tretina": "2",
+      "goly": [
+       2,
+       0
+      ],
+      "strely": [
+       9,
+       9
+      ]
+     },
+     {
+      "tretina": "3",
+      "goly": [
+       1,
+       0
+      ],
+      "strely": [
+       7,
+       9
+      ]
+     }
+    ],
+    "najezdy": []
    }
   },
   {
@@ -5769,6 +8541,173 @@
       }
      ]
     }
+   },
+   "zapis": {
+    "goly": [
+     {
+      "cas": "07:08",
+      "vteriny": 428,
+      "tym": "HC Olomouc",
+      "strelec": "Štohanzl Martin",
+      "asistence": [
+       "Navrátil Jakub",
+       "Matýs Ondřej"
+      ],
+      "situace": "5/5"
+     },
+     {
+      "cas": "09:45",
+      "vteriny": 585,
+      "tym": "HC Olomouc",
+      "strelec": "Berglund Carl Gunnar",
+      "asistence": [
+       "Stella Evan",
+       "Navrátil Jakub"
+      ],
+      "situace": "5/5"
+     },
+     {
+      "cas": "23:04",
+      "vteriny": 1384,
+      "tym": "HC Olomouc",
+      "strelec": "Matýs Ondřej",
+      "asistence": [
+       "Herčík Daniel",
+       "Štohanzl Martin"
+      ],
+      "situace": "5/4"
+     },
+     {
+      "cas": "32:19",
+      "vteriny": 1939,
+      "tym": "HC Olomouc",
+      "strelec": "Orsava Jakub",
+      "asistence": [
+       "Kos Jakub",
+       "Freibergs Ralfs"
+      ],
+      "situace": "5/3"
+     }
+    ],
+    "tresty": [
+     {
+      "cas": "14:55",
+      "vteriny": 895,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Štencel Jan",
+      "min": "2"
+     },
+     {
+      "cas": "22:12",
+      "vteriny": 1332,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Ordoš Jan",
+      "min": "2"
+     },
+     {
+      "cas": "23:04",
+      "vteriny": 1384,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Ordoš Jan",
+      "min": "2"
+     },
+     {
+      "cas": "27:20",
+      "vteriny": 1640,
+      "tym": "HC Olomouc",
+      "hrac": "Rutar Adam",
+      "min": "2"
+     },
+     {
+      "cas": "30:27",
+      "vteriny": 1827,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Bulíř Michal",
+      "min": "2"
+     },
+     {
+      "cas": "31:10",
+      "vteriny": 1870,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Štencel Jan",
+      "min": "5"
+     },
+     {
+      "cas": "35:49",
+      "vteriny": 2149,
+      "tym": "HC Olomouc",
+      "hrac": "Cosgrove Trevor",
+      "min": "2"
+     },
+     {
+      "cas": "36:10",
+      "vteriny": 2170,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Štencel Jan",
+      "min": "20"
+     },
+     {
+      "cas": "39:57",
+      "vteriny": 2397,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Krastenbergs Renars",
+      "min": "2"
+     },
+     {
+      "cas": "53:34",
+      "vteriny": 3214,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Nordsäter Lucas",
+      "min": "2"
+     }
+    ],
+    "rozhodci": {
+     "hlavni": [
+      "Jiří Ondráček (TR97)",
+      "Jakub Šindel"
+     ],
+     "carovi": [
+      "Daniel Hynek",
+      "Jakub Maňák"
+     ]
+    },
+    "divaci": "3922",
+    "tretiny": [
+     {
+      "tretina": "1",
+      "goly": [
+       2,
+       0
+      ],
+      "strely": [
+       15,
+       8
+      ]
+     },
+     {
+      "tretina": "2",
+      "goly": [
+       2,
+       0
+      ],
+      "strely": [
+       10,
+       5
+      ]
+     },
+     {
+      "tretina": "3",
+      "goly": [
+       0,
+       0
+      ],
+      "strely": [
+       5,
+       6
+      ]
+     }
+    ],
+    "najezdy": []
    }
   },
   {
@@ -6114,6 +9053,169 @@
       }
      ]
     }
+   },
+   "zapis": {
+    "goly": [
+     {
+      "cas": "09:50",
+      "vteriny": 590,
+      "tym": "BYD Energie Karlovy Vary",
+      "strelec": "Šťastný David",
+      "asistence": [
+       "Jones Nicholas",
+       "Bambula Jan"
+      ],
+      "situace": "5/5"
+     },
+     {
+      "cas": "26:52",
+      "vteriny": 1612,
+      "tym": "BYD Energie Karlovy Vary",
+      "strelec": "Bambula Jan",
+      "asistence": [
+       "Jones Nicholas",
+       "Šťastný David"
+      ],
+      "situace": "5/5"
+     },
+     {
+      "cas": "37:43",
+      "vteriny": 2263,
+      "tym": "BANES Motor České Budějovice",
+      "strelec": "Bell Parker",
+      "asistence": [
+       "Lantoši Róbert",
+       "Olesen Nick Alexander"
+      ],
+      "situace": "5/4"
+     },
+     {
+      "cas": "46:51",
+      "vteriny": 2811,
+      "tym": "BANES Motor České Budějovice",
+      "strelec": "Hoch Štěpán",
+      "asistence": [
+       "Lantoši Róbert"
+      ],
+      "situace": "5/5"
+     },
+     {
+      "cas": "56:58",
+      "vteriny": 3418,
+      "tym": "BYD Energie Karlovy Vary",
+      "strelec": "Redlich Tomáš",
+      "asistence": [
+       "Brickley Daniel",
+       "Jiskra Vít"
+      ],
+      "situace": "5/5"
+     }
+    ],
+    "tresty": [
+     {
+      "cas": "15:30",
+      "vteriny": 930,
+      "tym": "BYD Energie Karlovy Vary",
+      "hrac": "Egle Haralds",
+      "min": "2"
+     },
+     {
+      "cas": "22:15",
+      "vteriny": 1335,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Nordsäter Lucas",
+      "min": "2"
+     },
+     {
+      "cas": "26:57",
+      "vteriny": 1617,
+      "tym": "BYD Energie Karlovy Vary",
+      "hrac": "Tomek Petr",
+      "min": "2"
+     },
+     {
+      "cas": "32:21",
+      "vteriny": 1941,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Toman Matěj",
+      "min": "2"
+     },
+     {
+      "cas": "37:23",
+      "vteriny": 2243,
+      "tym": "BYD Energie Karlovy Vary",
+      "hrac": "Beránek Ondřej",
+      "min": "2"
+     },
+     {
+      "cas": "42:31",
+      "vteriny": 2551,
+      "tym": "BYD Energie Karlovy Vary",
+      "hrac": "Lukošik Adam",
+      "min": "2"
+     },
+     {
+      "cas": "49:39",
+      "vteriny": 2979,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Mccormack Graeme",
+      "min": "2"
+     },
+     {
+      "cas": "49:39",
+      "vteriny": 2979,
+      "tym": "BYD Energie Karlovy Vary",
+      "hrac": "Beránek Ondřej",
+      "min": "2"
+     }
+    ],
+    "rozhodci": {
+     "hlavni": [
+      "Adam Kika",
+      "Filip Vrba"
+     ],
+     "carovi": [
+      "Michal Zíka",
+      "Pavel Blažek"
+     ]
+    },
+    "divaci": "5895",
+    "tretiny": [
+     {
+      "tretina": "1",
+      "goly": [
+       0,
+       1
+      ],
+      "strely": [
+       12,
+       10
+      ]
+     },
+     {
+      "tretina": "2",
+      "goly": [
+       1,
+       1
+      ],
+      "strely": [
+       7,
+       8
+      ]
+     },
+     {
+      "tretina": "3",
+      "goly": [
+       1,
+       1
+      ],
+      "strely": [
+       17,
+       7
+      ]
+     }
+    ],
+    "najezdy": []
    }
   },
   {
@@ -6124,7 +9226,8 @@
    "odehrano": false,
    "vysledek": "",
    "hokejcz_id": "2928376",
-   "sestava": null
+   "sestava": null,
+   "zapis": null
   },
   {
    "kolo": 19,
@@ -6134,7 +9237,8 @@
    "odehrano": false,
    "vysledek": "",
    "hokejcz_id": "2928381",
-   "sestava": null
+   "sestava": null,
+   "zapis": null
   },
   {
    "kolo": 20,
@@ -6144,7 +9248,8 @@
    "odehrano": false,
    "vysledek": "",
    "hokejcz_id": "2928390",
-   "sestava": null
+   "sestava": null,
+   "zapis": null
   },
   {
    "kolo": 21,
@@ -6154,7 +9259,8 @@
    "odehrano": false,
    "vysledek": "",
    "hokejcz_id": "2928401",
-   "sestava": null
+   "sestava": null,
+   "zapis": null
   },
   {
    "kolo": 22,
@@ -6164,7 +9270,8 @@
    "odehrano": false,
    "vysledek": "",
    "hokejcz_id": "2928406",
-   "sestava": null
+   "sestava": null,
+   "zapis": null
   },
   {
    "kolo": 23,
@@ -6174,7 +9281,8 @@
    "odehrano": false,
    "vysledek": "",
    "hokejcz_id": null,
-   "sestava": null
+   "sestava": null,
+   "zapis": null
   },
   {
    "kolo": 24,
@@ -6184,7 +9292,8 @@
    "odehrano": false,
    "vysledek": "",
    "hokejcz_id": "2928418",
-   "sestava": null
+   "sestava": null,
+   "zapis": null
   },
   {
    "kolo": 25,
@@ -6194,7 +9303,8 @@
    "odehrano": false,
    "vysledek": "",
    "hokejcz_id": "2928426",
-   "sestava": null
+   "sestava": null,
+   "zapis": null
   },
   {
    "kolo": 26,
@@ -6204,7 +9314,8 @@
    "odehrano": false,
    "vysledek": "",
    "hokejcz_id": "2928430",
-   "sestava": null
+   "sestava": null,
+   "zapis": null
   },
   {
    "kolo": 27,
@@ -6214,7 +9325,8 @@
    "odehrano": false,
    "vysledek": "",
    "hokejcz_id": "2928438",
-   "sestava": null
+   "sestava": null,
+   "zapis": null
   },
   {
    "kolo": 28,
@@ -6224,7 +9336,8 @@
    "odehrano": false,
    "vysledek": "",
    "hokejcz_id": "2928448",
-   "sestava": null
+   "sestava": null,
+   "zapis": null
   },
   {
    "kolo": 29,
@@ -6234,7 +9347,8 @@
    "odehrano": false,
    "vysledek": "",
    "hokejcz_id": "2928454",
-   "sestava": null
+   "sestava": null,
+   "zapis": null
   },
   {
    "kolo": 30,
@@ -6244,7 +9358,8 @@
    "odehrano": false,
    "vysledek": "",
    "hokejcz_id": "2928462",
-   "sestava": null
+   "sestava": null,
+   "zapis": null
   },
   {
    "kolo": 31,
@@ -6254,7 +9369,8 @@
    "odehrano": false,
    "vysledek": "",
    "hokejcz_id": "2928467",
-   "sestava": null
+   "sestava": null,
+   "zapis": null
   },
   {
    "kolo": 32,
@@ -6264,7 +9380,8 @@
    "odehrano": false,
    "vysledek": "",
    "hokejcz_id": "2928472",
-   "sestava": null
+   "sestava": null,
+   "zapis": null
   },
   {
    "kolo": 33,
@@ -6274,7 +9391,8 @@
    "odehrano": false,
    "vysledek": "",
    "hokejcz_id": "2928481",
-   "sestava": null
+   "sestava": null,
+   "zapis": null
   },
   {
    "kolo": 34,
@@ -6284,7 +9402,8 @@
    "odehrano": false,
    "vysledek": "",
    "hokejcz_id": "2928492",
-   "sestava": null
+   "sestava": null,
+   "zapis": null
   },
   {
    "kolo": 35,
@@ -6294,7 +9413,8 @@
    "odehrano": false,
    "vysledek": "",
    "hokejcz_id": "2928497",
-   "sestava": null
+   "sestava": null,
+   "zapis": null
   },
   {
    "kolo": 36,
@@ -6304,7 +9424,8 @@
    "odehrano": false,
    "vysledek": "",
    "hokejcz_id": "2928502",
-   "sestava": null
+   "sestava": null,
+   "zapis": null
   },
   {
    "kolo": 37,
@@ -6314,7 +9435,8 @@
    "odehrano": false,
    "vysledek": "",
    "hokejcz_id": "2928509",
-   "sestava": null
+   "sestava": null,
+   "zapis": null
   },
   {
    "kolo": 38,
@@ -6324,7 +9446,8 @@
    "odehrano": false,
    "vysledek": "",
    "hokejcz_id": "2928517",
-   "sestava": null
+   "sestava": null,
+   "zapis": null
   },
   {
    "kolo": 39,
@@ -6334,7 +9457,8 @@
    "odehrano": false,
    "vysledek": "",
    "hokejcz_id": "2928521",
-   "sestava": null
+   "sestava": null,
+   "zapis": null
   },
   {
    "kolo": 40,
@@ -6344,7 +9468,8 @@
    "odehrano": false,
    "vysledek": "",
    "hokejcz_id": "2928529",
-   "sestava": null
+   "sestava": null,
+   "zapis": null
   },
   {
    "kolo": 41,
@@ -6354,7 +9479,8 @@
    "odehrano": false,
    "vysledek": "",
    "hokejcz_id": "2928539",
-   "sestava": null
+   "sestava": null,
+   "zapis": null
   },
   {
    "kolo": 42,
@@ -6364,7 +9490,8 @@
    "odehrano": false,
    "vysledek": "",
    "hokejcz_id": "2928545",
-   "sestava": null
+   "sestava": null,
+   "zapis": null
   },
   {
    "kolo": 43,
@@ -6374,7 +9501,8 @@
    "odehrano": false,
    "vysledek": "",
    "hokejcz_id": "2928553",
-   "sestava": null
+   "sestava": null,
+   "zapis": null
   },
   {
    "kolo": 44,
@@ -6384,7 +9512,8 @@
    "odehrano": false,
    "vysledek": "",
    "hokejcz_id": "2928558",
-   "sestava": null
+   "sestava": null,
+   "zapis": null
   },
   {
    "kolo": 45,
@@ -6394,7 +9523,8 @@
    "odehrano": false,
    "vysledek": "",
    "hokejcz_id": "2928563",
-   "sestava": null
+   "sestava": null,
+   "zapis": null
   },
   {
    "kolo": 46,
@@ -6404,7 +9534,8 @@
    "odehrano": false,
    "vysledek": "",
    "hokejcz_id": "2928572",
-   "sestava": null
+   "sestava": null,
+   "zapis": null
   },
   {
    "kolo": 47,
@@ -6414,7 +9545,8 @@
    "odehrano": false,
    "vysledek": "",
    "hokejcz_id": "2928583",
-   "sestava": null
+   "sestava": null,
+   "zapis": null
   },
   {
    "kolo": 48,
@@ -6424,7 +9556,8 @@
    "odehrano": false,
    "vysledek": "",
    "hokejcz_id": "2928588",
-   "sestava": null
+   "sestava": null,
+   "zapis": null
   },
   {
    "kolo": 49,
@@ -6434,7 +9567,8 @@
    "odehrano": false,
    "vysledek": "",
    "hokejcz_id": "2928593",
-   "sestava": null
+   "sestava": null,
+   "zapis": null
   },
   {
    "kolo": 50,
@@ -6444,7 +9578,8 @@
    "odehrano": false,
    "vysledek": "",
    "hokejcz_id": "2928600",
-   "sestava": null
+   "sestava": null,
+   "zapis": null
   },
   {
    "kolo": 51,
@@ -6454,7 +9589,8 @@
    "odehrano": false,
    "vysledek": "",
    "hokejcz_id": "2928608",
-   "sestava": null
+   "sestava": null,
+   "zapis": null
   },
   {
    "kolo": 52,
@@ -6464,7 +9600,8 @@
    "odehrano": false,
    "vysledek": "",
    "hokejcz_id": "2928612",
-   "sestava": null
+   "sestava": null,
+   "zapis": null
   }
  ]
 }
