@@ -1431,6 +1431,22 @@ def _lineup_payload(soup, domaci: dict, hoste: dict) -> dict:
     }
 
 
+def _report_payload(z: dict) -> dict:
+    """Údaje pro textový zápis utkání na docs/sestavy.html (branky, tresty,
+    rozhodčí, diváci, střely, nájezdy) — jen to, co stránka potřebuje."""
+    return {
+        "goly": [{k: g.get(k) for k in ("cas", "vteriny", "tym", "strelec", "asistence", "situace")}
+                 for g in z.get("goly", [])],
+        "tresty": [{k: t.get(k) for k in ("cas", "vteriny", "tym", "hrac", "min")}
+                   for t in z.get("tresty", [])],
+        "rozhodci": z.get("rozhodci") or {},
+        "divaci": z.get("divaci") or "",
+        "tretiny": z.get("tretiny") or [],
+        "najezdy": [{k: p.get(k) for k in ("kolo_n", "tym", "strelec", "gol")}
+                    for p in z.get("najezdy") or []],
+    }
+
+
 def write_lineups_json(games: list, zapis_state: dict) -> None:
     """docs/sestavy-data.json: všechna kola Motoru (i budoucí) s hokejczId,
     u odehraných i se sestavou ze zápisu. Stránka sestavy.html si z toho
@@ -1454,6 +1470,7 @@ def write_lineups_json(games: list, zapis_state: dict) -> None:
                 "vysledek": g.get("vysledek") or "",
                 "hokejcz_id": z.get("hokejcz_id") or find_hokejcz_id(g, hk),
                 "sestava": z.get("sestava"),
+                "zapis": _report_payload(z) if z.get("sestava") else None,
             })
         LINEUPS_JSON.write_text(json.dumps(
             {"aktualizovano": datetime.now(ZoneInfo("Europe/Prague")).strftime("%d.%m.%Y %H:%M"), "zapasy": out},
