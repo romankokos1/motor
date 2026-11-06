@@ -21,12 +21,10 @@
     font: 15px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   }
   main { max-width: 920px; margin: 0 auto; padding: 16px 16px 48px; }
-  header { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }
-  h1 { font-size: 18px; margin: 0; letter-spacing: .01em; }
-  header a { color: var(--muted); font-size: 13px; }
+  h1 { font-size: 18px; margin: 0 0 12px; letter-spacing: .01em; }
   .card { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 14px; margin-bottom: 12px; }
   .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
-  label.small, .small { font-size: 13px; color: var(--muted); }
+  .small { font-size: 13px; color: var(--muted); }
   select, input[type=text], textarea {
     font: inherit; color: var(--ink); background: var(--field);
     border: 1px solid var(--line); border-radius: 6px; padding: 7px 9px;
@@ -38,31 +36,24 @@
     border-radius: 6px; padding: 7px 12px; cursor: pointer; text-decoration: none; white-space: nowrap;
   }
   button.ghost, .btn.ghost { background: transparent; color: var(--accent); }
-  button:disabled { opacity: .5; cursor: default; }
   #status { margin: 10px 0 0; font-size: 13px; color: var(--muted); min-height: 1.2em; }
   #status.ok { color: var(--ok); } #status.warn { color: var(--warn); }
-  .team { margin-bottom: 14px; }
-  .team:last-child { margin-bottom: 0; }
-  .team-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; margin-bottom: 6px; }
-  .team-head strong { font-size: 14px; }
+  .block { margin-bottom: 14px; }
+  .block:last-of-type { margin-bottom: 0; }
+  .block-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; margin-bottom: 6px; }
+  .block-head strong { font-size: 14px; }
   textarea.out { width: 100%; min-height: 92px; resize: vertical; line-height: 1.5; }
+  textarea.out.report { min-height: 130px; }
   .check { font-size: 12.5px; color: var(--muted); margin-top: 4px; }
   .check b { color: var(--ink); font-weight: 600; }
   #paste-box { display: none; }
-  #paste-box ol { margin: 6px 0 10px 18px; padding: 0; font-size: 14px; }
-  #paste { width: 100%; min-height: 70px; }
-  details { margin-top: 4px; }
-  summary { cursor: pointer; font-size: 13px; color: var(--muted); }
-  code { font-size: 12.5px; }
+  #paste { width: 100%; min-height: 70px; margin-top: 8px; }
   .hidden { display: none !important; }
 </style>
 </head>
 <body>
 <main>
-  <header>
-    <h1>Sestavy ze zápisu o utkání</h1>
-    <a href="stats.html">← statistiky</a>
-  </header>
+  <h1>Sestavy ze zápisu o utkání</h1>
 
   <div class="card">
     <div class="row">
@@ -70,7 +61,7 @@
       <button id="load">Načíst</button>
     </div>
     <div class="row" style="margin-top:8px">
-      <input type="text" id="manual" placeholder="nebo ID / odkaz na zápis (hokejczId=…)">
+      <input type="text" id="manual" placeholder="ID nebo odkaz na zápis">
       <button class="ghost" id="load-manual">Načíst podle ID</button>
       <a class="btn ghost hidden" id="open-zapis" target="_blank" rel="noopener">Otevřít zápis ↗</a>
     </div>
@@ -81,30 +72,21 @@
   </div>
 
   <div class="card" id="paste-box">
-    <strong style="font-size:14px">Zápis nejde stáhnout přímo — vlož ho ze schránky</strong>
-    <ol>
-      <li>Klepni na <em>Otevřít zápis ↗</em> výše.</li>
-      <li>Na stránce zápisu označ vše (<code>Ctrl+A</code> / <code>⌘A</code>) a zkopíruj (<code>Ctrl+C</code>).</li>
-      <li>Klepni do pole níže a vlož (<code>Ctrl+V</code>).</li>
-    </ol>
-    <textarea id="paste" placeholder="sem vlož zkopírovaný zápis"></textarea>
+    <strong style="font-size:14px">Vložit zápis ze schránky</strong>
+    <textarea id="paste" placeholder="Ctrl+V"></textarea>
   </div>
 
   <div class="card hidden" id="result">
     <div id="teams"></div>
+    <div class="block">
+      <div class="block-head"><strong>Zápis utkání</strong><button class="ghost" id="copy-report">Kopírovat</button></div>
+      <textarea class="out report" id="report" spellcheck="false"></textarea>
+      <div class="check" id="report-check"></div>
+    </div>
     <div class="row" style="margin-top:10px">
-      <button id="copy-all">Kopírovat obě sestavy</button>
+      <button id="copy-all">Kopírovat vše</button>
     </div>
   </div>
-
-  <details class="small">
-    <summary>Jak se sestava skládá</summary>
-    <p>Hráči jdou v pořadí ze zápisu: brankář, který začínal (střídání se dopíše do závorky s minutou),
-    obránci, útočníci po trojicích. Kdo je v zápisu veden jako nenastoupivší, se vynechá.
-    Trenéři = hlavní trenér a asistenti. Iniciála se přidá, když se příjmení v zápase opakuje
-    (v obou týmech, včetně trenérů); stálé výjimky typu „V. Nedorost ml.“ jsou v tabulce
-    <code>JMENA</code> na začátku skriptu této stránky. Text v polích lze před zkopírováním ručně upravit.</p>
-  </details>
 </main>
 
 <script>
@@ -116,6 +98,7 @@ const JMENA = {
   "Nedorost Václav": "V. Nedorost ml.",
   "Vrbata David": "D. Vrbata",
   "Hořava Miloslav": "M. Hořava mladší",
+  "Šťastný David": "D. Šťastný",
 };
 
 // Krátké názvy týmů — první shoda s oficiálním názvem v zápisu vyhrává.
@@ -145,8 +128,10 @@ const DATA_URL = "sestavy-data.json";
 
 const $ = id => document.getElementById(id);
 const clean = t => (t || "").replace(/\s+/g, " ").trim();
-const cells = tr => [...tr.children].filter(c => /^T[DH]$/.test(c.tagName)).map(c => clean(c.textContent));
+const cellEls = tr => [...tr.children].filter(c => /^T[DH]$/.test(c.tagName));
+const cells = tr => cellEls(tr).map(c => clean(c.textContent));
 const isUpperTok = t => /\p{Lu}/u.test(t) && t === t.toLocaleUpperCase("cs");
+const lc = s => (s || "").toLocaleLowerCase("cs");
 
 function properCase(tok) {
   return tok.toLocaleLowerCase("cs")
@@ -154,7 +139,7 @@ function properCase(tok) {
     .replace(/^Mc(\p{L})/u, (m, ch) => "Mc" + ch.toLocaleUpperCase("cs"));
 }
 
-// „KLOUČEK Milan“ -> {prijmeni: "Klouček", jmeno: "Milan"}
+// „KLOUČEK Milan“ -> {prijmeni: "Klouček", jmeno: "Milan"}; „Klouček Milan“ -> totéž
 function splitPlayer(raw) {
   const toks = clean(raw).split(" ");
   const sur = [];
@@ -182,81 +167,263 @@ function joinCs(list) {
   return list.length < 2 ? list.join("") : list.slice(0, -1).join(", ") + " a " + list[list.length - 1];
 }
 
-function minuteOf(t) {
-  const m = /^(\d+):(\d\d)$/.exec(t || "");
-  return m ? Math.floor((+m[1] * 60 + +m[2]) / 60) + 1 : null;
+function toSec(t) {
+  const m = /^(\d+):(\d\d)$/.exec(clean(t));
+  return m ? +m[1] * 60 + +m[2] : null;
+}
+const minuteOfSec = s => Math.floor(s / 60) + 1;
+const minuteOf = t => { const s = toSec(t); return s === null ? null : minuteOfSec(s); };
+
+const chunk = (arr, n) => { const out = []; for (let i = 0; i < arr.length; i += n) out.push(arr.slice(i, i + n)); return out; };
+
+function pair(t) {
+  const m = /^\s*(\d+)\s*:\s*(\d+)/.exec(t || "");
+  return m ? [+m[1], +m[2]] : null;
 }
 
-// ===== Parsování HTML zápisu (stejná struktura jako sestavy-data.json) ======
-
-function rowsAfter(headerTr) {
-  const rows = [...headerTr.closest("table").rows];
-  return rows.slice(rows.indexOf(headerTr) + 1).map(cells);
+// Text buňky po řádcích (<br> a blokové prvky = nový řádek)
+function cellLines(el) {
+  const c = el.cloneNode(true);
+  c.querySelectorAll("br").forEach(b => b.replaceWith("\n"));
+  c.querySelectorAll("div, p, tr, li").forEach(b => b.append("\n"));
+  return c.textContent.split("\n").map(clean).filter(Boolean);
 }
 
-// Vstup ze schránky: prohlížeč při kopírování často zahodí CSS třídy,
-// proto se zkouší třikrát — podle tříd (stažený zápis), podle obsahu
-// (registrační číslo + pozice) a nakonec z čistého textu.
+// ===== Model zápasu ==========================================================
+// { A: tým, B: tým, goly, tresty, rozhodci, divaci, strely, najezdy, jeZapis }
+// tým = { nazev, hraci: [{c, jmeno, post, hral}], brankari: [{c, od}], lavicka: [{jmeno, funkce}] }
+// goly = [{side, sec, strelec, asist: [], sit}]  (jména v podobě ze soupisky)
+// tresty = [{side, min, hrac}], najezdy = [{side, strelec, gol}]
+
+const emptyTeam = nazev => ({ nazev, hraci: [], brankari: [], lavicka: [] });
+const ok = r => r && r.A.hraci.length && r.B.hraci.length;
+
+// Z denních dat (sestavy-data.json): jména gólů jsou ve tvaru „Příjmení Jméno“
+function modelFromData(g) {
+  const s = g.sestava;
+  const m = { A: s.A, B: s.B, goly: [], tresty: [], rozhodci: { hlavni: [], carovi: [] },
+              divaci: "", strely: null, najezdy: [], jeZapis: !!g.zapis };
+  if (!g.zapis) return m;
+  const z = g.zapis;
+  const side = tym => (tym === s.A.nazev ? "A" : "B");
+  const index = {};
+  ["A", "B"].forEach(sd => s[sd].hraci.forEach(h => {
+    const p = splitPlayer(h.jmeno);
+    index[sd + "|" + lc(`${p.prijmeni} ${p.jmeno}`)] = h.jmeno;
+  }));
+  const raw = (sd, name) => index[sd + "|" + lc(name)] || name;
+  m.goly = z.goly.map(x => {
+    const sd = side(x.tym);
+    return { side: sd, sec: x.vteriny, strelec: raw(sd, x.strelec), asist: (x.asistence || []).map(a => raw(sd, a)), sit: x.situace };
+  });
+  m.tresty = z.tresty.map(t => {
+    const sd = side(t.tym);
+    return { side: sd, min: t.min, hrac: /lavička/.test(t.hrac) ? "" : raw(sd, t.hrac) };
+  });
+  m.rozhodci = z.rozhodci || m.rozhodci;
+  m.divaci = z.divaci;
+  m.strely = sumShots(z.tretiny || []);
+  m.najezdy = (z.najezdy || []).map(p => { const sd = side(p.tym); return { side: sd, strelec: raw(sd, p.strelec), gol: p.gol }; });
+  return m;
+}
+
+function sumShots(tretiny) {
+  const rows = tretiny.filter(r => ["1", "2", "3", "P"].includes(r.tretina));
+  if (!rows.length) return null;
+  return rows.reduce((a, r) => [a[0] + r.strely[0], a[1] + r.strely[1]], [0, 0]);
+}
+
+// ===== Parsování HTML zápisu (stažený zápis nebo schránka) ==================
+// Prohlížeč při kopírování často zahodí CSS třídy, proto se soupiska, góly
+// i tresty čtou podle hlavičky tabulky a pořadí sloupců. Sloupce se počítají
+// od konce řádku, protože jméno bývá ve vnořené tabulce s C/A.
+
+const TEAM_COLS = ["čas", "S", "A1", "A2", "HS", "P1", "P2", "P3", "P4", "P5", "P6",
+                   "N1", "N2", "N3", "N4", "N5", "N6", "čas", "č.", "Min.", "důvod", "Od", "Do"];
+
 function parseZapis(html, text) {
-  let r = null;
   if (html) {
     const doc = new DOMParser().parseFromString(html, "text/html");
-    r = parseByClasses(doc) || parseByContent(doc);
-    if (r) addBenchAndGoalies(doc, r);
+    const r = parseTeams(doc);
+    if (ok(r)) { addRest(doc, r); return r; }
   }
-  if (!ok(r) && text) r = parseText(text);
-  return ok(r) ? r : null;
+  if (text) {
+    const r = parseText(text);
+    if (ok(r)) return r;
+  }
+  return null;
 }
-const ok = r => r && r.A.hraci.length && r.B.hraci.length;
-const parseZapisHtml = html => parseZapis(html, "");
 
 const notAttended = el => {
   for (let e = el; e && e.tagName !== "TR"; e = e.parentElement) {
     if (/not_attended/.test(e.className || "")) return true;
-    if (/line-through/.test(e.getAttribute && e.getAttribute("style") || "")) return true;
+    if (/line-through/.test((e.getAttribute && e.getAttribute("style")) || "")) return true;
   }
   return !!el.querySelector?.("[class*=not_attended], [style*=line-through]");
 };
 
-function teamNames(doc) {
+function teamLabels(doc) {
   const out = {};
   for (const td of doc.querySelectorAll("td, th")) {
     const t = clean(td.textContent);
     const side = /^Domácí tým \(A\)$/.test(t) ? "A" : /^Hostující tým \(B\)$/.test(t) ? "B" : null;
     if (side && !out[side]) {
       const next = td.nextElementSibling;
-      out[side] = { el: td, nazev: next ? clean(next.textContent).replace(/\s+\d+\s*$/, "") : "" };
+      out[side] = next ? clean(next.textContent).replace(/\s+\d+\s*$/, "") : "";
     }
   }
   return out;
 }
 
-function parseByContent(doc) {
-  const names = teamNames(doc);
-  const res = { A: { nazev: names.A?.nazev || "Domácí", hraci: [], brankari: [], lavicka: [] },
-                B: { nazev: names.B?.nazev || "Hosté", hraci: [], brankari: [], lavicka: [] } };
-  const regs = [...doc.querySelectorAll("td, th")].filter(c => !c.querySelector("table") && /^\d{10}$/.test(clean(c.textContent)));
-  for (const reg of regs) {
-    const row = [...reg.parentElement.children];
-    const i = row.indexOf(reg);
-    const post = clean(row[i + 1]?.textContent);
-    if (!/^(GK|D|F)$/.test(post)) continue;
-    const no = clean(row[0]?.textContent);
-    let nameCell = row.slice(1, i).find(c => /\p{Lu}{2,}/u.test(c.textContent));
-    if (!/^\d{1,3}$/.test(no) || !nameCell) continue;
-    const inner = nameCell.querySelector("td");
-    const jmeno = clean((inner || nameCell).textContent).replace(/(\s+[CAJ])+$/, "");
-    const side = names.B && (names.B.el.compareDocumentPosition(reg) & Node.DOCUMENT_POSITION_FOLLOWING) ? "B" : "A";
-    res[side].hraci.push({ c: no, jmeno, post, hral: !notAttended(nameCell) });
-  }
-  return ok(res) ? res : null;
+function parseTeams(doc) {
+  const headers = [...doc.querySelectorAll("tr")].filter(tr => {
+    const c = cells(tr);
+    return c.includes("A1") && c.includes("HS") && c.includes("důvod");
+  });
+  if (headers.length < 2) return null;
+  const labels = teamLabels(doc);
+  const res = { goly: [], tresty: [], rozhodci: { hlavni: [], carovi: [] }, divaci: "", strely: null, najezdy: [], jeZapis: true };
+  const goalsByNo = { A: [], B: [] }, pensByNo = { A: [], B: [] };
+
+  headers.slice(0, 2).forEach((htr, k) => {
+    const side = k ? "B" : "A";
+    const hc = cells(htr);
+    const tail = hc.slice(-TEAM_COLS.length);
+    if (tail.join("|") !== TEAM_COLS.join("|")) console.warn("Neočekávané sloupce zápisu:", hc);
+    const table = htr.closest("table");
+    const named = table.querySelector("td.team_name");
+    const nazev = labels[side] || (named ? clean(named.textContent).replace(/\s+\d+\s*$/, "") : (k ? "Hosté" : "Domácí"));
+    const team = emptyTeam(nazev);
+    const rows = [...table.rows];
+    for (const tr of rows.slice(rows.indexOf(htr) + 1)) {
+      const els = cellEls(tr);
+      if (els.length < TEAM_COLS.length) continue;
+      const v = els.map(e => clean(e.textContent));
+      const R = i => v[v.length - TEAM_COLS.length + i];   // i = index v TEAM_COLS
+      const post = v[v.length - TEAM_COLS.length - 1];
+      const no = v[0];
+      if (/^\d{1,3}$/.test(no) && /^(GK|D|F)$/.test(post)) {
+        const nameEl = els[1];
+        const inner = nameEl.querySelector("td");
+        const jmeno = clean((inner || nameEl).textContent).replace(/(\s+[CAJ])+$/, "");
+        if (jmeno) team.hraci.push({ c: no, jmeno, post, hral: !notAttended(nameEl) });
+      }
+      if (toSec(R(0)) !== null && R(1)) {
+        goalsByNo[side].push({ sec: toSec(R(0)), s: R(1), a: [R(2), R(3)].filter(Boolean), sit: R(4) });
+      }
+      if (toSec(R(17)) !== null && R(20)) {
+        pensByNo[side].push({ min: R(19), no: R(18) });
+      }
+    }
+    res[side] = team;
+  });
+  if (!ok(res)) return res;
+
+  const nameOf = (side, no) => (res[side].hraci.find(h => h.c === no) || {}).jmeno || (no ? `č. ${no}` : "");
+  ["A", "B"].forEach(side => {
+    goalsByNo[side].forEach(g => res.goly.push({ side, sec: g.sec, strelec: nameOf(side, g.s), asist: g.a.map(n => nameOf(side, n)), sit: g.sit }));
+    pensByNo[side].forEach(p => res.tresty.push({ side, min: p.min, hrac: p.no === "HL" ? "" : nameOf(side, p.no) }));
+  });
+  res.goly.sort((a, b) => a.sec - b.sec);
+  return res;
 }
 
+function rowsAfter(headerTr) {
+  const rows = [...headerTr.closest("table").rows];
+  return rows.slice(rows.indexOf(headerTr) + 1);
+}
+
+function addRest(doc, out) {
+  const trs = [...doc.querySelectorAll("tr")];
+  // střídání brankářů
+  for (const tr of trs) {
+    const c = cells(tr);
+    if (c[0] === "čas" && c[1] === "BA" && c[2] === "BB") {
+      const gk = { A: [], B: [] };
+      for (const row of rowsAfter(tr).map(cells)) {
+        if (toSec(row[0] || "") === null) continue;
+        [["A", row[1]], ["B", row[2]]].forEach(([s, no]) => {
+          if (/^\d+$/.test(no || "") && (!gk[s].length || gk[s][gk[s].length - 1].c !== no)) gk[s].push({ c: no, od: row[0] });
+        });
+      }
+      if (gk.A.length || gk.B.length) { out.A.brankari = gk.A; out.B.brankari = gk.B; break; }
+    }
+  }
+  // lavička (trenéři)
+  const sides = ["A", "B"];
+  for (const tr of trs) {
+    const c = cells(tr);
+    if (c[0] === "Příjmení, jméno" && c[1] === "Funkce") {
+      const s = sides.shift();
+      if (!s) break;
+      out[s].lavicka = rowsAfter(tr).map(cells).filter(r => r[0] && r[1]).map(r => ({ jmeno: r[0], funkce: r[1] }));
+    }
+  }
+  // souhrn po třetinách → střely
+  for (const tr of trs) {
+    if (cells(tr)[0] !== "Třetina") continue;
+    const tret = [];
+    for (const r of rowsAfter(tr).map(cells)) {
+      if (!["1", "2", "3", "P", "SN"].includes(r[0])) continue;
+      const g = pair(r[1]), st = pair(r[2]);
+      if (g || st) tret.push({ tretina: r[0], goly: g || [0, 0], strely: st || [0, 0] });
+    }
+    out.strely = sumShots(tret);
+    break;
+  }
+  // rozhodčí
+  for (const td of doc.querySelectorAll("td")) {
+    const lines = cellLines(td);
+    if (lines.length < 2) continue;
+    const role = lc(lines[0]);
+    const key = role === "hlavní rozhodčí" ? "hlavni" : role === "čárový rozhodčí" ? "carovi" : null;
+    if (key && !out.rozhodci[key].includes(lines[1]) && !/^potvrdil/i.test(lines[1])) out.rozhodci[key].push(lines[1]);
+  }
+  // diváci
+  const sp = doc.querySelector("td.value_spectators");
+  if (sp) out.divaci = clean(sp.textContent);
+  else {
+    for (const td of doc.querySelectorAll("td, th")) {
+      const lines = cellLines(td);
+      if (!lines.length || !/^počet diváků/i.test(lines[0])) continue;
+      const inCell = lines.slice(1).find(l => /^\d[\d\s]*$/.test(l));
+      if (inCell) { out.divaci = inCell; break; }
+      const tr = td.parentElement, idx = cellEls(tr).indexOf(td);
+      const below = tr.nextElementSibling && cellEls(tr.nextElementSibling)[idx];
+      const right = td.nextElementSibling;
+      const cand = [below, right].map(e => e && clean(e.textContent)).find(t => /^\d[\d\s]*$/.test(t || ""));
+      if (cand) { out.divaci = cand; break; }
+    }
+  }
+  // samostatné nájezdy: A | B | BA | BB | A:B (stav po kole), skupiny po 5 sloupcích
+  for (const tr of trs) {
+    const c = cells(tr);
+    if (c.length < 5 || c.slice(0, 5).join("|") !== "A|B|BA|BB|A:B") continue;
+    const groups = Math.floor(c.length / 5);
+    const rows = rowsAfter(tr).map(cells);
+    const kola = [];
+    for (let gi = 0; gi < groups; gi++) for (const r of rows) {
+      const ch = r.slice(gi * 5, gi * 5 + 5);
+      if (ch.length === 5 && (ch[0] || ch[1])) kola.push(ch);
+    }
+    let prev = [0, 0];
+    const nm = (side, no) => (out[side].hraci.find(h => h.c === no) || {}).jmeno || `č. ${no}`;
+    for (const [a, b, , , ab] of kola) {
+      const sc = pair(ab) || prev;
+      if (a) out.najezdy.push({ side: "A", strelec: nm("A", a), gol: sc[0] > prev[0] });
+      if (b) out.najezdy.push({ side: "B", strelec: nm("B", b), gol: sc[1] > prev[1] });
+      prev = sc;
+    }
+    break;
+  }
+}
+
+// Záloha: čistý text bez HTML — jen soupisky a trenéři
 function parseText(text) {
-  const t = text.replace(/\u00a0/g, " ");
+  const t = text.replace(/ /g, " ");
   const cut = t.search(/Hostující tým \(B\)/);
-  const res = { A: { nazev: "Domácí", hraci: [], brankari: [], lavicka: [] },
-                B: { nazev: "Hosté", hraci: [], brankari: [], lavicka: [] } };
+  const res = { A: emptyTeam("Domácí"), B: emptyTeam("Hosté"), goly: [], tresty: [],
+                rozhodci: { hlavni: [], carovi: [] }, divaci: "", strely: null, najezdy: [], jeZapis: false };
   const mA = /Domácí tým \(A\)\s*([^\n\t]+)/.exec(t), mB = /Hostující tým \(B\)\s*([^\n\t]+)/.exec(t);
   if (mA) res.A.nazev = clean(mA[1]).replace(/\s+\d+\s*$/, "");
   if (mB) res.B.nazev = clean(mB[1]).replace(/\s+\d+\s*$/, "");
@@ -266,7 +433,6 @@ function parseText(text) {
     const side = cut >= 0 && m.index > cut ? "B" : "A";
     res[side].hraci.push({ c: m[1], jmeno: clean(m[2]).replace(/(\s+[CAJ])+$/, ""), post: m[4], hral: true });
   }
-  // lavička: řádky „Jméno Příjmení <tab> funkce“ za nadpisem, 1. blok = A, 2. = B
   const blocks = t.split(/Příjmení, jméno\s+Funkce/).slice(1, 3);
   blocks.forEach((blk, k) => {
     for (const line of blk.split(/\n/)) {
@@ -278,117 +444,143 @@ function parseText(text) {
   return res;
 }
 
-function parseByClasses(doc) {
-  const tables = [...doc.querySelectorAll("td.team_name")].map(td => td.closest("table")).filter(Boolean);
-  if (tables.length < 2) return null;
+// ===== Jména (společné pro sestavy i zápis) =================================
 
-  const team = table => {
-    const nazev = clean(table.querySelector("td.team_name").textContent).replace(/\s+\d+\s*$/, "");
-    const hraci = [];
-    for (const r of table.querySelectorAll("tr.values")) {
-      const no = clean(r.querySelector("td.value_no")?.textContent);
-      const played = r.querySelector("td.value_name");
-      const name = played || r.querySelector("td.value_name_not_attended");
-      if (!no || !name || !clean(name.textContent)) continue;
-      hraci.push({ c: no, jmeno: clean(name.textContent), post: clean(r.querySelector("td.value_pos")?.textContent), hral: !!played });
-    }
-    return { nazev, hraci, brankari: [], lavicka: [] };
-  };
-  const out = { A: team(tables[0]), B: team(tables[1]) };
-  return ok(out) ? out : null;
-}
-
-function addBenchAndGoalies(doc, out) {
-  for (const tr of doc.querySelectorAll("tr")) {
-    const c = cells(tr);
-    if (c[0] === "čas" && c[1] === "BA" && c[2] === "BB") {
-      const gk = { A: [], B: [] };
-      for (const row of rowsAfter(tr)) {
-        if (!/^\d+:\d\d$/.test(row[0] || "")) continue;
-        [["A", row[1]], ["B", row[2]]].forEach(([s, no]) => {
-          if (/^\d+$/.test(no || "") && (!gk[s].length || gk[s][gk[s].length - 1].c !== no)) gk[s].push({ c: no, od: row[0] });
-        });
-      }
-      if (gk.A.length || gk.B.length) { out.A.brankari = gk.A; out.B.brankari = gk.B; break; }
-    }
-  }
-  const sides = ["A", "B"];
-  for (const tr of doc.querySelectorAll("tr")) {
-    const c = cells(tr);
-    if (c[0] === "Příjmení, jméno" && c[1] === "Funkce") {
-      const s = sides.shift();
-      if (!s) break;
-      out[s].lavicka = rowsAfter(tr).filter(r => r[0] && r[1]).map(r => ({ jmeno: r[0], funkce: r[1] }));
-    }
-  }
-}
-
-// ===== Skládání textu =======================================================
-
-function buildLines(sestava, motorFirst) {
-  const sideData = ["A", "B"].map(side => {
-    const t = sestava[side];
-    const byNo = Object.fromEntries(t.hraci.map(h => [h.c, h]));
-    const played = t.hraci.filter(h => h.hral);
-    const gkSeq = (t.brankari || []).filter(b => byNo[b.c]);
-    if (!gkSeq.length) {  // zápis před zápasem: bez střídání → první brankář v soupisce
-      const first = played.find(h => h.post === "GK");
-      if (first) gkSeq.push({ c: first.c, od: "00:00" });
-    }
-    const coaches = [];
-    const lav = t.lavicka || [];
-    lav.filter(o => /hlavní\s*trenér/i.test(o.funkce)).forEach(o => coaches.push({ ...splitCoach(o.jmeno), head: true }));
-    lav.filter(o => /asist/i.test(o.funkce)).forEach(o => coaches.push({ ...splitCoach(o.jmeno), head: false }));
-    return { side, t, byNo, played, gkSeq, coaches };
-  });
-
-  // Kolize příjmení napříč celým zápasem (hráči, kteří hráli, + trenéři)
+function makeNamer(m) {
   const count = {};
-  const bump = p => { const k = p.prijmeni.toLocaleLowerCase("cs"); count[k] = (count[k] || 0) + 1; };
-  sideData.forEach(d => {
-    d.played.filter(h => h.post !== "GK" || d.gkSeq.some(g => g.c === h.c)).forEach(h => bump(splitPlayer(h.jmeno)));
-    d.coaches.forEach(bump);
+  const bump = p => { const k = lc(p.prijmeni); count[k] = (count[k] || 0) + 1; };
+  const people = { A: {}, B: {} };
+  ["A", "B"].forEach(side => {
+    const t = m[side];
+    t.hraci.filter(h => h.hral || h.post === "GK").forEach(h => bump(splitPlayer(h.jmeno)));
+    coachesOf(t).forEach(bump);
   });
   const display = (p, extra = "") => {
     const alias = JMENA[`${p.prijmeni} ${p.jmeno}`.trim()];
     if (alias) return alias;
-    const dup = count[p.prijmeni.toLocaleLowerCase("cs")] > 1 && p.jmeno;
+    const dup = count[lc(p.prijmeni)] > 1 && p.jmeno;
     return (dup ? p.jmeno[0] + ". " : "") + p.prijmeni + (extra ? " " + extra : "");
   };
-  const pl = h => display(splitPlayer(h.jmeno));
+  return { pl: raw => (raw ? display(splitPlayer(raw)) : "lavička"), coach: c => display(c, c.pripona) };
+}
 
-  let out = sideData.map(d => {
-    const { t, byNo, played, gkSeq } = d;
-    let gk = gkSeq.length ? pl(byNo[gkSeq[0].c]) : "?";
-    if (gkSeq.length > 1) gk += " (" + gkSeq.slice(1).map(g => `${minuteOf(g.od)}. ${pl(byNo[g.c])}`).join(", ") + ")";
-    const obr = played.filter(h => h.post === "D").map(pl);
-    const uto = played.filter(h => h.post === "F").map(pl);
-    const lines = [];
-    for (let i = 0; i < uto.length; i += 3) lines.push(uto.slice(i, i + 3));
-    if (lines.length > 1 && lines[lines.length - 1].length === 1) lines[lines.length - 2].push(lines.pop()[0]);
+function coachesOf(t) {
+  const lav = t.lavicka || [];
+  const head = lav.filter(o => /hlavní\s*trenér/i.test(o.funkce)).map(o => ({ ...splitCoach(o.jmeno), head: true }));
+  const asst = lav.filter(o => /asist/i.test(o.funkce)).map(o => ({ ...splitCoach(o.jmeno), head: false }))
+    .sort((a, b) => a.prijmeni.localeCompare(b.prijmeni, "cs"));
+  return [...head, ...asst];
+}
 
-    const assist = d.coaches.filter(c => !c.head).sort((a, b) => a.prijmeni.localeCompare(b.prijmeni, "cs"));
-    const coachNames = [...d.coaches.filter(c => c.head), ...assist].map(c => display(c, c.pripona));
+// ===== Sestavy ==============================================================
+// Brankář (náhradník v závorce, při střídání s minutou) – obránci po dvojicích
+// – útočníci po trojicích (13. útočník jako další útok). Trenéři.
+// Uvnitř dvojic a trojic se pořadí ze zápisu obrací (Štencel, Kundrátek → Kundrátek, Štencel).
+
+function buildLines(m, namer, motorFirst) {
+  let out = ["A", "B"].map(side => {
+    const t = m[side];
+    const byNo = Object.fromEntries(t.hraci.map(h => [h.c, h]));
+    const goalies = t.hraci.filter(h => h.post === "GK");
+    const changes = (t.brankari || []).filter(b => byNo[b.c]);
+    const starter = changes.length ? byNo[changes[0].c] : (goalies.find(h => h.hral) || goalies[0]);
+    const enter = {};
+    changes.slice(1).forEach(b => { if (b.c !== changes[0].c && !(b.c in enter)) enter[b.c] = minuteOf(b.od); });
+    const others = goalies.filter(h => h !== starter)
+      .sort((a, b) => (a.c in enter ? 0 : 1) - (b.c in enter ? 0 : 1))
+      .map(h => (h.c in enter ? `${enter[h.c]}. ` : "") + namer.pl(h.jmeno));
+    let gk = starter ? namer.pl(starter.jmeno) : "?";
+    if (others.length) gk += ` (${others.join(", ")})`;
+
+    const played = t.hraci.filter(h => h.hral);
+    const obr = played.filter(h => h.post === "D").map(h => namer.pl(h.jmeno));
+    const uto = played.filter(h => h.post === "F").map(h => namer.pl(h.jmeno));
+    // zápis vede formace zprava doleva, v textu se píšou obráceně
+    const grp = (arr, n) => chunk(arr, n).map(g => g.slice().reverse().join(", "));
+    const parts = [gk, ...grp(obr, 2), ...grp(uto, 3)];
+
+    const coachNames = coachesOf(t).map(namer.coach);
     const trener = coachNames.length === 0 ? "" : (coachNames.length === 1 ? " Trenér " : " Trenéři ") + joinCs(coachNames) + ".";
-
-    const parts = [gk];
-    if (obr.length) parts.push(obr.join(", "));
-    lines.forEach(l => parts.push(l.join(", ")));
     const text = `${shortTeam(t.nazev)}: ${parts.join(" – ")}.${trener}`;
 
-    const nehrali = t.hraci.filter(h => !h.hral).map(pl);
-    const zalozni = played.filter(h => h.post === "GK" && !gkSeq.some(g => g.c === h.c)).map(pl);
-    return { nazev: t.nazev, kratce: shortTeam(t.nazev), text,
-             check: { g: gkSeq.length, d: obr.length, f: uto.length, nehrali, zalozni, trenéři: coachNames.length } };
+    const nehrali = t.hraci.filter(h => !h.hral && h.post !== "GK").map(h => namer.pl(h.jmeno));
+    return { nazev: t.nazev, text, check: { gk: goalies.length, d: obr.length, f: uto.length, nehrali, trenéři: coachNames.length } };
   });
   if (motorFirst && !isMotor(out[0].nazev) && isMotor(out[1].nazev)) out = [out[1], out[0]];
   return out;
 }
 
+// ===== Zápis utkání =========================================================
+
+// „5/4“ z pohledu střílejícího týmu; hráči nad 5 (power play bez brankáře) se nepočítají
+function strength(sit) {
+  const mm = /(\d)\s*\/\s*(\d)/.exec(sit || "");
+  if (!mm) return "ev";
+  const a = Math.min(+mm[1], 5), b = Math.min(+mm[2], 5);
+  return a > b ? "pp" : a < b ? "sh" : "ev";
+}
+
+function buildReport(m, namer) {
+  const warn = [];
+  const parts = [];
+  const goly = [...m.goly].sort((a, b) => a.sec - b.sec);
+
+  const goalTxt = side => {
+    const gs = goly.filter(g => g.side === side);
+    if (!gs.length) return "nikdo";
+    return gs.map(g => `${minuteOfSec(g.sec)}. ${namer.pl(g.strelec)}` +
+      (g.asist.length ? ` (${g.asist.map(namer.pl).join(", ")})` : "")).join(", ");
+  };
+  parts.push(`Branky a nahrávky: ${goalTxt("A")} – ${goalTxt("B")}.`);
+
+  if (m.najezdy.length) {
+    const sa = m.najezdy.filter(p => p.side === "A" && p.gol).length;
+    const sb = m.najezdy.filter(p => p.side === "B" && p.gol).length;
+    const win = sa > sb ? "A" : "B";
+    const last = m.najezdy.filter(p => p.side === win && p.gol).pop();
+    if (last) parts.push(`Rozhodující nájezd: ${namer.pl(last.strelec)}.`);
+  }
+
+  const lastName = n => clean(n.replace(/\([^)]*\)/g, "")).split(" ").pop();
+  const hl = (m.rozhodci.hlavni || []).map(lastName), car = (m.rozhodci.carovi || []).map(lastName);
+  if (hl.length) parts.push(`Rozhodčí: ${hl.join(", ")}${car.length ? " – " + car.join(", ") : ""}.`);
+  else warn.push("v zápisu nejsou rozhodčí");
+
+  const pen = { A: 0, B: 0 }, navic = [];
+  m.tresty.forEach(t => {
+    const mins = parseInt(t.min, 10);
+    if (mins === 2 || mins === 5) pen[t.side] += 1;
+    else if (mins === 4) pen[t.side] += 2;
+    else if (mins >= 10) navic.push(`${namer.pl(t.hrac)} (${shortTeam(m[t.side].nazev)}) ${mins} min`);
+  });
+  parts.push(`Vyloučení: ${pen.A}:${pen.B}${navic.length ? ", navíc " + navic.join(", ") : ""}.`);
+
+  const cnt = { pp: { A: 0, B: 0 }, sh: { A: 0, B: 0 } };
+  goly.forEach(g => { const s = strength(g.sit); if (s !== "ev") cnt[s][g.side] += 1; });
+  parts.push(`Využití: ${cnt.pp.A}:${cnt.pp.B}.`);
+  parts.push(`V oslabení: ${cnt.sh.A}:${cnt.sh.B}.`);
+
+  const div = (m.divaci || "").replace(/\D/g, "");
+  if (div) parts.push(`Diváci: ${div}.`); else warn.push("chybí počet diváků");
+  if (m.strely) parts.push(`Střely na branku: ${m.strely[0]}:${m.strely[1]}.`); else warn.push("chybí souhrn střel");
+
+  // průběh: stav vždy, když se střídá tým, který skóroval
+  const prubeh = [];
+  let sc = [0, 0];
+  goly.forEach((g, i) => {
+    sc = g.side === "A" ? [sc[0] + 1, sc[1]] : [sc[0], sc[1] + 1];
+    const next = goly[i + 1];
+    if (!next || next.side !== g.side) prubeh.push(`${sc[0]}:${sc[1]}`);
+  });
+  if (prubeh.length) parts.push(`Průběh utkání: ${prubeh.join(", ")}.`);
+
+  return { text: parts.join(" "), warn };
+}
+
 // ===== UI ===================================================================
 
 let DATA = null;          // obsah sestavy-data.json
-let current = null;       // aktuálně zobrazená sestava (surová data)
+let current = null;       // aktuálně zobrazený model zápasu
 
 function setStatus(msg, cls = "") { const s = $("status"); s.textContent = msg; s.className = cls; }
 
@@ -397,35 +589,45 @@ function showZapisLink(id) {
   if (id) { a.href = ZAPIS_URL(id); a.classList.remove("hidden"); } else a.classList.add("hidden");
 }
 
-function render(sestava) {
-  current = sestava;
-  const lines = buildLines(sestava, $("motor-first").checked);
+function esc(s) { return String(s).replace(/[&<>"]/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[ch])); }
+
+function render(m) {
+  current = m;
+  const namer = makeNamer(m);
+  const lines = buildLines(m, namer, $("motor-first").checked);
   const box = $("teams");
   box.innerHTML = "";
   lines.forEach((l, i) => {
     const div = document.createElement("div");
-    div.className = "team";
+    div.className = "block";
     const c = l.check;
     const warn = [];
-    if (c.f % 3) warn.push(`útočníků je ${c.f} — poslední formace je neúplná, zkontroluj`);
+    if (!c.gk) warn.push("v soupisce není brankář");
     if (!c.trenéři) warn.push("v zápisu nejsou trenéři");
     div.innerHTML = `
-      <div class="team-head"><strong></strong><button class="ghost" data-i="${i}">Kopírovat</button></div>
-      <textarea class="out" spellcheck="false"></textarea>
+      <div class="block-head"><strong></strong><button class="ghost" data-i="${i}">Kopírovat</button></div>
+      <textarea class="out lineup" spellcheck="false"></textarea>
       <div class="check"></div>`;
     div.querySelector("strong").textContent = l.nazev;
     div.querySelector("textarea").value = l.text;
     div.querySelector(".check").innerHTML =
-      `brankář <b>${c.g ? 1 : 0}</b>${c.g > 1 ? ` (+${c.g - 1} střídání)` : ""} · obránci <b>${c.d}</b> · útočníci <b>${c.f}</b>` +
-      (c.zalozni.length ? ` · náhradní brankář: ${esc(c.zalozni.join(", "))}` : "") +
+      `brankáři <b>${c.gk}</b> · obránci <b>${c.d}</b> · útočníci <b>${c.f}</b>` +
       (c.nehrali.length ? ` · nenastoupili: ${esc(c.nehrali.join(", "))}` : "") +
       (warn.length ? `<br>⚠️ ${esc(warn.join("; "))}` : "");
     box.appendChild(div);
   });
+
+  if (m.jeZapis) {
+    const r = buildReport(m, namer);
+    $("report").value = r.text;
+    $("report-check").innerHTML = `góly <b>${m.goly.length}</b> · tresty <b>${m.tresty.length}</b>` +
+      (r.warn.length ? `<br>⚠️ ${esc(r.warn.join("; "))}` : "");
+  } else {
+    $("report").value = "";
+    $("report-check").textContent = "V datech zatím nejsou údaje o průběhu — vlož zápis ze schránky.";
+  }
   $("result").classList.remove("hidden");
 }
-
-function esc(s) { return String(s).replace(/[&<>"]/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[ch])); }
 
 async function copyText(text, btn) {
   try { await navigator.clipboard.writeText(text); }
@@ -435,10 +637,11 @@ async function copyText(text, btn) {
 
 $("teams").addEventListener("click", e => {
   const b = e.target.closest("button[data-i]");
-  if (b) copyText(b.closest(".team").querySelector("textarea").value, b);
+  if (b) copyText(b.closest(".block").querySelector("textarea").value, b);
 });
+$("copy-report").addEventListener("click", e => copyText($("report").value, e.target));
 $("copy-all").addEventListener("click", e =>
-  copyText([...document.querySelectorAll("textarea.out")].map(t => t.value).join("\n"), e.target));
+  copyText([...document.querySelectorAll("textarea.lineup"), $("report")].map(t => t.value).filter(Boolean).join("\n"), e.target));
 
 async function loadLive(id) {
   showZapisLink(id);
@@ -450,17 +653,13 @@ async function loadLive(id) {
     const res = await fetch(ZAPIS_URL(id), { signal: ctl.signal });
     clearTimeout(timer);
     if (!res.ok) throw new Error(res.status);
-    const parsed = parseZapisHtml(await res.text());
-    if (!parsed) {
-      setStatus("Zápis zatím nemá vyplněné soupisky (vyplňují se zhruba hodinu před zápasem).", "warn");
-      return;
-    }
+    const parsed = parseZapis(await res.text(), "");
+    if (!parsed) { setStatus("Zápis zatím nemá vyplněné soupisky.", "warn"); return; }
     render(parsed);
     setStatus("Načteno přímo ze zápisu.", "ok");
   } catch (err) {
-    // Typicky CORS — web zápisu cizí stránce stažení nedovolí.
     $("paste-box").style.display = "block";
-    setStatus("Web zápisu nedovolí stažení z jiné stránky — vlož zápis ze schránky (návod níže).", "warn");
+    setStatus("Zápis nejde stáhnout přímo — vlož ho ze schránky.", "warn");
   }
 }
 
@@ -475,14 +674,15 @@ function loadSelected() {
   showZapisLink(g.hokejcz_id);
   $("paste-box").style.display = "none";
   if (g.sestava) {
-    render(g.sestava);
-    setStatus(`Sestava ze zápisu uloženého při denní aktualizaci (${DATA.aktualizovano}).`, "ok");
+    render(modelFromData(g));
+    if (!g.zapis) $("paste-box").style.display = "block";
+    setStatus(`Ze zápisu uloženého při denní aktualizaci (${DATA.aktualizovano}).`, "ok");
   } else if (g.hokejcz_id) {
     $("result").classList.add("hidden");
     loadLive(g.hokejcz_id);
   } else {
     $("result").classList.add("hidden");
-    setStatus("K tomuto kolu zatím není známé ID zápisu — zadej ho ručně.", "warn");
+    setStatus("K tomuto kolu zatím není známé ID zápisu.", "warn");
   }
 }
 
@@ -502,13 +702,10 @@ $("paste").addEventListener("paste", e => {
   const text = cd ? cd.getData("text/plain") : "";
   e.preventDefault();
   const parsed = parseZapis(html, text);
-  if (!parsed) {
-    setStatus("Ve vloženém obsahu nejsou soupisky zápisu — zkopíruj celou stránku zápisu (Ctrl+A, Ctrl+C).", "warn");
-    return;
-  }
+  if (!parsed) { setStatus("Ve vloženém obsahu nejsou soupisky zápisu.", "warn"); return; }
   $("paste").value = "";
   render(parsed);
-  setStatus("Sestava ze zkopírovaného zápisu.", "ok");
+  setStatus("Ze zkopírovaného zápisu.", "ok");
 });
 
 try { $("motor-first").checked = localStorage.getItem("sestavy-motor-first") === "1"; } catch {}
@@ -527,7 +724,7 @@ function dayMonth(datum) {
     const res = await fetch(DATA_URL, { cache: "no-store" });
     DATA = await res.json();
   } catch {
-    $("kolo").innerHTML = "<option value=''>Rozpis není k dispozici — použij ID zápisu</option>";
+    $("kolo").innerHTML = "<option value=''>Rozpis není k dispozici</option>";
     return;
   }
   const sel = $("kolo");
@@ -539,14 +736,14 @@ function dayMonth(datum) {
     const o = document.createElement("option");
     o.value = i;
     o.textContent = `${g.kolo}. kolo · ${g.datum} · ${g.domaci} – ${g.hoste}` +
-      (g.vysledek ? ` ${g.vysledek}` : "") + (g.sestava ? "" : g.odehrano ? "" : " (nehráno)");
+      (g.vysledek ? ` ${g.vysledek}` : "") + (g.sestava || g.odehrano ? "" : " (nehráno)");
     sel.appendChild(o);
     const dm = dayMonth(g.datum);
-    if (dm && dm[0] === today[0] && dm[1] === today[1]) pick = i;           // dnešní zápas má přednost
-    if (pick === null && g.odehrano) pick = i;                               // jinak poslední odehraný
+    if (dm && dm[0] === today[0] && dm[1] === today[1]) pick = i;
+    if (pick === null && g.odehrano) pick = i;
   });
   if (pick !== null) sel.value = pick;
-  setStatus(`Rozpis z ${DATA.aktualizovano}. Vyber kolo a klepni na Načíst.`);
+  setStatus(`Rozpis z ${DATA.aktualizovano}.`);
 })();
 </script>
 </body>
