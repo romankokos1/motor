@@ -662,7 +662,59 @@ function vMinute(min) {
   return `${ve ? "ve" : "v"} ${min}. minutě`;
 }
 
-function buildStory(m, namer) {
+const PORADI = { 2: "podruhé", 3: "potřetí", 4: "počtvrté", 5: "popáté", 6: "pošesté", 7: "posedmé", 8: "poosmé", 9: "podeváté", 10: "podesáté" };
+const GEN_CISLO = { 3: "tří", 4: "čtyř", 5: "pěti", 6: "šesti", 7: "sedmi", 8: "osmi", 9: "devíti", 10: "deseti" };
+const TRETINA = { 1: "první", 2: "druhá", 3: "třetí" };
+const VZAJEMNY = { 2: "druhém", 3: "třetím", 4: "čtvrtém" };
+const sekundTxt = n => `${n} ${n === 1 ? "sekundu" : n < 5 ? "sekundy" : "sekund"}`;
+
+// výsledek odehraného kola z pohledu Motoru (z rozpisu): {win, motor, souper}
+function motorResult(g) {
+  const sc = g && g.odehrano && pair(g.vysledek);
+  if (!sc) return null;
+  const doma = isMotor(g.domaci);
+  const [mm, oo] = doma ? sc : [sc[1], sc[0]];
+  return { win: mm > oo || (mm === oo && /sn|p/.test(g.vysledek) && doma === (sc[0] > sc[1])), motor: mm, souper: oo };
+}
+
+// Souvislosti ze sezóny: série, předchozí vzájemný zápas, debuty
+function seasonContext(m, namer, kolo, vyhra, opp) {
+  if (!DATA || kolo == null) return [];
+  const vety = [];
+  const pred = DATA.zapasy.filter(g => g.kolo < kolo && g.odehrano).sort((a, b) => a.kolo - b.kolo);
+  const vysl = pred.map(motorResult).filter(Boolean);
+
+  let n = 0;
+  for (let i = vysl.length - 1; i >= 0 && vysl[i].win === vyhra; i--) n++;
+  let k = 0;
+  for (let i = vysl.length - 1; i >= 0 && vysl[i].win !== vyhra; i--) k++;
+  if (n + 1 >= 2 && PORADI[n + 1]) vety.push(`Motor tak ${vyhra ? "vyhrál" : "prohrál"} ${PORADI[n + 1]} v řadě.`);
+  else if (k >= 3 && GEN_CISLO[k]) vety.push(`Motor tak ukončil sérii ${GEN_CISLO[k]} ${vyhra ? "proher" : "výher"}.`);
+
+  const vzajemne = pred.filter(g => [g.domaci, g.hoste].some(t => !isMotor(t) && shortTeam(t) === opp));
+  const posl = vzajemne[vzajemne.length - 1], r = motorResult(posl);
+  if (r) {
+    const poradi = VZAJEMNY[vzajemne.length + 1] || "dalším";
+    if (!r.win && vyhra) vety.push(`Motor tak soupeři oplatil porážku ${r.motor}:${r.souper} z ${posl.kolo}. kola.`);
+    else if (r.win && !vyhra) vety.push(`Soupeř tak Motoru oplatil porážku ${r.souper}:${r.motor} z ${posl.kolo}. kola.`);
+    else if (r.win && vyhra) vety.push(`Soupeře Motor porazil i ve ${poradi} vzájemném zápase sezóny.`);
+    else vety.push(`Se soupeřem Motor prohrál i ve ${poradi} vzájemném zápase sezóny.`);
+  }
+
+  const ms = motorSideOf(m);
+  const hrali = new Set();
+  DATA.zapasy.filter(g => g.kolo < kolo && g.sestava).forEach(g => {
+    const t = isMotor(g.sestava.A.nazev) ? g.sestava.A : g.sestava.B;
+    t.hraci.filter(h => h.hral).forEach(h => hrali.add(lc(h.jmeno)));
+  });
+  if (hrali.size) {
+    const nove = m[ms].hraci.filter(h => h.hral && h.post !== "GK" && !hrali.has(lc(h.jmeno))).map(h => namer.pl(h.jmeno));
+    if (nove.length) vety.push(`Poprvé v sezóně ${nove.length === 1 ? "nastoupil" : "nastoupili"} ${joinCs(nove)}.`);
+  }
+  return vety;
+}
+
+function buildStory(m, namer, kolo) {
   const ms = motorSideOf(m);
   if (!ms) return "";
   const os = ms === "A" ? "B" : "A";
@@ -710,6 +762,7 @@ function buildStory(m, namer) {
   });
 
   const klauzule = [];   // {text, konec: sekunda posledního gólu}
+  let srovnani = 0;
   // přesilovka/oslabení se zmíní nejvýš u dvou posledních takových gólů (jinak to zní jako výčet)
   const zvlastni = new Set(segs.filter(sg => sg.g.length === 1 && strength(sg.g[0].sit) !== "ev").map(sg => sg.g[0]).slice(-2));
   segs.forEach((seg, i) => {
@@ -724,11 +777,17 @@ function buildStory(m, namer) {
     if (seg.g.length === 1) {
       const prev = segs[i - 1];
       const opet = prev && prev.side === seg.side && prev.g.length === 1 && prev.g[0].strelec === g0.strelec ? "opět " : "";
-      const kdo = opet + nm(g0), kdy = g0.sec >= 3600 ? "v prodloužení" : vMinute(minuteOfSec(g0.sec));
+      const zbyva = 3600 - g0.sec;
+      const kdo = opet + nm(g0);
+      const dulezity = po === 0 || (posledni && pred === 0 && po > 0);
+      const kdy = g0.sec >= 3600 ? "v prodloužení"
+        : dulezity && zbyva <= 60 ? `${sekundTxt(zbyva)} před koncem`
+        : dulezity && zbyva <= 120 ? "necelé dvě minuty před koncem"
+        : vMinute(minuteOfSec(g0.sec));
       if (posledni && pred === 0 && po > 0 && !poSN)
         t = `o výhře ${jeM ? "Motoru" : oppGen} rozhodl ${kdy} ${kdo}${pp(g0)}`;
       else if (i === 0) t = `skóre otevřel ${kdy} ${kdo}${pp(g0)}`;
-      else if (po === 0) t = `${kdo} ${kdy}${pp(g0)} srovnal na ${skore}`;
+      else if (po === 0) t = `${kdo} ${kdy}${pp(g0)} ${(srovnani++ % 2) ? "vyrovnal" : "srovnal"} na ${skore}`;
       else if (pred === 0) t = `${kdo} ${kdy}${pp(g0)} poslal ${jeM ? "Motor" : oppAcc} do vedení ${skore}`;
       else if (pred > 0) t = `${kdo} ${kdy}${pp(g0)} zvýšil na ${skore}`;
       else t = `${kdo} ${kdy}${pp(g0)} snížil na ${skore}`;
@@ -774,6 +833,30 @@ function buildStory(m, namer) {
     if (last) vety.push(`V nájezdech rozhodl ${namer.pl(last.strelec)}.`);
   }
 
+  // rozhodující třetina: vítěz ji vyhrál aspoň o dva a bez ní by nevyhrál
+  if (!poSN && !poPr) {
+    const reg = goly.filter(g => g.sec < 3600);
+    const margin = Math.abs(gM - gO);
+    for (const tr of [1, 2, 3]) {
+      const v3 = reg.filter(g => Math.floor(g.sec / 1200) + 1 === tr);
+      const x = v3.filter(g => g.side === (vyhra ? ms : os)).length, y = v3.length - x;
+      if (x - y >= 2 && x - y >= margin && margin >= 1 && v3.length < reg.length) {
+        const kdo = vyhra ? "Motor vyhrál" : `${oppSubj} vyhráli`;
+        vety.push(`Rozhodující byla ${TRETINA[tr]} třetina, kterou ${kdo} ${x}:${y}.`);
+        break;
+      }
+    }
+  }
+  // rychlý sled: dva góly jednoho týmu do 60 sekund
+  for (let i = 1; i < goly.length; i++) {
+    const d = goly[i].sec - goly[i - 1].sec;
+    if (goly[i].side === goly[i - 1].side && d <= 60 && d > 0) {
+      const kdo = goly[i].side === ms ? "Motor" : oppSubj;
+      vety.push(`Během ${d} ${d === 1 ? "sekundy" : "sekund"} ${goly[i].side === ms ? "dal" : "dali"} ${kdo} dva góly (${nm(goly[i - 1])}, ${nm(goly[i])}).`);
+      break;
+    }
+  }
+
   // výrazní hráči Motoru (max. dva), u soupeře jen víc gólů
   const stat = {};
   goly.forEach(g => {
@@ -802,7 +885,7 @@ function buildStory(m, namer) {
     if (gO === 0) vety.push(`${namer.pl(st.jmeno)} udržel čisté konto.`);
     else if (m.strely) {
       const zakroky = m.strely[ms === "A" ? 1 : 0] - gO;
-      if (zakroky >= 35 || (vyhra && zakroky >= 28)) vety.push(`Brankář ${namer.pl(st.jmeno)} zlikvidoval ${zakroky} střel.`);
+      if (zakroky >= 35 || (vyhra && zakroky >= 28)) vety.push(`Brankář ${namer.pl(st.jmeno)} zlikvidoval ${zakroky} z ${zakroky + gO} střel.`);
     }
   }
   if (m.strely) {
@@ -810,7 +893,8 @@ function buildStory(m, namer) {
     if (!vyhra && sm - so >= 8) vety.push(`Na střely přitom vyhrál Motor ${sm}:${so}.`);
     if (vyhra && so - sm >= 8) vety.push(`Na střely přitom vyhrál soupeř ${so}:${sm}.`);
   }
-  return vety.join(" ");
+  vety.push(...seasonContext(m, namer, kolo, vyhra, opp));
+  return vety.join(" ").replace(/\.\./g, ".");
 }
 
 // ===== UI ===================================================================
@@ -868,7 +952,7 @@ function render(m) {
   $("result").classList.remove("hidden");
 
   const changes = buildChanges(m, namer, currentKolo);
-  const story = m.jeZapis && m.goly.length + m.najezdy.length ? buildStory(m, namer) : "";
+  const story = m.jeZapis && m.goly.length + m.najezdy.length ? buildStory(m, namer, currentKolo) : "";
   $("changes").value = changes;
   $("story").value = story;
   $("changes-block").classList.toggle("hidden", !changes);
