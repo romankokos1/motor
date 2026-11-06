@@ -65,8 +65,9 @@
       <button class="ghost" id="load-manual">Načíst podle ID</button>
       <a class="btn ghost hidden" id="open-zapis" target="_blank" rel="noopener">Otevřít zápis ↗</a>
     </div>
-    <div class="row small" style="margin-top:8px">
+    <div class="row small" style="margin-top:8px; gap: 6px 18px">
       <label><input type="checkbox" id="motor-first"> Motor vždy první</label>
+      <label><input type="checkbox" id="bold-labels"> Tučné popisky v zápisu (HTML &lt;b&gt;)</label>
     </div>
     <p id="status"></p>
   </div>
@@ -520,30 +521,29 @@ function strength(sit) {
   return a > b ? "pp" : a < b ? "sh" : "ev";
 }
 
-function buildReport(m, namer) {
+function buildReport(m, namer, bold) {
   const warn = [];
   const parts = [];
+  const L = label => (bold ? `<b>${label}:</b>` : `${label}:`);
   const goly = [...m.goly].sort((a, b) => a.sec - b.sec);
 
-  const goalTxt = side => {
-    const gs = goly.filter(g => g.side === side);
-    if (!gs.length) return "nikdo";
-    return gs.map(g => `${minuteOfSec(g.sec)}. ${namer.pl(g.strelec)}` +
-      (g.asist.length ? ` (${g.asist.map(namer.pl).join(", ")})` : "")).join(", ");
-  };
-  parts.push(`Branky a nahrávky: ${goalTxt("A")} – ${goalTxt("B")}.`);
+  const goalTxt = side => goly.filter(g => g.side === side).map(g => `${minuteOfSec(g.sec)}. ${namer.pl(g.strelec)}` +
+    (g.asist.length ? ` (${g.asist.map(namer.pl).join(", ")})` : "")).join(", ");
+  // tým bez gólu se nevypisuje: „Branky a nahrávky: 5. X, 20. Y.“ / „Branky a nahrávky: – 10. Z.“
+  const ga = goalTxt("A"), gb = goalTxt("B");
+  if (ga || gb) parts.push(`${L("Branky a nahrávky")} ${ga}${gb ? (ga ? " – " : "– ") + gb : ""}.`);
 
   if (m.najezdy.length) {
     const sa = m.najezdy.filter(p => p.side === "A" && p.gol).length;
     const sb = m.najezdy.filter(p => p.side === "B" && p.gol).length;
     const win = sa > sb ? "A" : "B";
     const last = m.najezdy.filter(p => p.side === win && p.gol).pop();
-    if (last) parts.push(`Rozhodující nájezd: ${namer.pl(last.strelec)}.`);
+    if (last) parts.push(`${L("Rozhodující nájezd")} ${namer.pl(last.strelec)}.`);
   }
 
   const lastName = n => clean(n.replace(/\([^)]*\)/g, "")).split(" ").pop();
   const hl = (m.rozhodci.hlavni || []).map(lastName), car = (m.rozhodci.carovi || []).map(lastName);
-  if (hl.length) parts.push(`Rozhodčí: ${hl.join(", ")}${car.length ? " – " + car.join(", ") : ""}.`);
+  if (hl.length) parts.push(`${L("Rozhodčí")} ${hl.join(", ")}${car.length ? " – " + car.join(", ") : ""}.`);
   else warn.push("v zápisu nejsou rozhodčí");
 
   const pen = { A: 0, B: 0 }, navic = [];
@@ -553,16 +553,16 @@ function buildReport(m, namer) {
     else if (mins === 4) pen[t.side] += 2;
     else if (mins >= 10) navic.push(`${namer.pl(t.hrac)} (${shortTeam(m[t.side].nazev)}) ${mins} min`);
   });
-  parts.push(`Vyloučení: ${pen.A}:${pen.B}${navic.length ? ", navíc " + navic.join(", ") : ""}.`);
+  parts.push(`${L("Vyloučení")} ${pen.A}:${pen.B}${navic.length ? ", navíc " + navic.join(", ") : ""}.`);
 
   const cnt = { pp: { A: 0, B: 0 }, sh: { A: 0, B: 0 } };
   goly.forEach(g => { const s = strength(g.sit); if (s !== "ev") cnt[s][g.side] += 1; });
-  parts.push(`Využití: ${cnt.pp.A}:${cnt.pp.B}.`);
-  parts.push(`V oslabení: ${cnt.sh.A}:${cnt.sh.B}.`);
+  parts.push(`${L("Využití")} ${cnt.pp.A}:${cnt.pp.B}.`);
+  parts.push(`${L("V oslabení")} ${cnt.sh.A}:${cnt.sh.B}.`);
 
   const div = (m.divaci || "").replace(/\D/g, "");
-  if (div) parts.push(`Diváci: ${div}.`); else warn.push("chybí počet diváků");
-  if (m.strely) parts.push(`Střely na branku: ${m.strely[0]}:${m.strely[1]}.`); else warn.push("chybí souhrn střel");
+  if (div) parts.push(`${L("Diváci")} ${div}.`); else warn.push("chybí počet diváků");
+  if (m.strely) parts.push(`${L("Střely na branku")} ${m.strely[0]}:${m.strely[1]}.`); else warn.push("chybí souhrn střel");
 
   // průběh: stav vždy, když se střídá tým, který skóroval
   const prubeh = [];
@@ -572,7 +572,7 @@ function buildReport(m, namer) {
     const next = goly[i + 1];
     if (!next || next.side !== g.side) prubeh.push(`${sc[0]}:${sc[1]}`);
   });
-  if (prubeh.length) parts.push(`Průběh utkání: ${prubeh.join(", ")}.`);
+  if (prubeh.length) parts.push(`${L("Průběh utkání")} ${prubeh.join(", ")}.`);
 
   return { text: parts.join(" "), warn };
 }
@@ -618,7 +618,7 @@ function render(m) {
   });
 
   if (m.jeZapis) {
-    const r = buildReport(m, namer);
+    const r = buildReport(m, namer, $("bold-labels").checked);
     $("report").value = r.text;
     $("report-check").innerHTML = `góly <b>${m.goly.length}</b> · tresty <b>${m.tresty.length}</b>` +
       (r.warn.length ? `<br>⚠️ ${esc(r.warn.join("; "))}` : "");
@@ -709,6 +709,11 @@ $("paste").addEventListener("paste", e => {
 });
 
 try { $("motor-first").checked = localStorage.getItem("sestavy-motor-first") === "1"; } catch {}
+try { $("bold-labels").checked = localStorage.getItem("sestavy-bold") === "1"; } catch {}
+$("bold-labels").addEventListener("change", e => {
+  try { localStorage.setItem("sestavy-bold", e.target.checked ? "1" : "0"); } catch {}
+  if (current) render(current);
+});
 $("motor-first").addEventListener("change", e => {
   try { localStorage.setItem("sestavy-motor-first", e.target.checked ? "1" : "0"); } catch {}
   if (current) render(current);
