@@ -648,8 +648,19 @@ function buildChanges(m, namer, kolo) {
 }
 
 // ===== Návrh úvodu z průběhu =================================================
-// Jen pravidla nad daty: kdo vedl, kdo srovnal, kdo rozhodl. Jména střelců
-// v 1. pádě v závorce s minutou, aby se nemusela skloňovat.
+// Pevná pravidla nad daty, nic se nevymýšlí. Hráči jsou podmětem věty
+// („Bell srovnal…“), takže se jejich jména nemusí skloňovat.
+
+const CISLO = { 2: ["dva", "dvě", "Dvěma"], 3: ["tři", "tři", "Třemi"], 4: ["čtyři", "čtyři", "Čtyřmi"], 5: ["pět", "pět", "Pěti"] };
+const goluTxt = n => n === 1 ? "gól" : `${(CISLO[n] || [n])[0]} ${n < 5 ? "góly" : "gólů"}`;
+const asistTxt = n => n === 1 ? "asistence" : `${(CISLO[n] || [n])[1]} ${n < 5 ? "asistence" : "asistencí"}`;
+const boduTxt = n => `${(CISLO[n] || [n])[0]} ${n < 5 ? "body" : "bodů"}`;
+
+// „ve 38. minutě“ / „v 57. minutě“ (podle toho, jak se číslovka čte)
+function vMinute(min) {
+  const ve = [2, 3, 4, 12, 13, 14].includes(min) || (min >= 20 && min < 50);
+  return `${ve ? "ve" : "v"} ${min}. minutě`;
+}
 
 function buildStory(m, namer) {
   const ms = motorSideOf(m);
@@ -668,73 +679,136 @@ function buildStory(m, namer) {
   const opp = shortTeam(m[os].nazev);
   const [sKym, kde] = TVARY[opp] || [`s ${opp}`, `v ${opp}`];
   const doma = ms === "A";
-  const oppSubj = doma ? "hosté" : "domácí";
+  const oppSubj = doma ? "hosté" : "domácí", oppAcc = doma ? "hosty" : "domácí", oppGen = doma ? "hostů" : "domácích";
   const cap = t => t.charAt(0).toLocaleUpperCase("cs") + t.slice(1);
+  const nm = g => namer.pl(g.strelec);
 
-  const vety = [];
-  vety.push(`Hokejisté Motoru ${vyhra ? "vyhráli" : "prohráli"} ${doma ? "doma " + sKym : kde} ${sM}:${sO}` +
-    (poSN ? " po samostatných nájezdech" : poPr ? " po prodloužení" : "") + ".");
+  // průběh skóre z pohledu Motoru: nejhorší a nejlepší moment
+  let a = 0, b = 0, worst = [0, 0], best = [0, 0];
+  goly.forEach(g => {
+    if (g.side === ms) a++; else b++;
+    if (a - b < worst[0] - worst[1]) worst = [a, b];
+    if (a - b > best[0] - best[1]) best = [a, b];
+  });
 
-  // úseky gólů jednoho týmu za sebou
-  // úsek končí změnou střílejícího týmu nebo vyrovnáním (srovnání a následné vedení jsou dvě věci)
+  // 1. věta: výsledek, případně obrat
+  let veta1 = `Hokejisté Motoru ${vyhra ? "vyhráli" : "prohráli"} ${doma ? "doma " + sKym : kde} ${sM}:${sO}` +
+    (poSN ? " po samostatných nájezdech" : poPr ? " po prodloužení" : "");
+  if (vyhra && worst[1] - worst[0] >= 2) veta1 += `, přestože prohrávali ${worst[0]}:${worst[1]}`;
+  if (!vyhra && best[0] - best[1] >= 2) veta1 += `, přestože vedli ${best[0]}:${best[1]}`;
+  const vety = [veta1 + "."];
+
+  // úseky: střídání střelců mezi týmy, rozdělené i v místě vyrovnání
   const segs = [];
   let ra = 0, rb = 0, tie = false;
   goly.forEach(g => {
     const last = segs[segs.length - 1];
-    if (last && last.side === g.side && !tie) last.g.push(g); else segs.push({ side: g.side, g: [g] });
+    if (last && last.side === g.side && !tie) last.g.push(g); else segs.push({ side: g.side, g: [g], pred: [ra, rb] });
     if (g.side === ms) ra++; else rb++;
     tie = ra === rb;
+    segs[segs.length - 1].po = [ra, rb];
   });
-  const strel = gs => gs.map(g => `${minuteOfSec(g.sec)}. ${namer.pl(g.strelec)}`).join(", ");
+
+  const klauzule = [];   // {text, konec: sekunda posledního gólu}
+  // přesilovka/oslabení se zmíní nejvýš u dvou posledních takových gólů (jinak to zní jako výčet)
+  const zvlastni = new Set(segs.filter(sg => sg.g.length === 1 && strength(sg.g[0].sit) !== "ev").map(sg => sg.g[0]).slice(-2));
+  segs.forEach((seg, i) => {
+    const jeM = seg.side === ms;
+    const [pa, pb] = seg.pred, [qa, qb] = seg.po;
+    const pred = jeM ? pa - pb : pb - pa, po = jeM ? qa - qb : qb - qa;
+    const skore = jeM ? `${qa}:${qb}` : `${qb}:${qa}`;
+    const posledni = i === segs.length - 1;
+    const g0 = seg.g[0];
+    const pp = g => (!zvlastni.has(g) ? "" : strength(g.sit) === "pp" ? " přesilovkovou trefou" : strength(g.sit) === "sh" ? " trefou v oslabení" : "");
+    let t;
+    if (seg.g.length === 1) {
+      const prev = segs[i - 1];
+      const opet = prev && prev.side === seg.side && prev.g.length === 1 && prev.g[0].strelec === g0.strelec ? "opět " : "";
+      const kdo = opet + nm(g0), kdy = g0.sec >= 3600 ? "v prodloužení" : vMinute(minuteOfSec(g0.sec));
+      if (posledni && pred === 0 && po > 0 && !poSN)
+        t = `o výhře ${jeM ? "Motoru" : oppGen} rozhodl ${kdy} ${kdo}${pp(g0)}`;
+      else if (i === 0) t = `skóre otevřel ${kdy} ${kdo}${pp(g0)}`;
+      else if (po === 0) t = `${kdo} ${kdy}${pp(g0)} srovnal na ${skore}`;
+      else if (pred === 0) t = `${kdo} ${kdy}${pp(g0)} poslal ${jeM ? "Motor" : oppAcc} do vedení ${skore}`;
+      else if (pred > 0) t = `${kdo} ${kdy}${pp(g0)} zvýšil na ${skore}`;
+      else t = `${kdo} ${kdy}${pp(g0)} snížil na ${skore}`;
+    } else {
+      const subj = jeM ? "Motor" : oppSubj;
+      const v = (sg, pl) => (jeM ? sg : pl);
+      const sloveso = i === 0 ? v("vedl", "vedli") : po === 0 ? v("srovnal na", "srovnali na")
+        : pred === 0 ? v("odskočil na", "odskočili na")
+        : pred > 0 ? v("zvýšil na", "zvýšili na") : v("snížil na", "snížili na");
+      const konec = minuteOfSec(seg.g[seg.g.length - 1].sec);
+      const kdyKonec = i === 0 && konec <= 30 ? ` po ${konec} minutách` : "";
+      const jmena = [...new Set(seg.g.map(nm))];
+      const kdo = jmena.length === 1
+        ? `${seg.g.length === 2 ? "oba góly" : "všechny " + (CISLO[seg.g.length] || [seg.g.length])[0] + " góly"} dal ${jmena[0]}`
+        : `skórovali ${joinCs(jmena)}`;
+      t = `${subj} ${sloveso.startsWith("vedl") ? sloveso + kdyKonec : sloveso} ${skore}, ${kdo}`;
+    }
+    klauzule.push({ text: t, konec: seg.g[seg.g.length - 1].sec });
+  });
 
   if (segs.length === 1) {
     const s0 = segs[0];
-    const za = s0.side === ms ? "Za Motor" : `Za ${doma ? "hosty" : "domácí"}`;
-    if (s0.g.length === 1) vety.push(`Jediný gól zápasu dal ${namer.pl(s0.g[0].strelec)} v ${minuteOfSec(s0.g[0].sec)}. minutě.`);
-    else vety.push(`${za} skórovali ${joinCs(s0.g.map(g => `${namer.pl(g.strelec)} (${minuteOfSec(g.sec)}.)`))}.`);
-  } else if (segs.length > 1) {
-    const klauzule = [];
-    let a = 0, b = 0;   // skóre Motor : soupeř
-    segs.forEach((seg, i) => {
-      const jeM = seg.side === ms;
-      const subj = jeM ? "Motor" : oppSubj;
-      const v = (sg, pl) => (jeM ? sg : pl);
-      const pred = jeM ? a - b : b - a;
-      seg.g.forEach(() => (jeM ? a++ : b++));
-      const po = jeM ? a - b : b - a;
-      const skore = jeM ? `${a}:${b}` : `${b}:${a}`;
-      const posledni = i === segs.length - 1;
-      if (posledni && seg.g.length === 1 && pred === 0 && po > 0) {
-        const g = seg.g[0];
-        const komu = jeM ? "Motoru" : (doma ? "hostů" : "domácích");
-        klauzule.push(g.sec >= 3600
-          ? `v prodloužení rozhodl o výhře ${komu} ${namer.pl(g.strelec)} (${minuteOfSec(g.sec)}.)`
-          : `o výhře ${komu} rozhodl ${namer.pl(g.strelec)} v ${minuteOfSec(g.sec)}. minutě`);
-        return;
-      }
-      let sloveso;
-      if (i === 0) sloveso = v("vedl", "vedli");
-      else if (po === 0) sloveso = v("srovnal na", "srovnali na");
-      else if (pred === 0 && po > 1) sloveso = v("odskočil na", "odskočili na");
-      else if (pred <= 0 && po > 0) sloveso = v("šel do vedení", "šli do vedení");
-      else if (pred > 0) sloveso = v("zvýšil na", "zvýšili na");
-      else sloveso = v("snížil na", "snížili na");
-      klauzule.push(`${subj} ${sloveso} ${skore} (${strel(seg.g)})`);
-    });
-    for (let i = 0; i < klauzule.length; i += 2) vety.push(cap(klauzule.slice(i, i + 2).join(", ")) + ".");
+    klauzule.length = 0;
+    const kdo = s0.side === ms ? "Motoru" : oppGen;
+    if (s0.g.length === 1) vety.push(`Jediný gól zápasu dal ${vMinute(minuteOfSec(s0.g[0].sec))} ${nm(s0.g[0])}.`);
+    else vety.push(`Góly ${kdo} dali ${joinCs(s0.g.map(g => `${nm(g)} (${minuteOfSec(g.sec)}.)`))}.`);
   }
+
+  // dlouhý zápas: první dvě třetiny jednou větou, podrobně jen závěr
+  let vybrane = klauzule;
+  if (klauzule.length > 5) {
+    const do40 = goly.filter(g => g.sec < 2400);
+    const x = do40.filter(g => g.side === ms).length, y = do40.length - x;
+    const stav = x === y ? `bylo ${x}:${y}` : x > y ? `vedl Motor ${x}:${y}` : `vedli ${oppSubj} ${y}:${x}`;
+    vety.push(`Po dvou třetinách ${stav}.`);
+    vybrane = klauzule.filter(k => k.konec >= 2400);
+  }
+  for (let i = 0; i < vybrane.length; i += 2) vety.push(cap(vybrane.slice(i, i + 2).map(k => k.text).join(", ")) + ".");
 
   if (poSN) {
     const win = vyhra ? ms : os;
     const last = m.najezdy.filter(p => p.side === win && p.gol).pop();
     if (last) vety.push(`V nájezdech rozhodl ${namer.pl(last.strelec)}.`);
   }
-  if (gO === 0) {
-    const t = m[ms];
-    const byNo = Object.fromEntries(t.hraci.map(h => [h.c, h]));
-    const ch = (t.brankari || []).filter(x => byNo[x.c]).map(x => x.c);
-    const st = starterOf(t);
-    if (st && new Set(ch).size <= 1) vety.push(`${namer.pl(st.jmeno)} udržel čisté konto.`);
+
+  // výrazní hráči Motoru (max. dva), u soupeře jen víc gólů
+  const stat = {};
+  goly.forEach(g => {
+    const add = (raw, k) => { const e = (stat[g.side + "|" + raw] ||= { side: g.side, raw, g: 0, a: 0 }); e[k]++; };
+    add(g.strelec, "g"); g.asist.forEach(x => add(x, "a"));
+  });
+  const vyrazni = Object.values(stat).filter(e => e.side === ms && (e.g >= 2 || e.g + e.a >= 3))
+    .sort((x, y) => (y.g + y.a) - (x.g + x.a) || y.g - x.g).slice(0, 2);
+  vyrazni.forEach(e => {
+    const kdo = namer.pl(e.raw);
+    if (e.g >= 3 && !e.a) vety.push(`Hattrickem se blýskl ${kdo}.`);
+    else if (e.g >= 2 && !e.a) vety.push(`${(CISLO[e.g] || [, , e.g])[2]} góly se blýskl ${kdo}.`);
+    else if (!e.g) vety.push(`${kdo} si připsal ${asistTxt(e.a)}.`);
+    else vety.push(`${kdo} si připsal ${boduTxt(e.g + e.a)} (${goluTxt(e.g)} a ${asistTxt(e.a)}).`);
+  });
+  const souperStrelec = Object.values(stat).filter(e => e.side === os && e.g >= 2).sort((x, y) => y.g - x.g)[0];
+  if (souperStrelec && !vety.join(" ").includes(namer.pl(souperStrelec.raw)))
+    vety.push(`Za ${oppAcc} dal ${goluTxt(souperStrelec.g)} ${namer.pl(souperStrelec.raw)}.`);
+
+  // brankář Motoru a střely
+  const t = m[ms];
+  const byNo = Object.fromEntries(t.hraci.map(h => [h.c, h]));
+  const chytali = new Set((t.brankari || []).filter(x => byNo[x.c]).map(x => x.c));
+  const st = starterOf(t);
+  if (st && chytali.size <= 1) {
+    if (gO === 0) vety.push(`${namer.pl(st.jmeno)} udržel čisté konto.`);
+    else if (m.strely) {
+      const zakroky = m.strely[ms === "A" ? 1 : 0] - gO;
+      if (zakroky >= 35 || (vyhra && zakroky >= 28)) vety.push(`Brankář ${namer.pl(st.jmeno)} zlikvidoval ${zakroky} střel.`);
+    }
+  }
+  if (m.strely) {
+    const sm = m.strely[ms === "A" ? 0 : 1], so = m.strely[ms === "A" ? 1 : 0];
+    if (!vyhra && sm - so >= 8) vety.push(`Na střely přitom vyhrál Motor ${sm}:${so}.`);
+    if (vyhra && so - sm >= 8) vety.push(`Na střely přitom vyhrál soupeř ${so}:${sm}.`);
   }
   return vety.join(" ");
 }
