@@ -88,6 +88,17 @@
       <button id="copy-all">Kopírovat vše</button>
     </div>
   </div>
+
+  <div class="card hidden" id="extra">
+    <div class="block" id="changes-block">
+      <div class="block-head"><strong>Změny v sestavě Motoru</strong><button class="ghost" data-copy="changes">Kopírovat</button></div>
+      <textarea class="out" id="changes" spellcheck="false"></textarea>
+    </div>
+    <div class="block" id="story-block">
+      <div class="block-head"><strong>Návrh úvodu</strong><button class="ghost" data-copy="story">Kopírovat</button></div>
+      <textarea class="out" id="story" spellcheck="false"></textarea>
+    </div>
+  </div>
 </main>
 
 <script>
@@ -121,6 +132,25 @@ const TYMY = [
   [/zlín|berani/i, "Zlín"],
   [/jihlava|dukla/i, "Jihlava"],
 ];
+
+// Tvary názvů soupeřů pro návrh úvodu: s kým (7. pád) a kde (6. pád s předložkou).
+const TVARY = {
+  "Sparta": ["se Spartou", "na Spartě"],
+  "Pardubice": ["s Pardubicemi", "v Pardubicích"],
+  "Třinec": ["s Třincem", "v Třinci"],
+  "Vítkovice": ["s Vítkovicemi", "ve Vítkovicích"],
+  "Plzeň": ["s Plzní", "v Plzni"],
+  "Liberec": ["s Libercem", "v Liberci"],
+  "Hradec": ["s Hradcem Králové", "v Hradci Králové"],
+  "Kometa": ["s Kometou", "v Brně"],
+  "Olomouc": ["s Olomoucí", "v Olomouci"],
+  "Litvínov": ["s Litvínovem", "v Litvínově"],
+  "Kladno": ["s Kladnem", "na Kladně"],
+  "Ml. Boleslav": ["s Mladou Boleslaví", "v Mladé Boleslavi"],
+  "Vary": ["s Karlovými Vary", "v Karlových Varech"],
+  "Zlín": ["se Zlínem", "ve Zlíně"],
+  "Jihlava": ["s Jihlavou", "v Jihlavě"],
+};
 
 const ZAPIS_URL = id => `https://hokejovyzapis.cz/pdf/print/cs-html/?hokejczId=${id}`;
 const DATA_URL = "sestavy-data.json";
@@ -577,10 +607,143 @@ function buildReport(m, namer, bold) {
   return { text: parts.join(" "), warn };
 }
 
+// ===== Změny v sestavě Motoru oproti minulému zápasu ========================
+
+function motorSideOf(m) { return isMotor(m.A.nazev) ? "A" : isMotor(m.B.nazev) ? "B" : null; }
+
+function starterOf(t) {
+  const byNo = Object.fromEntries(t.hraci.map(h => [h.c, h]));
+  const ch = (t.brankari || []).filter(b => byNo[b.c]);
+  if (ch.length) return byNo[ch[0].c];
+  const g = t.hraci.filter(h => h.post === "GK");
+  return g.find(h => h.hral) || g[0] || null;
+}
+
+function previousGame(kolo) {
+  if (!DATA) return null;
+  const cand = DATA.zapasy.filter(g => g.sestava && (kolo == null || g.kolo < kolo));
+  return cand.length ? cand[cand.length - 1] : null;
+}
+
+function buildChanges(m, namer, kolo) {
+  const ms = motorSideOf(m);
+  const prev = previousGame(kolo);
+  if (!ms || !prev) return "";
+  const ps = isMotor(prev.sestava.A.nazev) ? "A" : "B";
+  const now = m[ms], before = prev.sestava[ps];
+  const key = h => lc(h.jmeno);
+  const skaters = t => t.hraci.filter(h => h.hral && h.post !== "GK");
+  const nowSet = new Set(skaters(now).map(key)), befSet = new Set(skaters(before).map(key));
+  const chybi = skaters(before).filter(h => !nowSet.has(key(h))).map(h => namer.pl(h.jmeno));
+  const nove = skaters(now).filter(h => !befSet.has(key(h))).map(h => namer.pl(h.jmeno));
+  const sNow = starterOf(now), sBef = starterOf(before);
+  const souper = prev.sestava[ps === "A" ? "B" : "A"].nazev;
+  const kde = ps === "A" ? "doma" : "venku";
+  const bits = [];
+  if (chybi.length) bits.push(`chybí ${joinCs(chybi)}`);
+  if (nove.length) bits.push(`nově ${joinCs(nove)}`);
+  if (sNow && sBef && key(sNow) !== key(sBef)) bits.push(`v brance ${namer.pl(sNow.jmeno)} (minule ${namer.pl(sBef.jmeno)})`);
+  const head = `Oproti ${prev.kolo}. kolu (${kde} ${shortTeam(souper)}${prev.vysledek ? " " + prev.vysledek : ""})`;
+  return bits.length ? `${head}: ${bits.join("; ")}.` : `${head} beze změny v sestavě.`;
+}
+
+// ===== Návrh úvodu z průběhu =================================================
+// Jen pravidla nad daty: kdo vedl, kdo srovnal, kdo rozhodl. Jména střelců
+// v 1. pádě v závorce s minutou, aby se nemusela skloňovat.
+
+function buildStory(m, namer) {
+  const ms = motorSideOf(m);
+  if (!ms) return "";
+  const os = ms === "A" ? "B" : "A";
+  const goly = [...m.goly].sort((a, b) => a.sec - b.sec);
+  const gM = goly.filter(g => g.side === ms).length, gO = goly.length - gM;
+  let sM = gM, sO = gO, poSN = false;
+  if (m.najezdy.length && gM === gO) {
+    const nM = m.najezdy.filter(p => p.side === ms && p.gol).length;
+    const nO = m.najezdy.filter(p => p.side === os && p.gol).length;
+    poSN = true; if (nM > nO) sM += 1; else sO += 1;
+  }
+  const vyhra = sM > sO;
+  const poPr = !poSN && goly.some(g => g.sec >= 3600);
+  const opp = shortTeam(m[os].nazev);
+  const [sKym, kde] = TVARY[opp] || [`s ${opp}`, `v ${opp}`];
+  const doma = ms === "A";
+  const oppSubj = doma ? "hosté" : "domácí";
+  const cap = t => t.charAt(0).toLocaleUpperCase("cs") + t.slice(1);
+
+  const vety = [];
+  vety.push(`Hokejisté Motoru ${vyhra ? "vyhráli" : "prohráli"} ${doma ? "doma " + sKym : kde} ${sM}:${sO}` +
+    (poSN ? " po samostatných nájezdech" : poPr ? " po prodloužení" : "") + ".");
+
+  // úseky gólů jednoho týmu za sebou
+  // úsek končí změnou střílejícího týmu nebo vyrovnáním (srovnání a následné vedení jsou dvě věci)
+  const segs = [];
+  let ra = 0, rb = 0, tie = false;
+  goly.forEach(g => {
+    const last = segs[segs.length - 1];
+    if (last && last.side === g.side && !tie) last.g.push(g); else segs.push({ side: g.side, g: [g] });
+    if (g.side === ms) ra++; else rb++;
+    tie = ra === rb;
+  });
+  const strel = gs => gs.map(g => `${minuteOfSec(g.sec)}. ${namer.pl(g.strelec)}`).join(", ");
+
+  if (segs.length === 1) {
+    const s0 = segs[0];
+    const za = s0.side === ms ? "Za Motor" : `Za ${doma ? "hosty" : "domácí"}`;
+    if (s0.g.length === 1) vety.push(`Jediný gól zápasu dal ${namer.pl(s0.g[0].strelec)} v ${minuteOfSec(s0.g[0].sec)}. minutě.`);
+    else vety.push(`${za} skórovali ${joinCs(s0.g.map(g => `${namer.pl(g.strelec)} (${minuteOfSec(g.sec)}.)`))}.`);
+  } else if (segs.length > 1) {
+    const klauzule = [];
+    let a = 0, b = 0;   // skóre Motor : soupeř
+    segs.forEach((seg, i) => {
+      const jeM = seg.side === ms;
+      const subj = jeM ? "Motor" : oppSubj;
+      const v = (sg, pl) => (jeM ? sg : pl);
+      const pred = jeM ? a - b : b - a;
+      seg.g.forEach(() => (jeM ? a++ : b++));
+      const po = jeM ? a - b : b - a;
+      const skore = jeM ? `${a}:${b}` : `${b}:${a}`;
+      const posledni = i === segs.length - 1;
+      if (posledni && seg.g.length === 1 && pred === 0 && po > 0) {
+        const g = seg.g[0];
+        const komu = jeM ? "Motoru" : (doma ? "hostů" : "domácích");
+        klauzule.push(g.sec >= 3600
+          ? `v prodloužení rozhodl o výhře ${komu} ${namer.pl(g.strelec)} (${minuteOfSec(g.sec)}.)`
+          : `o výhře ${komu} rozhodl ${namer.pl(g.strelec)} v ${minuteOfSec(g.sec)}. minutě`);
+        return;
+      }
+      let sloveso;
+      if (i === 0) sloveso = v("vedl", "vedli");
+      else if (po === 0) sloveso = v("srovnal na", "srovnali na");
+      else if (pred === 0 && po > 1) sloveso = v("odskočil na", "odskočili na");
+      else if (pred <= 0 && po > 0) sloveso = v("šel do vedení", "šli do vedení");
+      else if (pred > 0) sloveso = v("zvýšil na", "zvýšili na");
+      else sloveso = v("snížil na", "snížili na");
+      klauzule.push(`${subj} ${sloveso} ${skore} (${strel(seg.g)})`);
+    });
+    for (let i = 0; i < klauzule.length; i += 2) vety.push(cap(klauzule.slice(i, i + 2).join(", ")) + ".");
+  }
+
+  if (poSN) {
+    const win = vyhra ? ms : os;
+    const last = m.najezdy.filter(p => p.side === win && p.gol).pop();
+    if (last) vety.push(`V nájezdech rozhodl ${namer.pl(last.strelec)}.`);
+  }
+  if (gO === 0) {
+    const t = m[ms];
+    const byNo = Object.fromEntries(t.hraci.map(h => [h.c, h]));
+    const ch = (t.brankari || []).filter(x => byNo[x.c]).map(x => x.c);
+    const st = starterOf(t);
+    if (st && new Set(ch).size <= 1) vety.push(`${namer.pl(st.jmeno)} udržel čisté konto.`);
+  }
+  return vety.join(" ");
+}
+
 // ===== UI ===================================================================
 
 let DATA = null;          // obsah sestavy-data.json
 let current = null;       // aktuálně zobrazený model zápasu
+let currentKolo = null;   // kolo vybrané v rozpisu (pro porovnání s minulým zápasem)
 
 function setStatus(msg, cls = "") { const s = $("status"); s.textContent = msg; s.className = cls; }
 
@@ -593,6 +756,8 @@ function esc(s) { return String(s).replace(/[&<>"]/g, ch => ({ "&": "&amp;", "<"
 
 function render(m) {
   current = m;
+  // rozhodující nájezd vede zápis i jako gól (65:00+) — do branek ani průběhu nepatří
+  if (m.najezdy.length) m.goly = m.goly.filter(g => g.sec < 3900);
   const namer = makeNamer(m);
   const lines = buildLines(m, namer, $("motor-first").checked);
   const box = $("teams");
@@ -627,6 +792,14 @@ function render(m) {
     $("report-check").textContent = "V datech zatím nejsou údaje o průběhu — vlož zápis ze schránky.";
   }
   $("result").classList.remove("hidden");
+
+  const changes = buildChanges(m, namer, currentKolo);
+  const story = m.jeZapis && m.goly.length + m.najezdy.length ? buildStory(m, namer) : "";
+  $("changes").value = changes;
+  $("story").value = story;
+  $("changes-block").classList.toggle("hidden", !changes);
+  $("story-block").classList.toggle("hidden", !story);
+  $("extra").classList.toggle("hidden", !changes && !story);
 }
 
 async function copyText(text, btn) {
@@ -638,6 +811,10 @@ async function copyText(text, btn) {
 $("teams").addEventListener("click", e => {
   const b = e.target.closest("button[data-i]");
   if (b) copyText(b.closest(".block").querySelector("textarea").value, b);
+});
+$("extra").addEventListener("click", e => {
+  const b = e.target.closest("button[data-copy]");
+  if (b) copyText($(b.dataset.copy).value, b);
 });
 $("copy-report").addEventListener("click", e => copyText($("report").value, e.target));
 $("copy-all").addEventListener("click", e =>
@@ -671,6 +848,7 @@ function selectedGame() {
 function loadSelected() {
   const g = selectedGame();
   if (!g) return;
+  currentKolo = g.kolo;
   showZapisLink(g.hokejcz_id);
   $("paste-box").style.display = "none";
   if (g.sestava) {
@@ -692,6 +870,7 @@ $("load-manual").addEventListener("click", () => {
   const v = $("manual").value;
   const m = /hokejczId=(\d+)/i.exec(v) || /(\d{5,})/.exec(v);
   if (!m) return setStatus("Zadej číslo zápasu nebo celý odkaz na zápis.", "warn");
+  currentKolo = (DATA && DATA.zapasy.find(g => String(g.hokejcz_id) === m[1]) || {}).kolo ?? null;
   $("result").classList.add("hidden");
   loadLive(m[1]);
 });
