@@ -1473,7 +1473,8 @@ def write_lineups_json(games: list, zapis_state: dict) -> None:
                 "zapis": _report_payload(z) if z.get("sestava") else None,
             })
         LINEUPS_JSON.write_text(json.dumps(
-            {"aktualizovano": datetime.now(ZoneInfo("Europe/Prague")).strftime("%d.%m.%Y %H:%M"), "zapasy": out},
+            {"aktualizovano": datetime.now(ZoneInfo("Europe/Prague")).strftime("%d.%m.%Y %H:%M"), "zapasy": out,
+             "kariera": load_baseline()},  # výchozí stav kariér pro milníky v reportáži
             ensure_ascii=False, indent=1), encoding="utf-8")
         print(f"Sestavy: zapsáno {len(out)} kol, se sestavou {sum(1 for x in out if x['sestava'])}.")
     except Exception as exc:
