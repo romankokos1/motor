@@ -921,22 +921,37 @@ let currentKolo = null;   // kolo vybrané v rozpisu
 // góly, skóre a střely vždy ze zápisu. Text komentátora se nepřebírá.
 
 function parseOnline(text) {
+  // Záznam začíná časem hry – buď na samostatném řádku („58:52“), nebo na začátku
+  // textu („58:52 A klidně mohlo být…“), podle toho, jak prohlížeč text zkopíroval.
   const raw = text.replace(/\r/g, "").split("\n");
   const entries = [];
   let cur = null;
+  const zavri = /^(Začala|.*třetina skončila|Konec zápasu|Utkání právě začalo)/;
   for (const line of raw) {
     if (/^\s*$/.test(line)) {
       if ((line.match(/\t/g) || []).length >= 2) cur = null;     // souhrn komentátora / reklama
       continue;
     }
-    const t = line.trim();
-    if (/^\d{2}:\d{2}$/.test(t)) { cur = { sec: toSec(t), sit: "", text: [] }; entries.push(cur); continue; }
+    let t = line.trim();
+    if (/^\d{2}:\d{2}\s.+\s-\s\d+:\d+$/.test(t)) continue;        // přehled branek „09:51 David ŠŤASTNÝ - 0:1“
+    const mt = /^(\d{2}):(\d{2})(?:\s+(.*))?$/.exec(t);
+    if (mt && +mt[1] <= 70) {
+      cur = { sec: +mt[1] * 60 + +mt[2], sit: "", text: [] };
+      entries.push(cur);
+      if (!mt[3]) continue;
+      t = mt[3];
+    }
     if (!cur) continue;
-    if (/^\d\/\d$/.test(t)) { cur.sit = t; continue; }
-    if (/^(\p{Lu}[\p{L}'’-]+ \p{Lu}\.,? ?)+$/u.test(t)) continue;          // hráči na ledě
-    if (/^\d{2}:\d{2} /.test(t) || /Sledujte|Tipsport|Komerční přestávka/i.test(t)) continue;
-    if (/^(Začala|.*třetina skončila|Konec zápasu)/.test(t)) { cur.text.push(t); cur = null; continue; }
+    const ms = /^(\d\/\d)(?:\s+(.*))?$/.exec(t);
+    if (ms) { cur.sit = ms[1]; if (!ms[2]) continue; t = ms[2]; }
+    if (/^(\p{Lu}[\p{L}'’-]+ \p{Lu}\.,? ?)+$/u.test(t)) continue;           // hráči na ledě
+    if (/Sledujte|Tipsport|Komerční přestávka/i.test(t)) continue;
+    if (/^Střely (na branku|po)/.test(t) || /^Další třetina začne/.test(t)) { cur = null; continue; }
+    // dlouhý odstavec bez času = shrnutí komentátora, ne záznam (ten bývá do ~450 znaků)
+    if (cur.text.length && t.length > 300) { cur = null; continue; }
+    if (!cur.text.length && t.length > 520) { cur = null; continue; }
     cur.text.push(t);
+    if (zavri.test(t)) cur = null;
   }
   entries.forEach(e => (e.text = e.text.join(" ")));
   return entries.filter(e => e.text).sort((a, b) => a.sec - b.sec);
@@ -1415,7 +1430,10 @@ function buildReportage(m, namer, kolo, onlineText, delka = "standard") {
     titulky: [...new Set(tit)].slice(0, 6),
     perex: perex.join(" "),
     text: odstavce.join("\n\n"),
-    kontrola: (entries.length ? `záznamů v komentáři: ${entries.length} · gólů v komentáři: ${golyKom}, se zápisem sedí ${sparovane}` : "bez online komentáře — jen ze zápisu") +
+    kontrola: (entries.length ? `záznamů v komentáři: ${entries.length} · gólů v komentáři: ${golyKom}, se zápisem sedí ${sparovane}` +
+               ` · z komentáře: popis gólu ${goly.filter(g => g.jak).length}×, tyčky ${events.filter(e => e.typ === "tyc").length}, ` +
+               `šance ${events.filter(e => e.typ === "sance").length}, zranění ${events.filter(e => e.typ === "zraneni").length}`
+             : "bez online komentáře — jen ze zápisu") +
               (nesedi ? " — ⚠️ komentář možná patří k jinému zápasu" : "") + (captain ? ` · kapitán: ${N(captain)}` : ""),
   };
 }
