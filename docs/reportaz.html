@@ -180,7 +180,7 @@ function paint() {
     el.textContent = s.off ? posledniText[s.id] || "…" : s.text;
     return el;
   };
-  const odstavec = list => { const p = document.createElement("p"); list.forEach((s, i) => { if (i) p.append(" "); p.append(veta(s)); }); return p; };
+  const odstavec = list => { const p = document.createElement("p"); list.filter(s => !s.hid).forEach((s, i) => { if (i) p.append(" "); p.append(veta(s)); }); return p; };
   $("rep-perex").replaceChildren(odstavec(out.perex));
   $("rep-text").replaceChildren(...out.odstavce.map(odstavec));
   hotove["rep-perex"] = out.perexText; hotove["rep-text"] = out.text;
