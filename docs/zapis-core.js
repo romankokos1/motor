@@ -1549,7 +1549,8 @@ function buildReportage(m, namer, kolo, onlineText, delka = "standard") {
     const hat = g.nth === 3 ? " Zkompletoval tím hattrick." : "";
     const N = () => ctx.mention(g.strelec, { gol: true });
     // asistence: buď „po přihrávce Nováka“ (jistý 2. pád, hráč už v textu byl), nebo samostatná věta
-    const sAsist = g.asist.length && (jeM ? L >= 2 : L >= 3);
+    const dulezity = ["decisive", "tie", "lead", "open"].includes(g.trida) || g.vitezny || g.w >= 5;
+    const sAsist = g.asist.length && (L >= 3 ? true : jeM && L >= 2 && dulezity && g.idx % 2 === 0);
     const pripravy = () => {
       let J = [jak, sila].filter(Boolean).join(" "), tail = "";
       if (sAsist) {
@@ -1719,7 +1720,8 @@ function buildReportage(m, namer, kolo, onlineText, delka = "standard") {
       const timed = [...groupGoals(gs), ...eventItems(evs, gs)];
       if (bez && periodOf(bez.sec) === p) timed.push(bez);
       timed.sort((q, r) => q.sec - r.sec);
-      if (p <= 2 && (gs.length >= 2 || (L >= 3 && gs.length))) {
+      const zlom = ["obrat", "ztraceny", "marna", "udrzel", "obrat3", "ztraceny3"].includes(A.typ);
+      if (p <= 2 && gs.length && (L >= 3 || (p === 2 && zlom))) {
         const [x, y] = A.stavPo(p * 1200);
         const dalsi = p === 1 ? "druhé" : "třetí";
         post.push({ id: "s" + p, render: () => [
@@ -1842,7 +1844,10 @@ function buildReportage(m, namer, kolo, onlineText, delka = "standard") {
       if (ng >= 3 && ORD_LOK[ng]) kand.push({ raw: e.raw, n: ng + 0.5, t: `skóroval ${ORD_LOK[ng]} zápase po sobě` });
       else if (nb >= 3 && ORD_LOK[nb]) kand.push({ raw: e.raw, n: nb, t: `bodoval ${ORD_LOK[nb]} zápase v řadě` });
     });
-    kand.sort((p, q) => q.n - p.n).slice(0, 2).forEach((q, i) =>
+    const top2 = kand.sort((p, q) => q.n - p.n).slice(0, 2);
+    if (top2.length === 2 && top2[0].t === top2[1].t)
+      fakt(souvis, "ser0", 2, "ser0", ctx => [() => `${velke(joinCs(top2.map(q => ctx.mention(q.raw))))} ${top2[0].t.replace(/^(skóroval|bodoval)/, (w) => (w === "skóroval" ? "skórovali" : "bodovali"))}.`], top2[0].raw);
+    else top2.forEach((q, i) =>
       fakt(souvis, "ser" + i, q.n >= 5 ? 1 : 2, "ser" + i, ctx => [() => `${velke(ctx.mention(q.raw))} ${q.t}.`], q.raw));
   }
   // kariérní góly střelců proti dnešnímu soupeři (z bilancí)
@@ -1978,7 +1983,7 @@ function buildReportage(m, namer, kolo, onlineText, delka = "standard") {
   });
   let konec = [];
   if (L === 1) konec = [[...zbyle(cisla), ...zbyle(souvis)].slice(0, 2)];
-  else if (L === 2) konec = [zbyle(cisla).slice(0, 4), zbyle(souvis).slice(0, 4)];
+  else if (L === 2) konec = [zbyle(cisla).slice(0, 3), zbyle(souvis).slice(0, 3)];
   else konec = [zbyle(cisla), zbyle(souvis)];
   konec.filter(k => k.length).forEach(k => odstavce.push({ pre: k, timed: [], post: [], p: 0, pStart: 0 }));
 
