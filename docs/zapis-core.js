@@ -2050,6 +2050,13 @@ function buildReportage(m, namer, kolo, onlineText, delka = "standard") {
   else if (L === 2) konec = [zbyle(cisla).slice(0, 3), zbyle(souvis).slice(0, 3)];
   else konec = [zbyle(cisla), zbyle(souvis)];
   konec.filter(k => k.length).forEach(k => odstavce.push({ pre: k, timed: [], post: [], p: 0, pStart: 0 }));
+  // odstavce: standardní verze má dva celky (první polovina zápasu, závěr) a jeden závěrečný odstavec s čísly;
+  // krátká je jeden odstavec, dlouhá drží odstavec na třetinu
+  let gi = 0;
+  odstavce.forEach(o => {
+    if (L === 2) o.grp = o.p === 0 ? "z" : o.p <= 2 ? "a" : "b";
+    else o.grp = "g" + gi++;
+  });
 
   // jednoznačná id položek (stav úprav se váže na id)
   const idSeen = new Set();
@@ -2077,18 +2084,55 @@ function buildReportage(m, namer, kolo, onlineText, delka = "standard") {
       i = (i + (vi[item.id] || 0)) % n;
       const text = vars[i].f();
       ctx.prevTyp = vars[i].typ || null;
-      return { id: item.id, text, n };
+      return { id: item.id, text, n, gol: item.gol || null, hrac: item.hrac || null };
+    };
+    // sousední góly se spojí do jedné delší věty („…, ale na 2:2 vyrovnal…“, „…, a na 3:0 zvýšil…“)
+    const JOIN = /^(V|Ve|Na|O|Do|Po|Vyrovnání|Obrat|Vedení|Konečný|Skóre|Vzápětí|Hned|Necelé|Tři|Dvě|Čtyři|Pět|Šest|Jednu|Sedm|Osm)\s/;
+    const jednaVeta = t => t.endsWith(".") && !/[.!?]\s+\p{Lu}/u.test(t.slice(0, -1)) && !/\(\d+:\d+\)/.test(t);
+    // dvě věty o hráčích (milníky, série) → jedna: „Toman si připsal 50. bod a Zachar dal Liberci už 7. gól.“
+    const ROLE = /^(Kapitán|Nováček|Obránce|Brankář|Nejlepší|Nejproduktivnější)\s/;
+    const spojFakta = list => {
+      for (let i = 0; i + 1 < list.length; i++) {
+        const a = list[i], b = list[i + 1];
+        if (!a.hrac || !b.hrac || a.hrac === b.hrac || a.off || b.off || !a.text || !b.text) continue;
+        if (!jednaVeta(a.text) || !jednaVeta(b.text) || a.text.length + b.text.length > 190) continue;
+        a.text = a.text.slice(0, -1) + " a " + (ROLE.test(b.text) ? b.text.charAt(0).toLocaleLowerCase("cs") + b.text.slice(1) : b.text);
+        b.text = ""; b.hid = true;
+        i++;
+      }
+    };
+    const spojGoly = list => {
+      let c = 0;
+      for (let i = 0; i + 1 < list.length; i++) {
+        const a = list[i], b = list[i + 1];
+        if (!a.gol || !b.gol || a.off || b.off || !a.text || !b.text) continue;
+        if (!jednaVeta(a.text) || a.text.includes(",") || !JOIN.test(b.text) || a.text.length + b.text.length > 240) continue;
+        if (c++ % 2) continue;
+        const sp = a.gol.side === b.gol.side ? "a" : "ale";
+        a.text = a.text.slice(0, -1) + `, ${sp} ` + b.text.charAt(0).toLocaleLowerCase("cs") + b.text.slice(1);
+        b.text = ""; b.hid = true;
+        i++;
+      }
     };
     const pc = mkCtx();
     const perexOut = perex.map(it => one(it, pc));
     const bc = mkCtx();
-    const odst = odstavce.map(o => {
+    const odst0 = odstavce.map(o => {
       casy(o.timed.filter(it => !off[it.id]), o.pStart, o.p);
-      return [...o.pre, ...o.timed, ...o.post].map(it => one(it, bc));
+      const v = [...o.pre, ...o.timed, ...o.post].map(it => one(it, bc));
+      spojGoly(v);
+      spojFakta(v);
+      return { grp: o.grp, v };
     });
-    const spoj = list => list.filter(s => !s.off).map(s => s.text).join(" ");
+    const odst = [];
+    odst0.forEach(o => {
+      const last = odst[odst.length - 1];
+      if (last && o.grp && last.grp === o.grp) last.v.push(...o.v); else odst.push({ grp: o.grp, v: [...o.v] });
+    });
+    odst.forEach((o, i) => (odst[i] = o.v));
+    const spoj = list => list.filter(s => !s.off && s.text).map(s => s.text).join(" ");
     const perexText = spoj(perexOut), text = odst.map(spoj).filter(Boolean).join("\n\n");
-    return { perex: perexOut, odstavce: odst, perexText, text, varovani: lint([...perexOut, ...odst.flat()].filter(q => !q.off).map(q => q.text)) };
+    return { perex: perexOut, odstavce: odst, perexText, text, varovani: lint([...perexOut, ...odst.flat()].filter(q => !q.off && q.text).map(q => q.text)) };
   };
 
   // ----- titulky -----
