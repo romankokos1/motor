@@ -1,5 +1,5 @@
 {
- "aktualizovano": "10.11.2026 15:50",
+ "aktualizovano": "10.11.2026 21:08",
  "zapasy": [
   {
    "kolo": 1,
@@ -367,7 +367,20 @@
       "asistence": [
        "Ahl Filip"
       ],
-      "situace": "5/4"
+      "situace": "5/4",
+      "na_ledu_za": [
+       "Bell Parker",
+       "Ahl Filip",
+       "Olesen Nick Alexander",
+       "Štencel Jan",
+       "Lantoši Róbert"
+      ],
+      "na_ledu_proti": [
+       "Skalický Pavol",
+       "Gavars Felikss",
+       "Pavlík Filip",
+       "Moravec David"
+      ]
      },
      {
       "cas": "25:08",
@@ -378,7 +391,21 @@
        "Morand Antoine",
        "Martel Jordan"
       ],
-      "situace": "5/5"
+      "situace": "5/5",
+      "na_ledu_za": [
+       "Martel Jordan",
+       "Jandric Steven Nicholas",
+       "Morand Antoine",
+       "Kubíček Šimon",
+       "Skarberg Martin"
+      ],
+      "na_ledu_proti": [
+       "Štencel Jan",
+       "Bell Parker",
+       "Vráblík Roman",
+       "Krastenbergs Renars",
+       "Olesen Nick Alexander"
+      ]
      },
      {
       "cas": "27:39",
@@ -389,7 +416,20 @@
        "Krastenbergs Renars",
        "Bulíř Michal"
       ],
-      "situace": "5/4"
+      "situace": "5/4",
+      "na_ledu_za": [
+       "Krastenbergs Renars",
+       "Bulíř Michal",
+       "Ordoš Jan",
+       "Pour Jakub",
+       "Kundrátek Tomáš"
+      ],
+      "na_ledu_proti": [
+       "Lichtag Jakub",
+       "Morand Antoine",
+       "Kubíček Šimon",
+       "Budík Vojtěch"
+      ]
      },
      {
       "cas": "45:17",
@@ -400,7 +440,20 @@
        "Skalický Pavol",
        "Koblížek Radek"
       ],
-      "situace": "5/4"
+      "situace": "5/4",
+      "na_ledu_za": [
+       "Moravec David",
+       "Gavars Felikss",
+       "Skalický Pavol",
+       "Rekonen Aleksi Oskari",
+       "Koblížek Radek"
+      ],
+      "na_ledu_proti": [
+       "Zachar Marek",
+       "Nordsäter Lucas",
+       "Hejduk Marek",
+       "Kachyňa Ondřej"
+      ]
      },
      {
       "cas": "62:13",
@@ -411,7 +464,18 @@
        "Morand Antoine",
        "Zámorský Petr"
       ],
-      "situace": "4/3"
+      "situace": "4/3",
+      "na_ledu_za": [
+       "Morand Antoine",
+       "Martel Jordan",
+       "Skalický Pavol",
+       "Zámorský Petr"
+      ],
+      "na_ledu_proti": [
+       "Beránek Martin",
+       "Vála Ondřej",
+       "Vráblík Roman"
+      ]
      }
     ],
     "tresty": [
@@ -420,79 +484,137 @@
       "vteriny": 463,
       "tym": "BANES Motor České Budějovice",
       "hrac": "lavička (HL)",
-      "min": "2"
+      "min": "2",
+      "od": "07:43",
+      "do": "09:43",
+      "duvod": "příliš mnoho hráčů na ledě"
      },
      {
       "cas": "09:58",
       "vteriny": 598,
       "tym": "BK Mladá Boleslav",
       "hrac": "Kubíček Šimon",
-      "min": "2"
+      "min": "2",
+      "od": "09:58",
+      "do": "10:38",
+      "duvod": "držení protihráče"
      },
      {
       "cas": "25:51",
       "vteriny": 1551,
       "tym": "BK Mladá Boleslav",
       "hrac": "Pavlík Filip",
-      "min": "2"
+      "min": "2",
+      "od": "25:51",
+      "do": "27:39",
+      "duvod": "hákování"
      },
      {
       "cas": "34:12",
       "vteriny": 2052,
       "tym": "BK Mladá Boleslav",
       "hrac": "Gardoň Matěj",
-      "min": "2"
+      "min": "2",
+      "od": "34:12",
+      "do": "36:12",
+      "duvod": "vysoká hůl"
      },
      {
       "cas": "36:38",
       "vteriny": 2198,
       "tym": "BK Mladá Boleslav",
       "hrac": "Gavars Felikss",
-      "min": "2"
+      "min": "2",
+      "od": "36:38",
+      "do": "38:38",
+      "duvod": "držení protihráče"
      },
      {
       "cas": "39:15",
       "vteriny": 2355,
       "tym": "BANES Motor České Budějovice",
       "hrac": "Zachar Marek",
-      "min": "2"
+      "min": "2",
+      "od": "39:15",
+      "do": "41:15",
+      "duvod": "držení protihráče"
      },
      {
       "cas": "44:11",
       "vteriny": 2651,
       "tym": "BANES Motor České Budějovice",
       "hrac": "Olesen Nick Alexander",
-      "min": "2"
+      "min": "2",
+      "od": "44:11",
+      "do": "46:11",
+      "duvod": "hrubost"
      },
      {
       "cas": "44:11",
       "vteriny": 2651,
       "tym": "BK Mladá Boleslav",
       "hrac": "Jandric Steven Nicholas",
-      "min": "2"
+      "min": "2",
+      "od": "44:11",
+      "do": "46:11",
+      "duvod": "hrubost"
      },
      {
       "cas": "44:32",
       "vteriny": 2672,
       "tym": "BANES Motor České Budějovice",
       "hrac": "Hoch Štěpán",
-      "min": "2"
+      "min": "2",
+      "od": "44:32",
+      "do": "45:17",
+      "duvod": "sekání"
      },
      {
       "cas": "54:06",
       "vteriny": 3246,
       "tym": "BANES Motor České Budějovice",
       "hrac": "Pour Jakub",
-      "min": "2"
+      "min": "2",
+      "od": "54:06",
+      "do": "56:06",
+      "duvod": "vysoká hůl"
      },
      {
       "cas": "61:57",
       "vteriny": 3717,
       "tym": "BANES Motor České Budějovice",
       "hrac": "Pour Jakub",
-      "min": "2"
+      "min": "2",
+      "od": "61:57",
+      "do": "62:13",
+      "duvod": "nedovolené bránění brankáře"
      }
     ],
+    "nejlepsi": {
+     "A": {
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Klouček Milan"
+     },
+     "B": {
+      "tym": "BK Mladá Boleslav",
+      "hrac": "Martel Jordan"
+     }
+    },
+    "bez_brankare": {
+     "A": [
+      [
+       3733,
+       null
+      ]
+     ],
+     "B": [
+      [
+       3733,
+       null
+      ]
+     ]
+    },
+    "datum": "16.09.2026",
     "rozhodci": {
      "hlavni": [
       "Antonín Jeřábek (BM82)",
@@ -924,7 +1046,21 @@
        "Pýcha Pavel",
        "Nordsäter Lucas"
       ],
-      "situace": "5/5"
+      "situace": "5/5",
+      "na_ledu_za": [
+       "Ahl Filip",
+       "Pour Jakub",
+       "Hoch Štěpán",
+       "Pýcha Pavel",
+       "Nordsäter Lucas"
+      ],
+      "na_ledu_proti": [
+       "Mccormack Graeme",
+       "Jergl Aleš",
+       "Kousal Robert",
+       "Klima Kevin Petr",
+       "Koch Anders Gøbel"
+      ]
      },
      {
       "cas": "24:32",
@@ -935,7 +1071,21 @@
        "Toman Matěj",
        "Vráblík Roman"
       ],
-      "situace": "5/5"
+      "situace": "5/5",
+      "na_ledu_za": [
+       "Vráblík Roman",
+       "Toman Matěj",
+       "Olesen Nick Alexander",
+       "Bell Parker",
+       "Štencel Jan"
+      ],
+      "na_ledu_proti": [
+       "Radil Lukáš",
+       "Koch Anders Gøbel",
+       "Pavlík Radovan",
+       "Melancon Thomas Joseph",
+       "Miškář Patrik"
+      ]
      }
     ],
     "tresty": [
@@ -944,30 +1094,67 @@
       "vteriny": 921,
       "tym": "BANES Motor České Budějovice",
       "hrac": "Pour Jakub",
-      "min": "2"
+      "min": "2",
+      "od": "15:21",
+      "do": "17:21",
+      "duvod": "hákování"
      },
      {
       "cas": "18:32",
       "vteriny": 1112,
       "tym": "Mountfield HK, a.s.",
       "hrac": "Mudrák Dávid",
-      "min": "2"
+      "min": "2",
+      "od": "18:32",
+      "do": "20:32",
+      "duvod": "držení protihráče"
      },
      {
       "cas": "26:41",
       "vteriny": 1601,
       "tym": "Mountfield HK, a.s.",
       "hrac": "Mudrák Dávid",
-      "min": "2"
+      "min": "2",
+      "od": "26:41",
+      "do": "28:41",
+      "duvod": "hákování"
      },
      {
       "cas": "30:16",
       "vteriny": 1816,
       "tym": "BANES Motor České Budějovice",
       "hrac": "Nordsäter Lucas",
-      "min": "2"
+      "min": "2",
+      "od": "30:16",
+      "do": "32:16",
+      "duvod": "vysoká hůl"
      }
     ],
+    "nejlepsi": {
+     "A": {
+      "tym": "Mountfield HK, a.s.",
+      "hrac": "Tamáši Alex"
+     },
+     "B": {
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Klouček Milan"
+     }
+    },
+    "bez_brankare": {
+     "A": [
+      [
+       3456,
+       null
+      ]
+     ],
+     "B": [
+      [
+       3600,
+       null
+      ]
+     ]
+    },
+    "datum": "18.09.2026",
     "rozhodci": {
      "hlavni": [
       "Luděk Pilný",
@@ -1388,7 +1575,21 @@
        "Freibergs Ralfs",
        "Navrátil Jakub"
       ],
-      "situace": "5/5"
+      "situace": "5/5",
+      "na_ledu_za": [
+       "Navrátil Jakub",
+       "Plášek Karel",
+       "Freibergs Ralfs",
+       "Berglund Carl Gunnar",
+       "Stella Evan"
+      ],
+      "na_ledu_proti": [
+       "Andersen Ole Einar",
+       "Krastenbergs Renars",
+       "Pýcha Pavel",
+       "Olesen Nick Alexander",
+       "Bell Parker"
+      ]
      },
      {
       "cas": "37:03",
@@ -1399,7 +1600,20 @@
        "Štencel Jan",
        "Lantoši Róbert"
       ],
-      "situace": "5/4"
+      "situace": "5/4",
+      "na_ledu_za": [
+       "Bell Parker",
+       "Štencel Jan",
+       "Lantoši Róbert",
+       "Olesen Nick Alexander",
+       "Ahl Filip"
+      ],
+      "na_ledu_proti": [
+       "Kos Jakub",
+       "Štohanzl Martin",
+       "Gewiese Petr",
+       "Černý Tomáš"
+      ]
      },
      {
       "cas": "38:16",
@@ -1409,7 +1623,21 @@
       "asistence": [
        "Plášek Karel"
       ],
-      "situace": "5/5"
+      "situace": "5/5",
+      "na_ledu_za": [
+       "Berglund Carl Gunnar",
+       "Gewiese Petr",
+       "Plášek Karel",
+       "Navrátil Jakub",
+       "Černý Tomáš"
+      ],
+      "na_ledu_proti": [
+       "Bulíř Michal",
+       "Ordoš Jan",
+       "Andersen Ole Einar",
+       "Lantoši Róbert",
+       "Kachyňa Ondřej"
+      ]
      },
      {
       "cas": "46:45",
@@ -1420,7 +1648,21 @@
        "Krastenbergs Renars",
        "Bulíř Michal"
       ],
-      "situace": "5/5"
+      "situace": "5/5",
+      "na_ledu_za": [
+       "Štencel Jan",
+       "Krastenbergs Renars",
+       "Bulíř Michal",
+       "Vráblík Roman",
+       "Ordoš Jan"
+      ],
+      "na_ledu_proti": [
+       "Kos Jakub",
+       "Freibergs Ralfs",
+       "Vitouch Michal",
+       "Štohanzl Martin",
+       "Stella Evan"
+      ]
      },
      {
       "cas": "54:22",
@@ -1431,7 +1673,21 @@
        "Hoch Štěpán",
        "Lantoši Róbert"
       ],
-      "situace": "5/5"
+      "situace": "5/5",
+      "na_ledu_za": [
+       "Pour Jakub",
+       "Štencel Jan",
+       "Hoch Štěpán",
+       "Vráblík Roman",
+       "Ordoš Jan"
+      ],
+      "na_ledu_proti": [
+       "Stella Evan",
+       "Kos Jakub",
+       "Vitouch Michal",
+       "Freibergs Ralfs",
+       "Štohanzl Martin"
+      ]
      }
     ],
     "tresty": [
@@ -1440,93 +1696,157 @@
       "vteriny": 395,
       "tym": "BANES Motor České Budějovice",
       "hrac": "Krastenbergs Renars",
-      "min": "2"
+      "min": "2",
+      "od": "06:35",
+      "do": "08:35",
+      "duvod": "hákování"
      },
      {
       "cas": "08:58",
       "vteriny": 538,
       "tym": "HC Olomouc",
       "hrac": "Spodniak Matúš",
-      "min": "2"
+      "min": "2",
+      "od": "08:58",
+      "do": "10:58",
+      "duvod": "držení hokejky"
      },
      {
       "cas": "11:19",
       "vteriny": 679,
       "tym": "HC Olomouc",
       "hrac": "Gewiese Petr",
-      "min": "2"
+      "min": "2",
+      "od": "11:19",
+      "do": "13:19",
+      "duvod": "podražení"
      },
      {
       "cas": "18:45",
       "vteriny": 1125,
       "tym": "BANES Motor České Budějovice",
       "hrac": "Kachyňa Ondřej",
-      "min": "2"
+      "min": "2",
+      "od": "18:45",
+      "do": "20:45",
+      "duvod": "VRAZ"
      },
      {
       "cas": "24:52",
       "vteriny": 1492,
       "tym": "HC Olomouc",
       "hrac": "Matýs Ondřej",
-      "min": "2"
+      "min": "2",
+      "od": "24:52",
+      "do": "26:52",
+      "duvod": "hákování"
      },
      {
       "cas": "28:03",
       "vteriny": 1683,
       "tym": "HC Olomouc",
       "hrac": "Plášek Karel",
-      "min": "2"
+      "min": "2",
+      "od": "28:03",
+      "do": "30:03",
+      "duvod": "vysoká hůl"
      },
      {
       "cas": "29:23",
       "vteriny": 1763,
       "tym": "HC Olomouc",
       "hrac": "Anděl Lukáš",
-      "min": "2"
+      "min": "2",
+      "od": "29:23",
+      "do": "31:23",
+      "duvod": "podražení"
      },
      {
       "cas": "29:29",
       "vteriny": 1769,
       "tym": "BANES Motor České Budějovice",
       "hrac": "Lantoši Róbert",
-      "min": "2"
+      "min": "2",
+      "od": "29:29",
+      "do": "31:29",
+      "duvod": "hákování"
      },
      {
       "cas": "36:57",
       "vteriny": 2217,
       "tym": "HC Olomouc",
       "hrac": "Matýs Ondřej",
-      "min": "2"
+      "min": "2",
+      "od": "36:57",
+      "do": "37:03",
+      "duvod": "krosček"
      },
      {
       "cas": "39:40",
       "vteriny": 2380,
       "tym": "BANES Motor České Budějovice",
       "hrac": "Vála Ondřej",
-      "min": "2"
+      "min": "2",
+      "od": "39:40",
+      "do": "41:40",
+      "duvod": "hrubost"
      },
      {
       "cas": "39:40",
       "vteriny": 2380,
       "tym": "HC Olomouc",
       "hrac": "Kos Jakub",
-      "min": "2"
+      "min": "2",
+      "od": "39:40",
+      "do": "41:40",
+      "duvod": "hrubost"
      },
      {
       "cas": "48:12",
       "vteriny": 2892,
       "tym": "BANES Motor České Budějovice",
       "hrac": "Vála Ondřej",
-      "min": "2"
+      "min": "2",
+      "od": "48:12",
+      "do": "50:12",
+      "duvod": "podražení"
      },
      {
       "cas": "56:36",
       "vteriny": 3396,
       "tym": "HC Olomouc",
       "hrac": "Herčík Daniel",
-      "min": "2"
+      "min": "2",
+      "od": "56:36",
+      "do": "58:36",
+      "duvod": "podražení"
      }
     ],
+    "nejlepsi": {
+     "A": {
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Štencel Jan"
+     },
+     "B": {
+      "tym": "HC Olomouc",
+      "hrac": "Plášek Karel"
+     }
+    },
+    "bez_brankare": {
+     "A": [
+      [
+       3600,
+       null
+      ]
+     ],
+     "B": [
+      [
+       3580,
+       null
+      ]
+     ]
+    },
+    "datum": "20.09.2026",
     "rozhodci": {
      "hlavni": [
       "Daniel Pražák",
@@ -1934,7 +2254,21 @@
       "tym": "BYD Energie Karlovy Vary",
       "strelec": "Mamčics Roberts",
       "asistence": [],
-      "situace": "5/5"
+      "situace": "5/5",
+      "na_ledu_za": [
+       "Mamčics Roberts",
+       "Bambula Jan",
+       "Jones Nicholas",
+       "Koffer Filip",
+       "Winberg Tobias"
+      ],
+      "na_ledu_proti": [
+       "Nordsäter Lucas",
+       "Vála Ondřej",
+       "Hoch Štěpán",
+       "Pour Jakub",
+       "Lantoši Róbert"
+      ]
      },
      {
       "cas": "16:15",
@@ -1945,7 +2279,20 @@
        "Egle Haralds",
        "Tomek Petr"
       ],
-      "situace": "5/4"
+      "situace": "5/4",
+      "na_ledu_za": [
+       "Jones Nicholas",
+       "Egle Haralds",
+       "Kočí Matteo",
+       "Tomek Petr",
+       "Minárik Jakub"
+      ],
+      "na_ledu_proti": [
+       "Hoch Štěpán",
+       "Kachyňa Ondřej",
+       "Zachar Marek",
+       "Nordsäter Lucas"
+      ]
      },
      {
       "cas": "18:26",
@@ -1956,7 +2303,21 @@
        "Brickley Daniel",
        "Egle Haralds"
       ],
-      "situace": "5/5"
+      "situace": "5/5",
+      "na_ledu_za": [
+       "Tomek Petr",
+       "Egle Haralds",
+       "Koffer Filip",
+       "Brickley Daniel",
+       "Myšák Josef"
+      ],
+      "na_ledu_proti": [
+       "Pour Jakub",
+       "Nordsäter Lucas",
+       "Vála Ondřej",
+       "Hoch Štěpán",
+       "Hejduk Marek"
+      ]
      },
      {
       "cas": "22:06",
@@ -1967,7 +2328,20 @@
        "Ordoš Jan",
        "Pýcha Pavel"
       ],
-      "situace": "5/4"
+      "situace": "5/4",
+      "na_ledu_za": [
+       "Hoch Štěpán",
+       "Pýcha Pavel",
+       "Ordoš Jan",
+       "Krastenbergs Renars",
+       "Bulíř Michal"
+      ],
+      "na_ledu_proti": [
+       "Černoch Jiří",
+       "Beránek Ondřej",
+       "Schmiemann Quinn Emanuel",
+       "Mamčics Roberts"
+      ]
      },
      {
       "cas": "32:12",
@@ -1978,7 +2352,20 @@
        "Minárik Jakub",
        "Kočí Matteo"
       ],
-      "situace": "5/4"
+      "situace": "5/4",
+      "na_ledu_za": [
+       "Jones Nicholas",
+       "Minárik Jakub",
+       "Kočí Matteo",
+       "Tomek Petr",
+       "Egle Haralds"
+      ],
+      "na_ledu_proti": [
+       "Zachar Marek",
+       "Kachyňa Ondřej",
+       "Nordsäter Lucas",
+       "Hejduk Marek"
+      ]
      },
      {
       "cas": "43:24",
@@ -1989,7 +2376,21 @@
        "Beránek Ondřej",
        "Jiskra Vít"
       ],
-      "situace": "5/5"
+      "situace": "5/5",
+      "na_ledu_za": [
+       "Černoch Jiří",
+       "Beránek Ondřej",
+       "Myšák Josef",
+       "Brickley Daniel",
+       "Jiskra Vít"
+      ],
+      "na_ledu_proti": [
+       "Vála Ondřej",
+       "Beránek Martin",
+       "Zachar Marek",
+       "Andersen Ole Einar",
+       "Toman Matěj"
+      ]
      }
     ],
     "tresty": [
@@ -1998,51 +2399,97 @@
       "vteriny": 14,
       "tym": "BYD Energie Karlovy Vary",
       "hrac": "Jiskra Vít",
-      "min": "2"
+      "min": "2",
+      "od": "00:14",
+      "do": "02:14",
+      "duvod": "podražení"
      },
      {
       "cas": "14:26",
       "vteriny": 866,
       "tym": "BANES Motor České Budějovice",
       "hrac": "lavička (HL)",
-      "min": "2"
+      "min": "2",
+      "od": "14:26",
+      "do": "16:15",
+      "duvod": "příliš mnoho hráčů na ledě"
      },
      {
       "cas": "20:33",
       "vteriny": 1233,
       "tym": "BYD Energie Karlovy Vary",
       "hrac": "lavička (HL)",
-      "min": "2"
+      "min": "2",
+      "od": "20:33",
+      "do": "22:06",
+      "duvod": "příliš mnoho hráčů na ledě"
      },
      {
       "cas": "31:16",
       "vteriny": 1876,
       "tym": "BANES Motor České Budějovice",
       "hrac": "Krastenbergs Renars",
-      "min": "2"
+      "min": "2",
+      "od": "31:16",
+      "do": "32:12",
+      "duvod": "vysoká hůl"
      },
      {
       "cas": "43:24",
       "vteriny": 2604,
       "tym": "BANES Motor České Budějovice",
       "hrac": "lavička (HL)",
-      "min": "2"
+      "min": "2",
+      "od": "43:24",
+      "do": "45:24",
+      "duvod": "ZHTV"
      },
      {
       "cas": "50:02",
       "vteriny": 3002,
       "tym": "BYD Energie Karlovy Vary",
       "hrac": "Egle Haralds",
-      "min": "2"
+      "min": "2",
+      "od": "50:02",
+      "do": "52:02",
+      "duvod": "držení protihráče"
      },
      {
       "cas": "50:32",
       "vteriny": 3032,
       "tym": "BYD Energie Karlovy Vary",
       "hrac": "Minárik Jakub",
-      "min": "2"
+      "min": "2",
+      "od": "50:32",
+      "do": "52:32",
+      "duvod": "podražení"
      }
     ],
+    "nejlepsi": {
+     "A": {
+      "tym": "BYD Energie Karlovy Vary",
+      "hrac": "Jones Nicholas"
+     },
+     "B": {
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Lantoši Róbert"
+     }
+    },
+    "bez_brankare": {
+     "A": [
+      [
+       3600,
+       null
+      ]
+     ],
+     "B": [
+      [
+       3600,
+       null
+      ]
+     ]
+    },
+    "datum": "25.09.2026",
     "rozhodci": {
      "hlavni": [
       "Josef Barek",
@@ -2464,7 +2911,21 @@
       "tym": "HC Litvínov",
       "strelec": "Šámal Viktor",
       "asistence": [],
-      "situace": "5/5"
+      "situace": "5/5",
+      "na_ledu_za": [
+       "Šámal Viktor",
+       "Zygmunt Pawel",
+       "Polášek Adam",
+       "Baláž Ondřej",
+       "Gut Michal"
+      ],
+      "na_ledu_proti": [
+       "Olesen Nick Alexander",
+       "Lantoši Róbert",
+       "Vráblík Roman",
+       "Bulíř Michal",
+       "Štencel Jan"
+      ]
      },
      {
       "cas": "06:50",
@@ -2475,7 +2936,21 @@
        "Vála Ondřej",
        "Hoch Štěpán"
       ],
-      "situace": "5/5"
+      "situace": "5/5",
+      "na_ledu_za": [
+       "Ordoš Jan",
+       "Vála Ondřej",
+       "Hoch Štěpán",
+       "Pour Jakub",
+       "Nordsäter Lucas"
+      ],
+      "na_ledu_proti": [
+       "Beran Vít",
+       "Jícha Josef",
+       "Jurčík Ondřej",
+       "Urban Tomáš",
+       "Polášek Adam"
+      ]
      },
      {
       "cas": "22:21",
@@ -2486,7 +2961,20 @@
        "Olesen Nick Alexander",
        "Lantoši Róbert"
       ],
-      "situace": "5/4"
+      "situace": "5/4",
+      "na_ledu_za": [
+       "Štencel Jan",
+       "Olesen Nick Alexander",
+       "Lantoši Róbert",
+       "Bulíř Michal",
+       "Ahl Filip"
+      ],
+      "na_ledu_proti": [
+       "Baláž Ondřej",
+       "Zygmunt Pawel",
+       "Czuczman Kevin Paul",
+       "Jícha Josef"
+      ]
      },
      {
       "cas": "25:56",
@@ -2497,7 +2985,21 @@
        "Kaše Ondřej",
        "Moravčík Michal"
       ],
-      "situace": "5/5"
+      "situace": "5/5",
+      "na_ledu_za": [
+       "Kaše Ondřej",
+       "Maštalířský Matěj",
+       "Husinecký Vojtěch",
+       "Moravčík Michal",
+       "Kämpf David"
+      ],
+      "na_ledu_proti": [
+       "Vála Ondřej",
+       "Krastenbergs Renars",
+       "Bell Parker",
+       "Nordsäter Lucas",
+       "Ahl Filip"
+      ]
      },
      {
       "cas": "34:26",
@@ -2508,7 +3010,20 @@
        "Kaše Ondřej",
        "Kämpf David"
       ],
-      "situace": "5/4"
+      "situace": "5/4",
+      "na_ledu_za": [
+       "Koblasa Petr",
+       "Jaks Janis",
+       "Kämpf David",
+       "Kaše Ondřej",
+       "Sukeľ Matúš"
+      ],
+      "na_ledu_proti": [
+       "Kachyňa Ondřej",
+       "Hoch Štěpán",
+       "Vráblík Roman",
+       "Beránek Martin"
+      ]
      },
      {
       "cas": "44:25",
@@ -2519,7 +3034,21 @@
        "Hoch Štěpán",
        "Olesen Nick Alexander"
       ],
-      "situace": "5/5"
+      "situace": "5/5",
+      "na_ledu_za": [
+       "Ordoš Jan",
+       "Hoch Štěpán",
+       "Pour Jakub",
+       "Pýcha Pavel",
+       "Olesen Nick Alexander"
+      ],
+      "na_ledu_proti": [
+       "Kämpf David",
+       "Kaše Ondřej",
+       "Husinecký Vojtěch",
+       "Moravčík Michal",
+       "Maštalířský Matěj"
+      ]
      },
      {
       "cas": "45:42",
@@ -2530,7 +3059,20 @@
        "Kaše Ondřej",
        "Jaks Janis"
       ],
-      "situace": "5/4"
+      "situace": "5/4",
+      "na_ledu_za": [
+       "Jaks Janis",
+       "Kaše Ondřej",
+       "Koblasa Petr",
+       "Sukeľ Matúš",
+       "Kämpf David"
+      ],
+      "na_ledu_proti": [
+       "Nordsäter Lucas",
+       "Vála Ondřej",
+       "Zachar Marek",
+       "Hejduk Marek"
+      ]
      },
      {
       "cas": "52:38",
@@ -2541,7 +3083,20 @@
        "Štencel Jan",
        "Bulíř Michal"
       ],
-      "situace": "5/4"
+      "situace": "5/4",
+      "na_ledu_za": [
+       "Olesen Nick Alexander",
+       "Štencel Jan",
+       "Bulíř Michal",
+       "Lantoši Róbert",
+       "Ahl Filip"
+      ],
+      "na_ledu_proti": [
+       "Husinecký Vojtěch",
+       "Jurčík Ondřej",
+       "Gut Michal",
+       "Polášek Adam"
+      ]
      },
      {
       "cas": "59:31",
@@ -2552,7 +3107,20 @@
        "Štencel Jan",
        "Lantoši Róbert"
       ],
-      "situace": "5/4"
+      "situace": "5/4",
+      "na_ledu_za": [
+       "Olesen Nick Alexander",
+       "Štencel Jan",
+       "Lantoši Róbert",
+       "Bulíř Michal",
+       "Ahl Filip"
+      ],
+      "na_ledu_proti": [
+       "Jurčík Ondřej",
+       "Husinecký Vojtěch",
+       "Sukeľ Matúš",
+       "Polášek Adam"
+      ]
      }
     ],
     "tresty": [
@@ -2561,100 +3129,167 @@
       "vteriny": 0,
       "tym": "BANES Motor České Budějovice",
       "hrac": "Olesen Nick Alexander",
-      "min": "TS"
+      "min": "TS",
+      "od": "---",
+      "do": "---",
+      "duvod": "sekání"
      },
      {
       "cas": "00:56",
       "vteriny": 56,
       "tym": "HC Litvínov",
       "hrac": "Czuczman Kevin Paul",
-      "min": "2"
+      "min": "2",
+      "od": "00:56",
+      "do": "02:56",
+      "duvod": "podražení"
      },
      {
       "cas": "01:46",
       "vteriny": 106,
       "tym": "HC Litvínov",
       "hrac": "Sukeľ Matúš",
-      "min": "2"
+      "min": "2",
+      "od": "01:46",
+      "do": "03:46",
+      "duvod": "podražení"
      },
      {
       "cas": "07:19",
       "vteriny": 439,
       "tym": "BANES Motor České Budějovice",
       "hrac": "Toman Matěj",
-      "min": "2"
+      "min": "2",
+      "od": "07:19",
+      "do": "09:19",
+      "duvod": "hrubost"
      },
      {
       "cas": "07:19",
       "vteriny": 439,
       "tym": "HC Litvínov",
       "hrac": "Czuczman Kevin Paul",
-      "min": "2"
+      "min": "2",
+      "od": "07:19",
+      "do": "09:19",
+      "duvod": "hrubost"
      },
      {
       "cas": "12:51",
       "vteriny": 771,
       "tym": "HC Litvínov",
       "hrac": "Sukeľ Matúš",
-      "min": "2"
+      "min": "2",
+      "od": "12:51",
+      "do": "14:51",
+      "duvod": "podražení"
      },
      {
       "cas": "16:17",
       "vteriny": 977,
       "tym": "BANES Motor České Budějovice",
       "hrac": "Vráblík Roman",
-      "min": "2"
+      "min": "2",
+      "od": "16:17",
+      "do": "18:17",
+      "duvod": "podražení"
      },
      {
       "cas": "21:00",
       "vteriny": 1260,
       "tym": "HC Litvínov",
       "hrac": "Šámal Viktor",
-      "min": "2"
+      "min": "2",
+      "od": "21:00",
+      "do": "22:21",
+      "duvod": "podražení"
      },
      {
       "cas": "31:47",
       "vteriny": 1907,
       "tym": "HC Litvínov",
       "hrac": "Koblasa Petr",
-      "min": "2"
+      "min": "2",
+      "od": "31:47",
+      "do": "33:47",
+      "duvod": "hrubost"
      },
      {
       "cas": "33:26",
       "vteriny": 2006,
       "tym": "BANES Motor České Budějovice",
       "hrac": "Olesen Nick Alexander",
-      "min": "2"
+      "min": "2",
+      "od": "33:26",
+      "do": "34:26",
+      "duvod": "držení protihráče"
      },
      {
       "cas": "44:52",
       "vteriny": 2692,
       "tym": "BANES Motor České Budějovice",
       "hrac": "Ahl Filip",
-      "min": "2"
+      "min": "2",
+      "od": "44:52",
+      "do": "45:42",
+      "duvod": "sekání"
      },
      {
       "cas": "46:23",
       "vteriny": 2783,
       "tym": "HC Litvínov",
       "hrac": "Jurčík Ondřej",
-      "min": "2"
+      "min": "2",
+      "od": "46:23",
+      "do": "48:23",
+      "duvod": "podražení"
      },
      {
       "cas": "51:15",
       "vteriny": 3075,
       "tym": "HC Litvínov",
       "hrac": "Koblasa Petr",
-      "min": "2"
+      "min": "2",
+      "od": "51:15",
+      "do": "52:38",
+      "duvod": "podražení"
      },
      {
       "cas": "59:02",
       "vteriny": 3542,
       "tym": "HC Litvínov",
       "hrac": "Jaks Janis",
-      "min": "2"
+      "min": "2",
+      "od": "59:02",
+      "do": "59:31",
+      "duvod": "podražení"
      }
     ],
+    "nejlepsi": {
+     "A": {
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Olesen Nick Alexander"
+     },
+     "B": {
+      "tym": "HC Litvínov",
+      "hrac": "Kaše Ondřej"
+     }
+    },
+    "bez_brankare": {
+     "A": [
+      [
+       3600,
+       null
+      ]
+     ],
+     "B": [
+      [
+       3571,
+       null
+      ]
+     ]
+    },
+    "datum": "27.09.2026",
     "rozhodci": {
      "hlavni": [
       "Jakub Zeliska",
@@ -3075,7 +3710,21 @@
        "Červenka Roman",
        "Mandát Jan"
       ],
-      "situace": "5/5"
+      "situace": "5/5",
+      "na_ledu_za": [
+       "Košťálek Jan",
+       "Červenka Roman",
+       "Sedlák Lukáš",
+       "Tourigny Miguël",
+       "Mandát Jan"
+      ],
+      "na_ledu_proti": [
+       "Krastenbergs Renars",
+       "Pýcha Pavel",
+       "Zachar Marek",
+       "Kachyňa Ondřej",
+       "Bell Parker"
+      ]
      },
      {
       "cas": "16:01",
@@ -3086,7 +3735,21 @@
        "Andersen Ole Einar",
        "Hoch Štěpán"
       ],
-      "situace": "5/5"
+      "situace": "5/5",
+      "na_ledu_za": [
+       "Vráblík Roman",
+       "Ordoš Jan",
+       "Pour Jakub",
+       "Hoch Štěpán",
+       "Andersen Ole Einar"
+      ],
+      "na_ledu_proti": [
+       "Gazda Daniel",
+       "Dvořák Tomáš",
+       "Červenka Roman",
+       "Mandát Jan",
+       "Sedlák Lukáš"
+      ]
      },
      {
       "cas": "27:56",
@@ -3096,7 +3759,21 @@
       "asistence": [
        "Tomášek David"
       ],
-      "situace": "5/5"
+      "situace": "5/5",
+      "na_ledu_za": [
+       "Stránský Matěj",
+       "Tomášek David",
+       "Dvořák Tomáš",
+       "Čerešňák Peter",
+       "Smejkal Jiří"
+      ],
+      "na_ledu_proti": [
+       "Hoch Štěpán",
+       "Pour Jakub",
+       "Nordsäter Lucas",
+       "Vála Ondřej",
+       "Ordoš Jan"
+      ]
      },
      {
       "cas": "34:39",
@@ -3107,7 +3784,21 @@
        "Vráblík Roman",
        "Kachyňa Ondřej"
       ],
-      "situace": "5/5"
+      "situace": "5/5",
+      "na_ledu_za": [
+       "Beránek Martin",
+       "Vráblík Roman",
+       "Kachyňa Ondřej",
+       "Toman Matěj",
+       "Lantoši Róbert"
+      ],
+      "na_ledu_proti": [
+       "Mandát Jan",
+       "Mikliš Ondřej",
+       "Sedlák Lukáš",
+       "Gazda Daniel",
+       "Červenka Roman"
+      ]
      },
      {
       "cas": "44:41",
@@ -3118,7 +3809,21 @@
        "Košťálek Jan",
        "Gazda Daniel"
       ],
-      "situace": "5/5"
+      "situace": "5/5",
+      "na_ledu_za": [
+       "Sedlák Lukáš",
+       "Košťálek Jan",
+       "Gazda Daniel",
+       "Mandát Jan",
+       "Červenka Roman"
+      ],
+      "na_ledu_proti": [
+       "Toman Matěj",
+       "Vála Ondřej",
+       "Nordsäter Lucas",
+       "Beránek Martin",
+       "Ordoš Jan"
+      ]
      },
      {
       "cas": "55:18",
@@ -3129,7 +3834,20 @@
        "Čerešňák Peter",
        "Tourigny Miguël"
       ],
-      "situace": "5/4"
+      "situace": "5/4",
+      "na_ledu_za": [
+       "Smejkal Jiří",
+       "Čerešňák Peter",
+       "Tourigny Miguël",
+       "Nosek Tomáš",
+       "Sobotka Vladimír"
+      ],
+      "na_ledu_proti": [
+       "Hoch Štěpán",
+       "Štencel Jan",
+       "Beránek Martin",
+       "Vráblík Roman"
+      ]
      },
      {
       "cas": "58:22",
@@ -3140,7 +3858,22 @@
        "Gazda Daniel",
        "Kelemen Miloš"
       ],
-      "situace": "5/5"
+      "situace": "5/5",
+      "na_ledu_za": [
+       "Nosek Tomáš",
+       "Gazda Daniel",
+       "Stránský Matěj",
+       "Mikliš Ondřej",
+       "Kelemen Miloš"
+      ],
+      "na_ledu_proti": [
+       "Bulíř Michal",
+       "Štencel Jan",
+       "Olesen Nick Alexander",
+       "Pour Jakub",
+       "Krastenbergs Renars",
+       "Lantoši Róbert"
+      ]
      }
     ],
     "tresty": [
@@ -3149,51 +3882,105 @@
       "vteriny": 525,
       "tym": "HC DYNAMO PARDUBICE",
       "hrac": "Poulíček Patrik",
-      "min": "2"
+      "min": "2",
+      "od": "08:45",
+      "do": "10:45",
+      "duvod": "podražení"
      },
      {
       "cas": "11:11",
       "vteriny": 671,
       "tym": "HC DYNAMO PARDUBICE",
       "hrac": "Tourigny Miguël",
-      "min": "2"
+      "min": "2",
+      "od": "11:11",
+      "do": "13:11",
+      "duvod": "hrubost"
      },
      {
       "cas": "11:11",
       "vteriny": 671,
       "tym": "BANES Motor České Budějovice",
       "hrac": "Hejduk Marek",
-      "min": "2"
+      "min": "2",
+      "od": "11:11",
+      "do": "13:11",
+      "duvod": "zásah do hlavy nebo krku"
      },
      {
       "cas": "13:11",
       "vteriny": 791,
       "tym": "BANES Motor České Budějovice",
       "hrac": "Hejduk Marek",
-      "min": "2"
+      "min": "2",
+      "od": "13:11",
+      "do": "15:11",
+      "duvod": "hrubost"
      },
      {
       "cas": "32:03",
       "vteriny": 1923,
       "tym": "BANES Motor České Budějovice",
       "hrac": "Vála Ondřej",
-      "min": "2"
+      "min": "2",
+      "od": "32:03",
+      "do": "34:03",
+      "duvod": "držení protihráče"
      },
      {
       "cas": "53:23",
       "vteriny": 3203,
       "tym": "BANES Motor České Budějovice",
       "hrac": "Hejduk Marek",
-      "min": "2"
+      "min": "2",
+      "od": "53:23",
+      "do": "55:18",
+      "duvod": "podražení"
      },
      {
       "cas": "58:59",
       "vteriny": 3539,
       "tym": "HC DYNAMO PARDUBICE",
       "hrac": "Poulíček Patrik",
-      "min": "2"
+      "min": "2",
+      "od": "58:59",
+      "do": "60:00",
+      "duvod": "sekání"
      }
     ],
+    "nejlepsi": {
+     "A": {
+      "tym": "HC DYNAMO PARDUBICE",
+      "hrac": "Košťálek Jan"
+     },
+     "B": {
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Strmeň Jan"
+     }
+    },
+    "bez_brankare": {
+     "A": [
+      [
+       3600,
+       null
+      ]
+     ],
+     "B": [
+      [
+       3468,
+       3502
+      ],
+      [
+       3524,
+       3539
+      ],
+      [
+       3600,
+       null
+      ]
+     ]
+    },
+    "datum": "29.09.2026",
     "rozhodci": {
      "hlavni": [
       "Luděk Pilný",
@@ -3611,7 +4398,21 @@
       "asistence": [
        "Lantoši Róbert"
       ],
-      "situace": "5/5"
+      "situace": "5/5",
+      "na_ledu_za": [
+       "Bulíř Michal",
+       "Olesen Nick Alexander",
+       "Vráblík Roman",
+       "Lantoši Róbert",
+       "Štencel Jan"
+      ],
+      "na_ledu_proti": [
+       "Hyka Tomáš",
+       "Knot Ronald",
+       "Najman Ondřej",
+       "Hrabík Kryštof",
+       "Mašín Dominik"
+      ]
      },
      {
       "cas": "31:16",
@@ -3622,7 +4423,21 @@
        "Chlapík Filip",
        "Sekáč Jiří"
       ],
-      "situace": "5/5"
+      "situace": "5/5",
+      "na_ledu_za": [
+       "Špaček Michael",
+       "Chlapík Filip",
+       "Sekáč Jiří",
+       "Sirota Jakub",
+       "Seppälä Mikael"
+      ],
+      "na_ledu_proti": [
+       "Štencel Jan",
+       "Bulíř Michal",
+       "Olesen Nick Alexander",
+       "Lantoši Róbert",
+       "Vráblík Roman"
+      ]
      },
      {
       "cas": "41:16",
@@ -3632,7 +4447,20 @@
       "asistence": [
        "Najman Ondřej"
       ],
-      "situace": "4/5"
+      "situace": "4/5",
+      "na_ledu_za": [
+       "Hyka Tomáš",
+       "Najman Ondřej",
+       "Seppälä Mikael",
+       "Sirota Jakub"
+      ],
+      "na_ledu_proti": [
+       "Bell Parker",
+       "Pýcha Pavel",
+       "Krastenbergs Renars",
+       "Hoch Štěpán",
+       "Pour Jakub"
+      ]
      },
      {
       "cas": "53:01",
@@ -3642,7 +4470,21 @@
       "asistence": [
        "Štencel Jan"
       ],
-      "situace": "5/5"
+      "situace": "5/5",
+      "na_ledu_za": [
+       "Bell Parker",
+       "Štencel Jan",
+       "Vráblík Roman",
+       "Krastenbergs Renars",
+       "Ahl Filip"
+      ],
+      "na_ledu_proti": [
+       "Řepík Michal",
+       "Shore Devin",
+       "Pysyk Mark",
+       "Blümel Matěj",
+       "Krejčík Jakub"
+      ]
      },
      {
       "cas": "53:27",
@@ -3653,7 +4495,21 @@
        "Kousal Pavel",
        "Chlapík Filip"
       ],
-      "situace": "5/5"
+      "situace": "5/5",
+      "na_ledu_za": [
+       "Shore Devin",
+       "Kousal Pavel",
+       "Knot Ronald",
+       "Mašín Dominik",
+       "Chlapík Filip"
+      ],
+      "na_ledu_proti": [
+       "Pour Jakub",
+       "Hoch Štěpán",
+       "Vála Ondřej",
+       "Nordsäter Lucas",
+       "Ordoš Jan"
+      ]
      },
      {
       "cas": "59:39",
@@ -3664,7 +4520,22 @@
        "Blümel Matěj",
        "Knot Ronald"
       ],
-      "situace": "5/5"
+      "situace": "5/5",
+      "na_ledu_za": [
+       "Chlapík Filip",
+       "Blümel Matěj",
+       "Seppälä Mikael",
+       "Špaček Michael",
+       "Knot Ronald"
+      ],
+      "na_ledu_proti": [
+       "Pour Jakub",
+       "Olesen Nick Alexander",
+       "Lantoši Róbert",
+       "Štencel Jan",
+       "Hoch Štěpán",
+       "Beránek Martin"
+      ]
      }
     ],
     "tresty": [
@@ -3673,93 +4544,161 @@
       "vteriny": 623,
       "tym": "BANES Motor České Budějovice",
       "hrac": "lavička (HL)",
-      "min": "2"
+      "min": "2",
+      "od": "10:23",
+      "do": "12:23",
+      "duvod": "příliš mnoho hráčů na ledě"
      },
      {
       "cas": "16:21",
       "vteriny": 981,
       "tym": "HC Sparta Praha",
       "hrac": "Shore Devin",
-      "min": "2"
+      "min": "2",
+      "od": "16:21",
+      "do": "18:21",
+      "duvod": "hákování"
      },
      {
       "cas": "22:11",
       "vteriny": 1331,
       "tym": "HC Sparta Praha",
       "hrac": "Mašín Dominik",
-      "min": "2"
+      "min": "2",
+      "od": "22:11",
+      "do": "24:11",
+      "duvod": "držení protihráče"
      },
      {
       "cas": "27:42",
       "vteriny": 1662,
       "tym": "BANES Motor České Budějovice",
       "hrac": "Bell Parker",
-      "min": "2"
+      "min": "2",
+      "od": "27:42",
+      "do": "29:42",
+      "duvod": "hákování"
      },
      {
       "cas": "31:16",
       "vteriny": 1876,
       "tym": "BANES Motor České Budějovice",
       "hrac": "Olesen Nick Alexander",
-      "min": "2"
+      "min": "2",
+      "od": "31:16",
+      "do": "33:16",
+      "duvod": "napadení rozhodčího"
      },
      {
       "cas": "35:20",
       "vteriny": 2120,
       "tym": "HC Sparta Praha",
       "hrac": "Pysyk Mark",
-      "min": "2"
+      "min": "2",
+      "od": "35:20",
+      "do": "37:20",
+      "duvod": "podražení"
      },
      {
       "cas": "36:58",
       "vteriny": 2218,
       "tym": "HC Sparta Praha",
       "hrac": "Sekáč Jiří",
-      "min": "5"
+      "min": "5",
+      "od": "36:58",
+      "do": "41:58",
+      "duvod": "zásah do hlavy nebo krku"
      },
      {
       "cas": "41:58",
       "vteriny": 2518,
       "tym": "HC Sparta Praha",
       "hrac": "Sekáč Jiří",
-      "min": "20"
+      "min": "20",
+      "od": "41:58",
+      "do": "60:00",
+      "duvod": "zásah do hlavy nebo krku"
      },
      {
       "cas": "41:58",
       "vteriny": 2518,
       "tym": "HC Sparta Praha",
       "hrac": "Sirota Jakub",
-      "min": "2"
+      "min": "2",
+      "od": "41:58",
+      "do": "43:58",
+      "duvod": "hákování"
      },
      {
       "cas": "44:58",
       "vteriny": 2698,
       "tym": "HC Sparta Praha",
       "hrac": "Pysyk Mark",
-      "min": "2"
+      "min": "2",
+      "od": "44:58",
+      "do": "46:58",
+      "duvod": "držení protihráče"
      },
      {
       "cas": "49:17",
       "vteriny": 2957,
       "tym": "BANES Motor České Budějovice",
       "hrac": "Olesen Nick Alexander",
-      "min": "2"
+      "min": "2",
+      "od": "49:17",
+      "do": "51:17",
+      "duvod": "podražení"
      },
      {
       "cas": "55:18",
       "vteriny": 3318,
       "tym": "BANES Motor České Budějovice",
       "hrac": "Nordsäter Lucas",
-      "min": "2"
+      "min": "2",
+      "od": "55:18",
+      "do": "57:18",
+      "duvod": "nedovolené bránění"
      },
      {
       "cas": "56:28",
       "vteriny": 3388,
       "tym": "BANES Motor České Budějovice",
       "hrac": "Štencel Jan",
-      "min": "2"
+      "min": "2",
+      "od": "56:28",
+      "do": "58:28",
+      "duvod": "krosček"
      }
     ],
+    "nejlepsi": {
+     "A": {
+      "tym": "HC Sparta Praha",
+      "hrac": "Špaček Michael"
+     },
+     "B": {
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Ahl Filip"
+     }
+    },
+    "bez_brankare": {
+     "A": [
+      [
+       3600,
+       null
+      ]
+     ],
+     "B": [
+      [
+       3545,
+       3579
+      ],
+      [
+       3600,
+       null
+      ]
+     ]
+    },
+    "datum": "01.10.2026",
     "rozhodci": {
      "hlavni": [
       "Jan Jaroš",
@@ -4188,7 +5127,21 @@
        "Hoch Štěpán",
        "Vála Ondřej"
       ],
-      "situace": "5/5"
+      "situace": "5/5",
+      "na_ledu_za": [
+       "Lantoši Róbert",
+       "Hoch Štěpán",
+       "Vála Ondřej",
+       "Ordoš Jan",
+       "Pýcha Pavel"
+      ],
+      "na_ledu_proti": [
+       "Zbořil Adam",
+       "Ščotka Jan",
+       "Zábranský Libor",
+       "Ilomäki Arttu",
+       "Kusko Silvester"
+      ]
      },
      {
       "cas": "19:58",
@@ -4199,7 +5152,20 @@
        "Lantoši Róbert",
        "Štencel Jan"
       ],
-      "situace": "5/4"
+      "situace": "5/4",
+      "na_ledu_za": [
+       "Olesen Nick Alexander",
+       "Lantoši Róbert",
+       "Štencel Jan",
+       "Bell Parker",
+       "Ahl Filip"
+      ],
+      "na_ledu_proti": [
+       "Cingel Lukáš",
+       "Nedomlel Richard",
+       "Ilomäki Arttu",
+       "Witkowski Luke"
+      ]
      },
      {
       "cas": "22:05",
@@ -4210,7 +5176,21 @@
        "Ahl Filip",
        "Bulíř Michal"
       ],
-      "situace": "5/5"
+      "situace": "5/5",
+      "na_ledu_za": [
+       "Pour Jakub",
+       "Ahl Filip",
+       "Bulíř Michal",
+       "Kachyňa Ondřej",
+       "Nordsäter Lucas"
+      ],
+      "na_ledu_proti": [
+       "Flek Jakub",
+       "Kučeřík Radek",
+       "Witkowski Luke",
+       "Kunc Michal",
+       "Kollár Andrej"
+      ]
      },
      {
       "cas": "49:25",
@@ -4221,7 +5201,20 @@
        "Zbořil Adam",
        "Cingel Lukáš"
       ],
-      "situace": "5/4"
+      "situace": "5/4",
+      "na_ledu_za": [
+       "Zbořil Adam",
+       "Zohorna Hynek",
+       "Irving Aaron James",
+       "Cingel Lukáš",
+       "Zábranský Libor"
+      ],
+      "na_ledu_proti": [
+       "Nordsäter Lucas",
+       "Hoch Štěpán",
+       "Kachyňa Ondřej",
+       "Beránek Martin"
+      ]
      },
      {
       "cas": "50:35",
@@ -4232,7 +5225,20 @@
        "Ahl Filip",
        "Lantoši Róbert"
       ],
-      "situace": "5/4"
+      "situace": "5/4",
+      "na_ledu_za": [
+       "Bell Parker",
+       "Ahl Filip",
+       "Lantoši Róbert",
+       "Pýcha Pavel",
+       "Olesen Nick Alexander"
+      ],
+      "na_ledu_proti": [
+       "Kollár Andrej",
+       "Witkowski Luke",
+       "Flek Jakub",
+       "Nedomlel Richard"
+      ]
      },
      {
       "cas": "57:35",
@@ -4240,7 +5246,21 @@
       "tym": "BANES Motor České Budějovice",
       "strelec": "Štencel Jan",
       "asistence": [],
-      "situace": "4/5"
+      "situace": "4/5",
+      "na_ledu_za": [
+       "Štencel Jan",
+       "Beránek Martin",
+       "Vráblík Roman",
+       "Hoch Štěpán"
+      ],
+      "na_ledu_proti": [
+       "Zbořil Adam",
+       "Zábranský Libor",
+       "Flek Jakub",
+       "Cingel Lukáš",
+       "Irving Aaron James",
+       "Zohorna Hynek"
+      ]
      }
     ],
     "tresty": [
@@ -4249,79 +5269,141 @@
       "vteriny": 1154,
       "tym": "HC KOMETA BRNO",
       "hrac": "Kusko Silvester",
-      "min": "2"
+      "min": "2",
+      "od": "19:14",
+      "do": "19:58",
+      "duvod": "vysoká hůl"
      },
      {
       "cas": "23:29",
       "vteriny": 1409,
       "tym": "HC KOMETA BRNO",
       "hrac": "Irving Aaron James",
-      "min": "2"
+      "min": "2",
+      "od": "23:29",
+      "do": "25:29",
+      "duvod": "podražení"
      },
      {
       "cas": "24:42",
       "vteriny": 1482,
       "tym": "BANES Motor České Budějovice",
       "hrac": "Pour Jakub",
-      "min": "2"
+      "min": "2",
+      "od": "24:42",
+      "do": "26:42",
+      "duvod": "hrubost"
      },
      {
       "cas": "37:58",
       "vteriny": 2278,
       "tym": "HC KOMETA BRNO",
       "hrac": "Zbořil Adam",
-      "min": "2"
+      "min": "2",
+      "od": "37:58",
+      "do": "39:58",
+      "duvod": "podražení"
      },
      {
       "cas": "46:12",
       "vteriny": 2772,
       "tym": "HC KOMETA BRNO",
       "hrac": "Ilomäki Arttu",
-      "min": "2"
+      "min": "2",
+      "od": "46:12",
+      "do": "48:12",
+      "duvod": "vysoká hůl"
      },
      {
       "cas": "49:16",
       "vteriny": 2956,
       "tym": "BANES Motor České Budějovice",
       "hrac": "Vála Ondřej",
-      "min": "2"
+      "min": "2",
+      "od": "49:16",
+      "do": "49:25",
+      "duvod": "podražení"
      },
      {
       "cas": "49:42",
       "vteriny": 2982,
       "tym": "HC KOMETA BRNO",
       "hrac": "Brabenec Jakub",
-      "min": "2"
+      "min": "2",
+      "od": "49:42",
+      "do": "50:35",
+      "duvod": "vysoká hůl"
      },
      {
       "cas": "50:53",
       "vteriny": 3053,
       "tym": "BANES Motor České Budějovice",
       "hrac": "Beránek Martin",
-      "min": "2"
+      "min": "2",
+      "od": "50:53",
+      "do": "52:53",
+      "duvod": "hrubost"
      },
      {
       "cas": "50:53",
       "vteriny": 3053,
       "tym": "HC KOMETA BRNO",
       "hrac": "Kusko Silvester",
-      "min": "2"
+      "min": "2",
+      "od": "50:53",
+      "do": "52:53",
+      "duvod": "hrubost"
      },
      {
       "cas": "53:33",
       "vteriny": 3213,
       "tym": "BANES Motor České Budějovice",
       "hrac": "Hoch Štěpán",
-      "min": "2"
+      "min": "2",
+      "od": "53:33",
+      "do": "55:33",
+      "duvod": "podražení"
      },
      {
       "cas": "56:18",
       "vteriny": 3378,
       "tym": "BANES Motor České Budějovice",
       "hrac": "Vála Ondřej",
-      "min": "2"
+      "min": "2",
+      "od": "56:18",
+      "do": "58:18",
+      "duvod": "ZHVP"
      }
     ],
+    "nejlepsi": {
+     "A": {
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Lantoši Róbert"
+     },
+     "B": {
+      "tym": "HC KOMETA BRNO",
+      "hrac": "Irving Aaron James"
+     }
+    },
+    "bez_brankare": {
+     "A": [
+      [
+       3600,
+       null
+      ]
+     ],
+     "B": [
+      [
+       3378,
+       3455
+      ],
+      [
+       3600,
+       null
+      ]
+     ]
+    },
+    "datum": "05.10.2026",
     "rozhodci": {
      "hlavni": [
       "Tomáš Mejzlík",
@@ -4737,7 +5819,21 @@
       "asistence": [
        "Filip Matyáš"
       ],
-      "situace": "5/5"
+      "situace": "5/5",
+      "na_ledu_za": [
+       "Robertson Carter Aj",
+       "Filip Matyáš",
+       "Strnad Lukáš",
+       "Simon Dominik",
+       "Merezhko Igor"
+      ],
+      "na_ledu_proti": [
+       "Bulíř Michal",
+       "Kachyňa Ondřej",
+       "Pour Jakub",
+       "Nordsäter Lucas",
+       "Ahl Filip"
+      ]
      },
      {
       "cas": "36:05",
@@ -4747,7 +5843,20 @@
       "asistence": [
        "Vála Ondřej"
       ],
-      "situace": "4/5"
+      "situace": "4/5",
+      "na_ledu_za": [
+       "Beránek Martin",
+       "Nordsäter Lucas",
+       "Vála Ondřej",
+       "Ordoš Jan"
+      ],
+      "na_ledu_proti": [
+       "Macpherson Patrick Dylan",
+       "Katic Michael Danny",
+       "Chromiak Jakub",
+       "Měchura Adam",
+       "Lalancette Christophe"
+      ]
      },
      {
       "cas": "37:11",
@@ -4758,7 +5867,21 @@
        "Robertson Carter Aj",
        "Teplý Michal"
       ],
-      "situace": "5/5"
+      "situace": "5/5",
+      "na_ledu_za": [
+       "Petman Ville Emil",
+       "Robertson Carter Aj",
+       "Filip Matyáš",
+       "Teplý Michal",
+       "Petman Mikko Artturi"
+      ],
+      "na_ledu_proti": [
+       "Pour Jakub",
+       "Vála Ondřej",
+       "Vráblík Roman",
+       "Zachar Marek",
+       "Hoch Štěpán"
+      ]
      },
      {
       "cas": "39:57",
@@ -4768,7 +5891,20 @@
       "asistence": [
        "Lalancette Christophe"
       ],
-      "situace": "5/4"
+      "situace": "5/4",
+      "na_ledu_za": [
+       "Robertson Carter Aj",
+       "Lalancette Christophe",
+       "Simon Dominik",
+       "Měchura Adam",
+       "Chromiak Jakub"
+      ],
+      "na_ledu_proti": [
+       "Zachar Marek",
+       "Vála Ondřej",
+       "Beránek Martin",
+       "Vráblík Roman"
+      ]
      },
      {
       "cas": "57:55",
@@ -4779,7 +5915,22 @@
        "Rohlík Ondřej",
        "Merezhko Igor"
       ],
-      "situace": "5/5"
+      "situace": "5/5",
+      "na_ledu_za": [
+       "Schleiss Jan",
+       "Jeřábek Jakub",
+       "Merezhko Igor",
+       "Lev Jakub",
+       "Rohlík Ondřej"
+      ],
+      "na_ledu_proti": [
+       "Pýcha Pavel",
+       "Ahl Filip",
+       "Hoch Štěpán",
+       "Olesen Nick Alexander",
+       "Zachar Marek",
+       "Lantoši Róbert"
+      ]
      }
     ],
     "tresty": [
@@ -4788,37 +5939,81 @@
       "vteriny": 231,
       "tym": "BANES Motor České Budějovice",
       "hrac": "Strmeň Jan",
-      "min": "2"
+      "min": "2",
+      "od": "03:51",
+      "do": "05:51",
+      "duvod": "ZHVP"
      },
      {
       "cas": "15:00",
       "vteriny": 900,
       "tym": "HC ŠKODA PLZEŇ",
       "hrac": "Filip Matyáš",
-      "min": "2"
+      "min": "2",
+      "od": "15:00",
+      "do": "17:00",
+      "duvod": "krosček"
      },
      {
       "cas": "26:03",
       "vteriny": 1563,
       "tym": "BANES Motor České Budějovice",
       "hrac": "Hoch Štěpán",
-      "min": "2"
+      "min": "2",
+      "od": "26:03",
+      "do": "28:03",
+      "duvod": "zásah do hlavy nebo krku"
      },
      {
       "cas": "34:58",
       "vteriny": 2098,
       "tym": "BANES Motor České Budějovice",
       "hrac": "Pour Jakub",
-      "min": "2"
+      "min": "2",
+      "od": "34:58",
+      "do": "36:58",
+      "duvod": "vysoká hůl"
      },
      {
       "cas": "39:37",
       "vteriny": 2377,
       "tym": "BANES Motor České Budějovice",
       "hrac": "Bulíř Michal",
-      "min": "2"
+      "min": "2",
+      "od": "39:37",
+      "do": "39:57",
+      "duvod": "podražení"
      }
     ],
+    "nejlepsi": {
+     "A": {
+      "tym": "HC ŠKODA PLZEŇ",
+      "hrac": "Robertson Carter Aj"
+     },
+     "B": {
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Lantoši Róbert"
+     }
+    },
+    "bez_brankare": {
+     "A": [
+      [
+       3600,
+       null
+      ]
+     ],
+     "B": [
+      [
+       3409,
+       3475
+      ],
+      [
+       3600,
+       null
+      ]
+     ]
+    },
+    "datum": "08.10.2026",
     "rozhodci": {
      "hlavni": [
       "Tomáš Mejzlík",
@@ -5240,7 +6435,20 @@
       "tym": "BANES Motor České Budějovice",
       "strelec": "Beránek Martin",
       "asistence": [],
-      "situace": "4/5"
+      "situace": "4/5",
+      "na_ledu_za": [
+       "Beránek Martin",
+       "Hoch Štěpán",
+       "Vráblík Roman",
+       "Vála Ondřej"
+      ],
+      "na_ledu_proti": [
+       "Najman Adam",
+       "Lenc Radan",
+       "Galvas Tomáš",
+       "Sandberg Filip",
+       "Rychlovský Jakub"
+      ]
      },
      {
       "cas": "04:49",
@@ -5251,7 +6459,20 @@
        "Galvas Tomáš",
        "Najman Adam"
       ],
-      "situace": "5/4"
+      "situace": "5/4",
+      "na_ledu_za": [
+       "Najman Adam",
+       "Sandberg Filip",
+       "Rychlovský Jakub",
+       "Lenc Radan",
+       "Galvas Tomáš"
+      ],
+      "na_ledu_proti": [
+       "Hoch Štěpán",
+       "Nordsäter Lucas",
+       "Beránek Martin",
+       "Kachyňa Ondřej"
+      ]
      },
      {
       "cas": "09:02",
@@ -5262,7 +6483,21 @@
        "Petrovský Servác",
        "Faško-Rudáš Martin"
       ],
-      "situace": "5/5"
+      "situace": "5/5",
+      "na_ledu_za": [
+       "Procházka Ondřej",
+       "Šimek Radim",
+       "Petrovský Servác",
+       "Galvas Tomáš",
+       "Faško-Rudáš Martin"
+      ],
+      "na_ledu_proti": [
+       "Vála Ondřej",
+       "Pýcha Pavel",
+       "Lantoši Róbert",
+       "Hoch Štěpán",
+       "Olesen Nick Alexander"
+      ]
      },
      {
       "cas": "19:35",
@@ -5273,7 +6508,21 @@
        "Hoch Štěpán",
        "Pýcha Pavel"
       ],
-      "situace": "5/5"
+      "situace": "5/5",
+      "na_ledu_za": [
+       "Lantoši Róbert",
+       "Hoch Štěpán",
+       "Olesen Nick Alexander",
+       "Pýcha Pavel",
+       "Štencel Jan"
+      ],
+      "na_ledu_proti": [
+       "Rychlovský Jakub",
+       "Šimek Radim",
+       "Pytlík Jaromír",
+       "Musil Adam",
+       "Galvas Tomáš"
+      ]
      },
      {
       "cas": "38:32",
@@ -5284,7 +6533,20 @@
        "Olesen Nick Alexander",
        "Štencel Jan"
       ],
-      "situace": "5/4"
+      "situace": "5/4",
+      "na_ledu_za": [
+       "Ahl Filip",
+       "Olesen Nick Alexander",
+       "Štencel Jan",
+       "Lantoši Róbert",
+       "Bell Parker"
+      ],
+      "na_ledu_proti": [
+       "Musil Adam",
+       "Zile Kristaps",
+       "Faško-Rudáš Martin",
+       "Zeman Denis"
+      ]
      },
      {
       "cas": "43:35",
@@ -5295,7 +6557,21 @@
        "Rychlovský Jakub",
        "Musil Adam"
       ],
-      "situace": "5/5"
+      "situace": "5/5",
+      "na_ledu_za": [
+       "Kachlíř Lukáš",
+       "Rychlovský Jakub",
+       "Musil Adam",
+       "Pérez Lisa Jaromír",
+       "Zile Kristaps"
+      ],
+      "na_ledu_proti": [
+       "Štencel Jan",
+       "Vráblík Roman",
+       "Zachar Marek",
+       "Toman Matěj",
+       "Beránek Martin"
+      ]
      },
      {
       "cas": "46:58",
@@ -5306,7 +6582,21 @@
        "Nordsäter Lucas",
        "Toman Matěj"
       ],
-      "situace": "5/5"
+      "situace": "5/5",
+      "na_ledu_za": [
+       "Zachar Marek",
+       "Nordsäter Lucas",
+       "Beránek Martin",
+       "Toman Matěj",
+       "Nedorost Václav"
+      ],
+      "na_ledu_proti": [
+       "Havlín Tomáš",
+       "Zeman Denis",
+       "Procházka Ondřej",
+       "Petrovský Servác",
+       "Pérez Lisa Jaromír"
+      ]
      }
     ],
     "tresty": [
@@ -5315,79 +6605,137 @@
       "vteriny": 69,
       "tym": "Bílí Tygři Liberec",
       "hrac": "lavička (HL)",
-      "min": "2"
+      "min": "2",
+      "od": "01:09",
+      "do": "03:09",
+      "duvod": "ZHPV"
      },
      {
       "cas": "03:46",
       "vteriny": 226,
       "tym": "BANES Motor České Budějovice",
       "hrac": "Toman Matěj",
-      "min": "2"
+      "min": "2",
+      "od": "03:46",
+      "do": "04:49",
+      "duvod": "VRAZ"
      },
      {
       "cas": "10:34",
       "vteriny": 634,
       "tym": "Bílí Tygři Liberec",
       "hrac": "Pilíšek Vojtěch",
-      "min": "2"
+      "min": "2",
+      "od": "10:34",
+      "do": "12:34",
+      "duvod": "podražení"
      },
      {
       "cas": "17:31",
       "vteriny": 1051,
       "tym": "BANES Motor České Budějovice",
       "hrac": "Beránek Martin",
-      "min": "5"
+      "min": "5",
+      "od": "17:31",
+      "do": "22:31",
+      "duvod": "BTK"
      },
      {
       "cas": "17:31",
       "vteriny": 1051,
       "tym": "Bílí Tygři Liberec",
       "hrac": "Zile Kristaps",
-      "min": "5"
+      "min": "5",
+      "od": "17:31",
+      "do": "22:31",
+      "duvod": "BTK"
      },
      {
       "cas": "27:57",
       "vteriny": 1677,
       "tym": "Bílí Tygři Liberec",
       "hrac": "Pytlík Jaromír",
-      "min": "2"
+      "min": "2",
+      "od": "27:57",
+      "do": "29:57",
+      "duvod": "sekání"
      },
      {
       "cas": "37:42",
       "vteriny": 2262,
       "tym": "Bílí Tygři Liberec",
       "hrac": "Šimek Radim",
-      "min": "2"
+      "min": "2",
+      "od": "37:42",
+      "do": "38:32",
+      "duvod": "ZHVP"
      },
      {
       "cas": "48:07",
       "vteriny": 2887,
       "tym": "BANES Motor České Budějovice",
       "hrac": "Ordoš Jan",
-      "min": "2"
+      "min": "2",
+      "od": "48:07",
+      "do": "50:07",
+      "duvod": "podražení"
      },
      {
       "cas": "59:42",
       "vteriny": 3582,
       "tym": "BANES Motor České Budějovice",
       "hrac": "Beránek Martin",
-      "min": "2"
+      "min": "2",
+      "od": "59:42",
+      "do": "60:00",
+      "duvod": "krosček"
      },
      {
       "cas": "60:00",
       "vteriny": 3600,
       "tym": "BANES Motor České Budějovice",
       "hrac": "Toman Matěj",
-      "min": "2"
+      "min": "2",
+      "od": "60:00",
+      "do": "60:00",
+      "duvod": "hrubost"
      },
      {
       "cas": "60:00",
       "vteriny": 3600,
       "tym": "Bílí Tygři Liberec",
       "hrac": "Lenc Radan",
-      "min": "2"
+      "min": "2",
+      "od": "60:00",
+      "do": "60:00",
+      "duvod": "sekání"
      }
     ],
+    "nejlepsi": {
+     "A": {
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Beránek Martin"
+     },
+     "B": {
+      "tym": "Bílí Tygři Liberec",
+      "hrac": "Procházka Ondřej"
+     }
+    },
+    "bez_brankare": {
+     "A": [
+      [
+       3600,
+       null
+      ]
+     ],
+     "B": [
+      [
+       3491,
+       null
+      ]
+     ]
+    },
+    "datum": "11.10.2026",
     "rozhodci": {
      "hlavni": [
       "Antonín Jeřábek (BM82)",
@@ -5808,7 +7156,21 @@
        "Štencel Jan",
        "Hoch Štěpán"
       ],
-      "situace": "5/5"
+      "situace": "5/5",
+      "na_ledu_za": [
+       "Hoch Štěpán",
+       "Olesen Nick Alexander",
+       "Lantoši Róbert",
+       "Vráblík Roman",
+       "Štencel Jan"
+      ],
+      "na_ledu_proti": [
+       "Brůna Patrik",
+       "Nellis Anthony",
+       "Kňažko Samuel",
+       "Kalus Marek",
+       "Yetman Chad"
+      ]
      },
      {
       "cas": "34:41",
@@ -5818,7 +7180,21 @@
       "asistence": [
        "Bernovský Jan"
       ],
-      "situace": "5/5"
+      "situace": "5/5",
+      "na_ledu_za": [
+       "Macias Krzysztof Tomasz",
+       "Port Vojtěch",
+       "Bernovský Jan",
+       "Šír Jan",
+       "Holland Rhett"
+      ],
+      "na_ledu_proti": [
+       "Koláček Josef",
+       "Vála Ondřej",
+       "Ordoš Jan",
+       "Vráblík Roman",
+       "Bulíř Michal"
+      ]
      },
      {
       "cas": "48:08",
@@ -5828,7 +7204,20 @@
       "asistence": [
        "Bell Parker"
       ],
-      "situace": "5/4"
+      "situace": "5/4",
+      "na_ledu_za": [
+       "Štencel Jan",
+       "Ahl Filip",
+       "Olesen Nick Alexander",
+       "Bell Parker",
+       "Lantoši Róbert"
+      ],
+      "na_ledu_proti": [
+       "Holland Rhett",
+       "Kalus Marek",
+       "Zbořil Jakub",
+       "Hladonik Jan"
+      ]
      },
      {
       "cas": "59:57",
@@ -5839,7 +7228,22 @@
        "Hejduk Marek",
        "Hoch Štěpán"
       ],
-      "situace": "5/5"
+      "situace": "5/5",
+      "na_ledu_za": [
+       "Ordoš Jan",
+       "Hejduk Marek",
+       "Hoch Štěpán",
+       "Vála Ondřej",
+       "Kundrátek Tomáš"
+      ],
+      "na_ledu_proti": [
+       "Cienciala David",
+       "Hladonik Jan",
+       "Šír Jan",
+       "Bernovský Jan",
+       "Pavelka Tomáš",
+       "Kňažko Samuel"
+      ]
      }
     ],
     "tresty": [
@@ -5848,44 +7252,91 @@
       "vteriny": 1148,
       "tym": "HC VÍTKOVICE RIDERA",
       "hrac": "Pavelka Tomáš",
-      "min": "2"
+      "min": "2",
+      "od": "19:08",
+      "do": "21:08",
+      "duvod": "držení protihráče"
      },
      {
       "cas": "23:19",
       "vteriny": 1399,
       "tym": "HC VÍTKOVICE RIDERA",
       "hrac": "Holland Rhett",
-      "min": "2"
+      "min": "2",
+      "od": "23:19",
+      "do": "25:19",
+      "duvod": "podražení"
      },
      {
       "cas": "35:32",
       "vteriny": 2132,
       "tym": "BANES Motor České Budějovice",
       "hrac": "Pour Jakub",
-      "min": "2"
+      "min": "2",
+      "od": "35:32",
+      "do": "37:32",
+      "duvod": "sekání"
      },
      {
       "cas": "48:03",
       "vteriny": 2883,
       "tym": "HC VÍTKOVICE RIDERA",
       "hrac": "Macias Krzysztof Tomasz",
-      "min": "2"
+      "min": "2",
+      "od": "48:03",
+      "do": "48:08",
+      "duvod": "vysoká hůl"
      },
      {
       "cas": "50:58",
       "vteriny": 3058,
       "tym": "BANES Motor České Budějovice",
       "hrac": "Nedorost Václav",
-      "min": "2"
+      "min": "2",
+      "od": "50:58",
+      "do": "52:58",
+      "duvod": "držení protihráče"
      },
      {
       "cas": "57:19",
       "vteriny": 3439,
       "tym": "BANES Motor České Budějovice",
       "hrac": "Bell Parker",
-      "min": "20"
+      "min": "20",
+      "od": "57:19",
+      "do": "60:00",
+      "duvod": "napadení rozhodčího"
      }
     ],
+    "nejlepsi": {
+     "A": {
+      "tym": "HC VÍTKOVICE RIDERA",
+      "hrac": "Port Vojtěch"
+     },
+     "B": {
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Štencel Jan"
+     }
+    },
+    "bez_brankare": {
+     "A": [
+      [
+       3475,
+       3597
+      ],
+      [
+       3600,
+       null
+      ]
+     ],
+     "B": [
+      [
+       3600,
+       null
+      ]
+     ]
+    },
+    "datum": "16.10.2026",
     "rozhodci": {
      "hlavni": [
       "Robin Šír",
@@ -6309,7 +7760,21 @@
       "asistence": [
        "Klima Kelly Philip"
       ],
-      "situace": "5/5"
+      "situace": "5/5",
+      "na_ledu_za": [
+       "Mendel Griffin Jameson",
+       "Kubík Adam",
+       "Jandus Martin",
+       "Klima Kelly Philip",
+       "Konečný Jakub"
+      ],
+      "na_ledu_proti": [
+       "Ordoš Jan",
+       "Koláček Josef",
+       "Pýcha Pavel",
+       "Kundrátek Tomáš",
+       "Bulíř Michal"
+      ]
      },
      {
       "cas": "13:53",
@@ -6320,7 +7785,20 @@
        "Ahl Filip",
        "Lantoši Róbert"
       ],
-      "situace": "5/4"
+      "situace": "5/4",
+      "na_ledu_za": [
+       "Koláček Josef",
+       "Ahl Filip",
+       "Lantoši Róbert",
+       "Olesen Nick Alexander",
+       "Štencel Jan"
+      ],
+      "na_ledu_proti": [
+       "Konečný Jakub",
+       "Jandus Martin",
+       "Kempný Michal",
+       "Forman Miroslav"
+      ]
      },
      {
       "cas": "17:09",
@@ -6331,7 +7809,20 @@
        "Konečný Jakub",
        "Audette Daniel"
       ],
-      "situace": "5/4"
+      "situace": "5/4",
+      "na_ledu_za": [
+       "Audette Daniel",
+       "Konečný Jakub",
+       "Ojamäki Niko Juhani",
+       "Klima Kelly Philip",
+       "Vigneault Samuel"
+      ],
+      "na_ledu_proti": [
+       "Vráblík Roman",
+       "Beránek Martin",
+       "Vála Ondřej",
+       "Hoch Štěpán"
+      ]
      },
      {
       "cas": "43:25",
@@ -6342,7 +7833,20 @@
        "Konečný Jakub",
        "Vigneault Samuel"
       ],
-      "situace": "5/4"
+      "situace": "5/4",
+      "na_ledu_za": [
+       "Audette Daniel",
+       "Ojamäki Niko Juhani",
+       "Vigneault Samuel",
+       "Klima Kelly Philip",
+       "Konečný Jakub"
+      ],
+      "na_ledu_proti": [
+       "Vála Ondřej",
+       "Beránek Martin",
+       "Vráblík Roman",
+       "Hoch Štěpán"
+      ]
      },
      {
       "cas": "57:36",
@@ -6353,7 +7857,22 @@
        "Beránek Martin",
        "Ordoš Jan"
       ],
-      "situace": "5/5"
+      "situace": "5/5",
+      "na_ledu_za": [
+       "Štencel Jan",
+       "Olesen Nick Alexander",
+       "Beránek Martin",
+       "Lantoši Róbert",
+       "Vráblík Roman",
+       "Ordoš Jan"
+      ],
+      "na_ledu_proti": [
+       "Kempný Michal",
+       "Marcel Marcel",
+       "Přikryl Filip",
+       "Hlava Nicolas",
+       "Pietroniro Phil"
+      ]
      }
     ],
     "tresty": [
@@ -6362,79 +7881,141 @@
       "vteriny": 798,
       "tym": "Rytíři Kladno",
       "hrac": "lavička (HL)",
-      "min": "2"
+      "min": "2",
+      "od": "13:18",
+      "do": "13:53",
+      "duvod": "příliš mnoho hráčů na ledě"
      },
      {
       "cas": "15:47",
       "vteriny": 947,
       "tym": "BANES Motor České Budějovice",
       "hrac": "Lantoši Róbert",
-      "min": "2"
+      "min": "2",
+      "od": "15:47",
+      "do": "17:09",
+      "duvod": "nedovolené bránění brankáře"
      },
      {
       "cas": "18:50",
       "vteriny": 1130,
       "tym": "BANES Motor České Budějovice",
       "hrac": "Olesen Nick Alexander",
-      "min": "2"
+      "min": "2",
+      "od": "18:50",
+      "do": "20:50",
+      "duvod": "podražení"
      },
      {
       "cas": "27:46",
       "vteriny": 1666,
       "tym": "Rytíři Kladno",
       "hrac": "Rulík Adam",
-      "min": "2"
+      "min": "2",
+      "od": "27:46",
+      "do": "29:46",
+      "duvod": "držení protihráče"
      },
      {
       "cas": "29:12",
       "vteriny": 1752,
       "tym": "BANES Motor České Budějovice",
       "hrac": "Kundrátek Tomáš",
-      "min": "2"
+      "min": "2",
+      "od": "29:12",
+      "do": "31:12",
+      "duvod": "podražení"
      },
      {
       "cas": "30:20",
       "vteriny": 1820,
       "tym": "Rytíři Kladno",
       "hrac": "Přikryl Filip",
-      "min": "2"
+      "min": "2",
+      "od": "30:20",
+      "do": "32:20",
+      "duvod": "nedovolené bránění"
      },
      {
       "cas": "32:42",
       "vteriny": 1962,
       "tym": "BANES Motor České Budějovice",
       "hrac": "Koláček Josef",
-      "min": "2"
+      "min": "2",
+      "od": "32:42",
+      "do": "34:42",
+      "duvod": "držení protihráče"
      },
      {
       "cas": "42:46",
       "vteriny": 2566,
       "tym": "BANES Motor České Budějovice",
       "hrac": "Nordsäter Lucas",
-      "min": "2"
+      "min": "2",
+      "od": "42:46",
+      "do": "43:25",
+      "duvod": "podražení"
      },
      {
       "cas": "53:28",
       "vteriny": 3208,
       "tym": "Rytíři Kladno",
       "hrac": "Marcel Marcel",
-      "min": "2"
+      "min": "2",
+      "od": "53:28",
+      "do": "55:28",
+      "duvod": "vysoká hůl"
      },
      {
       "cas": "55:28",
       "vteriny": 3328,
       "tym": "Rytíři Kladno",
       "hrac": "Marcel Marcel",
-      "min": "2"
+      "min": "2",
+      "od": "55:28",
+      "do": "57:28",
+      "duvod": "vysoká hůl"
      },
      {
       "cas": "60:00",
       "vteriny": 3600,
       "tym": "BANES Motor České Budějovice",
       "hrac": "Olesen Nick Alexander",
-      "min": "2"
+      "min": "2",
+      "od": "60:00",
+      "do": "60:00",
+      "duvod": "NESP"
      }
     ],
+    "nejlepsi": {
+     "A": {
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Ahl Filip"
+     },
+     "B": {
+      "tym": "Rytíři Kladno",
+      "hrac": "Ojamäki Niko Juhani"
+     }
+    },
+    "bez_brankare": {
+     "A": [
+      [
+       3450,
+       3456
+      ],
+      [
+       3476,
+       null
+      ]
+     ],
+     "B": [
+      [
+       3600,
+       null
+      ]
+     ]
+    },
+    "datum": "18.10.2026",
     "rozhodci": {
      "hlavni": [
       "Josef Barek",
@@ -6846,7 +8427,21 @@
       "tym": "BANES Motor České Budějovice",
       "strelec": "Krastenbergs Renars",
       "asistence": [],
-      "situace": "5/5"
+      "situace": "5/5",
+      "na_ledu_za": [
+       "Krastenbergs Renars",
+       "Ordoš Jan",
+       "Štencel Jan",
+       "Bulíř Michal",
+       "Vráblík Roman"
+      ],
+      "na_ledu_proti": [
+       "Kurovský Daniel",
+       "Pyrochta Filip",
+       "Musil David",
+       "Chlán Petr",
+       "Hrehorčák Patrik"
+      ]
      },
      {
       "cas": "13:34",
@@ -6857,7 +8452,21 @@
        "Nedorost Václav",
        "Klouček Milan"
       ],
-      "situace": "5/5"
+      "situace": "5/5",
+      "na_ledu_za": [
+       "Ahl Filip",
+       "Nedorost Václav",
+       "Vála Ondřej",
+       "Zachar Marek",
+       "Pour Jakub"
+      ],
+      "na_ledu_proti": [
+       "Daňo Marko",
+       "Hudáček Libor",
+       "Průšek Pavel",
+       "Adámek Marian",
+       "Kubiesa Matěj"
+      ]
      },
      {
       "cas": "17:14",
@@ -6868,7 +8477,21 @@
        "Lantoši Róbert",
        "Hoch Štěpán"
       ],
-      "situace": "5/5"
+      "situace": "5/5",
+      "na_ledu_za": [
+       "Olesen Nick Alexander",
+       "Lantoši Róbert",
+       "Hoch Štěpán",
+       "Nordsäter Lucas",
+       "Vála Ondřej"
+      ],
+      "na_ledu_proti": [
+       "Hudáček Libor",
+       "Daňo Marko",
+       "Koch Patrik",
+       "Kubiesa Matěj",
+       "Galvas Jakub"
+      ]
      },
      {
       "cas": "19:20",
@@ -6879,7 +8502,20 @@
        "Kovařčík Michal",
        "Kubiesa Matěj"
       ],
-      "situace": "5/4"
+      "situace": "5/4",
+      "na_ledu_za": [
+       "Daňo Marko",
+       "Kovařčík Michal",
+       "Kubiesa Matěj",
+       "Pyrochta Filip",
+       "Hudáček Libor"
+      ],
+      "na_ledu_proti": [
+       "Kundrátek Tomáš",
+       "Hejduk Marek",
+       "Toman Matěj",
+       "Nordsäter Lucas"
+      ]
      },
      {
       "cas": "39:11",
@@ -6890,7 +8526,20 @@
        "Štencel Jan",
        "Lantoši Róbert"
       ],
-      "situace": "5/4"
+      "situace": "5/4",
+      "na_ledu_za": [
+       "Koláček Josef",
+       "Štencel Jan",
+       "Lantoši Róbert",
+       "Ahl Filip",
+       "Olesen Nick Alexander"
+      ],
+      "na_ledu_proti": [
+       "Nestrašil Andrej",
+       "Kovařčík Ondřej",
+       "Musil David",
+       "Galvas Jakub"
+      ]
      },
      {
       "cas": "55:23",
@@ -6901,7 +8550,21 @@
        "Koláček Josef",
        "Kundrátek Tomáš"
       ],
-      "situace": "5/5"
+      "situace": "5/5",
+      "na_ledu_za": [
+       "Koláček Josef",
+       "Toman Matěj",
+       "Beránek Martin",
+       "Vála Ondřej",
+       "Kundrátek Tomáš"
+      ],
+      "na_ledu_proti": [
+       "Kovařčík Ondřej",
+       "Adámek Marian",
+       "Kovařčík Michal",
+       "Pyrochta Filip",
+       "Nestrašil Andrej"
+      ]
      },
      {
       "cas": "58:09",
@@ -6911,7 +8574,20 @@
       "asistence": [
        "Lantoši Róbert"
       ],
-      "situace": "5/4"
+      "situace": "5/4",
+      "na_ledu_za": [
+       "Koláček Josef",
+       "Lantoši Róbert",
+       "Ahl Filip",
+       "Olesen Nick Alexander",
+       "Pýcha Pavel"
+      ],
+      "na_ledu_proti": [
+       "Koch Patrik",
+       "Kurovský Daniel",
+       "Průšek Pavel",
+       "Voženílek Daniel"
+      ]
      },
      {
       "cas": "58:48",
@@ -6922,7 +8598,21 @@
        "Růžička Martin",
        "Chlán Petr"
       ],
-      "situace": "5/5"
+      "situace": "5/5",
+      "na_ledu_za": [
+       "Pyrochta Filip",
+       "Růžička Martin",
+       "Chlán Petr",
+       "Koch Patrik",
+       "Voženílek Daniel"
+      ],
+      "na_ledu_proti": [
+       "Beránek Martin",
+       "Toman Matěj",
+       "Nedorost Václav",
+       "Zachar Marek",
+       "Pýcha Pavel"
+      ]
      }
     ],
     "tresty": [
@@ -6931,86 +8621,147 @@
       "vteriny": 241,
       "tym": "BANES Motor České Budějovice",
       "hrac": "Nedorost Václav",
-      "min": "2"
+      "min": "2",
+      "od": "04:01",
+      "do": "06:01",
+      "duvod": "podražení"
      },
      {
       "cas": "13:10",
       "vteriny": 790,
       "tym": "HC Oceláři Třinec",
       "hrac": "Koch Patrik",
-      "min": "2"
+      "min": "2",
+      "od": "13:10",
+      "do": "15:10",
+      "duvod": "držení protihráče"
      },
      {
       "cas": "13:10",
       "vteriny": 790,
       "tym": "BANES Motor České Budějovice",
       "hrac": "Olesen Nick Alexander",
-      "min": "2"
+      "min": "2",
+      "od": "13:10",
+      "do": "15:10",
+      "duvod": "hrubost"
      },
      {
       "cas": "18:41",
       "vteriny": 1121,
       "tym": "HC Oceláři Třinec",
       "hrac": "Voženílek Daniel",
-      "min": "2"
+      "min": "2",
+      "od": "18:41",
+      "do": "20:41",
+      "duvod": "hrubost"
      },
      {
       "cas": "18:41",
       "vteriny": 1121,
       "tym": "BANES Motor České Budějovice",
       "hrac": "Bulíř Michal",
-      "min": "2"
+      "min": "2",
+      "od": "18:41",
+      "do": "19:20",
+      "duvod": "hrubost"
      },
      {
       "cas": "19:20",
       "vteriny": 1160,
       "tym": "BANES Motor České Budějovice",
       "hrac": "Bulíř Michal",
-      "min": "2"
+      "min": "2",
+      "od": "19:20",
+      "do": "21:20",
+      "duvod": "hrubost"
      },
      {
       "cas": "20:54",
       "vteriny": 1254,
       "tym": "BANES Motor České Budějovice",
       "hrac": "lavička (HL)",
-      "min": "2"
+      "min": "2",
+      "od": "20:54",
+      "do": "22:54",
+      "duvod": "příliš mnoho hráčů na ledě"
      },
      {
       "cas": "35:49",
       "vteriny": 2149,
       "tym": "BANES Motor České Budějovice",
       "hrac": "Toman Matěj",
-      "min": "2"
+      "min": "2",
+      "od": "35:49",
+      "do": "37:49",
+      "duvod": "ZHVP"
      },
      {
       "cas": "39:06",
       "vteriny": 2346,
       "tym": "HC Oceláři Třinec",
       "hrac": "Koch Patrik",
-      "min": "2"
+      "min": "2",
+      "od": "39:06",
+      "do": "39:11",
+      "duvod": "krosček"
      },
      {
       "cas": "39:40",
       "vteriny": 2380,
       "tym": "BANES Motor České Budějovice",
       "hrac": "Beránek Martin",
-      "min": "2"
+      "min": "2",
+      "od": "39:40",
+      "do": "41:40",
+      "duvod": "sekání"
      },
      {
       "cas": "55:23",
       "vteriny": 3323,
       "tym": "HC Oceláři Třinec",
       "hrac": "Kovařčík Michal",
-      "min": "2"
+      "min": "2",
+      "od": "55:23",
+      "do": "57:23",
+      "duvod": "NESP"
      },
      {
       "cas": "57:10",
       "vteriny": 3430,
       "tym": "HC Oceláři Třinec",
       "hrac": "Nestrašil Andrej",
-      "min": "2"
+      "min": "2",
+      "od": "57:10",
+      "do": "58:09",
+      "duvod": "hákování"
      }
     ],
+    "nejlepsi": {
+     "A": {
+      "tym": "HC Oceláři Třinec",
+      "hrac": "Kubiesa Matěj"
+     },
+     "B": {
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Klouček Milan"
+     }
+    },
+    "bez_brankare": {
+     "A": [
+      [
+       3600,
+       null
+      ]
+     ],
+     "B": [
+      [
+       3600,
+       null
+      ]
+     ]
+    },
+    "datum": "23.10.2026",
     "rozhodci": {
      "hlavni": [
       "Robin Šír",
@@ -7431,7 +9182,20 @@
        "Hyka Tomáš",
        "Gardoň Matěj"
       ],
-      "situace": "5/4"
+      "situace": "5/4",
+      "na_ledu_za": [
+       "Skalický Pavol",
+       "Hyka Tomáš",
+       "Gardoň Matěj",
+       "Zámorský Petr",
+       "Fořt Tomáš"
+      ],
+      "na_ledu_proti": [
+       "Beránek Martin",
+       "Hoch Štěpán",
+       "Kundrátek Tomáš",
+       "Nordsäter Lucas"
+      ]
      },
      {
       "cas": "32:49",
@@ -7442,7 +9206,20 @@
        "Hyka Tomáš",
        "Fořt Tomáš"
       ],
-      "situace": "5/4"
+      "situace": "5/4",
+      "na_ledu_za": [
+       "Hyka Tomáš",
+       "Fořt Tomáš",
+       "Gardoň Matěj",
+       "Zámorský Petr",
+       "Skalický Pavol"
+      ],
+      "na_ledu_proti": [
+       "Toman Matěj",
+       "Kundrátek Tomáš",
+       "Zachar Marek",
+       "Nordsäter Lucas"
+      ]
      },
      {
       "cas": "50:10",
@@ -7453,7 +9230,21 @@
        "Kundrátek Tomáš",
        "Toman Matěj"
       ],
-      "situace": "5/5"
+      "situace": "5/5",
+      "na_ledu_za": [
+       "Toman Matěj",
+       "Pýcha Pavel",
+       "Beránek Martin",
+       "Koláček Josef",
+       "Kundrátek Tomáš"
+      ],
+      "na_ledu_proti": [
+       "Moravec David",
+       "Martel Jordan",
+       "Budík Vojtěch",
+       "Lichtag Jakub",
+       "Gavars Felikss"
+      ]
      },
      {
       "cas": "56:33",
@@ -7464,7 +9255,21 @@
        "Nedorost Václav",
        "Olesen Nick Alexander"
       ],
-      "situace": "5/5"
+      "situace": "5/5",
+      "na_ledu_za": [
+       "Olesen Nick Alexander",
+       "Ordoš Jan",
+       "Bulíř Michal",
+       "Vráblík Roman",
+       "Nedorost Václav"
+      ],
+      "na_ledu_proti": [
+       "Fořt Tomáš",
+       "Koblížek Radek",
+       "Jánošík Adam",
+       "Kubíček Šimon",
+       "Rekonen Aleksi Oskari"
+      ]
      },
      {
       "cas": "65:00",
@@ -7472,7 +9277,9 @@
       "tym": "BK Mladá Boleslav",
       "strelec": "Gavars Felikss",
       "asistence": [],
-      "situace": "SN"
+      "situace": "SN",
+      "na_ledu_za": [],
+      "na_ledu_proti": []
      }
     ],
     "tresty": [
@@ -7481,79 +9288,137 @@
       "vteriny": 792,
       "tym": "BANES Motor České Budějovice",
       "hrac": "Lantoši Róbert",
-      "min": "2"
+      "min": "2",
+      "od": "13:12",
+      "do": "14:18",
+      "duvod": "podražení"
      },
      {
       "cas": "20:00",
       "vteriny": 1200,
       "tym": "BK Mladá Boleslav",
       "hrac": "Kubíček Šimon",
-      "min": "2"
+      "min": "2",
+      "od": "20:00",
+      "do": "22:00",
+      "duvod": "hrubost"
      },
      {
       "cas": "20:00",
       "vteriny": 1200,
       "tym": "BANES Motor České Budějovice",
       "hrac": "Beránek Martin",
-      "min": "2"
+      "min": "2",
+      "od": "20:00",
+      "do": "22:00",
+      "duvod": "hrubost"
      },
      {
       "cas": "24:00",
       "vteriny": 1440,
       "tym": "BK Mladá Boleslav",
       "hrac": "Kubíček Šimon",
-      "min": "5"
+      "min": "5",
+      "od": "24:00",
+      "do": "29:00",
+      "duvod": "BTK"
      },
      {
       "cas": "24:00",
       "vteriny": 1440,
       "tym": "BANES Motor České Budějovice",
       "hrac": "Beránek Martin",
-      "min": "5"
+      "min": "5",
+      "od": "24:00",
+      "do": "29:00",
+      "duvod": "BTK"
      },
      {
       "cas": "31:09",
       "vteriny": 1869,
       "tym": "BANES Motor České Budějovice",
       "hrac": "Pour Jakub",
-      "min": "2"
+      "min": "2",
+      "od": "31:09",
+      "do": "32:49",
+      "duvod": "podražení"
      },
      {
       "cas": "38:33",
       "vteriny": 2313,
       "tym": "BK Mladá Boleslav",
       "hrac": "lavička (HL)",
-      "min": "2"
+      "min": "2",
+      "od": "38:33",
+      "do": "40:33",
+      "duvod": "příliš mnoho hráčů na ledě"
      },
      {
       "cas": "43:12",
       "vteriny": 2592,
       "tym": "BK Mladá Boleslav",
       "hrac": "Moravec David",
-      "min": "2"
+      "min": "2",
+      "od": "43:12",
+      "do": "45:12",
+      "duvod": "hákování"
      },
      {
       "cas": "45:01",
       "vteriny": 2701,
       "tym": "BK Mladá Boleslav",
       "hrac": "Lichtag Jakub",
-      "min": "2"
+      "min": "2",
+      "od": "45:01",
+      "do": "47:01",
+      "duvod": "podražení"
      },
      {
       "cas": "51:29",
       "vteriny": 3089,
       "tym": "BANES Motor České Budějovice",
       "hrac": "Hejduk Marek",
-      "min": "2"
+      "min": "2",
+      "od": "51:29",
+      "do": "53:29",
+      "duvod": "vysoká hůl"
      },
      {
       "cas": "52:37",
       "vteriny": 3157,
       "tym": "BK Mladá Boleslav",
       "hrac": "Gardoň Matěj",
-      "min": "2"
+      "min": "2",
+      "od": "52:37",
+      "do": "54:37",
+      "duvod": "napadení rozhodčího"
      }
     ],
+    "nejlepsi": {
+     "A": {
+      "tym": "BK Mladá Boleslav",
+      "hrac": "Gardoň Matěj"
+     },
+     "B": {
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Nedorost Václav"
+     }
+    },
+    "bez_brankare": {
+     "A": [
+      [
+       3900,
+       null
+      ]
+     ],
+     "B": [
+      [
+       3900,
+       null
+      ]
+     ]
+    },
+    "datum": "25.10.2026",
     "rozhodci": {
      "hlavni": [
       "Matěj Sýkora",
@@ -8049,7 +9914,21 @@
        "Lantoši Róbert",
        "Hoch Štěpán"
       ],
-      "situace": "5/5"
+      "situace": "5/5",
+      "na_ledu_za": [
+       "Olesen Nick Alexander",
+       "Lantoši Róbert",
+       "Nordsäter Lucas",
+       "Nedorost Václav",
+       "Hoch Štěpán"
+      ],
+      "na_ledu_proti": [
+       "Kousal Robert",
+       "Sýkora David",
+       "Radil Lukáš",
+       "Koch Anders Gøbel",
+       "Miškář Patrik"
+      ]
      },
      {
       "cas": "38:51",
@@ -8060,7 +9939,21 @@
        "Krastenbergs Renars",
        "Bell Parker"
       ],
-      "situace": "5/5"
+      "situace": "5/5",
+      "na_ledu_za": [
+       "Ordoš Jan",
+       "Krastenbergs Renars",
+       "Kundrátek Tomáš",
+       "Pýcha Pavel",
+       "Bell Parker"
+      ],
+      "na_ledu_proti": [
+       "Melancon Thomas Joseph",
+       "Nenonen Markus",
+       "Zdráhal Patrik",
+       "Klima Kevin Petr",
+       "Vukojevic Michael Gabriel"
+      ]
      },
      {
       "cas": "58:12",
@@ -8070,7 +9963,22 @@
       "asistence": [
        "Toman Matěj"
       ],
-      "situace": "5/5"
+      "situace": "5/5",
+      "na_ledu_za": [
+       "Beránek Martin",
+       "Toman Matěj",
+       "Hejduk Marek",
+       "Vráblík Roman",
+       "Štencel Jan"
+      ],
+      "na_ledu_proti": [
+       "Koch Anders Gøbel",
+       "Tamáši Alex",
+       "Kousal Robert",
+       "Jergl Aleš",
+       "Melancon Thomas Joseph",
+       "Radil Lukáš"
+      ]
      }
     ],
     "tresty": [
@@ -8079,58 +9987,111 @@
       "vteriny": 1007,
       "tym": "BANES Motor České Budějovice",
       "hrac": "Krastenbergs Renars",
-      "min": "2"
+      "min": "2",
+      "od": "16:47",
+      "do": "18:47",
+      "duvod": "podražení"
      },
      {
       "cas": "30:55",
       "vteriny": 1855,
       "tym": "Mountfield HK, a.s.",
       "hrac": "Klima Kevin Petr",
-      "min": "2"
+      "min": "2",
+      "od": "30:55",
+      "do": "32:55",
+      "duvod": "držení protihráče"
      },
      {
       "cas": "31:28",
       "vteriny": 1888,
       "tym": "BANES Motor České Budějovice",
       "hrac": "Krastenbergs Renars",
-      "min": "2"
+      "min": "2",
+      "od": "31:28",
+      "do": "33:28",
+      "duvod": "podražení"
      },
      {
       "cas": "35:07",
       "vteriny": 2107,
       "tym": "Mountfield HK, a.s.",
       "hrac": "Pláněk Martin",
-      "min": "2"
+      "min": "2",
+      "od": "35:07",
+      "do": "37:07",
+      "duvod": "nedovolené bránění"
      },
      {
       "cas": "39:03",
       "vteriny": 2343,
       "tym": "Mountfield HK, a.s.",
       "hrac": "Kalina Petr",
-      "min": "2"
+      "min": "2",
+      "od": "39:03",
+      "do": "41:03",
+      "duvod": "podražení"
      },
      {
       "cas": "42:05",
       "vteriny": 2525,
       "tym": "BANES Motor České Budějovice",
       "hrac": "Ordoš Jan",
-      "min": "2"
+      "min": "2",
+      "od": "42:05",
+      "do": "44:05",
+      "duvod": "vysoká hůl"
      },
      {
       "cas": "44:05",
       "vteriny": 2645,
       "tym": "BANES Motor České Budějovice",
       "hrac": "Ordoš Jan",
-      "min": "2"
+      "min": "2",
+      "od": "44:05",
+      "do": "46:05",
+      "duvod": "vysoká hůl"
      },
      {
       "cas": "49:19",
       "vteriny": 2959,
       "tym": "Mountfield HK, a.s.",
       "hrac": "lavička (HL)",
-      "min": "2"
+      "min": "2",
+      "od": "49:19",
+      "do": "51:19",
+      "duvod": "příliš mnoho hráčů na ledě"
      }
     ],
+    "nejlepsi": {
+     "A": {
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Klouček Milan"
+     },
+     "B": {
+      "tym": "Mountfield HK, a.s.",
+      "hrac": "Škorvánek Stanislav"
+     }
+    },
+    "bez_brankare": {
+     "A": [
+      [
+       3600,
+       null
+      ]
+     ],
+     "B": [
+      [
+       3480,
+       3492
+      ],
+      [
+       3515,
+       null
+      ]
+     ]
+    },
+    "datum": "27.10.2026",
     "rozhodci": {
      "hlavni": [
       "Robin Šír",
@@ -8553,7 +10514,21 @@
        "Navrátil Jakub",
        "Matýs Ondřej"
       ],
-      "situace": "5/5"
+      "situace": "5/5",
+      "na_ledu_za": [
+       "Štohanzl Martin",
+       "Navrátil Jakub",
+       "Matýs Ondřej",
+       "Gewiese Petr",
+       "Stella Evan"
+      ],
+      "na_ledu_proti": [
+       "Bell Parker",
+       "Kundrátek Tomáš",
+       "Hejduk Marek",
+       "Zachar Marek",
+       "Pýcha Pavel"
+      ]
      },
      {
       "cas": "09:45",
@@ -8564,7 +10539,21 @@
        "Stella Evan",
        "Navrátil Jakub"
       ],
-      "situace": "5/5"
+      "situace": "5/5",
+      "na_ledu_za": [
+       "Berglund Carl Gunnar",
+       "Freibergs Ralfs",
+       "Navrátil Jakub",
+       "Stella Evan",
+       "Matýs Ondřej"
+      ],
+      "na_ledu_proti": [
+       "Kundrátek Tomáš",
+       "Nordsäter Lucas",
+       "Bulíř Michal",
+       "Beránek Martin",
+       "Ordoš Jan"
+      ]
      },
      {
       "cas": "23:04",
@@ -8575,7 +10564,20 @@
        "Herčík Daniel",
        "Štohanzl Martin"
       ],
-      "situace": "5/4"
+      "situace": "5/4",
+      "na_ledu_za": [
+       "Matýs Ondřej",
+       "Herčík Daniel",
+       "Štohanzl Martin",
+       "Tomeček Michal",
+       "Cosgrove Trevor"
+      ],
+      "na_ledu_proti": [
+       "Hoch Štěpán",
+       "Mccormack Graeme",
+       "Štencel Jan",
+       "Zachar Marek"
+      ]
      },
      {
       "cas": "32:19",
@@ -8586,7 +10588,19 @@
        "Kos Jakub",
        "Freibergs Ralfs"
       ],
-      "situace": "5/3"
+      "situace": "5/3",
+      "na_ledu_za": [
+       "Orsava Jakub",
+       "Macuh Rok",
+       "Kos Jakub",
+       "Navrátil Jakub",
+       "Freibergs Ralfs"
+      ],
+      "na_ledu_proti": [
+       "Vráblík Roman",
+       "Zachar Marek",
+       "Kundrátek Tomáš"
+      ]
      }
     ],
     "tresty": [
@@ -8595,72 +10609,127 @@
       "vteriny": 895,
       "tym": "BANES Motor České Budějovice",
       "hrac": "Štencel Jan",
-      "min": "2"
+      "min": "2",
+      "od": "14:55",
+      "do": "16:55",
+      "duvod": "krosček"
      },
      {
       "cas": "22:12",
       "vteriny": 1332,
       "tym": "BANES Motor České Budějovice",
       "hrac": "Ordoš Jan",
-      "min": "2"
+      "min": "2",
+      "od": "22:12",
+      "do": "23:04",
+      "duvod": "vysoká hůl"
      },
      {
       "cas": "23:04",
       "vteriny": 1384,
       "tym": "BANES Motor České Budějovice",
       "hrac": "Ordoš Jan",
-      "min": "2"
+      "min": "2",
+      "od": "23:04",
+      "do": "25:04",
+      "duvod": "vysoká hůl"
      },
      {
       "cas": "27:20",
       "vteriny": 1640,
       "tym": "HC Olomouc",
       "hrac": "Rutar Adam",
-      "min": "2"
+      "min": "2",
+      "od": "27:20",
+      "do": "29:20",
+      "duvod": "držení protihráče"
      },
      {
       "cas": "30:27",
       "vteriny": 1827,
       "tym": "BANES Motor České Budějovice",
       "hrac": "Bulíř Michal",
-      "min": "2"
+      "min": "2",
+      "od": "30:27",
+      "do": "32:19",
+      "duvod": "hákování"
      },
      {
       "cas": "31:10",
       "vteriny": 1870,
       "tym": "BANES Motor České Budějovice",
       "hrac": "Štencel Jan",
-      "min": "5"
+      "min": "5",
+      "od": "31:10",
+      "do": "36:10",
+      "duvod": "krosček"
      },
      {
       "cas": "35:49",
       "vteriny": 2149,
       "tym": "HC Olomouc",
       "hrac": "Cosgrove Trevor",
-      "min": "2"
+      "min": "2",
+      "od": "35:49",
+      "do": "37:49",
+      "duvod": "ZHVP"
      },
      {
       "cas": "36:10",
       "vteriny": 2170,
       "tym": "BANES Motor České Budějovice",
       "hrac": "Štencel Jan",
-      "min": "20"
+      "min": "20",
+      "od": "36:10",
+      "do": "60:00",
+      "duvod": "krosček"
      },
      {
       "cas": "39:57",
       "vteriny": 2397,
       "tym": "BANES Motor České Budějovice",
       "hrac": "Krastenbergs Renars",
-      "min": "2"
+      "min": "2",
+      "od": "39:57",
+      "do": "41:57",
+      "duvod": "podražení"
      },
      {
       "cas": "53:34",
       "vteriny": 3214,
       "tym": "BANES Motor České Budějovice",
       "hrac": "Nordsäter Lucas",
-      "min": "2"
+      "min": "2",
+      "od": "53:34",
+      "do": "55:34",
+      "duvod": "podražení"
      }
     ],
+    "nejlepsi": {
+     "A": {
+      "tym": "HC Olomouc",
+      "hrac": "Štohanzl Martin"
+     },
+     "B": {
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Nedorost Václav"
+     }
+    },
+    "bez_brankare": {
+     "A": [
+      [
+       3600,
+       null
+      ]
+     ],
+     "B": [
+      [
+       3600,
+       null
+      ]
+     ]
+    },
+    "datum": "30.10.2026",
     "rozhodci": {
      "hlavni": [
       "Jiří Ondráček (TR97)",
@@ -9065,7 +11134,21 @@
        "Jones Nicholas",
        "Bambula Jan"
       ],
-      "situace": "5/5"
+      "situace": "5/5",
+      "na_ledu_za": [
+       "Šťastný David",
+       "Bambula Jan",
+       "Jones Nicholas",
+       "Myšák Josef",
+       "Eronen Elmeri"
+      ],
+      "na_ledu_proti": [
+       "Lantoši Róbert",
+       "Hoch Štěpán",
+       "Olesen Nick Alexander",
+       "Pýcha Pavel",
+       "Nedorost Václav"
+      ]
      },
      {
       "cas": "26:52",
@@ -9076,7 +11159,21 @@
        "Jones Nicholas",
        "Šťastný David"
       ],
-      "situace": "5/5"
+      "situace": "5/5",
+      "na_ledu_za": [
+       "Šťastný David",
+       "Brickley Daniel",
+       "Bambula Jan",
+       "Kočí Matteo",
+       "Jones Nicholas"
+      ],
+      "na_ledu_proti": [
+       "Olesen Nick Alexander",
+       "Mccormack Graeme",
+       "Vráblík Roman",
+       "Hoch Štěpán",
+       "Lantoši Róbert"
+      ]
      },
      {
       "cas": "37:43",
@@ -9087,7 +11184,20 @@
        "Lantoši Róbert",
        "Olesen Nick Alexander"
       ],
-      "situace": "5/4"
+      "situace": "5/4",
+      "na_ledu_za": [
+       "Bell Parker",
+       "Lantoši Róbert",
+       "Olesen Nick Alexander",
+       "Hoch Štěpán",
+       "Štencel Jan"
+      ],
+      "na_ledu_proti": [
+       "Mamčics Roberts",
+       "Redlich Tomáš",
+       "Minárik Jakub",
+       "Schmiemann Quinn Emanuel"
+      ]
      },
      {
       "cas": "46:51",
@@ -9097,7 +11207,21 @@
       "asistence": [
        "Lantoši Róbert"
       ],
-      "situace": "5/5"
+      "situace": "5/5",
+      "na_ledu_za": [
+       "Hoch Štěpán",
+       "Lantoši Róbert",
+       "Olesen Nick Alexander",
+       "Štencel Jan",
+       "Kundrátek Tomáš"
+      ],
+      "na_ledu_proti": [
+       "Mamčics Roberts",
+       "Minárik Jakub",
+       "Černoch Jiří",
+       "Beránek Ondřej",
+       "Schmiemann Quinn Emanuel"
+      ]
      },
      {
       "cas": "56:58",
@@ -9108,7 +11232,21 @@
        "Brickley Daniel",
        "Jiskra Vít"
       ],
-      "situace": "5/5"
+      "situace": "5/5",
+      "na_ledu_za": [
+       "Lukošik Adam",
+       "Brickley Daniel",
+       "Redlich Tomáš",
+       "Kočí Matteo",
+       "Jiskra Vít"
+      ],
+      "na_ledu_proti": [
+       "Hoch Štěpán",
+       "Lantoši Róbert",
+       "Mccormack Graeme",
+       "Vráblík Roman",
+       "Olesen Nick Alexander"
+      ]
      }
     ],
     "tresty": [
@@ -9117,58 +11255,107 @@
       "vteriny": 930,
       "tym": "BYD Energie Karlovy Vary",
       "hrac": "Egle Haralds",
-      "min": "2"
+      "min": "2",
+      "od": "15:30",
+      "do": "17:30",
+      "duvod": "držení protihráče"
      },
      {
       "cas": "22:15",
       "vteriny": 1335,
       "tym": "BANES Motor České Budějovice",
       "hrac": "Nordsäter Lucas",
-      "min": "2"
+      "min": "2",
+      "od": "22:15",
+      "do": "24:15",
+      "duvod": "podražení"
      },
      {
       "cas": "26:57",
       "vteriny": 1617,
       "tym": "BYD Energie Karlovy Vary",
       "hrac": "Tomek Petr",
-      "min": "2"
+      "min": "2",
+      "od": "26:57",
+      "do": "28:57",
+      "duvod": "podražení"
      },
      {
       "cas": "32:21",
       "vteriny": 1941,
       "tym": "BANES Motor České Budějovice",
       "hrac": "Toman Matěj",
-      "min": "2"
+      "min": "2",
+      "od": "32:21",
+      "do": "34:21",
+      "duvod": "nedovolené bránění"
      },
      {
       "cas": "37:23",
       "vteriny": 2243,
       "tym": "BYD Energie Karlovy Vary",
       "hrac": "Beránek Ondřej",
-      "min": "2"
+      "min": "2",
+      "od": "37:23",
+      "do": "37:43",
+      "duvod": "sekání"
      },
      {
       "cas": "42:31",
       "vteriny": 2551,
       "tym": "BYD Energie Karlovy Vary",
       "hrac": "Lukošik Adam",
-      "min": "2"
+      "min": "2",
+      "od": "42:31",
+      "do": "44:31",
+      "duvod": "vysoká hůl"
      },
      {
       "cas": "49:39",
       "vteriny": 2979,
       "tym": "BANES Motor České Budějovice",
       "hrac": "Mccormack Graeme",
-      "min": "2"
+      "min": "2",
+      "od": "49:39",
+      "do": "51:39",
+      "duvod": "hrubost"
      },
      {
       "cas": "49:39",
       "vteriny": 2979,
       "tym": "BYD Energie Karlovy Vary",
       "hrac": "Beránek Ondřej",
-      "min": "2"
+      "min": "2",
+      "od": "49:39",
+      "do": "51:39",
+      "duvod": "hrubost"
      }
     ],
+    "nejlepsi": {
+     "A": {
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Hoch Štěpán"
+     },
+     "B": {
+      "tym": "BYD Energie Karlovy Vary",
+      "hrac": "Šťastný David"
+     }
+    },
+    "bez_brankare": {
+     "A": [
+      [
+       3544,
+       null
+      ]
+     ],
+     "B": [
+      [
+       3600,
+       null
+      ]
+     ]
+    },
+    "datum": "01.11.2026",
     "rozhodci": {
      "hlavni": [
       "Adam Kika",
