@@ -1001,7 +1001,7 @@ HOKEJCZ_IDS_FILE = SCRIPT_DIR / "hokejcz_zapasy.json"  # ID zápasů dodaná sta
 HOKEJOVYZAPIS_URL_TMPL = "https://hokejovyzapis.cz/pdf/print/cs-html/?hokejczId={id}"
 ZAPIS_STATE_FILE = SCRIPT_DIR / "zapis_state.json"
 ZAPIS_GAMES_SHOWN = 5  # kolik posledních zápasů se zobrazuje v záložce Zápas
-ZAPIS_VERZE = 6  # 2 = hráči na ledě, 3 = nejlepší hráči, 4 = soupiska/třetiny/nájezdy/rozhodčí, 5 = pozice hráčů, 6 = sestavy
+ZAPIS_VERZE = 7  # 2 = hráči na ledě, 3 = nejlepší hráči, 4 = soupiska/třetiny/nájezdy/rozhodčí, 5 = pozice hráčů, 6 = sestavy, 7 = hra bez brankáře
 ZAPIS_MAX_PER_RUN = 80  # strop stažených zápisů za jeden běh (zpětné doplnění)
 LINEUPS_JSON = DOCS_DIR / "sestavy-data.json"  # data pro docs/sestavy.html
 
@@ -1328,6 +1328,37 @@ def _parse_goalie_changes(soup) -> dict:
     return {"A": [], "B": []}
 
 
+def _parse_empty_net(soup) -> dict:
+    """Úseky hry bez brankáře z tabulky 'Střídání brankářů': řádek s '--'
+    znamená, že tým odvolal gólmana; úsek končí dalším řádkem téže strany
+    (návrat brankáře) nebo koncem zápasu. Vrací {"A": [[od_s, do_s], ...],
+    "B": [...]} ve vteřinách hry (do_s = None, když se brankář nevrátil)."""
+    for tr in soup.find_all("tr"):
+        if _direct_cells(tr)[:3] != ["čas", "BA", "BB"]:
+            continue
+        out, otevrene = {"A": [], "B": []}, {"A": None, "B": None}
+        nalezeno = False
+        for row in _rows_after(tr):
+            if len(row) < 3 or not re.match(r"\d+:\d\d$", row[0]):
+                continue
+            nalezeno = True
+            mm, ss = row[0].split(":")
+            sec = int(mm) * 60 + int(ss)
+            for side, no in (("A", row[1]), ("B", row[2])):
+                prazdno = bool(no) and not no.isdigit()
+                if prazdno and otevrene[side] is None:
+                    otevrene[side] = sec
+                elif not prazdno and no and otevrene[side] is not None:
+                    out[side].append([otevrene[side], sec])
+                    otevrene[side] = None
+        for side in ("A", "B"):
+            if otevrene[side] is not None:
+                out[side].append([otevrene[side], None])
+        if nalezeno:
+            return out
+    return {"A": [], "B": []}
+
+
 def _parse_bench(soup) -> dict:
     """'Osoby na hráčské lavici' -> {"A": [{"jmeno", "funkce"}], "B": [...]}.
     První tabulka je domácích, druhá hostů; jméno je ve tvaru Jméno Příjmení."""
@@ -1419,6 +1450,7 @@ def fetch_zapis(hokejcz_id: str) -> dict | None:
         "najezdy": _build_shootout(najezdy_raw, domaci, hoste),
         "rozhodci": _parse_referees(soup),
         "sestava": _lineup_payload(soup, domaci, hoste),
+        "bez_brankare": _parse_empty_net(soup),
     }
 
 
@@ -1435,10 +1467,14 @@ def _report_payload(z: dict) -> dict:
     """Údaje pro textový zápis utkání na docs/sestavy.html (branky, tresty,
     rozhodčí, diváci, střely, nájezdy) — jen to, co stránka potřebuje."""
     return {
-        "goly": [{k: g.get(k) for k in ("cas", "vteriny", "tym", "strelec", "asistence", "situace")}
+        "goly": [{k: g.get(k) for k in ("cas", "vteriny", "tym", "strelec", "asistence", "situace",
+                                        "na_ledu_za", "na_ledu_proti")}
                  for g in z.get("goly", [])],
-        "tresty": [{k: t.get(k) for k in ("cas", "vteriny", "tym", "hrac", "min")}
+        "tresty": [{k: t.get(k) for k in ("cas", "vteriny", "tym", "hrac", "min", "od", "do", "duvod")}
                    for t in z.get("tresty", [])],
+        "nejlepsi": z.get("nejlepsi") or {},
+        "bez_brankare": z.get("bez_brankare") or {},
+        "datum": z.get("datum") or "",
         "rozhodci": z.get("rozhodci") or {},
         "divaci": z.get("divaci") or "",
         "tretiny": z.get("tretiny") or [],
