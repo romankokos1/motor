@@ -57,6 +57,16 @@
   .seg input { display: none; }
   .seg input:checked + span { color: var(--ink); font-weight: 600; }
   .seg label + label { border-left: 1px solid var(--line); }
+  .txt { background: var(--field); border: 1px solid var(--line); border-radius: 6px; padding: 9px 11px; line-height: 1.6; }
+  .txt p { margin: 0 0 10px; }
+  .txt p:last-child { margin-bottom: 0; }
+  .txt .s { cursor: pointer; border-radius: 3px; padding: 1px 0; }
+  .txt .s:hover { background: color-mix(in srgb, var(--accent) 10%, transparent); }
+  .txt .s.sel { background: color-mix(in srgb, var(--accent) 22%, transparent); }
+  .txt .s.off { color: var(--muted); text-decoration: line-through; }
+  #pop { position: absolute; z-index: 5; display: flex; gap: 6px; background: var(--card); border: 1px solid var(--line);
+         border-radius: 8px; padding: 6px; box-shadow: 0 4px 14px rgba(0,0,0,.14); }
+  #pop button { font-size: 13px; padding: 5px 10px; }
 </style>
 </head>
 <body>
@@ -101,11 +111,11 @@
     </div>
     <div class="block">
       <div class="block-head"><strong>Perex</strong><button class="ghost" data-copy="rep-perex">Kopírovat</button></div>
-      <textarea class="out" id="rep-perex" spellcheck="false"></textarea>
+      <div class="txt" id="rep-perex"></div>
     </div>
     <div class="block">
       <div class="block-head"><strong>Reportáž</strong><button class="ghost" data-copy="rep-text">Kopírovat</button></div>
-      <textarea class="out report" id="rep-text" spellcheck="false" style="min-height:300px"></textarea>
+      <div class="txt" id="rep-text"></div>
       <div class="check" id="rep-check"></div>
     </div>
     <div class="row" style="margin-top:10px">
@@ -113,6 +123,10 @@
     </div>
   </div>
 </main>
+<div id="pop" class="hidden">
+  <button id="pop-jina">Jiná formulace</button>
+  <button class="ghost" id="pop-vyn">Vynechat</button>
+</div>
 
 <script src="zapis-core.js"></script>
 <script>
@@ -140,15 +154,60 @@ function render(m) {
   }
   const namer = makeNamer(m);
   const r = buildReportage(m, namer, currentKolo, onlineText, delka());
+  const klic = `${m.A.nazev}|${m.B.nazev}|${m.goly.length}|${delka()}`;
+  if (klic !== upravyKlic) { upravy = { off: {}, vi: {} }; upravyKlic = klic; }
+  rep = r;
   $("rep-tit").value = r.titulky.join("\n");
-  $("rep-perex").value = r.perex;
-  $("rep-text").value = r.text;
-  $("rep-check").textContent = r.kontrola;
   const zapis = buildReport(m, namer, false).text;
   const sestavy = buildLines(m, namer, false).map(l => l.text);
-  clanek = [r.titulky[0], r.perex, r.text, zapis, ...sestavy].join("\n\n");
+  spodek = [zapis, ...sestavy];
+  hidePop();
+  paint();
   $("result").classList.remove("hidden");
 }
+
+// ----- úpravy klepnutím: jiná formulace věty / vynechat větu -----
+let rep = null, upravy = { off: {}, vi: {} }, upravyKlic = "", spodek = [], vybrana = null;
+const posledniText = {};
+const hotove = { "rep-perex": "", "rep-text": "" };
+function paint() {
+  const out = rep.realize(upravy);
+  const veta = s => {
+    if (!s.off) posledniText[s.id] = s.text;
+    const el = document.createElement("span");
+    el.className = "s" + (s.off ? " off" : "") + (s.id === vybrana ? " sel" : "");
+    el.dataset.id = s.id; el.dataset.n = s.n;
+    el.textContent = s.off ? posledniText[s.id] || "…" : s.text;
+    return el;
+  };
+  const odstavec = list => { const p = document.createElement("p"); list.forEach((s, i) => { if (i) p.append(" "); p.append(veta(s)); }); return p; };
+  $("rep-perex").replaceChildren(odstavec(out.perex));
+  $("rep-text").replaceChildren(...out.odstavce.map(odstavec));
+  hotove["rep-perex"] = out.perexText; hotove["rep-text"] = out.text;
+  $("rep-check").textContent = rep.kontrola + (out.varovani.length ? " · ⚠️ zkontroluj: " + out.varovani.join(", ") : "");
+  clanek = [rep.titulky[0], out.perexText, out.text, ...spodek].join("\n\n");
+}
+function hidePop() { vybrana = null; $("pop").classList.add("hidden"); document.querySelectorAll(".txt .s.sel").forEach(e => e.classList.remove("sel")); }
+document.addEventListener("click", e => {
+  if (e.target.closest("#pop")) return;
+  const s = e.target.closest(".txt .s");
+  if (!s) return hidePop();
+  hidePop();
+  vybrana = s.dataset.id;
+  s.classList.add("sel");
+  const off = s.classList.contains("off");
+  $("pop-jina").classList.toggle("hidden", off || +s.dataset.n < 2);
+  $("pop-vyn").textContent = off ? "Vrátit" : "Vynechat";
+  const pop = $("pop"), r = s.getClientRects()[0];
+  pop.classList.remove("hidden");
+  pop.style.top = `${r.bottom + window.scrollY + 6}px`;
+  pop.style.left = `${Math.max(8, Math.min(r.left + window.scrollX, window.scrollX + document.documentElement.clientWidth - pop.offsetWidth - 8))}px`;
+});
+$("pop-jina").addEventListener("click", () => { upravy.vi[vybrana] = (upravy.vi[vybrana] || 0) + 1; paint(); });
+$("pop-vyn").addEventListener("click", () => {
+  if (upravy.off[vybrana]) delete upravy.off[vybrana]; else upravy.off[vybrana] = true;
+  hidePop(); paint();
+});
 
 async function copyText(text, btn) {
   try { await navigator.clipboard.writeText(text); }
@@ -157,7 +216,7 @@ async function copyText(text, btn) {
 }
 $("result").addEventListener("click", e => {
   const b = e.target.closest("button[data-copy]");
-  if (b) copyText($(b.dataset.copy).value, b);
+  if (b) copyText(b.dataset.copy in hotove ? hotove[b.dataset.copy] : $(b.dataset.copy).value, b);
 });
 $("copy-article").addEventListener("click", e => copyText(clanek, e.target));
 $("online").addEventListener("input", e => { onlineText = e.target.value; if (current) render(current); });
@@ -249,6 +308,7 @@ $("paste").addEventListener("paste", e => {
   });
   if (pick !== null) sel.value = pick;
   setStatus(`Rozpis z ${DATA.aktualizovano}.`);
+  fetch("bilance_data.json").then(r => (r.ok ? r.json() : null)).then(b => { BILANCE = b; if (b && current) render(current); }).catch(() => {});
 })();
 </script>
 </body>
