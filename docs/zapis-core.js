@@ -1456,6 +1456,8 @@ function buildReportage(m, namer, kolo, onlineText, delka = "standard") {
     return arr.length && arr[0][1] >= min && (arr.length < 2 || arr[0][1] > arr[1][1]) ? arr[0][0] : null;
   };
   const topStrelec = lidr(s => s.g, 5), topBody = lidr(s => s.g + s.a, 8);
+  goly.forEach(g => { if (g.side === ms) g.sezGol = ((sezona[playerKey(g.strelec)] || {}).g || 0) + g.nth; });
+  const dalsiGolRegulace = g => goly.some(q => q.sec > g.sec && q.sec < 3600);
   const byRaw = {};
   ["A", "B"].forEach(sd => m[sd].hraci.forEach(h => (byRaw[h.jmeno] = { ...h, side: sd })));
   const mkCtx = () => {
@@ -1538,13 +1540,23 @@ function buildReportage(m, namer, kolo, onlineText, delka = "standard") {
     let dej, C;
     if (g.trida === "decisive") { dej = `rozhodl o výhře ${komu}`; C = [`O výhře ${komu} rozhodl`, "Vítězný gól dal"]; if (goly.length === 1) C = ["Jediný gól zápasu dal"]; }
     else if (g.trida === "open") { dej = volba(id + "o", ["otevřel skóre", `poslal ${tAcc} do vedení`]); C = ["Skóre otevřel"]; }
+    else if (g.trida === "tie" && (poPr || poSN) && !dalsiGolRegulace(g)) { dej = `poslal zápas do prodloužení za stavu ${S}`; C = [`Zápas do prodloužení poslal`]; }
+    else if (g.trida === "tie" && g.sec >= 3300 && g.sec < 3600) { dej = `${volba(id + "t", ["srovnal", "vyrovnal"])} na ${S} v závěru`; C = [`V závěru na ${S} vyrovnal`, `Vyrovnání na ${S} zařídil`]; }
     else if (g.trida === "tie") { dej = `${volba(id + "t", ["srovnal", "vyrovnal"])} na ${S}`; C = [`Na ${S} vyrovnal`, `Vyrovnání na ${S} zařídil`]; }
     else if (g.trida === "lead") {
       if (g.obrat && !ctx.obratUsed) { ctx.obratUsed = true; dej = `dokonal obrat na ${S}`; C = [`Obrat na ${S} dokonal`]; }
       else { dej = `poslal ${tAcc} do vedení ${S}`; C = [`Vedení ${S} zajistil ${teamDat(g.side)}`]; }
     }
-    else if (g.trida === "extend") { dej = konec ? `zvýšil na konečných ${S}` : `zvýšil na ${S}`; C = konec ? [`Konečný výsledek ${S} stanovil`, `Na konečných ${S} zvýšil`] : [`Na ${S} zvýšil`]; }
-    else { dej = konec ? `snížil na konečných ${S}` : `snížil na ${S}`; C = konec ? [`Na konečných ${S} snížil`] : [`Na ${S} snížil`]; }
+    else if (g.trida === "extend") {
+      const pozdni = g.sec >= 3000 && g.sec < 3600;
+      dej = konec ? `zvýšil na konečných ${S}` : g.d1 === 2 && pozdni ? `pojistil vedení na ${S}` : g.d1 >= 3 && g.sec >= 2400 ? `zvýšil náskok na ${ACC_CISLO[g.d1] || g.d1} ${g.d1 < 5 ? "góly" : "gólů"}, ${S}` : g.d1 === 2 && g.d0 === 1 ? `zvýšil náskok na dva góly, ${S}` : `zvýšil na ${S}`;
+      C = konec ? [`Konečný výsledek ${S} stanovil`, `Na konečných ${S} zvýšil`] : [`Na ${S} zvýšil`];
+    }
+    else {
+      const pozdni = g.sec >= 3300 && g.sec < 3600 && g.d1 === -1;
+      dej = konec ? `snížil na konečných ${S}` : pozdni ? `snížil na ${S} a zdramatizoval závěr` : g.d0 <= -2 && g.d1 === -1 ? `snížil na rozdíl jediného gólu, ${S}` : `snížil na ${S}`;
+      C = konec ? [`Na konečných ${S} snížil`] : pozdni ? [`Závěr zdramatizoval snížením na ${S}`] : [`Na ${S} snížil`];
+    }
     const nthAdv = g.nth >= 2 && PORADI[g.nth] ? `${PORADI[g.nth]} v zápase ` : "";
     const nthIns = g.nth >= 2 && ORD_INS[g.nth] ? `svým ${ORD_INS[g.nth]} gólem v zápase ` : "";
     const hat = g.nth === 3 ? " Zkompletoval tím hattrick." : "";
@@ -1563,7 +1575,8 @@ function buildReportage(m, namer, kolo, onlineText, delka = "standard") {
                                               : ["Asistovali", "Na gólu se podíleli i", "Přihrávali"][(g.idx + sidx("as2", 3)) % 3]) + ` ${jm}.`;
         };
       }
-      return { J: J ? J + " " : "", tail: () => (tail ? tail() : "") + hat };
+      const sez = g.side === ms && L >= 2 && g.sezGol >= 3 && (g.vitezny || [5, 10, 15, 20].includes(g.sezGol)) ? ` ${["Byl to jeho", "Pro něj to byl"][sidx(id + "sz", 2)]} ${g.sezGol}. gól v sezóně.` : "";
+      return { J: J ? J + " " : "", tail: () => (tail ? tail() : "") + hat + sez };
     };
     const vars = [];
     if (g.reply && ["tie", "reduce", "lead"].includes(g.trida))
