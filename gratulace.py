@@ -24,7 +24,7 @@ TZ = ZoneInfo("Europe/Prague")
 STROP = 250        # pojistka: víc příspěvků se nestáhne (podle skutečné ceny ~0,006 $ za příspěvek ≈ 1,50 $)
 OUT = Path(__file__).parent / "gratulace"
 # hledá se v textu příspěvku i v textu rozpoznaném na obrázku (bez diakritiky, malými písmeny)
-SLOVA = ["narozenin", "gratul", "blahoprej", "vse nejlepsi", "vsechno nejlepsi", "happy birthday", "jubile"]
+SLOVA = ["narozenin", "gratul", "blahoprej", "vse nejlepsi", "vsechno nejlepsi", "happy birthday"]
 
 
 def bez_diakritiky(s: str) -> str:
@@ -38,7 +38,7 @@ def jmeno(text: str) -> str:
     """„65. narozeniny dnes slaví bývalý brankář Motoru Marcel Kurfürst. …“ → „Marcel Kurfürst“:
     poslední dvě slova s velkým písmenem ve větě o narozeninách. Nenajde-li, vrátí ''."""
     for veta in re.split(r"(?<=[^\d\s])[.!?]\s", text):
-        if not any(w in bez_diakritiky(veta) for w in ("narozenin", "nejlepsi", "birthday", "jubile")):
+        if not any(w in bez_diakritiky(veta) for w in ("narozenin", "birthday")):
             continue
         slova = re.findall(rf"\b[{VELKE}][^\W\d_]+(?:-[{VELKE}][^\W\d_]+)?", veta)
         if len(slova) >= 2:
@@ -116,6 +116,10 @@ def main(od: str, do: str, beh: str = "") -> int:
     (OUT / "obrazky").mkdir(exist_ok=True)
     db_f = OUT / "gratulace.json"
     db = {e["url"]: e for e in json.loads(db_f.read_text(encoding="utf-8"))} if db_f.exists() else {}
+    for k in [k for k, e in db.items() if not any(w in bez_diakritiky(e["text"]) for w in SLOVA)]:
+        for f in db[k]["obrazky"]:                    # už nevyhovuje hledaným slovům → pryč i s fotkami
+            (OUT / f).unlink(missing_ok=True)
+        del db[k]
     for e in db.values():
         pojmenovat(e)
 
