@@ -5,6 +5,7 @@ a uloží text, datum, odkaz a obrázky. Platí se za každý stažený přísp�
 i za ty, které se pak vyhodí – proto se stahuje po obdobích.
 
     python gratulace.py 2026-10-01 2026-11-13
+    python gratulace.py --beh <ID běhu v Apify>   # převzít už stažený (i přerušený) běh, nic se neplatí
 """
 import json
 import os
@@ -20,6 +21,7 @@ import requests
 STRANKA = "https://www.facebook.com/hcmotor"
 ACTOR = "alfalfa~facebook-posts-scraper"
 TZ = ZoneInfo("Europe/Prague")
+STROP = 250        # pojistka: víc příspěvků se nestáhne (podle skutečné ceny ~0,006 $ za příspěvek ≈ 1,50 $)
 OUT = Path(__file__).parent / "gratulace"
 # hledá se v textu příspěvku i v textu rozpoznaném na obrázku (bez diakritiky, malými písmeny)
 SLOVA = ["narozenin", "gratul", "blahoprej", "vse nejlepsi", "vsechno nejlepsi", "happy birthday", "jubile"]
@@ -93,17 +95,22 @@ def obrazky(it: dict) -> list[str]:
     return out
 
 
-def main(od: str, do: str) -> int:
+def main(od: str, do: str, beh: str = "") -> int:
     token = os.environ.get("APIFY_TOKEN")
     if not token:
         print("Chybí APIFY_TOKEN.")
         return 1
-    r = requests.post(f"https://api.apify.com/v2/acts/{ACTOR}/run-sync-get-dataset-items",
-                      params={"token": token}, timeout=900,
-                      json={"startUrls": [{"url": STRANKA}], "onlyPostsNewerThan": od, "onlyPostsOlderThan": do})
+    if beh:                                           # data běhu, který už v Apify proběhl
+        r = requests.get(f"https://api.apify.com/v2/actor-runs/{beh}/dataset/items",
+                         params={"token": token, "clean": "true"}, timeout=300)
+    else:
+        r = requests.post(f"https://api.apify.com/v2/acts/{ACTOR}/run-sync-get-dataset-items",
+                          params={"token": token}, timeout=900,
+                          json={"startUrls": [{"url": STRANKA}], "onlyPostsNewerThan": od, "onlyPostsOlderThan": do,
+                                "resultsLimit": STROP})
     r.raise_for_status()
     posts = r.json()
-    print(f"Staženo {len(posts)} příspěvků za {od} – {do}.")
+    print(f"Staženo {len(posts)} příspěvků " + (f"z běhu {beh}." if beh else f"za {od} – {do}."))
 
     OUT.mkdir(exist_ok=True)
     (OUT / "obrazky").mkdir(exist_ok=True)
@@ -148,6 +155,8 @@ def main(od: str, do: str) -> int:
 
 
 if __name__ == "__main__":
+    if len(sys.argv) == 3 and sys.argv[1] == "--beh":
+        sys.exit(main("", "", sys.argv[2]))
     if len(sys.argv) != 3:
         print(__doc__)
         sys.exit(1)
