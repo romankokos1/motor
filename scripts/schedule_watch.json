@@ -103,9 +103,9 @@
   },
   "18": {
     "datum": "pátek 13.11.",
-    "cas": "17:30",
+    "cas": null,
     "misto": "Litvínov, Zimní stadion Ivana Hlinky",
-    "odehrano": false
+    "odehrano": true
   },
   "19": {
     "datum": "neděle 15.11.",

@@ -1,5 +1,5 @@
 {
- "aktualizovano": "13.11.2026 15:32",
+ "aktualizovano": "14.11.2026 13:15",
  "zapasy": [
   {
    "kolo": 1,
@@ -11410,11 +11410,703 @@
    "datum": "pátek 13.11.",
    "domaci": "Litvínov",
    "hoste": "České Budějovice",
-   "odehrano": false,
-   "vysledek": "",
+   "odehrano": true,
+   "vysledek": "3:4",
    "hokejcz_id": "2928376",
-   "sestava": null,
-   "zapis": null
+   "sestava": {
+    "A": {
+     "nazev": "HC Litvínov",
+     "hraci": [
+      {
+       "c": "42",
+       "jmeno": "TOMEK Matej",
+       "post": "GK",
+       "hral": true
+      },
+      {
+       "c": "30",
+       "jmeno": "ČAJAN Pavel",
+       "post": "GK",
+       "hral": false
+      },
+      {
+       "c": "21",
+       "jmeno": "BALÁŽ Ondřej",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "81",
+       "jmeno": "SVOZIL Stanislav",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "27",
+       "jmeno": "CZUCZMAN Kevin Paul",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "72",
+       "jmeno": "JAKS Janis",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "3",
+       "jmeno": "POLÁŠEK Adam",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "36",
+       "jmeno": "BERAN Vít",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "86",
+       "jmeno": "SOUŠEK Petr",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "8",
+       "jmeno": "ŠÁMAL Viktor",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "87",
+       "jmeno": "JÍCHA Josef",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "10",
+       "jmeno": "KOBLASA Petr",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "74",
+       "jmeno": "MAŠTALÍŘSKÝ Matěj",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "25",
+       "jmeno": "KAŠE David",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "29",
+       "jmeno": "COSKEY Cole",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "34",
+       "jmeno": "PIŠTĚK Theodor",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "64",
+       "jmeno": "JURČÍK Ondřej",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "20",
+       "jmeno": "URBAN Tomáš",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "79",
+       "jmeno": "TUREK Štěpán",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "23",
+       "jmeno": "KYSELA Vojtěch",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "28",
+       "jmeno": "ŠPRYNAR Jan",
+       "post": "F",
+       "hral": true
+      }
+     ],
+     "brankari": [
+      {
+       "c": "42",
+       "od": "00:00"
+      }
+     ],
+     "lavicka": [
+      {
+       "jmeno": "Robert Reichel",
+       "funkce": "Hlavní trenér"
+      },
+      {
+       "jmeno": "Ivan Švarný",
+       "funkce": "Asistent trenéra"
+      },
+      {
+       "jmeno": "Jakub Petružálek",
+       "funkce": "Asistent trenéra"
+      },
+      {
+       "jmeno": "Radko Goga",
+       "funkce": "Vedoucí týmu"
+      },
+      {
+       "jmeno": "Roman Lauko",
+       "funkce": "Kustod"
+      },
+      {
+       "jmeno": "Vladimír Brož",
+       "funkce": "Kustod"
+      },
+      {
+       "jmeno": "Zdeněk Orct",
+       "funkce": "Trenér brankářů"
+      },
+      {
+       "jmeno": "Pavel Wildumetz",
+       "funkce": "Fyzioterapeut"
+      }
+     ]
+    },
+    "B": {
+     "nazev": "BANES Motor České Budějovice",
+     "hraci": [
+      {
+       "c": "35",
+       "jmeno": "KLOUČEK Milan",
+       "post": "GK",
+       "hral": true
+      },
+      {
+       "c": "21",
+       "jmeno": "MAŘÍK Matyáš",
+       "post": "GK",
+       "hral": false
+      },
+      {
+       "c": "7",
+       "jmeno": "ŠTENCEL Jan",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "84",
+       "jmeno": "KUNDRÁTEK Tomáš",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "69",
+       "jmeno": "VRÁBLÍK Roman",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "72",
+       "jmeno": "MCCORMACK Graeme",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "12",
+       "jmeno": "PÝCHA Pavel",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "13",
+       "jmeno": "NEDOROST Václav",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "8",
+       "jmeno": "NORDSÄTER Lucas",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "95",
+       "jmeno": "OLESEN Nick Alexander",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "42",
+       "jmeno": "HOCH Štěpán",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "16",
+       "jmeno": "LANTOŠI Róbert",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "64",
+       "jmeno": "POUR Jakub",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "92",
+       "jmeno": "BELL Parker",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "26",
+       "jmeno": "ZACHAR Marek",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "45",
+       "jmeno": "ORDOŠ Jan",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "88",
+       "jmeno": "BULÍŘ Michal",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "29",
+       "jmeno": "KRASTENBERGS Renars",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "56",
+       "jmeno": "BERÁNEK Martin",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "20",
+       "jmeno": "TOMAN Matěj",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "22",
+       "jmeno": "KOLÁČEK Josef",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "37",
+       "jmeno": "HEJDUK Marek",
+       "post": "F",
+       "hral": true
+      }
+     ],
+     "brankari": [
+      {
+       "c": "35",
+       "od": "00:00"
+      }
+     ],
+     "lavicka": [
+      {
+       "jmeno": "Róbert Petrovický",
+       "funkce": "Hlavní trenér"
+      },
+      {
+       "jmeno": "Valdemar Jiruš",
+       "funkce": "Asistent trenéra"
+      },
+      {
+       "jmeno": "Pavel Bláha",
+       "funkce": "Vedoucí týmu"
+      },
+      {
+       "jmeno": "Pavel Vlašic",
+       "funkce": "Kustod"
+      },
+      {
+       "jmeno": "Jiří Rotbauer",
+       "funkce": "Kustod"
+      },
+      {
+       "jmeno": "Stanislav Hrubec",
+       "funkce": "Trenér brankářů"
+      },
+      {
+       "jmeno": "David Vrbata",
+       "funkce": "Asistent trenéra"
+      }
+     ]
+    }
+   },
+   "zapis": {
+    "goly": [
+     {
+      "cas": "12:12",
+      "vteriny": 732,
+      "tym": "HC Litvínov",
+      "strelec": "Maštalířský Matěj",
+      "asistence": [
+       "Kaše David",
+       "Baláž Ondřej"
+      ],
+      "situace": "5/5",
+      "na_ledu_za": [
+       "Maštalířský Matěj",
+       "Kaše David",
+       "Polášek Adam",
+       "Coskey Cole",
+       "Jaks Janis"
+      ],
+      "na_ledu_proti": [
+       "Pýcha Pavel",
+       "Ordoš Jan",
+       "Bulíř Michal",
+       "Nedorost Václav",
+       "Krastenbergs Renars"
+      ]
+     },
+     {
+      "cas": "20:20",
+      "vteriny": 1220,
+      "tym": "BANES Motor České Budějovice",
+      "strelec": "Bell Parker",
+      "asistence": [
+       "Lantoši Róbert",
+       "Štencel Jan"
+      ],
+      "situace": "5/4",
+      "na_ledu_za": [
+       "Lantoši Róbert",
+       "Štencel Jan",
+       "Bell Parker",
+       "Krastenbergs Renars",
+       "Olesen Nick Alexander"
+      ],
+      "na_ledu_proti": [
+       "Jurčík Ondřej",
+       "Urban Tomáš",
+       "Czuczman Kevin Paul",
+       "Svozil Stanislav"
+      ]
+     },
+     {
+      "cas": "28:00",
+      "vteriny": 1680,
+      "tym": "HC Litvínov",
+      "strelec": "Coskey Cole",
+      "asistence": [
+       "Kaše David",
+       "Koblasa Petr"
+      ],
+      "situace": "5/5",
+      "na_ledu_za": [
+       "Coskey Cole",
+       "Soušek Petr",
+       "Koblasa Petr",
+       "Jaks Janis",
+       "Kaše David"
+      ],
+      "na_ledu_proti": [
+       "Nedorost Václav",
+       "Pýcha Pavel",
+       "Bell Parker",
+       "Zachar Marek",
+       "Pour Jakub"
+      ]
+     },
+     {
+      "cas": "30:20",
+      "vteriny": 1820,
+      "tym": "HC Litvínov",
+      "strelec": "Koblasa Petr",
+      "asistence": [
+       "Coskey Cole",
+       "Kaše David"
+      ],
+      "situace": "5/5",
+      "na_ledu_za": [
+       "Koblasa Petr",
+       "Coskey Cole",
+       "Kaše David",
+       "Soušek Petr",
+       "Jaks Janis"
+      ],
+      "na_ledu_proti": [
+       "Pýcha Pavel",
+       "Hoch Štěpán",
+       "Nedorost Václav",
+       "Olesen Nick Alexander",
+       "Lantoši Róbert"
+      ]
+     },
+     {
+      "cas": "34:28",
+      "vteriny": 2068,
+      "tym": "BANES Motor České Budějovice",
+      "strelec": "Olesen Nick Alexander",
+      "asistence": [],
+      "situace": "5/5",
+      "na_ledu_za": [
+       "Nedorost Václav",
+       "Mccormack Graeme",
+       "Lantoši Róbert",
+       "Hoch Štěpán",
+       "Olesen Nick Alexander"
+      ],
+      "na_ledu_proti": [
+       "Polášek Adam",
+       "Koblasa Petr",
+       "Turek Štěpán",
+       "Baláž Ondřej",
+       "Kaše David"
+      ]
+     },
+     {
+      "cas": "40:40",
+      "vteriny": 2440,
+      "tym": "BANES Motor České Budějovice",
+      "strelec": "Hoch Štěpán",
+      "asistence": [
+       "Pýcha Pavel",
+       "Koláček Josef"
+      ],
+      "situace": "5/5",
+      "na_ledu_za": [
+       "Beránek Martin",
+       "Mccormack Graeme",
+       "Hoch Štěpán",
+       "Koláček Josef",
+       "Pýcha Pavel"
+      ],
+      "na_ledu_proti": [
+       "Jícha Josef",
+       "Baláž Ondřej",
+       "Svozil Stanislav",
+       "Koblasa Petr",
+       "Šámal Viktor"
+      ]
+     },
+     {
+      "cas": "50:08",
+      "vteriny": 3008,
+      "tym": "BANES Motor České Budějovice",
+      "strelec": "Olesen Nick Alexander",
+      "asistence": [
+       "Bell Parker",
+       "Lantoši Róbert"
+      ],
+      "situace": "5/4",
+      "na_ledu_za": [
+       "Bell Parker",
+       "Lantoši Róbert",
+       "Krastenbergs Renars",
+       "Štencel Jan",
+       "Olesen Nick Alexander"
+      ],
+      "na_ledu_proti": [
+       "Polášek Adam",
+       "Jurčík Ondřej",
+       "Urban Tomáš",
+       "Baláž Ondřej"
+      ]
+     }
+    ],
+    "tresty": [
+     {
+      "cas": "---",
+      "vteriny": 0,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Kundrátek Tomáš",
+      "min": "TS",
+      "od": "---",
+      "do": "---",
+      "duvod": "hákování"
+     },
+     {
+      "cas": "15:25",
+      "vteriny": 925,
+      "tym": "HC Litvínov",
+      "hrac": "Koblasa Petr",
+      "min": "2",
+      "od": "15:25",
+      "do": "17:25",
+      "duvod": "sekání"
+     },
+     {
+      "cas": "19:59",
+      "vteriny": 1199,
+      "tym": "HC Litvínov",
+      "hrac": "Polášek Adam",
+      "min": "2",
+      "od": "19:59",
+      "do": "20:20",
+      "duvod": "podražení"
+     },
+     {
+      "cas": "24:49",
+      "vteriny": 1489,
+      "tym": "HC Litvínov",
+      "hrac": "Beran Vít",
+      "min": "2",
+      "od": "24:49",
+      "do": "26:49",
+      "duvod": "držení protihráče"
+     },
+     {
+      "cas": "28:00",
+      "vteriny": 1680,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "lavička (HL)",
+      "min": "2",
+      "od": "28:00",
+      "do": "30:00",
+      "duvod": "ZHTV"
+     },
+     {
+      "cas": "31:03",
+      "vteriny": 1863,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Krastenbergs Renars",
+      "min": "2",
+      "od": "31:03",
+      "do": "33:03",
+      "duvod": "podražení"
+     },
+     {
+      "cas": "49:14",
+      "vteriny": 2954,
+      "tym": "HC Litvínov",
+      "hrac": "Jaks Janis",
+      "min": "2",
+      "od": "49:14",
+      "do": "50:08",
+      "duvod": "hákování"
+     },
+     {
+      "cas": "56:42",
+      "vteriny": 3402,
+      "tym": "HC Litvínov",
+      "hrac": "Svozil Stanislav",
+      "min": "2",
+      "od": "56:42",
+      "do": "58:42",
+      "duvod": "hrubost"
+     },
+     {
+      "cas": "56:42",
+      "vteriny": 3402,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Olesen Nick Alexander",
+      "min": "2",
+      "od": "56:42",
+      "do": "58:42",
+      "duvod": "hrubost"
+     },
+     {
+      "cas": "59:02",
+      "vteriny": 3542,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Beránek Martin",
+      "min": "2",
+      "od": "59:02",
+      "do": "60:00",
+      "duvod": "SPR"
+     }
+    ],
+    "nejlepsi": {
+     "A": {
+      "tym": "HC Litvínov",
+      "hrac": "Koblasa Petr"
+     },
+     "B": {
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Lantoši Róbert"
+     }
+    },
+    "bez_brankare": {
+     "A": [
+      [
+       3480,
+       null
+      ]
+     ],
+     "B": [
+      [
+       3600,
+       null
+      ]
+     ]
+    },
+    "datum": "13.11.2026",
+    "rozhodci": {
+     "hlavni": [
+      "Antonín Jeřábek (BM82)",
+      "Pavel Obadal"
+     ],
+     "carovi": [
+      "Michal Axman",
+      "Jaroslav Peluha"
+     ]
+    },
+    "divaci": "4674",
+    "tretiny": [
+     {
+      "tretina": "1",
+      "goly": [
+       1,
+       0
+      ],
+      "strely": [
+       14,
+       18
+      ]
+     },
+     {
+      "tretina": "2",
+      "goly": [
+       2,
+       2
+      ],
+      "strely": [
+       13,
+       11
+      ]
+     },
+     {
+      "tretina": "3",
+      "goly": [
+       0,
+       2
+      ],
+      "strely": [
+       8,
+       15
+      ]
+     }
+    ],
+    "najezdy": []
+   }
   },
   {
    "kolo": 19,
