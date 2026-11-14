@@ -1786,9 +1786,12 @@ def build_formations(zapasy: list) -> dict:
     return {k: srt(v) for k, v in out.items()} | {"zapasu": zapasu}
 
 
-def build_periods(zapasy: list, games: list) -> dict:
+def build_periods(zapasy: list, games: list, kde: str | None = None) -> dict:
     """Bilance Motoru po třetinách (výhra/remíza/prohra třetiny, góly
-    pro/proti, střely pro/proti) + výsledek podle stavu po 1. a 2. třetině."""
+    pro/proti, střely pro/proti) + výsledek podle stavu po 1. a 2. třetině.
+    kde = "domaci" / "hoste" omezí výpočet na domácí / venkovní zápasy."""
+    if kde:
+        zapasy = [z for z in zapasy if _motor_side(z) == kde]
     gk = _game_by_kolo(games)
     per = {t: {"v": 0, "r": 0, "p": 0, "gf": 0, "ga": 0, "sf": 0, "sa": 0, "z": 0, "zs": 0}
            for t in ("1", "2", "3", "P")}
@@ -2003,6 +2006,8 @@ PAGE_CSS = """
   }
   .tab-btn.has-badge .badge-dot { display: block; }
   .tabsection.is-hidden { display: none; }
+  .scope-h { margin: 16px 0 6px; font-size: 12px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--text-3); }
+  .scope-h:first-of-type { margin-top: 8px; }
 
   /* ===== Bento mřížka ===== */
   .bento { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 14px; align-items: stretch; }
@@ -2715,50 +2720,62 @@ def render_html(
         gwg_html = ""
 
     # --- Třetiny + stav po třetinách
-    per = build_periods(zapis_all, games)
+    SCOPES = (("", "Celkem"), ("domaci", "Doma"), ("hoste", "Venku"))
+    pers = {k: build_periods(zapis_all, games, k or None) for k, _ in SCOPES}
     if zapis_all:
         tl = {"1": "1. třetina", "2": "2. třetina", "3": "3. třetina", "P": "Prodloužení"}
-        pr_rows = []
-        for t in ("1", "2", "3", "P"):
-            e = per["tretiny"][t]
-            if not e["z"]:
-                continue
-            sf = f"{e['sf']}:{e['sa']}" if e["zs"] else "–"
-            avg = f"{e['sf'] / e['zs']:.1f}:{e['sa'] / e['zs']:.1f}" if e["zs"] else "–"
-            pr_rows.append(
-                f"<tr><td>{tl[t]}</td><td>{e['v']}</td><td>{e['r']}</td><td>{e['p']}</td>"
-                f"<td><strong>{e['gf']}:{e['ga']}</strong></td><td>{sf}</td><td>{avg}</td></tr>"
-            )
         sl = {"vedl": "vedl", "remiza": "nerozhodně", "prohraval": "prohrával"}
-        st_rows = []
-        for k in ("1", "2"):
-            for st_k in ("vedl", "remiza", "prohraval"):
-                e = per["stav"][k][st_k]
+
+        def periods_table(per):
+            rows = []
+            for t in ("1", "2", "3", "P"):
+                e = per["tretiny"][t]
                 if not e["z"]:
                     continue
-                body = 3 * e["V"] + 2 * e["VP"] + e["PP"]
-                st_rows.append(
-                    f"<tr><td>po {k}. třetině {sl[st_k]}</td><td>{e['z']}</td><td>{e['V']}</td>"
-                    f"<td>{e['VP']}</td><td>{e['PP']}</td><td>{e['P']}</td><td><strong>{body}</strong></td></tr>"
+                sf = f"{e['sf']}:{e['sa']}" if e["zs"] else "–"
+                avg = f"{e['sf'] / e['zs']:.1f}:{e['sa'] / e['zs']:.1f}" if e["zs"] else "–"
+                rows.append(
+                    f"<tr><td>{tl[t]}</td><td>{e['v']}</td><td>{e['r']}</td><td>{e['p']}</td>"
+                    f"<td><strong>{e['gf']}:{e['ga']}</strong></td><td>{sf}</td><td>{avg}</td></tr>"
                 )
+            if not rows:
+                return "<p class='muted small'>Zatím žádný zápas.</p>"
+            return (f"<table class=\"tbl-periods\"><thead><tr><th>Třetina</th><th>V</th><th>R</th><th>P</th>"
+                    f"<th>{lbl('Góly','G')}</th><th>{lbl('Střely','Stř')}</th><th>{lbl('Střely/zápas','Ø')}</th></tr></thead>"
+                    f"<tbody>{''.join(rows)}</tbody></table>")
+
+        def state_table(per):
+            rows = []
+            for k in ("1", "2"):
+                for st_k in ("vedl", "remiza", "prohraval"):
+                    e = per["stav"][k][st_k]
+                    if not e["z"]:
+                        continue
+                    body = 3 * e["V"] + 2 * e["VP"] + e["PP"]
+                    rows.append(
+                        f"<tr><td>po {k}. třetině {sl[st_k]}</td><td>{e['z']}</td><td>{e['V']}</td>"
+                        f"<td>{e['VP']}</td><td>{e['PP']}</td><td>{e['P']}</td><td><strong>{body}</strong></td></tr>"
+                    )
+            if not rows:
+                return "<p class='muted small'>Zatím žádný zápas.</p>"
+            return (f"<table class=\"tbl-state\"><thead><tr><th>Stav</th><th>Z</th><th>V</th><th>VP</th><th>PP</th><th>P</th>"
+                    f"<th>{lbl('Body','B')}</th></tr></thead><tbody>{''.join(rows)}</tbody></table>")
+
+        def scoped(fn):
+            return "".join(f"<h3 class='scope-h'>{nm}</h3>{fn(pers[k])}" for k, nm in SCOPES)
+
         periods_html = f"""
     <div class="card">
       <h2>⏱️ Bilance po třetinách</h2>
       <p class="muted small">V/R/P = kolikrát Motor třetinu vyhrál / remizoval / prohrál.
       Střely ze souhrnu oficiálních zápisů ({sum(1 for z in zapis_all if z.get('tretiny'))} zápasů).</p>
-      <table class="tbl-periods">
-        <thead><tr><th>Třetina</th><th>V</th><th>R</th><th>P</th><th>{lbl("Góly","G")}</th><th>{lbl("Střely","Stř")}</th><th>{lbl("Střely/zápas","Ø")}</th></tr></thead>
-        <tbody>{"".join(pr_rows)}</tbody>
-      </table>
+      {scoped(periods_table)}
     </div>
     <div class="card">
       <h2>📊 Výsledek podle stavu po třetinách</h2>
       <p class="muted small">V = výhra v základní době, VP = výhra po prodloužení/nájezdech,
       PP = prohra po prodloužení/nájezdech, P = prohra. Body podle systému 3-2-1-0.</p>
-      <table class="tbl-state">
-        <thead><tr><th>Stav</th><th>Z</th><th>V</th><th>VP</th><th>PP</th><th>P</th><th>{lbl("Body","B")}</th></tr></thead>
-        <tbody>{"".join(st_rows)}</tbody>
-      </table>
+      {scoped(state_table)}
     </div>"""
     else:
         periods_html = ""
