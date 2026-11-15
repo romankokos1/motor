@@ -899,9 +899,9 @@ def build_record_svg(games: list) -> str:
     SEASON_ROUNDS kola. Nehraná kola zatím do grafu nepřidávají bod —
     graf se tak den po dni "dokresluje", jak přibývají odehrané zápasy.
 
-    Barvy bere z CSS proměnných stránky (--accent, --surface…), takže
-    funguje ve světlém i tmavém režimu. Pod linkou je přechod do ztracena,
-    mřížka jen vodorovná; data bodů jsou v data-pts pro tooltip (JS).
+    Barvy bere z CSS proměnných stránky (--pos, --neg…), takže funguje
+    ve světlém i tmavém režimu. Úseky nahoru zeleně, dolů červeně, plocha
+    mezi linkou a nulou zeleně nad nulou a červeně pod ní; mřížka vodorovná; data bodů jsou v data-pts pro tooltip (JS).
     """
     played = sorted((g for g in games if g["odehrano"]), key=lambda g: g["kolo"])
     if not played:
@@ -949,8 +949,14 @@ def build_record_svg(games: list) -> str:
         for t in range(0, x_max + 1, 10)
     )
     line = " ".join(f"{x_for(k):.1f},{y_for(v):.1f}" for k, v, _ in pts)
-    area = (f"M{x_for(pts[0][0]):.1f},{bottom} L" + line.replace(" ", " L")
-            + f" L{x_for(pts[-1][0]):.1f},{bottom} Z")
+    y0 = y_for(0)
+    area = (f"M{x_for(pts[0][0]):.1f},{y0:.1f} L" + line.replace(" ", " L")
+            + f" L{x_for(pts[-1][0]):.1f},{y0:.1f} Z")
+    segs = "".join(
+        f'<line class="g-line {"g-up" if b[1] > a[1] else "g-down" if b[1] < a[1] else ""}" '
+        f'x1="{x_for(a[0]):.1f}" y1="{y_for(a[1]):.1f}" x2="{x_for(b[0]):.1f}" y2="{y_for(b[1]):.1f}"/>'
+        for a, b in zip(pts, pts[1:])
+    )
     lk, lv, _ = pts[-1]
     data = json.dumps([[round(x_for(k), 1), round(y_for(v), 1), v, lab] for k, v, lab in pts],
                       ensure_ascii=False).replace("'", "&#39;")
@@ -960,16 +966,14 @@ def build_record_svg(games: list) -> str:
       <svg viewBox="0 0 {width} {height}" role="img"
            aria-label="Průběžná bilance výher a proher HC Motor, aktuálně {lv:+d} po {lk}. kole">
         <defs>
-          <linearGradient id="g-fade" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0" style="stop-color:var(--accent);stop-opacity:.28"/>
-            <stop offset="1" style="stop-color:var(--accent);stop-opacity:0"/>
-          </linearGradient>
+          <clipPath id="g-clip-up"><rect x="{pad_l}" y="{pad_t}" width="{plot_w}" height="{y0 - pad_t:.1f}"/></clipPath>
+          <clipPath id="g-clip-down"><rect x="{pad_l}" y="{y0:.1f}" width="{plot_w}" height="{bottom - y0:.1f}"/></clipPath>
         </defs>
         {grid}{xlabels}
-        <path class="g-area" d="{area}" fill="url(#g-fade)"/>
-        <polyline class="g-line" points="{line}"/>
-        <circle class="g-halo" cx="{x_for(lk):.1f}" cy="{y_for(lv):.1f}" r="10"/>
-        <circle class="g-end" cx="{x_for(lk):.1f}" cy="{y_for(lv):.1f}" r="4.5"/>
+        <path class="g-fill-up" d="{area}" clip-path="url(#g-clip-up)"/>
+        <path class="g-fill-down" d="{area}" clip-path="url(#g-clip-down)"/>
+        {segs}
+        <circle class="g-end {"up" if lv > 0 else "down" if lv < 0 else ""}" cx="{x_for(lk):.1f}" cy="{y_for(lv):.1f}" r="4.5"/>
         <g class="g-hover" visibility="hidden">
           <line class="g-cross" x1="0" y1="{pad_t}" x2="0" y2="{bottom}"/>
           <circle class="g-end" cx="0" cy="0" r="4.5"/>
@@ -2002,7 +2006,7 @@ PAGE_CSS = """
     --bg: #FFFFFF; --surface: #FFFFFF; --surface-2: #F3F4F6;
     --line: #E4E6EA; --line-strong: #C5C9CF;
     --text: #15181C; --text-2: #3F454D; --text-3: #6A717B;
-    --accent: #C8321F; --accent-2: #2B4C6F; --neg: #2B4C6F; --warn: #A06A00; --hover: #F3F4F6;
+    --accent: #1F5FA8; --accent-2: #6B4FA3; --pos: #1E7B3A; --neg: #C2352A; --warn: #A06A00; --hover: #F3F4F6;
     --f-head: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
     --f-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
     --f-mono: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -2014,7 +2018,7 @@ PAGE_CSS = """
       --bg: #121416; --surface: #121416; --surface-2: #1B1E22;
       --line: #2A2E34; --line-strong: #444A52;
       --text: #ECEEF0; --text-2: #C3C8CE; --text-3: #8F969F;
-      --accent: #F0604B; --accent-2: #86AAD3; --neg: #86AAD3; --warn: #D9A441; --hover: #1B1E22;
+      --accent: #6EA8F0; --accent-2: #B39DE0; --pos: #4CC27A; --neg: #F0685D; --warn: #D9A441; --hover: #1B1E22;
       color-scheme: dark;
     }
   }
@@ -2074,9 +2078,20 @@ PAGE_CSS = """
   .section-title { font-size: 13px; font-weight: 600; color: var(--text-3); margin: 14px 0 -4px; }
   .scope-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 4px 40px; margin-top: 10px; }
   .scope-h { margin: 18px 0 0; font: 700 12px/1 var(--f-body); color: var(--text); }
-  .scope-h::before { content: ""; display: inline-block; width: 8px; height: 8px; margin-right: 8px; background: var(--accent); }
-  .scope:nth-child(2) .scope-h::before { background: var(--accent-2); }
+  .scope-h::before { content: ""; display: inline-block; width: 8px; height: 8px; margin-right: 8px; background: var(--text); }
+  .scope:nth-child(2) .scope-h::before { background: var(--accent); }
   .scope:nth-child(3) .scope-h::before { background: var(--text-3); }
+  .sg-pos { color: var(--pos) !important; }
+  .sg-neg { color: var(--neg) !important; }
+  td.sgn-pos, td.sgn-pos strong, td.num.sgn-pos, td.num.sgn-pos strong { color: var(--pos); }
+  td.sgn-neg, td.sgn-neg strong, td.num.sgn-neg, td.num.sgn-neg strong { color: var(--neg); }
+  .tag { display: inline-block; padding: 1px 8px; border-radius: 3px; font-size: 12px; font-weight: 600; line-height: 1.5; }
+  .tag-motor { color: var(--accent); background: color-mix(in oklab, var(--accent) 12%, transparent); }
+  .tag-liga { color: var(--accent-2); background: color-mix(in oklab, var(--accent-2) 13%, transparent); }
+  .section-title.sc-motor, .section-title.sc-liga { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--text); margin: 18px 0 -6px; }
+  .section-title.sc-motor::before, .section-title.sc-liga::before { content: ""; width: 10px; height: 10px; background: var(--accent); }
+  .section-title.sc-liga::before { background: var(--accent-2); }
+  th.c-motor { color: var(--accent); }
   .info-btn {
     flex: none; width: 18px; height: 18px; padding: 0; border: 1px solid var(--text-3); border-radius: 50%;
     background: none; color: var(--text-3); font: italic 600 11px/1 var(--f-body); cursor: pointer; transition: all .15s ease;
@@ -2089,7 +2104,8 @@ PAGE_CSS = """
   .hero-kicker { font: 500 13px/1.3 var(--f-body); color: var(--text-3); }
   .hero-score { display: flex; align-items: baseline; margin: 10px 0 0 -2px; font: 600 clamp(56px, 7vw, 88px)/.9 var(--f-head); font-variant-numeric: tabular-nums; }
   .hero-score i { font-style: normal; font-weight: 700; color: var(--text-3); margin: 0 .04em; position: relative; top: -.06em; }
-  .hero.win .hero-score .m { color: var(--accent); }
+  .hero.win .hero-score .m { color: var(--pos); }
+  .hero.loss .hero-score .m { color: var(--neg); }
   .hero-teams { margin-top: 10px; font: 600 16px/1.3 var(--f-head); }
   .hero-teams span { color: var(--text-3); font-weight: 700; }
   .hero-teams b { color: var(--text); font-weight: 800; }
@@ -2097,7 +2113,8 @@ PAGE_CSS = """
   .hero-goals { list-style: none; margin: 14px 0 0; padding: 0; border-top: 1px solid var(--line); }
   .hero-goals li { display: grid; grid-template-columns: 52px minmax(0, 1fr); gap: 4px 12px; align-items: baseline; padding: 9px 0 9px 12px; border-bottom: 1px solid var(--line); position: relative; }
   .hero-goals li::before { content: ""; position: absolute; left: 0; top: 10px; bottom: 10px; width: 3px; background: var(--line); }
-  .hero-goals li.m::before { background: var(--accent); }
+  .hero-goals li.m::before { background: var(--pos); }
+  .hero-goals li.o::before { background: var(--neg); opacity: .55; }
   .hero-goals .t { font: 400 13px var(--f-mono); color: var(--text-3); }
   .hero-goals .who { font-weight: 600; }
   .hero-goals li.o .who { font-weight: 500; color: var(--text-2); }
@@ -2111,10 +2128,10 @@ PAGE_CSS = """
   .form-sq { display: flex; gap: 5px; align-items: center; }
   .form-sq > b { font: 600 12px/1.2 var(--f-body); color: var(--text-3); margin-right: 6px; }
   .fsq { width: 16px; height: 16px; background: var(--text); }
-  .fsq-V { background: var(--accent); }
-  .fsq-VP { background: transparent; box-shadow: inset 0 0 0 2px var(--accent); }
-  .fsq-PP { background: transparent; box-shadow: inset 0 0 0 2px var(--text-3); }
-  .fsq-P { background: var(--text-3); }
+  .fsq-V { background: var(--pos); }
+  .fsq-VP { background: transparent; box-shadow: inset 0 0 0 2px var(--pos); }
+  .fsq-PP { background: transparent; box-shadow: inset 0 0 0 2px var(--neg); }
+  .fsq-P { background: var(--neg); }
   .nextline { display: grid; grid-template-columns: 130px minmax(0, 1.2fr) minmax(0, 1fr) minmax(0, 1.6fr); gap: 6px 24px; align-items: baseline; padding: 16px 0 18px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); margin-bottom: 28px; }
   .nextline .lbl { font: 600 12px/1.2 var(--f-body); color: var(--accent); }
   .nextline .opp { font: 600 20px/1.2 var(--f-head); }
@@ -2152,9 +2169,15 @@ PAGE_CSS = """
   .g-grid { stroke: var(--line); stroke-width: 1; }
   .g-zero { stroke: var(--text-3); stroke-width: 1; stroke-dasharray: 3 4; }
   .g-axis { fill: var(--text-3); font-size: 11px; font-family: var(--f-mono); }
-  .g-line { fill: none; stroke: var(--accent); stroke-width: 2.25; stroke-linejoin: miter; stroke-linecap: butt; }
-  .g-end { fill: var(--accent); stroke: var(--bg); stroke-width: 2; }
-  .g-halo { fill: var(--accent); opacity: .14; }
+  .g-line { fill: none; stroke: var(--text-3); stroke-width: 2.25; stroke-linejoin: miter; stroke-linecap: butt; }
+  .g-up { stroke: var(--pos); }
+  .g-down { stroke: var(--neg); }
+  .g-end { fill: var(--text); stroke: var(--bg); stroke-width: 2; }
+  .g-end.up { fill: var(--pos); }
+  .g-end.down { fill: var(--neg); }
+  .g-halo { display: none; }
+  .g-fill-up { fill: var(--pos); opacity: .16; }
+  .g-fill-down { fill: var(--neg); opacity: .16; }
   .g-cross { stroke: var(--text); stroke-width: 1; }
   .chart-tip {
     position: absolute; top: 0; transform: translate(-50%, 0); pointer-events: none;
@@ -2243,11 +2266,12 @@ PAGE_CSS = """
   }
   .dot-lg { width: 12px; height: 12px; margin: 0; }
   .dot-after { margin: 0 2px 1px 6px; }
-  .dot-pos { background: var(--accent); }
-  .dot-neg { background: var(--accent-2); }
+  .dot-pos { background: var(--pos); }
+  .dot-neg { background: var(--neg); }
   .dot-warn { background: var(--warn); }
-  .dot-pos-ring { background: transparent; box-shadow: inset 0 0 0 2px var(--accent); }
-  .dot-neg-ring { background: transparent; box-shadow: inset 0 0 0 2px var(--accent-2); }
+  .dot-pos-ring { background: transparent; box-shadow: inset 0 0 0 2px var(--pos); }
+  .dot-neg-ring { background: transparent; box-shadow: inset 0 0 0 2px var(--neg); }
+  .dot-home { background: var(--accent); }
   .dot-ring { background: transparent; box-shadow: inset 0 0 0 1.5px var(--text-3); }
 
   /* ===== Vyhledávání ===== */
@@ -2464,7 +2488,7 @@ def render_html(
   <div class="nextline">
     <span class="lbl">Příští zápas</span>
     <span class="opp">{esc(nm["soupeř"])}</span>
-    <span class="where"><span class="dot {"dot-pos" if nm["doma"] else "dot-ring"}"></span>{"Doma" if nm["doma"] else "Venku"}, {nm["kolo"]}. kolo</span>
+    <span class="where"><span class="dot {"dot-home" if nm["doma"] else "dot-ring"}"></span>{"Doma" if nm["doma"] else "Venku"}, {nm["kolo"]}. kolo</span>
     <span class="when">{esc(nm["datum"])}, {esc(cas_lbl)}, {esc(nm["misto"])}</span>
   </div>
 """
@@ -2564,8 +2588,8 @@ def render_html(
       </div>
     </div>
     <div class="kpi-split">
-      <div><h2>Doma</h2><div class="kpi-num kpi-num-sm">{d["v"]}<i>–</i>{d["p"]}</div><div class="kpi-sub">{d["z"]} zápasů</div></div>
-      <div><h2>Venku</h2><div class="kpi-num kpi-num-sm">{v["v"]}<i>–</i>{v["p"]}</div><div class="kpi-sub">{v["z"]} zápasů</div></div>
+      <div><h2>Doma</h2><div class="kpi-num kpi-num-sm"><b class="sg-pos">{d["v"]}</b><i>–</i><b class="sg-neg">{d["p"]}</b></div><div class="kpi-sub">{d["z"]} zápasů</div></div>
+      <div><h2>Venku</h2><div class="kpi-num kpi-num-sm"><b class="sg-pos">{v["v"]}</b><i>–</i><b class="sg-neg">{v["p"]}</b></div><div class="kpi-sub">{v["z"]} zápasů</div></div>
     </div>
   </div>
 """
@@ -2663,7 +2687,7 @@ def render_html(
                 stats += (f'<div><dt>Série</dt><dd>{st["vysledek_pocet"]}×'
                           f'<small>{esc(st["vysledek_typ"])}</small></dd></div>')
             hero_html = f"""
-  <div class="hero{" win" if rt in ("V", "VP") else ""}">
+  <div class="hero{" win" if rt in ("V", "VP") else " loss" if rt in ("P", "PP") else ""}">
     <div>
       <div class="hero-kicker">{" · ".join(kick)}</div>
       <div class="hero-score" aria-label="Výsledek {sd}:{sh}"><span{' class="m"' if motor_home else ""}>{sd}</span><i>:</i><span{'' if motor_home else ' class="m"'}>{sh}</span></div>
@@ -2927,7 +2951,7 @@ def render_html(
                 avg = f"{e['sf'] / e['zs']:.1f}:{e['sa'] / e['zs']:.1f}" if e["zs"] else "–"
                 rows.append(
                     f"<tr><td>{tl[t]}</td><td>{e['v']}</td><td>{e['r']}</td><td>{e['p']}</td>"
-                    f"<td><strong>{e['gf']}:{e['ga']}</strong></td><td>{sf}</td><td>{avg}</td></tr>"
+                    f"<td class=\"{'sgn-pos' if e['gf'] > e['ga'] else 'sgn-neg' if e['gf'] < e['ga'] else ''}\"><strong>{e['gf']}:{e['ga']}</strong></td><td>{sf}</td><td>{avg}</td></tr>"
                 )
             if not rows:
                 return "<p class='muted small'>Zatím žádný zápas.</p>"
@@ -3116,7 +3140,7 @@ def render_html(
     <div class="card">
       <h2>⚖️ Tresty: Motor vs. soupeři</h2>
       <table class="tbl-disc-team">
-        <thead><tr><th>Provinění</th><th>Motor ×</th><th>Motor min</th><th>Soupeři ×</th><th>Soupeři min</th></tr></thead>
+        <thead><tr><th>Provinění</th><th class="c-motor">Motor ×</th><th class="c-motor">Motor min</th><th>Soupeři ×</th><th>Soupeři min</th></tr></thead>
         <tbody>{"".join(team_rows)}</tbody>
       </table>
     </div>"""
@@ -3217,7 +3241,7 @@ def render_html(
         milestone_rows = "".join(
             f"<tr><td>{esc(i['jmeno'])}</td>"
             f"<td>{esc(METRIC_LABELS[i['metric']].capitalize())}</td>"
-            f"<td>{esc(SCOPE_LABELS[i['scope']])}</td>"
+            f"<td><span class=\"tag {'tag-motor' if i['scope'] == 'motor' else 'tag-liga'}\">{esc(SCOPE_LABELS[i['scope']])}</span></td>"
             f"<td>{i['hodnota']}</td>"
             f"<td><strong>{i['milestone']}</strong></td>"
             f"<td>{'<span class=\"dot dot-pos\"></span>' if i['chybi'] <= 1 else ''}{i['chybi']}</td></tr>"
@@ -3247,7 +3271,7 @@ def render_html(
 
     if has_any_baseline:
         career_html = f"""
-  <h2 class="section-title">Kariéra za HC Motor</h2>
+  <h2 class="section-title sc-motor">Kariéra za HC Motor</h2>
   <div class="card">
     <h2>Hráči v poli</h2>
     <table>
@@ -3265,7 +3289,7 @@ def render_html(
     {missing_note(missing_gm)}
   </div>
 
-  <h2 class="section-title">Kariéra v Tipsport extralize celkem</h2>
+  <h2 class="section-title sc-liga">Kariéra v Tipsport extralize celkem</h2>
   <div class="card">
     <h2>Hráči v poli</h2>
     <table>
@@ -3726,6 +3750,27 @@ function hideSkeleton() {{
 }}
 
 // Sloupce, kde jsou skoro jen čísla, se zarovnají doprava (tabulková čísla).
+// Sloupce +/- : kladné zeleně, záporné červeně.
+function initSignedColumns() {{
+  try {{
+    var tables = document.querySelectorAll('table');
+    for (var t = 0; t < tables.length; t++) {{
+      var ths = tables[t].querySelectorAll('thead th');
+      for (var c = 0; c < ths.length; c++) {{
+        if (ths[c].textContent.trim() !== '+/-') continue;
+        var rows = tables[t].querySelectorAll('tbody tr');
+        for (var r = 0; r < rows.length; r++) {{
+          var cell = rows[r].children[c];
+          if (!cell) continue;
+          var v = parseFloat(cell.textContent.trim().replace('\u2212', '-').replace(',', '.'));
+          if (isNaN(v)) continue;
+          cell.classList.add(v > 0 ? 'sgn-pos' : v < 0 ? 'sgn-neg' : 'sgn-zero');
+        }}
+      }}
+    }}
+  }} catch (e) {{}}
+}}
+
 function initNumericColumns() {{
   try {{
     var re = /^[+\\-−]?\\d[\\d\\s\\u00a0]*([.,]\\d+)?(\\s*:\\s*\\d+([.,]\\d+)?)?\\s*%?×?$/;
@@ -3798,6 +3843,7 @@ function initChart() {{
 
 function initAll() {{
   initNumericColumns();
+  initSignedColumns();
   initChart();
   initInfo();
   initSectionIndex();
@@ -3831,6 +3877,9 @@ if (document.readyState === 'loading') {{
                 f'aria-label="Vysvětlivka" title="Vysvětlivka">i</button></h2>\n'
                 f'<p class="muted small note" hidden>{m.group(3)}</p>')
     page = re.sub(r'(<h2[^>]*>)([^<]*)</h2>\s*<p class="muted small">(.*?)</p>', _fold_note, page, flags=re.S)
+    def _color_plus(m):
+        return re.sub(r'(?<![\w/])(\+\d+[A-Za-zěščřžýáíéúůďťň]*)', r'<span class="sg-pos">\1</span>', m.group(0))
+    page = re.sub(r'<ul class="changes">.*?</ul>', _color_plus, page, flags=re.S)
     page = page.replace("✅", '<span class="dot dot-pos dot-after" title="ano"></span>')
     page = page.replace("❌", '<span class="dot dot-neg dot-after" title="ne"></span>')
     return page
