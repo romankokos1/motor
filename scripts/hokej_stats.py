@@ -1001,34 +1001,77 @@ HOKEJCZ_IDS_FILE = SCRIPT_DIR / "hokejcz_zapasy.json"  # ID zápasů dodaná sta
 HOKEJOVYZAPIS_URL_TMPL = "https://hokejovyzapis.cz/pdf/print/cs-html/?hokejczId={id}"
 ZAPIS_STATE_FILE = SCRIPT_DIR / "zapis_state.json"
 ZAPIS_GAMES_SHOWN = 5  # kolik posledních zápasů se zobrazuje v záložce Zápas
-ZAPIS_VERZE = 7  # 2 = hráči na ledě, 3 = nejlepší hráči, 4 = soupiska/třetiny/nájezdy/rozhodčí, 5 = pozice hráčů, 6 = sestavy, 7 = hra bez brankáře
+ZAPIS_VERZE = 8  # 8 = oficiální zkratky trestů, 2 = hráči na ledě, 3 = nejlepší hráči, 4 = soupiska/třetiny/nájezdy/rozhodčí, 5 = pozice hráčů, 6 = sestavy, 7 = hra bez brankáře
 ZAPIS_MAX_PER_RUN = 80  # strop stažených zápisů za jeden běh (zpětné doplnění)
 LINEUPS_JSON = DOCS_DIR / "sestavy-data.json"  # data pro docs/sestavy.html
 
-# Zkratky důvodů trestů — některé potvrzené přímo Gafferem (NROZ, PODR,
-# ZHK, NBR), zbytek je odhad podle obvyklých kódů ČSLH a NENÍ oficiálně
-# ověřený, takže klidně oprav, pokud některá sedí špatně; neznámý kód
-# se prostě zobrazí tak, jak je.
+# Zkratky přestupků podle oficiálních Pravidel 2018–2022 (zápis o utkání).
+# Neznámý kód se zobrazí tak, jak je.
 OFFENCE_CODES = {
-    "PMH": "příliš mnoho hráčů na ledě",
-    "HRUB": "hrubost",
-    "SEK": "sekání",
-    "VYSH": "vysoká hůl",
+    "BBB": "nedovolené blokování branky nebo hromadění sněhu",
+    "BHL": "brankář u hráčské lavice v přerušené hře",
+    "BKH": "bodnutí koncem hole",
+    "BPS": "upuštění puku brankářem na vnější síť branky",
+    "BSC": "brankář za střední čárou",
+    "BSH": "bodnutí špičkou hole",
+    "BTK": "bitka",
+    "DRZH": "držení hole",
+    "DRZP": "držení",
+    "FHP": "funkcionář týmu na hrací ploše",
+    "FIP": "nafilmovaný pád / přehrávání",
     "HAK": "hákování",
-    "ZHK": "zásah do hlavy nebo krku",
-    "DRZP": "držení protihráče",
-    "DRZH": "držení hokejky",
-    "NBRB": "nedovolené bránění brankáře",
-    "NBR": "nedovolené bránění",
-    "NROZ": "napadení rozhodčího",
-    "PODR": "podražení",
-    "FAUL": "faul",
+    "HELM": "hraní bez helmy",
+    "HOZ": "hození hole / předmětu",
+    "HRUB": "hrubost",
+    "KOL": "faul kolenem",
     "KOP": "kopnutí",
-    "NDOV": "nedovolené bránění",
+    "KOUS": "kousnutí",
     "KROS": "krosček",
-    "BUTC": "vražení na mantinel",
-    "SPER": "napíchnutí",
-    "SIAK": "simulování",
+    "LOK": "faul loktem",
+    "NAP": "napadení",
+    "NARZ": "naražení zezadu",
+    "NBR": "nedovolené bránění",
+    "NBRB": "nedovolené bránění brankáři",
+    "NESP": "nesportovní chování",
+    "NHUL": "nedovolená hůl nebo měření hole",
+    "NROZ": "napadání rozhodčích",
+    "NTL": "nesprávný příchod nebo odchod z trestné lavice",
+    "NVYS": "nedovolená nebo nebezpečná výstroj",
+    "NZT": "nedovolený zásah tělem (v ženském hokeji)",
+    "OBB": "opuštění brankoviště v průběhu šarvátky",
+    "OHL": "opuštění hráčské lavice",
+    "OTL": "opuštění trestné lavice",
+    "OZH": "odmítnutí zahájit hru",
+    "PDK": "podkopnutí",
+    "PDOH": "pozdní dohrání",
+    "PLIV": "plivnutí",
+    "PMH": "příliš mnoho hráčů",
+    "PODR": "podrážení",
+    "POSH": "posunutí hole",
+    "PPB": "přikrytí puku brankářem",
+    "SEK": "sekání",
+    "SPR": "sevření puku rukou",
+    "STH": "porušení postupu při střídání hráčů",
+    "TAH": "tahání za vlasy, helmu, mřížku",
+    "UHL": "úder hlavou",
+    "VRAZ": "vražení na hrazení",
+    "VSM": "vysmívání",
+    "VYSH": "vysoká hůl",
+    "ZAN": "zásah do nohou",
+    "ZH": "zdržování hry",
+    "ZHOG": "zdržování hry – oslava gólu",
+    "ZHPB": "zdržování hry – posunutí branky",
+    "ZHPN": "zdržování hry – pozdní nástup",
+    "ZHPP": "zdržování hry – padnutí na puk",
+    "ZHPV": "zdržování hry – porušení postupu vhazování",
+    "ZHUV": "zdržování hry – úprava výstroje",
+    "ZHVP": "zdržování hry – vystřelení nebo vyhození puku mimo hřiště",
+    "ZHZP": "zdržování hry – zašlapování puku",
+    "ZHZU": "zdržování hry – po zakázaném uvolnění",
+    "ZHK": "zásah do oblasti hlavy a krku",
+    "ZHOL": "zraněný hráč odmítající opustit led",
+    "ZLH": "zlomená hůl",
+    "ZPD": "zásah proti divákům",
 }
 
 
@@ -1947,39 +1990,31 @@ def build_on_ice(zapasy: list) -> dict:
 
 PAGE_CSS = """
   /* ===== Písma (vlastní, bez volání cizích serverů) ===== */
-  @font-face { font-family: "Archivo"; font-weight: 700; font-style: normal; font-display: swap; src: url(fonts/archivo-latin-ext-700-normal.woff2) format("woff2"); unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
-  @font-face { font-family: "Archivo"; font-weight: 700; font-style: normal; font-display: swap; src: url(fonts/archivo-latin-700-normal.woff2) format("woff2"); unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
-  @font-face { font-family: "Archivo"; font-weight: 800; font-style: normal; font-display: swap; src: url(fonts/archivo-latin-ext-800-normal.woff2) format("woff2"); unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
-  @font-face { font-family: "Archivo"; font-weight: 800; font-style: normal; font-display: swap; src: url(fonts/archivo-latin-800-normal.woff2) format("woff2"); unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
   @font-face { font-family: "IBM Plex Sans"; font-weight: 400; font-style: normal; font-display: swap; src: url(fonts/ibm-plex-sans-latin-ext-400-normal.woff2) format("woff2"); unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
   @font-face { font-family: "IBM Plex Sans"; font-weight: 400; font-style: normal; font-display: swap; src: url(fonts/ibm-plex-sans-latin-400-normal.woff2) format("woff2"); unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
   @font-face { font-family: "IBM Plex Sans"; font-weight: 500; font-style: normal; font-display: swap; src: url(fonts/ibm-plex-sans-latin-ext-500-normal.woff2) format("woff2"); unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
   @font-face { font-family: "IBM Plex Sans"; font-weight: 500; font-style: normal; font-display: swap; src: url(fonts/ibm-plex-sans-latin-500-normal.woff2) format("woff2"); unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
   @font-face { font-family: "IBM Plex Sans"; font-weight: 600; font-style: normal; font-display: swap; src: url(fonts/ibm-plex-sans-latin-ext-600-normal.woff2) format("woff2"); unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
   @font-face { font-family: "IBM Plex Sans"; font-weight: 600; font-style: normal; font-display: swap; src: url(fonts/ibm-plex-sans-latin-600-normal.woff2) format("woff2"); unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
-  @font-face { font-family: "IBM Plex Mono"; font-weight: 400; font-style: normal; font-display: swap; src: url(fonts/ibm-plex-mono-latin-ext-400-normal.woff2) format("woff2"); unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
-  @font-face { font-family: "IBM Plex Mono"; font-weight: 400; font-style: normal; font-display: swap; src: url(fonts/ibm-plex-mono-latin-400-normal.woff2) format("woff2"); unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
-  @font-face { font-family: "IBM Plex Mono"; font-weight: 500; font-style: normal; font-display: swap; src: url(fonts/ibm-plex-mono-latin-ext-500-normal.woff2) format("woff2"); unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
-  @font-face { font-family: "IBM Plex Mono"; font-weight: 500; font-style: normal; font-display: swap; src: url(fonts/ibm-plex-mono-latin-500-normal.woff2) format("woff2"); unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
 
   /* ===== Tokeny: papír a tiskařská čerň; tmavý režim podle systému ===== */
   :root {
-    --bg: #F5F3EE; --surface: #F5F3EE; --surface-2: #ECE9E1;
-    --line: #D9D5CB; --line-strong: #14161A;
-    --text: #14161A; --text-2: rgba(20, 22, 26, .74); --text-3: rgba(20, 22, 26, .58);
-    --accent: #C8321F; --accent-2: #2B4C6F; --neg: #2B4C6F; --warn: #A06A00; --hover: rgba(20, 22, 26, .035);
-    --f-head: "Archivo", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+    --bg: #FFFFFF; --surface: #FFFFFF; --surface-2: #F3F4F6;
+    --line: #E4E6EA; --line-strong: #C5C9CF;
+    --text: #15181C; --text-2: #3F454D; --text-3: #6A717B;
+    --accent: #C8321F; --accent-2: #2B4C6F; --neg: #2B4C6F; --warn: #A06A00; --hover: #F3F4F6;
+    --f-head: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
     --f-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
-    --f-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+    --f-mono: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
     --tabbar-h: 46px;
     color-scheme: light;
   }
   @media (prefers-color-scheme: dark) {
     :root {
-      --bg: #101216; --surface: #101216; --surface-2: #181B20;
-      --line: #2B2E35; --line-strong: #ECE9E1;
-      --text: #ECE9E1; --text-2: rgba(236, 233, 225, .76); --text-3: rgba(236, 233, 225, .56);
-      --accent: #F0604B; --accent-2: #86AAD3; --neg: #86AAD3; --warn: #D9A441; --hover: rgba(236, 233, 225, .05);
+      --bg: #121416; --surface: #121416; --surface-2: #1B1E22;
+      --line: #2A2E34; --line-strong: #444A52;
+      --text: #ECEEF0; --text-2: #C3C8CE; --text-3: #8F969F;
+      --accent: #F0604B; --accent-2: #86AAD3; --neg: #86AAD3; --warn: #D9A441; --hover: #1B1E22;
       color-scheme: dark;
     }
   }
@@ -1989,7 +2024,7 @@ PAGE_CSS = """
   @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
   body {
     margin: 0; background: var(--bg); color: var(--text);
-    font: 400 14px/1.5 var(--f-body);
+    font: 400 14px/1.5 var(--f-body); font-variant-numeric: tabular-nums;
     -webkit-font-smoothing: antialiased; -webkit-tap-highlight-color: transparent;
   }
   a { color: inherit; text-decoration: none; border-bottom: 1px solid var(--line); transition: border-color .15s ease, color .15s ease; }
@@ -1999,7 +2034,7 @@ PAGE_CSS = """
 
   /* ===== Hlavička: jeden tenký řádek ===== */
   .app-header { display: flex; justify-content: space-between; align-items: baseline; gap: 6px 28px; flex-wrap: wrap; padding: 18px 0 14px; }
-  h1 { font: 800 19px/1.2 var(--f-head); letter-spacing: -.01em; margin: 0; display: inline; }
+  h1 { font: 600 19px/1.2 var(--f-head); margin: 0; display: inline; }
   .meta { display: inline; margin-left: 12px; color: var(--text-3); font-size: 13px; }
   .header-side { display: flex; gap: 4px 20px; align-items: baseline; flex-wrap: wrap; font-size: 13px; color: var(--text-3); }
   .header-side a { border-bottom-color: transparent; }
@@ -2010,12 +2045,12 @@ PAGE_CSS = """
   .tabbar {
     position: sticky; top: 0; z-index: 30; display: flex; gap: 26px; overflow-x: auto;
     height: var(--tabbar-h); margin: 0 0 28px; padding: 0;
-    background: var(--bg); border-top: 2px solid var(--line-strong); border-bottom: 1px solid var(--line);
+    background: var(--bg); border-bottom: 1px solid var(--line-strong);
   }
   .tab-btn {
     position: relative; display: inline-flex; align-items: center; gap: 7px; flex: none;
     padding: 0; border: 0; background: none; color: var(--text-3);
-    font: 600 13px/1 var(--f-body); letter-spacing: .02em; cursor: pointer; transition: color .15s ease;
+    font: 600 13px/1 var(--f-body); cursor: pointer; transition: color .15s ease;
   }
   .tab-btn svg { display: none; width: 20px; height: 20px; flex-shrink: 0; }
   .tab-btn::after { content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 3px; background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform .2s ease; }
@@ -2030,32 +2065,32 @@ PAGE_CSS = """
   /* ===== Mřížka: 12 sloupců, tabulky bez karet ===== */
   .bento { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 40px; row-gap: 8px; align-items: start; }
   .bento > * { grid-column: span 12; min-width: 0; }
-  .card { padding: 14px 0 34px; border-top: 2px solid var(--line-strong); scroll-margin-top: calc(var(--tabbar-h) + 18px); }
-  .card h2 { font: 800 19px/1.2 var(--f-head); letter-spacing: -.01em; color: var(--text); margin: 0 0 4px; display: flex; align-items: center; gap: 10px; }
+  .card { padding: 18px 0 32px; border-top: 1px solid var(--line); scroll-margin-top: calc(var(--tabbar-h) + 18px); }
+  .card h2 { font: 600 19px/1.2 var(--f-head); color: var(--text); margin: 0 0 4px; display: flex; align-items: center; gap: 10px; }
   .card h2 + p.muted.small { margin-top: 2px; }
   .muted { color: var(--text-3); margin: 0; }
   .small { font-size: 13px; margin: 8px 0 0; line-height: 1.5; }
   .card > p.small:not(.muted) { color: var(--text-2); }
   .section-title { font-size: 13px; font-weight: 600; color: var(--text-3); margin: 14px 0 -4px; }
   .scope-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 4px 40px; margin-top: 10px; }
-  .scope-h { margin: 18px 0 0; font: 700 12px/1 var(--f-body); letter-spacing: .09em; text-transform: uppercase; color: var(--text); }
+  .scope-h { margin: 18px 0 0; font: 700 12px/1 var(--f-body); color: var(--text); }
   .scope-h::before { content: ""; display: inline-block; width: 8px; height: 8px; margin-right: 8px; background: var(--accent); }
   .scope:nth-child(2) .scope-h::before { background: var(--accent-2); }
   .scope:nth-child(3) .scope-h::before { background: var(--text-3); }
   .info-btn {
     flex: none; width: 18px; height: 18px; padding: 0; border: 1px solid var(--text-3); border-radius: 50%;
-    background: none; color: var(--text-3); font: italic 600 11px/1 var(--f-head); cursor: pointer; transition: all .15s ease;
+    background: none; color: var(--text-3); font: italic 600 11px/1 var(--f-body); cursor: pointer; transition: all .15s ease;
   }
   .info-btn:hover, .info-btn[aria-expanded="true"] { color: var(--bg); background: var(--text); border-color: var(--text); }
   p.note { max-width: 62ch; }
 
   /* ===== Úvodní výsledek (Přehled) ===== */
   .hero { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 56px; padding: 4px 0 40px; }
-  .hero-kicker { font: 600 12px/1.3 var(--f-body); letter-spacing: .09em; text-transform: uppercase; color: var(--text-3); }
-  .hero-score { display: flex; align-items: baseline; margin: 10px 0 0 -2px; font: 800 clamp(56px, 7vw, 88px)/.9 var(--f-head); letter-spacing: -.045em; font-variant-numeric: tabular-nums; }
+  .hero-kicker { font: 500 13px/1.3 var(--f-body); color: var(--text-3); }
+  .hero-score { display: flex; align-items: baseline; margin: 10px 0 0 -2px; font: 600 clamp(56px, 7vw, 88px)/.9 var(--f-head); font-variant-numeric: tabular-nums; }
   .hero-score i { font-style: normal; font-weight: 700; color: var(--text-3); margin: 0 .04em; position: relative; top: -.06em; }
   .hero.win .hero-score .m { color: var(--accent); }
-  .hero-teams { margin-top: 10px; font: 700 16px/1.3 var(--f-head); }
+  .hero-teams { margin-top: 10px; font: 600 16px/1.3 var(--f-head); }
   .hero-teams span { color: var(--text-3); font-weight: 700; }
   .hero-teams b { color: var(--text); font-weight: 800; }
   .hero-res { margin-top: 6px; font-size: 13px; color: var(--text-2); }
@@ -2070,19 +2105,19 @@ PAGE_CSS = """
   .hero-foot { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px 32px; flex-wrap: wrap; margin-top: 22px; }
   .hero-stats { display: flex; gap: 26px; margin: 0; }
   .hero-stats div { min-width: 0; }
-  .hero-stats dt { font: 600 11px/1.2 var(--f-body); letter-spacing: .09em; text-transform: uppercase; color: var(--text-3); }
-  .hero-stats dd { margin: 4px 0 0; font: 800 20px/1 var(--f-head); letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
-  .hero-stats dd small { font: 500 13px var(--f-body); letter-spacing: 0; color: var(--text-3); margin-left: 4px; }
+  .hero-stats dt { font: 600 12px/1.2 var(--f-body); color: var(--text-3); }
+  .hero-stats dd { margin: 4px 0 0; font: 600 20px/1 var(--f-head); font-variant-numeric: tabular-nums; }
+  .hero-stats dd small { font: 500 13px var(--f-body); color: var(--text-3); margin-left: 4px; }
   .form-sq { display: flex; gap: 5px; align-items: center; }
-  .form-sq > b { font: 600 11px/1.2 var(--f-body); letter-spacing: .09em; text-transform: uppercase; color: var(--text-3); margin-right: 6px; }
+  .form-sq > b { font: 600 12px/1.2 var(--f-body); color: var(--text-3); margin-right: 6px; }
   .fsq { width: 16px; height: 16px; background: var(--text); }
   .fsq-V { background: var(--accent); }
   .fsq-VP { background: transparent; box-shadow: inset 0 0 0 2px var(--accent); }
   .fsq-PP { background: transparent; box-shadow: inset 0 0 0 2px var(--text-3); }
   .fsq-P { background: var(--text-3); }
   .nextline { display: grid; grid-template-columns: 130px minmax(0, 1.2fr) minmax(0, 1fr) minmax(0, 1.6fr); gap: 6px 24px; align-items: baseline; padding: 16px 0 18px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); margin-bottom: 28px; }
-  .nextline .lbl { font: 700 11px/1.2 var(--f-body); letter-spacing: .09em; text-transform: uppercase; color: var(--accent); }
-  .nextline .opp { font: 800 20px/1.2 var(--f-head); letter-spacing: -.01em; }
+  .nextline .lbl { font: 600 12px/1.2 var(--f-body); color: var(--accent); }
+  .nextline .opp { font: 600 20px/1.2 var(--f-head); }
   .nextline .where, .nextline .when { color: var(--text-2); font-size: 13.5px; }
 
   /* ===== Rozcestník sekce (Sezóna, Bilance) ===== */
@@ -2099,13 +2134,13 @@ PAGE_CSS = """
 
   /* ===== KPI (zbytek: bilance V/VP/PP/P, doma/venku) ===== */
   .kpi { display: flex; flex-direction: column; }
-  .kpi h2 { font: 700 12px/1.2 var(--f-body); letter-spacing: .09em; text-transform: uppercase; color: var(--text-3); }
-  .kpi-num { font: 800 36px/1 var(--f-head); letter-spacing: -.04em; padding-top: 12px; font-variant-numeric: tabular-nums; }
+  .kpi h2 { font: 700 12px/1.2 var(--f-body); color: var(--text-3); }
+  .kpi-num { font: 600 36px/1 var(--f-head); padding-top: 12px; font-variant-numeric: tabular-nums; }
   .kpi-num i { font-style: normal; color: var(--text-3); font-weight: 700; font-size: .62em; margin: 0 .14em; position: relative; top: -.1em; }
   .kpi-quad { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
   .kpi-quad .kpi-sub { margin-top: 6px; }
   .kpi-num-md { font-size: 32px; }
-  .kpi-num-sm { font-size: 26px; padding-top: 6px; letter-spacing: -.035em; }
+  .kpi-num-sm { font-size: 26px; padding-top: 6px; }
   .kpi-sub { color: var(--text-3); font-size: 13px; margin-top: 8px; display: flex; align-items: center; }
   .kpi-stack { gap: 28px; }
   .kpi-split { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
@@ -2131,9 +2166,9 @@ PAGE_CSS = """
   table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 14px; margin-top: 10px; }
   th, td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--line); white-space: nowrap; }
   th {
-    position: sticky; top: var(--tabbar-h); z-index: 2; background: var(--bg);
-    color: var(--text-3); font: 600 11px/1.2 var(--f-body); letter-spacing: .08em; text-transform: uppercase;
-    padding-top: 10px; padding-bottom: 8px; border-bottom: 1px solid var(--line-strong);
+    position: sticky; top: var(--tabbar-h); z-index: 2; background: var(--surface-2);
+    color: var(--text-2); font: 600 12px/1.2 var(--f-body);
+    padding-top: 9px; padding-bottom: 9px; border-bottom: 1px solid var(--line-strong);
   }
   th:first-child, td:first-child { padding-left: 4px; }
   th:last-child, td:last-child { padding-right: 4px; }
@@ -2142,7 +2177,7 @@ PAGE_CSS = """
   tbody tr:hover td { background: var(--hover); }
   tbody tr:hover td:first-child { box-shadow: inset 2px 0 0 var(--accent); padding-left: 10px; }
   th.num, td.num { text-align: right; font-family: var(--f-mono); font-size: 13px; font-variant-numeric: tabular-nums; }
-  th.num { font-family: var(--f-body); font-size: 11px; }
+  th.num { font-size: 12px; }
   td.num { color: var(--text-2); }
   td strong { font-weight: 600; color: var(--text); }
   td.num strong { font-weight: 500; color: var(--text); }
@@ -2167,7 +2202,7 @@ PAGE_CSS = """
   .tbl-skaters, .tbl-goalkeepers { max-width: 780px; }
   .tbl-state td:first-child, .tbl-periods td:first-child, .tbl-form-5 td:first-child { white-space: normal; }
   .tbl-disc th, .tbl-disc td { padding-left: 4px; padding-right: 4px; }
-  .tbl-disc th { letter-spacing: .03em; }
+  .tbl-disc th { }
   .tbl-form-5 td:first-child { min-width: 240px; }
   .scope .lbl-full { display: none; }
   .scope .lbl-short { display: inline; }
@@ -2218,7 +2253,7 @@ PAGE_CSS = """
   /* ===== Vyhledávání ===== */
   .search-box {
     display: block; width: 100%; max-width: 420px; padding: 9px 2px; font: inherit; font-size: 15px; color: var(--text);
-    background: none; border: 0; border-bottom: 2px solid var(--line-strong); border-radius: 0; margin-bottom: 16px;
+    background: none; border: 0; border-bottom: 1px solid var(--line-strong); border-radius: 0; margin-bottom: 16px;
   }
   .search-box::placeholder { color: var(--text-3); }
   .search-box:focus { outline: none; border-bottom-color: var(--accent); }
@@ -2271,7 +2306,7 @@ PAGE_CSS = """
     html, body { height: 100%; touch-action: manipulation; }
     body { display: flex; flex-direction: column; height: 100vh; height: 100dvh; overflow: hidden; }
     .wrap { max-width: 100%; flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; padding: 0; }
-    .app-header { order: 0; flex: 0 0 auto; padding: 12px 16px 10px; padding-top: calc(12px + env(safe-area-inset-top)); margin: 0; align-items: baseline; border-bottom: 2px solid var(--line-strong); }
+    .app-header { order: 0; flex: 0 0 auto; padding: 12px 16px 10px; padding-top: calc(12px + env(safe-area-inset-top)); margin: 0; align-items: baseline; border-bottom: 1px solid var(--line-strong); }
     h1 { font-size: 17px; }
     .meta { display: block; margin: 2px 0 0; font-size: 12px; }
     .header-side { font-size: 12px; gap: 2px 14px; }
@@ -2295,7 +2330,7 @@ PAGE_CSS = """
     .g-axis { font-size: 22px; }
     table { font-size: 13px; }
     th, td { padding: 9px 6px; }
-    th { font-size: 10.5px; letter-spacing: .05em; }
+    th { font-size: 11.5px; }
     .lbl-full { display: none; }
     .lbl-short { display: inline; }
     .hide-m { display: none; }
@@ -2319,9 +2354,9 @@ PAGE_CSS = """
 
     .tabbar {
       order: 2; position: static; flex: 0 0 auto; height: auto; margin: 0; padding: 4px 4px calc(4px + env(safe-area-inset-bottom));
-      gap: 0; overflow: visible; border-bottom: 0; border-top: 2px solid var(--line-strong);
+      gap: 0; overflow: visible; border-bottom: 0; border-top: 1px solid var(--line-strong);
     }
-    .tab-btn { flex: 1; min-width: 0; flex-direction: column; gap: 3px; padding: 8px 2px 6px; font-size: 10px; letter-spacing: 0; }
+    .tab-btn { flex: 1; min-width: 0; flex-direction: column; gap: 3px; padding: 8px 2px 6px; font-size: 10px; }
     .tab-btn::after { display: none; }
     .tab-btn.is-active { color: var(--accent); }
     .tab-btn svg { display: block; }
@@ -3269,13 +3304,13 @@ def render_html(
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" href="icon-192.png" type="image/png">
-<meta name="theme-color" content="#F5F3EE" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#101216" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#121416" media="(prefers-color-scheme: dark)">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="HC Motor stats">
-<link rel="preload" href="fonts/archivo-latin-800-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/ibm-plex-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <style>{PAGE_CSS}</style>
 </head>
 <body>
