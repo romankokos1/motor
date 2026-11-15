@@ -9,250 +9,332 @@
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" href="icon-192.png" type="image/png">
-<meta name="theme-color" content="#f4f6f8" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#090c11" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#F5F3EE" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#101216" media="(prefers-color-scheme: dark)">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="HC Motor stats">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="preload" href="fonts/archivo-latin-800-normal.woff2" as="font" type="font/woff2" crossorigin>
 <style>
-  /* ===== Tokeny: světlý režim (výchozí), tmavý podle systému ===== */
+  /* ===== Písma (vlastní, bez volání cizích serverů) ===== */
+  @font-face { font-family: "Archivo"; font-weight: 700; font-style: normal; font-display: swap; src: url(fonts/archivo-latin-ext-700-normal.woff2) format("woff2"); unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
+  @font-face { font-family: "Archivo"; font-weight: 700; font-style: normal; font-display: swap; src: url(fonts/archivo-latin-700-normal.woff2) format("woff2"); unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+  @font-face { font-family: "Archivo"; font-weight: 800; font-style: normal; font-display: swap; src: url(fonts/archivo-latin-ext-800-normal.woff2) format("woff2"); unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
+  @font-face { font-family: "Archivo"; font-weight: 800; font-style: normal; font-display: swap; src: url(fonts/archivo-latin-800-normal.woff2) format("woff2"); unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+  @font-face { font-family: "IBM Plex Sans"; font-weight: 400; font-style: normal; font-display: swap; src: url(fonts/ibm-plex-sans-latin-ext-400-normal.woff2) format("woff2"); unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
+  @font-face { font-family: "IBM Plex Sans"; font-weight: 400; font-style: normal; font-display: swap; src: url(fonts/ibm-plex-sans-latin-400-normal.woff2) format("woff2"); unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+  @font-face { font-family: "IBM Plex Sans"; font-weight: 500; font-style: normal; font-display: swap; src: url(fonts/ibm-plex-sans-latin-ext-500-normal.woff2) format("woff2"); unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
+  @font-face { font-family: "IBM Plex Sans"; font-weight: 500; font-style: normal; font-display: swap; src: url(fonts/ibm-plex-sans-latin-500-normal.woff2) format("woff2"); unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+  @font-face { font-family: "IBM Plex Sans"; font-weight: 600; font-style: normal; font-display: swap; src: url(fonts/ibm-plex-sans-latin-ext-600-normal.woff2) format("woff2"); unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
+  @font-face { font-family: "IBM Plex Sans"; font-weight: 600; font-style: normal; font-display: swap; src: url(fonts/ibm-plex-sans-latin-600-normal.woff2) format("woff2"); unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+  @font-face { font-family: "IBM Plex Mono"; font-weight: 400; font-style: normal; font-display: swap; src: url(fonts/ibm-plex-mono-latin-ext-400-normal.woff2) format("woff2"); unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
+  @font-face { font-family: "IBM Plex Mono"; font-weight: 400; font-style: normal; font-display: swap; src: url(fonts/ibm-plex-mono-latin-400-normal.woff2) format("woff2"); unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+  @font-face { font-family: "IBM Plex Mono"; font-weight: 500; font-style: normal; font-display: swap; src: url(fonts/ibm-plex-mono-latin-ext-500-normal.woff2) format("woff2"); unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
+  @font-face { font-family: "IBM Plex Mono"; font-weight: 500; font-style: normal; font-display: swap; src: url(fonts/ibm-plex-mono-latin-500-normal.woff2) format("woff2"); unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+
+  /* ===== Tokeny: papír a tiskařská čerň; tmavý režim podle systému ===== */
   :root {
-    --bg: #f4f6f8; --surface: #ffffff; --surface-2: #f8f9fb;
-    --line: rgba(14, 22, 33, .065); --line-strong: rgba(14, 22, 33, .10);
-    --text: #0e1621; --text-2: rgba(14, 22, 33, .68); --text-3: rgba(14, 22, 33, .45);
-    --accent: #2f88bb; --neg: #c4687a; --warn: #b88a2e; --hover: rgba(14, 22, 33, .022);
+    --bg: #F5F3EE; --surface: #F5F3EE; --surface-2: #ECE9E1;
+    --line: #D9D5CB; --line-strong: #14161A;
+    --text: #14161A; --text-2: rgba(20, 22, 26, .74); --text-3: rgba(20, 22, 26, .58);
+    --accent: #C8321F; --accent-2: #2B4C6F; --neg: #2B4C6F; --warn: #A06A00; --hover: rgba(20, 22, 26, .035);
+    --f-head: "Archivo", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+    --f-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --f-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+    --tabbar-h: 46px;
     color-scheme: light;
   }
   @media (prefers-color-scheme: dark) {
     :root {
-      --bg: #090c11; --surface: #0f141b; --surface-2: #151b24;
-      --line: rgba(255, 255, 255, .05); --line-strong: rgba(255, 255, 255, .085);
-      --text: #e8edf3; --text-2: rgba(232, 237, 243, .66); --text-3: rgba(232, 237, 243, .42);
-      --accent: #8fd3ff; --neg: #f2a0ad; --warn: #eec872; --hover: rgba(255, 255, 255, .022);
+      --bg: #101216; --surface: #101216; --surface-2: #181B20;
+      --line: #2B2E35; --line-strong: #ECE9E1;
+      --text: #ECE9E1; --text-2: rgba(236, 233, 225, .76); --text-3: rgba(236, 233, 225, .56);
+      --accent: #F0604B; --accent-2: #86AAD3; --neg: #86AAD3; --warn: #D9A441; --hover: rgba(236, 233, 225, .05);
       color-scheme: dark;
     }
   }
 
   * { box-sizing: border-box; }
   html { -webkit-text-size-adjust: 100%; }
+  @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
   body {
     margin: 0; background: var(--bg); color: var(--text);
-    font: 14px/1.5 "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    font: 400 14px/1.5 var(--f-body);
     -webkit-font-smoothing: antialiased; -webkit-tap-highlight-color: transparent;
   }
-  a { color: var(--text-2); text-decoration: none; border-bottom: 1px solid var(--line-strong); }
-  a:hover { color: var(--text); border-color: var(--text-3); }
+  a { color: inherit; text-decoration: none; border-bottom: 1px solid var(--line); transition: border-color .15s ease, color .15s ease; }
+  a:hover { color: var(--accent); border-color: var(--accent); }
   p { margin: 8px 0; }
-  .wrap { max-width: 1180px; margin: 0 auto; padding: 28px 24px 72px; }
+  .wrap { max-width: 1240px; margin: 0 auto; padding: 0 32px 96px; }
 
-  /* ===== Hlavička ===== */
-  .app-header { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px 24px; flex-wrap: wrap; margin-bottom: 16px; }
-  h1 { font-size: 20px; font-weight: 650; letter-spacing: -.02em; margin: 0; line-height: 1.25; }
-  .meta { color: var(--text-3); font-size: 13px; margin-top: 2px; }
-  .header-side { display: flex; gap: 6px 18px; align-items: center; flex-wrap: wrap; font-size: 13px; color: var(--text-3); }
-  .live { display: inline-flex; align-items: center; color: var(--text-2); font-variant-numeric: tabular-nums; }
+  /* ===== Hlavička: jeden tenký řádek ===== */
+  .app-header { display: flex; justify-content: space-between; align-items: baseline; gap: 6px 28px; flex-wrap: wrap; padding: 18px 0 14px; }
+  h1 { font: 800 19px/1.2 var(--f-head); letter-spacing: -.01em; margin: 0; display: inline; }
+  .meta { display: inline; margin-left: 12px; color: var(--text-3); font-size: 13px; }
+  .header-side { display: flex; gap: 4px 20px; align-items: baseline; flex-wrap: wrap; font-size: 13px; color: var(--text-3); }
+  .header-side a { border-bottom-color: transparent; }
+  .header-side a:hover { border-bottom-color: var(--accent); }
+  .live { display: inline-flex; align-items: center; font-family: var(--f-mono); font-size: 12px; color: var(--text-2); }
 
-  /* ===== Záložky (na počítači nahoře, na mobilu dole) ===== */
+  /* ===== Záložky: textové, podtržení aktivní ===== */
   .tabbar {
-    position: sticky; top: 0; z-index: 30; display: flex; gap: 2px; overflow-x: auto;
-    margin: 0 -24px 22px; padding: 10px 24px;
-    background: color-mix(in oklab, var(--bg) 84%, transparent);
-    -webkit-backdrop-filter: saturate(1.3) blur(12px); backdrop-filter: saturate(1.3) blur(12px);
-    border-bottom: 1px solid var(--line);
+    position: sticky; top: 0; z-index: 30; display: flex; gap: 26px; overflow-x: auto;
+    height: var(--tabbar-h); margin: 0 0 28px; padding: 0;
+    background: var(--bg); border-top: 2px solid var(--line-strong); border-bottom: 1px solid var(--line);
   }
   .tab-btn {
     position: relative; display: inline-flex; align-items: center; gap: 7px; flex: none;
-    padding: 7px 12px; border-radius: 9px; border: 1px solid transparent; background: none;
-    color: var(--text-3); font: inherit; font-size: 13px; font-weight: 500; cursor: pointer;
+    padding: 0; border: 0; background: none; color: var(--text-3);
+    font: 600 13px/1 var(--f-body); letter-spacing: .02em; cursor: pointer; transition: color .15s ease;
   }
-  .tab-btn svg { width: 15px; height: 15px; flex-shrink: 0; }
+  .tab-btn svg { display: none; width: 20px; height: 20px; flex-shrink: 0; }
+  .tab-btn::after { content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 3px; background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform .2s ease; }
   .tab-btn:hover { color: var(--text); }
-  .tab-btn.is-active { color: var(--text); background: var(--surface); border-color: var(--line-strong); }
-  .tab-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-  .badge-dot {
-    display: none; position: absolute; top: 5px; right: 5px; width: 6px; height: 6px; border-radius: 50%;
-    background: var(--accent); box-shadow: 0 0 8px var(--accent);
-  }
+  .tab-btn.is-active { color: var(--text); }
+  .tab-btn.is-active::after { transform: scaleX(1); }
+  .tab-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+  .badge-dot { display: none; position: absolute; top: 12px; right: -9px; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
   .tab-btn.has-badge .badge-dot { display: block; }
   .tabsection.is-hidden { display: none; }
-  .scope-h { margin: 16px 0 6px; font-size: 12px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--text-3); }
-  .scope-h:first-of-type { margin-top: 8px; }
 
-  /* ===== Bento mřížka ===== */
-  .bento { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 14px; align-items: stretch; }
-  .bento > * { grid-column: span 6; min-width: 0; }
-  .card {
-    background: var(--surface); border: 1px solid var(--line-strong); border-radius: 16px;
-    padding: 20px 22px; overflow-x: auto;
-  }
-  .card h2 { font-size: 13px; font-weight: 600; color: var(--text); margin: 0 0 2px; letter-spacing: -.005em; }
+  /* ===== Mřížka: 12 sloupců, tabulky bez karet ===== */
+  .bento { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 40px; row-gap: 8px; align-items: start; }
+  .bento > * { grid-column: span 12; min-width: 0; }
+  .card { padding: 14px 0 34px; border-top: 2px solid var(--line-strong); scroll-margin-top: calc(var(--tabbar-h) + 18px); }
+  .card h2 { font: 800 19px/1.2 var(--f-head); letter-spacing: -.01em; color: var(--text); margin: 0 0 4px; display: flex; align-items: center; gap: 10px; }
   .card h2 + p.muted.small { margin-top: 2px; }
   .muted { color: var(--text-3); margin: 0; }
-  .small { font-size: 12.5px; margin: 8px 0 0; line-height: 1.5; }
+  .small { font-size: 13px; margin: 8px 0 0; line-height: 1.5; }
   .card > p.small:not(.muted) { color: var(--text-2); }
   .section-title { font-size: 13px; font-weight: 600; color: var(--text-3); margin: 14px 0 -4px; }
-
-  /* ===== KPI ===== */
-  .kpi { display: flex; flex-direction: column; min-height: 176px; }
-  .kpi h2 { color: var(--text-3); font-weight: 500; font-size: 12.5px; }
-  .kpi-num {
-    font-size: 60px; line-height: .95; font-weight: 800; letter-spacing: -.05em;
-    margin-top: auto; padding-top: 20px; font-variant-numeric: tabular-nums;
+  .scope-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 4px 40px; margin-top: 10px; }
+  .scope-h { margin: 18px 0 0; font: 700 12px/1 var(--f-body); letter-spacing: .09em; text-transform: uppercase; color: var(--text); }
+  .scope-h::before { content: ""; display: inline-block; width: 8px; height: 8px; margin-right: 8px; background: var(--accent); }
+  .scope:nth-child(2) .scope-h::before { background: var(--accent-2); }
+  .scope:nth-child(3) .scope-h::before { background: var(--text-3); }
+  .info-btn {
+    flex: none; width: 18px; height: 18px; padding: 0; border: 1px solid var(--text-3); border-radius: 50%;
+    background: none; color: var(--text-3); font: italic 600 11px/1 var(--f-head); cursor: pointer; transition: all .15s ease;
   }
-  .kpi-num i { font-style: normal; color: var(--text-3); font-weight: 300; font-size: .62em; margin: 0 .26em; position: relative; top: -.16em; }
-  .kpi-quad { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
-  .kpi-quad .kpi-sub { margin-top: 8px; }
-  .kpi-num-md { font-size: 46px; }
-  .kpi-num-sm { font-size: 32px; padding-top: 6px; letter-spacing: -.04em; }
-  .kpi-sub { color: var(--text-3); font-size: 12.5px; margin-top: 10px; display: flex; align-items: center; }
-  .kpi-title { font-size: 32px; font-weight: 750; letter-spacing: -.035em; line-height: 1.05; margin-top: auto; padding-top: 20px; }
-  .kpi-foot { color: var(--text-3); font-size: 12.5px; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); }
-  .form-dots { display: flex; gap: 8px; margin-top: 14px; }
-  .kpi-stack { gap: 18px; }
-  .kpi-stack .kpi-num-md { padding-top: 14px; }
-  .kpi-split { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding-top: 16px; border-top: 1px solid var(--line); margin-top: auto; }
+  .info-btn:hover, .info-btn[aria-expanded="true"] { color: var(--bg); background: var(--text); border-color: var(--text); }
+  p.note { max-width: 62ch; }
 
-  /* Přehled: příští zápas / body / forma jen jako nenápadný pruh */
-  .tabsection[data-tab="prehled"] .kpi { min-height: 0; padding: 14px 18px; }
-  .tabsection[data-tab="prehled"] .kpi-title { font-size: 17px; font-weight: 650; letter-spacing: -.015em; padding-top: 6px; margin-top: 0; }
-  .tabsection[data-tab="prehled"] .kpi-num { font-size: 22px; font-weight: 700; letter-spacing: -.02em; padding-top: 6px; margin-top: 0; }
-  .tabsection[data-tab="prehled"] .kpi-sub { margin-top: 4px; }
-  .tabsection[data-tab="prehled"] .kpi-foot { margin-top: 6px; padding-top: 0; border-top: 0; }
-  .tabsection[data-tab="prehled"] .form-dots { margin-top: 8px; gap: 6px; }
-  .tabsection[data-tab="prehled"] .form-dots .dot-lg { width: 8px; height: 8px; }
+  /* ===== Úvodní výsledek (Přehled) ===== */
+  .hero { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 56px; padding: 4px 0 40px; }
+  .hero-kicker { font: 600 12px/1.3 var(--f-body); letter-spacing: .09em; text-transform: uppercase; color: var(--text-3); }
+  .hero-score { display: flex; align-items: baseline; margin: 10px 0 0 -2px; font: 800 clamp(56px, 7vw, 88px)/.9 var(--f-head); letter-spacing: -.045em; font-variant-numeric: tabular-nums; }
+  .hero-score i { font-style: normal; font-weight: 700; color: var(--text-3); margin: 0 .04em; position: relative; top: -.06em; }
+  .hero.win .hero-score .m { color: var(--accent); }
+  .hero-teams { margin-top: 10px; font: 700 16px/1.3 var(--f-head); }
+  .hero-teams span { color: var(--text-3); font-weight: 700; }
+  .hero-teams b { color: var(--text); font-weight: 800; }
+  .hero-res { margin-top: 6px; font-size: 13px; color: var(--text-2); }
+  .hero-goals { list-style: none; margin: 14px 0 0; padding: 0; border-top: 1px solid var(--line); }
+  .hero-goals li { display: grid; grid-template-columns: 52px minmax(0, 1fr); gap: 4px 12px; align-items: baseline; padding: 9px 0 9px 12px; border-bottom: 1px solid var(--line); position: relative; }
+  .hero-goals li::before { content: ""; position: absolute; left: 0; top: 10px; bottom: 10px; width: 3px; background: var(--line); }
+  .hero-goals li.m::before { background: var(--accent); }
+  .hero-goals .t { font: 400 13px var(--f-mono); color: var(--text-3); }
+  .hero-goals .who { font-weight: 600; }
+  .hero-goals li.o .who { font-weight: 500; color: var(--text-2); }
+  .hero-goals .as { color: var(--text-3); font-size: 13px; margin-left: 8px; font-weight: 400; }
+  .hero-foot { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px 32px; flex-wrap: wrap; margin-top: 22px; }
+  .hero-stats { display: flex; gap: 26px; margin: 0; }
+  .hero-stats div { min-width: 0; }
+  .hero-stats dt { font: 600 11px/1.2 var(--f-body); letter-spacing: .09em; text-transform: uppercase; color: var(--text-3); }
+  .hero-stats dd { margin: 4px 0 0; font: 800 20px/1 var(--f-head); letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+  .hero-stats dd small { font: 500 13px var(--f-body); letter-spacing: 0; color: var(--text-3); margin-left: 4px; }
+  .form-sq { display: flex; gap: 5px; align-items: center; }
+  .form-sq > b { font: 600 11px/1.2 var(--f-body); letter-spacing: .09em; text-transform: uppercase; color: var(--text-3); margin-right: 6px; }
+  .fsq { width: 16px; height: 16px; background: var(--text); }
+  .fsq-V { background: var(--accent); }
+  .fsq-VP { background: transparent; box-shadow: inset 0 0 0 2px var(--accent); }
+  .fsq-PP { background: transparent; box-shadow: inset 0 0 0 2px var(--text-3); }
+  .fsq-P { background: var(--text-3); }
+  .nextline { display: grid; grid-template-columns: 130px minmax(0, 1.2fr) minmax(0, 1fr) minmax(0, 1.6fr); gap: 6px 24px; align-items: baseline; padding: 16px 0 18px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); margin-bottom: 28px; }
+  .nextline .lbl { font: 700 11px/1.2 var(--f-body); letter-spacing: .09em; text-transform: uppercase; color: var(--accent); }
+  .nextline .opp { font: 800 20px/1.2 var(--f-head); letter-spacing: -.01em; }
+  .nextline .where, .nextline .when { color: var(--text-2); font-size: 13.5px; }
+
+  /* ===== Rozcestník sekce (Sezóna, Bilance) ===== */
+  .sec-index { display: none; }
+  @media (min-width: 1100px) {
+    .bento.has-index { grid-template-columns: 148px minmax(0, 1fr); column-gap: 44px; }
+    .bento.has-index > .sec-index { display: block; grid-column: 1; position: sticky; top: calc(var(--tabbar-h) + 24px); align-self: start; }
+    .bento.has-index > .sec-body { grid-column: 2; }
+  }
+  .sec-index ul { list-style: none; margin: 0; padding: 0; border-left: 1px solid var(--line); }
+  .sec-index a { display: block; padding: 5px 0 5px 14px; margin-left: -1px; border: 0; border-left: 3px solid transparent; font-size: 13px; line-height: 1.3; color: var(--text-3); transition: color .15s ease, border-color .15s ease; }
+  .sec-index a:hover { color: var(--text); }
+  .sec-index a.is-on { color: var(--text); font-weight: 600; border-left-color: var(--accent); }
+
+  /* ===== KPI (zbytek: bilance V/VP/PP/P, doma/venku) ===== */
+  .kpi { display: flex; flex-direction: column; }
+  .kpi h2 { font: 700 12px/1.2 var(--f-body); letter-spacing: .09em; text-transform: uppercase; color: var(--text-3); }
+  .kpi-num { font: 800 36px/1 var(--f-head); letter-spacing: -.04em; padding-top: 12px; font-variant-numeric: tabular-nums; }
+  .kpi-num i { font-style: normal; color: var(--text-3); font-weight: 700; font-size: .62em; margin: 0 .14em; position: relative; top: -.1em; }
+  .kpi-quad { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+  .kpi-quad .kpi-sub { margin-top: 6px; }
+  .kpi-num-md { font-size: 32px; }
+  .kpi-num-sm { font-size: 26px; padding-top: 6px; letter-spacing: -.035em; }
+  .kpi-sub { color: var(--text-3); font-size: 13px; margin-top: 8px; display: flex; align-items: center; }
+  .kpi-stack { gap: 28px; }
+  .kpi-split { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
 
   /* ===== Graf ===== */
-  .chart { position: relative; margin-top: 16px; }
+  .chart { position: relative; margin-top: 18px; }
   .chart svg { display: block; width: 100%; height: auto; overflow: visible; touch-action: pan-y; }
   .g-grid, .g-zero, .g-line, .g-cross { vector-effect: non-scaling-stroke; }
   .g-grid { stroke: var(--line); stroke-width: 1; }
-  .g-zero { stroke: var(--line-strong); stroke-width: 1; stroke-dasharray: 3 4; }
-  .g-axis { fill: var(--text-3); font-size: 11px; font-family: inherit; font-variant-numeric: tabular-nums; }
-  .g-line { fill: none; stroke: var(--accent); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
-  .g-end { fill: var(--accent); stroke: var(--surface); stroke-width: 2; }
-  .g-halo { fill: var(--accent); opacity: .16; }
-  .g-cross { stroke: var(--text-3); stroke-width: 1; stroke-dasharray: 2 3; }
+  .g-zero { stroke: var(--text-3); stroke-width: 1; stroke-dasharray: 3 4; }
+  .g-axis { fill: var(--text-3); font-size: 11px; font-family: var(--f-mono); }
+  .g-line { fill: none; stroke: var(--accent); stroke-width: 2.25; stroke-linejoin: miter; stroke-linecap: butt; }
+  .g-end { fill: var(--accent); stroke: var(--bg); stroke-width: 2; }
+  .g-halo { fill: var(--accent); opacity: .14; }
+  .g-cross { stroke: var(--text); stroke-width: 1; }
   .chart-tip {
     position: absolute; top: 0; transform: translate(-50%, 0); pointer-events: none;
-    background: var(--surface-2); border: 1px solid var(--line-strong); border-radius: 9px;
-    padding: 7px 10px; font-size: 12px; color: var(--text-2); white-space: nowrap;
+    background: var(--text); color: var(--bg); padding: 6px 10px; font-size: 12px; white-space: nowrap;
   }
-  .chart-tip b { color: var(--text); font-weight: 700; font-size: 14px; margin-right: 6px; font-variant-numeric: tabular-nums; }
+  .chart-tip b { font: 700 14px var(--f-mono); margin-right: 8px; }
 
   /* ===== Tabulky ===== */
-  table { width: 100%; border-collapse: collapse; font-size: 13.5px; margin-top: 12px; }
-  th, td { text-align: left; padding: 12px 12px; border-bottom: 1px solid var(--line); white-space: nowrap; }
-  th { color: var(--text-3); font-weight: 500; font-size: 12px; padding-top: 4px; padding-bottom: 10px; }
-  th:first-child, td:first-child { padding-left: 2px; }
-  th:last-child, td:last-child { padding-right: 2px; }
+  table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 14px; margin-top: 10px; }
+  th, td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+  th {
+    position: sticky; top: var(--tabbar-h); z-index: 2; background: var(--bg);
+    color: var(--text-3); font: 600 11px/1.2 var(--f-body); letter-spacing: .08em; text-transform: uppercase;
+    padding-top: 10px; padding-bottom: 8px; border-bottom: 1px solid var(--line-strong);
+  }
+  th:first-child, td:first-child { padding-left: 4px; }
+  th:last-child, td:last-child { padding-right: 4px; }
   tbody tr:last-child td { border-bottom: 0; }
+  td:first-child { transition: padding-left .15s ease, box-shadow .15s ease; }
   tbody tr:hover td { background: var(--hover); }
-  th.num, td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  tbody tr:hover td:first-child { box-shadow: inset 2px 0 0 var(--accent); padding-left: 10px; }
+  th.num, td.num { text-align: right; font-family: var(--f-mono); font-size: 13px; font-variant-numeric: tabular-nums; }
+  th.num { font-family: var(--f-body); font-size: 11px; }
   td.num { color: var(--text-2); }
-  td strong { font-weight: 650; color: var(--text); }
+  td strong { font-weight: 600; color: var(--text); }
+  td.num strong { font-weight: 500; color: var(--text); }
+  td:nth-child(2):not(.num), td:first-child:not(.num) { font-weight: 500; }
   tr.no-baseline td { color: var(--text-3); font-style: italic; }
   th.sortable { cursor: pointer; user-select: none; }
-  th.sortable:hover { color: var(--text-2); }
+  th.sortable:hover { color: var(--text); }
   th.sortable::after {
     content: ""; display: inline-block; margin-left: 5px; vertical-align: middle;
     border: 3.5px solid transparent; border-top-color: currentColor; opacity: 0; transform: translateY(2px);
   }
   th.sortable:hover::after { opacity: .5; }
+  th.sort-desc { color: var(--text); }
+  th.sort-asc { color: var(--text); }
   th.sort-desc::after { opacity: 1; border-top-color: var(--accent); }
   th.sort-asc::after { opacity: 1; border-top-color: transparent; border-bottom-color: var(--accent); transform: translateY(-2px); }
   .lbl-short { display: none; }
   a.bil { border: 0; margin-left: 6px; color: var(--text-3); font-size: .9em; }
   a.bil:hover { color: var(--accent); }
   .small.kv { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 12px; color: var(--text-2); margin: 6px 0 0; }
-  .small.kv:first-of-type { margin-top: 4px; }
+  .small.kv:first-of-type { margin-top: 6px; }
+  .tbl-skaters, .tbl-goalkeepers { max-width: 780px; }
+  .tbl-state td:first-child, .tbl-periods td:first-child, .tbl-form-5 td:first-child { white-space: normal; }
+  .tbl-disc th, .tbl-disc td { padding-left: 4px; padding-right: 4px; }
+  .tbl-disc th { letter-spacing: .03em; }
+  .tbl-form-5 td:first-child { min-width: 240px; }
+  .scope .lbl-full { display: none; }
+  .scope .lbl-short { display: inline; }
+  .scope th, .scope td { padding-left: 5px; padding-right: 5px; }
+  .scope td.num { font-size: 12px; }
 
   /* ===== Seznamy, časová osa, rozbalovací bloky ===== */
-  .changes { list-style: none; margin: 10px 0 0; padding: 0; }
-  .changes li { padding: 10px 0; border-bottom: 1px solid var(--line); color: var(--text-2); }
+  .changes { list-style: none; margin: 8px 0 0; padding: 0; }
+  .changes li { padding: 9px 0; border-bottom: 1px solid var(--line); color: var(--text-2); }
   .changes li:last-child { border-bottom: 0; }
   .changes li strong { color: var(--text); font-weight: 600; }
-  .ev { display: grid; grid-template-columns: 46px 10px minmax(0, 1fr); align-items: baseline; gap: 10px; }
+  .ev { display: grid; grid-template-columns: 50px 10px minmax(0, 1fr); align-items: baseline; gap: 10px; }
   .ev .dot { margin: 0; align-self: center; }
-  .ev-t { color: var(--text-3); font-size: 12.5px; font-variant-numeric: tabular-nums; }
+  .ev-t { color: var(--text-3); font: 400 13px var(--f-mono); }
   .ev-x { white-space: normal; }
-  .ev-x .muted { font-size: 12.5px; margin-left: 6px; }
+  .ev-x .muted { font-size: 13px; margin-left: 6px; }
   details { border-bottom: 1px solid var(--line); }
   details:last-child { border-bottom: 0; }
   summary {
-    cursor: pointer; list-style: none; padding: 12px 0; font-weight: 550; color: var(--text);
-    display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap;
+    cursor: pointer; list-style: none; padding: 13px 0; font-weight: 600; color: var(--text);
+    display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: 10px; align-items: baseline; transition: color .15s ease;
   }
+  summary:hover { color: var(--accent); }
   summary::-webkit-details-marker { display: none; }
   summary::before {
     content: ""; width: 6px; height: 6px; flex: none; position: relative; top: -2px;
-    border-right: 1.5px solid var(--text-3); border-bottom: 1.5px solid var(--text-3);
+    border-right: 2px solid currentColor; border-bottom: 2px solid currentColor;
     transform: rotate(-45deg); transition: transform .15s ease;
   }
   details[open] > summary::before { transform: rotate(45deg); }
-  summary .muted.small { font-weight: 400; margin: 0; }
-  details > :last-child { margin-bottom: 12px; }
+  summary .muted.small { grid-column: 2; font-weight: 400; margin: 0; }
+  details > :last-child { margin-bottom: 14px; }
 
-  /* ===== Stavové tečky ===== */
+  /* ===== Stavové tečky (bez záře) ===== */
   .dot {
-    display: inline-block; width: 7px; height: 7px; border-radius: 50%; flex: none;
+    display: inline-block; width: 8px; height: 8px; border-radius: 50%; flex: none;
     background: var(--text-3); margin: 0 8px 1px 0; vertical-align: middle;
   }
-  .dot-lg { width: 10px; height: 10px; margin: 0; }
+  .dot-lg { width: 12px; height: 12px; margin: 0; }
   .dot-after { margin: 0 2px 1px 6px; }
-  .dot-pos { background: var(--accent); box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent) 14%, transparent), 0 0 10px color-mix(in oklab, var(--accent) 55%, transparent); }
-  .dot-neg { background: var(--neg); box-shadow: 0 0 0 3px color-mix(in oklab, var(--neg) 14%, transparent), 0 0 10px color-mix(in oklab, var(--neg) 45%, transparent); }
-  .dot-warn { background: var(--warn); box-shadow: 0 0 8px color-mix(in oklab, var(--warn) 45%, transparent); }
+  .dot-pos { background: var(--accent); }
+  .dot-neg { background: var(--accent-2); }
+  .dot-warn { background: var(--warn); }
   .dot-pos-ring { background: transparent; box-shadow: inset 0 0 0 2px var(--accent); }
-  .dot-neg-ring { background: transparent; box-shadow: inset 0 0 0 2px var(--neg); }
+  .dot-neg-ring { background: transparent; box-shadow: inset 0 0 0 2px var(--accent-2); }
   .dot-ring { background: transparent; box-shadow: inset 0 0 0 1.5px var(--text-3); }
 
   /* ===== Vyhledávání ===== */
   .search-box {
-    display: block; width: 100%; padding: 10px 14px; font: inherit; font-size: 13.5px; color: var(--text);
-    background: var(--surface); border: 1px solid var(--line-strong); border-radius: 11px;
+    display: block; width: 100%; max-width: 420px; padding: 9px 2px; font: inherit; font-size: 15px; color: var(--text);
+    background: none; border: 0; border-bottom: 2px solid var(--line-strong); border-radius: 0; margin-bottom: 16px;
   }
   .search-box::placeholder { color: var(--text-3); }
-  .search-box:focus { outline: none; border-color: var(--accent); }
+  .search-box:focus { outline: none; border-bottom-color: var(--accent); }
   tr.search-hidden, details.search-hidden, li.search-hidden { display: none; }
+  .tabsection[data-tab="historie"] .card, .tabsection[data-tab="mesice"] .card { max-width: 780px; }
+  .tabsection[data-tab="zapas"] .card { max-width: 900px; }
 
   /* ===== Potáhni-pro-obnovení, skeleton ===== */
   .pull-indicator {
     position: fixed; top: 0; left: 0; right: 0; z-index: 55; display: flex; align-items: center; justify-content: center;
-    height: 46px; margin-top: -46px; color: var(--text-3); font-size: 12.5px;
+    height: 46px; margin-top: -46px; color: var(--text-3); font-size: 13px;
     background: var(--bg); border-bottom: 1px solid var(--line); transition: margin-top .15s ease, color .15s ease;
   }
   .pull-indicator.is-ready { color: var(--accent); font-weight: 600; }
-  .skeleton-overlay { position: fixed; inset: 0; z-index: 60; background: var(--bg); padding: 28px 24px; transition: opacity .25s ease; }
+  .skeleton-overlay { position: fixed; inset: 0; z-index: 60; background: var(--bg); padding: 28px 32px; transition: opacity .2s ease; }
   .skeleton-overlay.is-hidden { opacity: 0; pointer-events: none; }
   .skeleton-block {
-    background: linear-gradient(90deg, var(--surface) 25%, var(--surface-2) 37%, var(--surface) 63%);
+    background: linear-gradient(90deg, var(--surface-2) 25%, var(--line) 37%, var(--surface-2) 63%);
     background-size: 400% 100%; animation: skeleton-shimmer 1.4s ease infinite;
-    border: 1px solid var(--line); border-radius: 16px; margin: 0 auto 14px; max-width: 1132px;
+    margin: 0 auto 14px; max-width: 1176px;
   }
   @keyframes skeleton-shimmer { 0% { background-position: 100% 50%; } 100% { background-position: 0 50%; } }
-  @media (prefers-reduced-motion: reduce) { .skeleton-block { animation: none; } summary::before { transition: none; } }
-
-  /* ===== Rozvržení bento podle šířky ===== */
-  @media (min-width: 641px) {
-    .bento > .kpi { grid-column: span 3; }
+  @media (prefers-reduced-motion: reduce) {
+    .skeleton-block { animation: none; }
+    summary::before, .tab-btn::after, td:first-child { transition: none; }
   }
+
+  /* ===== Rozvržení podle šířky ===== */
   @media (min-width: 980px) {
-    .bento > .kpi { grid-column: span 2; }
-    .bento > .kpi-next { grid-column: span 2; }
-    .bento > .kpi-form { grid-column: span 2; }
-    .bento > .card-changes { grid-column: span 2; }
-    .bento > .card:has(.tbl-milestones) { grid-column: span 4; }
-    .bento > .card-chart { grid-column: span 4; }
-    .bento > .kpi-stack { grid-column: span 2; }
-    .bento > .card:has(.tbl-best) { grid-column: span 2; }
-    .bento > .card:has(.tbl-gwg) { grid-column: span 4; }
-    .bento > .card:has(.tbl-periods), .bento > .card:has(.tbl-state) { grid-column: span 3; }
-    .bento > .card:has(.tbl-so) { grid-column: span 4; }
-    .bento > .card:has(.tbl-att) { grid-column: span 2; }
+    .bento > .card { grid-column: span 6; }
+    .bento > .hero, .bento > .nextline,
+    .bento > .card:has(.tbl-periods), .bento > .card:has(.tbl-state),
+    .bento > .card:has(.tbl-skaters), .bento > .card:has(.tbl-goalkeepers),
+    .bento > .card:has(.tbl-refs), .bento > .card:has(.tbl-so), .bento > .card:has(.tbl-gwg), .bento > .card:has(.tbl-pairs), .bento > .card:has(.tbl-disc), .bento > .card:has(.tbl-disc-team), .bento > .card:has(thead th:nth-child(6)) { grid-column: span 12; }
+    .bento > .card:has(.tbl-milestones) { grid-column: span 8; }
+    .bento > .card-changes { grid-column: span 4; }
+    .scope-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .bento > .card-chart { grid-column: span 8; }
+    .bento > .kpi-stack { grid-column: span 4; }
+    .tabsection[data-tab="historie"] .card, .tabsection[data-tab="mesice"] .card, .tabsection[data-tab="zapas"] .card { grid-column: span 12; }
+  }
+  @media (max-width: 979px) {
+    .hero { grid-template-columns: 1fr; gap: 28px; }
+    .nextline { grid-template-columns: 1fr 1fr; }
+    .nextline .lbl { grid-column: 1 / -1; }
   }
 
   /* ===== Mobil: obsah se posouvá, záložky dole ===== */
@@ -260,32 +342,36 @@
     html, body { height: 100%; touch-action: manipulation; }
     body { display: flex; flex-direction: column; height: 100vh; height: 100dvh; overflow: hidden; }
     .wrap { max-width: 100%; flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; padding: 0; }
-    .app-header { order: 0; flex: 0 0 auto; padding: 14px 14px 10px; padding-top: calc(14px + env(safe-area-inset-top)); margin: 0; align-items: flex-start; }
-    .header-side { font-size: 12px; gap: 4px 12px; }
+    .app-header { order: 0; flex: 0 0 auto; padding: 12px 16px 10px; padding-top: calc(12px + env(safe-area-inset-top)); margin: 0; align-items: baseline; border-bottom: 2px solid var(--line-strong); }
+    h1 { font-size: 17px; }
+    .meta { display: block; margin: 2px 0 0; font-size: 12px; }
+    .header-side { font-size: 12px; gap: 2px 14px; }
     .app-content {
       order: 1; flex: 1 1 auto; min-height: 0; overflow-y: auto; -webkit-overflow-scrolling: touch;
-      padding: 4px 10px calc(24px + env(safe-area-inset-bottom));
+      padding: 8px 16px calc(28px + env(safe-area-inset-bottom));
     }
-    h1 { font-size: 17px; }
-    .bento { gap: 10px; }
-    .bento > .kpi:not(.kpi-next):not(.kpi-stack) { grid-column: span 3; }
-    .card { padding: 14px 14px; border-radius: 14px; }
-    .kpi { min-height: 140px; }
-    .tabsection[data-tab="prehled"] .kpi { min-height: 0; padding: 12px 14px; }
-    .tabsection[data-tab="prehled"] .kpi-num { font-size: 20px; }
-    .tabsection[data-tab="prehled"] .kpi-title { font-size: 16px; }
-    .kpi-num { font-size: 46px; }
-    .kpi-num-md { font-size: 36px; }
-    .kpi-num-sm { font-size: 28px; }
+    .bento { column-gap: 0; }
+    .card { padding: 12px 0 26px; overflow-x: auto; scroll-margin-top: 8px; }
+    .card h2 { font-size: 17px; }
+    th { position: static; }
+    .hero { padding: 18px 0 26px; gap: 22px; border-top: 0; }
+    .hero-score { font-size: 64px; margin-left: -2px; }
+    .hero-stats { gap: 22px; }
+    .hero-stats dd { font-size: 18px; }
+    .nextline { grid-template-columns: 1fr; padding: 14px 0 16px; }
+    .kpi-num { font-size: 32px; }
+    .kpi-num-md { font-size: 28px; }
+    .kpi-num-sm { font-size: 24px; }
+    .kpi-split { gap: 16px; }
     .g-axis { font-size: 22px; }
-    .kpi-title { font-size: 26px; }
-    table { font-size: 12.5px; }
-    th, td { padding: 10px 6px; }
-    th { font-size: 11px; }
+    table { font-size: 13px; }
+    th, td { padding: 9px 6px; }
+    th { font-size: 10.5px; letter-spacing: .05em; }
     .lbl-full { display: none; }
     .lbl-short { display: inline; }
     .hide-m { display: none; }
     .small.kv { grid-template-columns: 1fr; gap: 0; }
+    .skeleton-overlay { padding: 18px 16px; }
 
     /* Hráči v poli: jméno + Z/G/A/B */
     .tbl-skaters th:nth-child(1), .tbl-skaters td:nth-child(1),
@@ -303,15 +389,15 @@
     .tbl-goalkeepers th:nth-child(12), .tbl-goalkeepers td:nth-child(12) { display: none; }
 
     .tabbar {
-      order: 2; position: static; flex: 0 0 auto; margin: 0; padding: 4px 4px calc(4px + env(safe-area-inset-bottom));
-      gap: 0; overflow: visible; border-bottom: 0; border-top: 1px solid var(--line-strong);
-      background: var(--surface); -webkit-backdrop-filter: none; backdrop-filter: none;
+      order: 2; position: static; flex: 0 0 auto; height: auto; margin: 0; padding: 4px 4px calc(4px + env(safe-area-inset-bottom));
+      gap: 0; overflow: visible; border-bottom: 0; border-top: 2px solid var(--line-strong);
     }
-    .tab-btn { flex: 1; min-width: 0; flex-direction: column; gap: 3px; padding: 7px 2px 5px; border: 0; border-radius: 10px; }
-    .tab-btn.is-active { background: none; color: var(--accent); }
-    .tab-btn svg { width: 20px; height: 20px; }
+    .tab-btn { flex: 1; min-width: 0; flex-direction: column; gap: 3px; padding: 8px 2px 6px; font-size: 10px; letter-spacing: 0; }
+    .tab-btn::after { display: none; }
+    .tab-btn.is-active { color: var(--accent); }
+    .tab-btn svg { display: block; }
     .tab-btn span { font-size: 10px; line-height: 1.1; white-space: nowrap; }
-    .badge-dot { top: 3px; right: calc(50% - 15px); }
+    .badge-dot { top: 5px; right: calc(50% - 15px); }
   }
 </style>
 </head>
@@ -327,11 +413,10 @@
 <div class="wrap">
  <header class="app-header">
   <div>
-   <h1>HC Motor České Budějovice</h1>
-   <div class="meta">Statistiky hráčů, Tipsport extraliga 2026/2027</div>
+   <h1>HC Motor České Budějovice</h1><span class="meta">Statistiky, Tipsport extraliga 2026/2027</span>
   </div>
   <div class="header-side">
-   <span class="live"><span class="dot dot-pos"></span>Aktualizováno 15.11.2026 10:02</span>
+   <span class="live"><span class="dot dot-pos"></span>Aktualizováno 15.11.2026 10:40</span>
    <a href="https://hcmotor.cz/stats.asp?sezona=2027">hcmotor.cz</a>
    <a href="bilance-proti-tymum.html">Bilance proti týmům</a>
    <a href="sestavy.html">Sestavy</a>
@@ -371,30 +456,29 @@
  <div class="app-content" id="app-content">
   <section class="tabsection bento" data-tab="prehled">
     
-  <div class="card kpi kpi-next">
-    <h2>Příští zápas</h2>
-    <div class="kpi-title">Pardubice</div>
-    <div class="kpi-sub"><span class="dot dot-pos"></span>Doma, 19. kolo</div>
-    <div class="kpi-foot">neděle 15.11., 17:00, České Budějovice, Budvar aréna</div>
-  </div>
-
-  <div class="card kpi">
-    <h2>Body v tabulce</h2>
-    <div class="kpi-num">29</div>
-    <div class="kpi-sub">1,61 na zápas, 18 odehraných</div>
-  </div>
-
-  <div class="card kpi kpi-form">
-    <h2>Forma</h2>
-    <div class="kpi-num">1×</div>
-    <div class="kpi-sub">výher v řadě</div>
-    <div class="form-dots" aria-label="Posledních 5 zápasů"><span class="dot dot-lg dot-neg-ring" title="14. kolo: Mladá Boleslav 3:2sn (prohra po prodl./SN)"></span><span class="dot dot-lg dot-pos" title="15. kolo: Hradec Králové 3:0 (výhra)"></span><span class="dot dot-lg dot-neg" title="16. kolo: Olomouc 4:0 (prohra)"></span><span class="dot dot-lg dot-neg" title="17. kolo: Karlovy Vary 2:3 (prohra)"></span><span class="dot dot-lg dot-pos" title="18. kolo: Litvínov 3:4 (výhra)"></span></div>
-  </div>
-
-    <div class="card card-changes">
-      <h2>Změny od minulé aktualizace</h2>
-      <p class='muted'>Od minulého běhu žádné změny.</p>
+  <div class="hero win">
+    <div>
+      <div class="hero-kicker">18. kolo · pátek 13.11. · 4674 diváků</div>
+      <div class="hero-score" aria-label="Výsledek 3:4"><span>3</span><i>:</i><span class="m">4</span></div>
+      <div class="hero-teams"><span>Litvínov</span> <span>–</span> <b>České Budějovice</b></div>
+      <div class="hero-res">Výhra</div>
     </div>
+    <div>
+      <ol class="hero-goals" aria-label="Střelci" style="list-style:none"><li class="o"><span class="t">12:12</span><span><span class="who">Maštalířský Matěj</span><span class="as">Kaše David, Baláž Ondřej</span></span></li><li class="m"><span class="t">20:20</span><span><span class="who">Bell Parker</span><span class="as">Lantoši Róbert, Štencel Jan</span></span></li><li class="o"><span class="t">28:00</span><span><span class="who">Coskey Cole</span><span class="as">Kaše David, Koblasa Petr</span></span></li><li class="o"><span class="t">30:20</span><span><span class="who">Koblasa Petr</span><span class="as">Coskey Cole, Kaše David</span></span></li><li class="m"><span class="t">34:28</span><span><span class="who">Olesen Nick Alexander</span></span></li><li class="m"><span class="t">40:40</span><span><span class="who">Hoch Štěpán</span><span class="as">Pýcha Pavel, Koláček Josef</span></span></li><li class="m"><span class="t">50:08</span><span><span class="who">Olesen Nick Alexander</span><span class="as">Bell Parker, Lantoši Róbert</span></span></li></ol>
+      <div class="hero-foot">
+        <dl class="hero-stats"><div><dt>Body</dt><dd>29</dd></div><div><dt>Na zápas</dt><dd>1,61</dd></div></dl>
+        <div class="form-sq" aria-label="Posledních 5 zápasů"><b>Forma</b><span class="fsq fsq-PP" title="14. kolo: Mladá Boleslav 3:2sn (prohra po prodl./SN)"></span><span class="fsq fsq-V" title="15. kolo: Hradec Králové 3:0 (výhra)"></span><span class="fsq fsq-P" title="16. kolo: Olomouc 4:0 (prohra)"></span><span class="fsq fsq-P" title="17. kolo: Karlovy Vary 2:3 (prohra)"></span><span class="fsq fsq-V" title="18. kolo: Litvínov 3:4 (výhra)"></span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="nextline">
+    <span class="lbl">Příští zápas</span>
+    <span class="opp">Pardubice</span>
+    <span class="where"><span class="dot dot-pos"></span>Doma, 19. kolo</span>
+    <span class="when">neděle 15.11., 17:00, České Budějovice, Budvar aréna</span>
+  </div>
+
 
   <div class="card">
     <h2>Blížící se milníky (do 5)</h2>
@@ -404,48 +488,51 @@
     </table>
   </div>
 
+    <div class="card card-changes">
+      <h2>Změny od minulé aktualizace</h2>
+      <p class='muted'>Od minulého běhu žádné změny.</p>
+    </div>
+
   </section>
 
   <section class="tabsection bento" data-tab="zapas">
     
   <div class="card">
-    <h2>Poslední zápasy — průběh</h2>
-    <p class="muted small">Časy a čísla hráčů podle oficiálního zápisu o utkání
-    (hokejovyzapis.cz); překlad zkratek trestů je odhad, může se stát,
-    že některá sedí špatně.</p>
+    <h2>Poslední zápasy — průběh<button class="info-btn" type="button" aria-expanded="false" aria-label="Vysvětlivka" title="Vysvětlivka">i</button></h2>
+<p class="muted small note" hidden>Časy a čísla hráčů podle oficiálního zápisu o utkání (hokejovyzapis.cz).</p>
     
     <details open>
       <summary>18. kolo: HC Litvínov 3:4 BANES Motor České Budějovice
         <span class="muted small">(13.11.2026, 4674 diváků)</span></summary>
-      <p class="small kv"><span class="muted">⭐ Nejlepší hráči</span><span>Motor: Lantoši Róbert · soupeř: Koblasa Petr</span></p>
+      <p class="small kv"><span class="muted">Nejlepší hráči</span><span>Motor: Lantoši Róbert · soupeř: Koblasa Petr</span></p>
       <p class="small kv"><span class="muted">Střely Motor–soupeř</span><span>44:35 (18:14, 11:13, 15:8)</span></p><p class="small kv"><span class="muted">Rozhodčí</span><span>Antonín Jeřábek (BM82), Pavel Obadal · čároví Michal Axman, Jaroslav Peluha</span></p><p class="small kv"><span class="muted">Chyběli</span><span>Ahl Filip, Andersen Ole Einar, Kachyňa Ondřej, Lev Jakub, Mařík Matyáš, Strmeň Jan, Vála Ondřej</span></p>
-      <ul class="changes"><li class="ev ev-pen"><span class="ev-t">---</span><span class="dot dot-warn" title="trest"></span><span class="ev-x">Kundrátek Tomáš, TS min <span class="muted">BANES Motor České Budějovice, hákování, do ---</span></span></li><li class="ev"><span class="ev-t">12:12</span><span class="dot dot-neg" title="gól"></span><span class="ev-x"><strong>Maštalířský Matěj</strong> (Kaše David, Baláž Ondřej) <span class="muted">HC Litvínov, 5/5</span></span></li><li class="ev ev-pen"><span class="ev-t">15:25</span><span class="dot dot-warn" title="trest"></span><span class="ev-x">Koblasa Petr, 2 min <span class="muted">HC Litvínov, sekání, do 17:25</span></span></li><li class="ev ev-pen"><span class="ev-t">19:59</span><span class="dot dot-warn" title="trest"></span><span class="ev-x">Polášek Adam, 2 min <span class="muted">HC Litvínov, podražení, do 20:20</span></span></li><li class="ev"><span class="ev-t">20:20</span><span class="dot dot-pos" title="gól"></span><span class="ev-x"><strong>Bell Parker</strong> (Lantoši Róbert, Štencel Jan) <span class="muted">BANES Motor České Budějovice, 5/4</span></span></li><li class="ev ev-pen"><span class="ev-t">24:49</span><span class="dot dot-warn" title="trest"></span><span class="ev-x">Beran Vít, 2 min <span class="muted">HC Litvínov, držení protihráče, do 26:49</span></span></li><li class="ev"><span class="ev-t">28:00</span><span class="dot dot-neg" title="gól"></span><span class="ev-x"><strong>Coskey Cole</strong> (Kaše David, Koblasa Petr) <span class="muted">HC Litvínov, 5/5</span></span></li><li class="ev ev-pen"><span class="ev-t">28:00</span><span class="dot dot-warn" title="trest"></span><span class="ev-x">lavička (HL), 2 min <span class="muted">BANES Motor České Budějovice, ZHTV, do 30:00</span></span></li><li class="ev"><span class="ev-t">30:20</span><span class="dot dot-neg" title="gól"></span><span class="ev-x"><strong>Koblasa Petr</strong> (Coskey Cole, Kaše David) <span class="muted">HC Litvínov, 5/5</span></span></li><li class="ev ev-pen"><span class="ev-t">31:03</span><span class="dot dot-warn" title="trest"></span><span class="ev-x">Krastenbergs Renars, 2 min <span class="muted">BANES Motor České Budějovice, podražení, do 33:03</span></span></li><li class="ev"><span class="ev-t">34:28</span><span class="dot dot-pos" title="gól"></span><span class="ev-x"><strong>Olesen Nick Alexander</strong> <span class="muted">BANES Motor České Budějovice, 5/5</span></span></li><li class="ev"><span class="ev-t">40:40</span><span class="dot dot-pos" title="gól"></span><span class="ev-x"><strong>Hoch Štěpán</strong> (Pýcha Pavel, Koláček Josef) <span class="muted">BANES Motor České Budějovice, 5/5</span></span></li><li class="ev ev-pen"><span class="ev-t">49:14</span><span class="dot dot-warn" title="trest"></span><span class="ev-x">Jaks Janis, 2 min <span class="muted">HC Litvínov, hákování, do 50:08</span></span></li><li class="ev"><span class="ev-t">50:08</span><span class="dot dot-pos" title="gól"></span><span class="ev-x"><strong>Olesen Nick Alexander</strong> (Bell Parker, Lantoši Róbert) <span class="muted">BANES Motor České Budějovice, 5/4</span></span></li><li class="ev ev-pen"><span class="ev-t">56:42</span><span class="dot dot-warn" title="trest"></span><span class="ev-x">Svozil Stanislav, 2 min <span class="muted">HC Litvínov, hrubost, do 58:42</span></span></li><li class="ev ev-pen"><span class="ev-t">56:42</span><span class="dot dot-warn" title="trest"></span><span class="ev-x">Olesen Nick Alexander, 2 min <span class="muted">BANES Motor České Budějovice, hrubost, do 58:42</span></span></li><li class="ev ev-pen"><span class="ev-t">59:02</span><span class="dot dot-warn" title="trest"></span><span class="ev-x">Beránek Martin, 2 min <span class="muted">BANES Motor České Budějovice, SPR, do 60:00</span></span></li></ul>
+      <ul class="changes"><li class="ev"><span class="ev-t">12:12</span><span class="dot dot-neg" title="gól"></span><span class="ev-x"><strong>Maštalířský Matěj</strong> (Kaše David, Baláž Ondřej) <span class="muted">HC Litvínov, 5/5</span></span></li><li class="ev ev-pen"><span class="ev-t">15:25</span><span class="dot dot-warn" title="trest"></span><span class="ev-x">Koblasa Petr, 2 min <span class="muted">HC Litvínov, sekání, do 17:25</span></span></li><li class="ev ev-pen"><span class="ev-t">19:59</span><span class="dot dot-warn" title="trest"></span><span class="ev-x">Polášek Adam, 2 min <span class="muted">HC Litvínov, podražení, do 20:20</span></span></li><li class="ev"><span class="ev-t">20:20</span><span class="dot dot-pos" title="gól"></span><span class="ev-x"><strong>Bell Parker</strong> (Lantoši Róbert, Štencel Jan) <span class="muted">BANES Motor České Budějovice, 5/4</span></span></li><li class="ev ev-pen"><span class="ev-t">24:49</span><span class="dot dot-warn" title="trest"></span><span class="ev-x">Beran Vít, 2 min <span class="muted">HC Litvínov, držení protihráče, do 26:49</span></span></li><li class="ev"><span class="ev-t">28:00</span><span class="dot dot-neg" title="gól"></span><span class="ev-x"><strong>Coskey Cole</strong> (Kaše David, Koblasa Petr) <span class="muted">HC Litvínov, 5/5</span></span></li><li class="ev ev-pen"><span class="ev-t">28:00</span><span class="dot dot-warn" title="trest"></span><span class="ev-x">lavička (HL), 2 min <span class="muted">BANES Motor České Budějovice, ZHTV, do 30:00</span></span></li><li class="ev"><span class="ev-t">30:20</span><span class="dot dot-neg" title="gól"></span><span class="ev-x"><strong>Koblasa Petr</strong> (Coskey Cole, Kaše David) <span class="muted">HC Litvínov, 5/5</span></span></li><li class="ev ev-pen"><span class="ev-t">31:03</span><span class="dot dot-warn" title="trest"></span><span class="ev-x">Krastenbergs Renars, 2 min <span class="muted">BANES Motor České Budějovice, podražení, do 33:03</span></span></li><li class="ev"><span class="ev-t">34:28</span><span class="dot dot-pos" title="gól"></span><span class="ev-x"><strong>Olesen Nick Alexander</strong> <span class="muted">BANES Motor České Budějovice, 5/5</span></span></li><li class="ev"><span class="ev-t">40:40</span><span class="dot dot-pos" title="gól"></span><span class="ev-x"><strong>Hoch Štěpán</strong> (Pýcha Pavel, Koláček Josef) <span class="muted">BANES Motor České Budějovice, 5/5</span></span></li><li class="ev ev-pen"><span class="ev-t">49:14</span><span class="dot dot-warn" title="trest"></span><span class="ev-x">Jaks Janis, 2 min <span class="muted">HC Litvínov, hákování, do 50:08</span></span></li><li class="ev"><span class="ev-t">50:08</span><span class="dot dot-pos" title="gól"></span><span class="ev-x"><strong>Olesen Nick Alexander</strong> (Bell Parker, Lantoši Róbert) <span class="muted">BANES Motor České Budějovice, 5/4</span></span></li><li class="ev ev-pen"><span class="ev-t">56:42</span><span class="dot dot-warn" title="trest"></span><span class="ev-x">Svozil Stanislav, 2 min <span class="muted">HC Litvínov, hrubost, do 58:42</span></span></li><li class="ev ev-pen"><span class="ev-t">56:42</span><span class="dot dot-warn" title="trest"></span><span class="ev-x">Olesen Nick Alexander, 2 min <span class="muted">BANES Motor České Budějovice, hrubost, do 58:42</span></span></li><li class="ev ev-pen"><span class="ev-t">59:02</span><span class="dot dot-warn" title="trest"></span><span class="ev-x">Beránek Martin, 2 min <span class="muted">BANES Motor České Budějovice, SPR, do 60:00</span></span></li><li class="ev ev-pen"><span class="ev-t">–</span><span class="dot dot-warn" title="trest"></span><span class="ev-x">Kundrátek Tomáš, TS <span class="muted">BANES Motor České Budějovice, hákování, bez času v zápise</span></span></li></ul>
     </details>
     <details>
       <summary>17. kolo: BANES Motor České Budějovice 2:3 BYD Energie Karlovy Vary
         <span class="muted small">(01.11.2026, 5895 diváků)</span></summary>
-      <p class="small kv"><span class="muted">⭐ Nejlepší hráči</span><span>Motor: Hoch Štěpán · soupeř: Šťastný David</span></p>
+      <p class="small kv"><span class="muted">Nejlepší hráči</span><span>Motor: Hoch Štěpán · soupeř: Šťastný David</span></p>
       <p class="small kv"><span class="muted">Střely Motor–soupeř</span><span>36:25 (12:10, 7:8, 17:7)</span></p><p class="small kv"><span class="muted">Rozhodčí</span><span>Adam Kika, Filip Vrba · čároví Michal Zíka, Pavel Blažek</span></p><p class="small kv"><span class="muted">Chyběli</span><span>Ahl Filip, Andersen Ole Einar, Bulíř Michal, Kachyňa Ondřej, Mařík Matyáš, Strmeň Jan, Vála Ondřej, Zachar Marek</span></p>
       <ul class="changes"><li class="ev"><span class="ev-t">09:50</span><span class="dot dot-neg" title="gól"></span><span class="ev-x"><strong>Šťastný David</strong> (Jones Nicholas, Bambula Jan) <span class="muted">BYD Energie Karlovy Vary, 5/5</span></span></li><li class="ev ev-pen"><span class="ev-t">15:30</span><span class="dot dot-warn" title="trest"></span><span class="ev-x">Egle Haralds, 2 min <span class="muted">BYD Energie Karlovy Vary, držení protihráče, do 17:30</span></span></li><li class="ev ev-pen"><span class="ev-t">22:15</span><span class="dot dot-warn" title="trest"></span><span class="ev-x">Nordsäter Lucas, 2 min <span class="muted">BANES Motor České Budějovice, podražení, do 24:15</span></span></li><li class="ev"><span class="ev-t">26:52</span><span class="dot dot-neg" title="gól"></span><span class="ev-x"><strong>Bambula Jan</strong> (Jones Nicholas, Šťastný David) <span class="muted">BYD Energie Karlovy Vary, 5/5</span></span></li><li class="ev ev-pen"><span class="ev-t">26:57</span><span class="dot dot-warn" title="trest"></span><span class="ev-x">Tomek Petr, 2 min <span class="muted">BYD Energie Karlovy Vary, podražení, do 28:57</span></span></li><li class="ev ev-pen"><span class="ev-t">32:21</span><span class="dot dot-warn" title="trest"></span><span class="ev-x">Toman Matěj, 2 min <span class="muted">BANES Motor České Budějovice, nedovolené bránění, do 34:21</span></span></li><li class="ev ev-pen"><span class="ev-t">37:23</span><span class="dot dot-warn" title="trest"></span><span class="ev-x">Beránek Ondřej, 2 min <span class="muted">BYD Energie Karlovy Vary, sekání, do 37:43</span></span></li><li class="ev"><span class="ev-t">37:43</span><span class="dot dot-pos" title="gól"></span><span class="ev-x"><strong>Bell Parker</strong> (Lantoši Róbert, Olesen Nick Alexander) <span class="muted">BANES Motor České Budějovice, 5/4</span></span></li><li class="ev ev-pen"><span class="ev-t">42:31</span><span class="dot dot-warn" title="trest"></span><span class="ev-x">Lukošik Adam, 2 min <span class="muted">BYD Energie Karlovy Vary, vysoká hůl, do 44:31</span></span></li><li class="ev"><span class="ev-t">46:51</span><span class="dot dot-pos" title="gól"></span><span class="ev-x"><strong>Hoch Štěpán</strong> (Lantoši Róbert) <span class="muted">BANES Motor České Budějovice, 5/5</span></span></li><li class="ev ev-pen"><span class="ev-t">49:39</span><span class="dot dot-warn" title="trest"></span><span class="ev-x">Mccormack Graeme, 2 min <span class="muted">BANES Motor České Budějovice, hrubost, do 51:39</span></span></li><li class="ev ev-pen"><span class="ev-t">49:39</span><span class="dot dot-warn" title="trest"></span><span class="ev-x">Beránek Ondřej, 2 min <span class="muted">BYD Energie Karlovy Vary, hrubost, do 51:39</span></span></li><li class="ev"><span class="ev-t">56:58</span><span class="dot dot-neg" title="gól"></span><span class="ev-x"><strong>Redlich Tomáš</strong> (Brickley Daniel, Jiskra Vít) <span class="muted">BYD Energie Karlovy Vary, 5/5</span></span></li></ul>
     </details>
     <details>
       <summary>16. kolo: HC Olomouc 4:0 BANES Motor České Budějovice
         <span class="muted small">(30.10.2026, 3922 diváků)</span></summary>
-      <p class="small kv"><span class="muted">⭐ Nejlepší hráči</span><span>Motor: Nedorost Václav · soupeř: Štohanzl Martin</span></p>
+      <p class="small kv"><span class="muted">Nejlepší hráči</span><span>Motor: Nedorost Václav · soupeř: Štohanzl Martin</span></p>
       <p class="small kv"><span class="muted">Střely Motor–soupeř</span><span>19:30 (8:15, 5:10, 6:5)</span></p><p class="small kv"><span class="muted">Rozhodčí</span><span>Jiří Ondráček (TR97), Jakub Šindel · čároví Daniel Hynek, Jakub Maňák</span></p><p class="small kv"><span class="muted">Chyběli</span><span>Ahl Filip, Andersen Ole Einar, Kachyňa Ondřej, Lev Jakub, Strmeň Jan, Vála Ondřej</span></p>
       <ul class="changes"><li class="ev"><span class="ev-t">07:08</span><span class="dot dot-neg" title="gól"></span><span class="ev-x"><strong>Štohanzl Martin</strong> (Navrátil Jakub, Matýs Ondřej) <span class="muted">HC Olomouc, 5/5</span></span></li><li class="ev"><span class="ev-t">09:45</span><span class="dot dot-neg" title="gól"></span><span class="ev-x"><strong>Berglund Carl Gunnar</strong> (Stella Evan, Navrátil Jakub) <span class="muted">HC Olomouc, 5/5</span></span></li><li class="ev ev-pen"><span class="ev-t">14:55</span><span class="dot dot-warn" title="trest"></span><span class="ev-x">Štencel Jan, 2 min <span class="muted">BANES Motor České Budějovice, krosček, do 16:55</span></span></li><li class="ev ev-pen"><span class="ev-t">22:12</span><span class="dot dot-warn" title="trest"></span><span class="ev-x">Ordoš Jan, 2 min <span class="muted">BANES Motor České Budějovice, vysoká hůl, do 23:04</span></span></li><li class="ev"><span class="ev-t">23:04</span><span class="dot dot-neg" title="gól"></span><span class="ev-x"><strong>Matýs Ondřej</strong> (Herčík Daniel, Štohanzl Martin) <span class="muted">HC Olomouc, 5/4</span></span></li><li class="ev ev-pen"><span class="ev-t">23:04</span><span class="dot dot-warn" title="trest"></span><span class="ev-x">Ordoš Jan, 2 min <span class="muted">BANES Motor České Budějovice, vysoká hůl, do 25:04</span></span></li><li class="ev ev-pen"><span class="ev-t">27:20</span><span class="dot dot-warn" title="trest"></span><span class="ev-x">Rutar Adam, 2 min <span class="muted">HC Olomouc, držení protihráče, do 29:20</span></span></li><li class="ev ev-pen"><span class="ev-t">30:27</span><span class="dot dot-warn" title="trest"></span><span class="ev-x">Bulíř Michal, 2 min <span class="muted">BANES Motor České Budějovice, hákování, do 32:19</span></span></li><li class="ev ev-pen"><span class="ev-t">31:10</span><span class="dot dot-warn" title="trest"></span><span class="ev-x">Štencel Jan, 5 min <span class="muted">BANES Motor České Budějovice, krosček, do 36:10</span></span></li><li class="ev"><span class="ev-t">32:19</span><span class="dot dot-neg" title="gól"></span><span class="ev-x"><strong>Orsava Jakub</strong> (Kos Jakub, Freibergs Ralfs) <span class="muted">HC Olomouc, 5/3</span></span></li><li class="ev ev-pen"><span class="ev-t">35:49</span><span class="dot dot-warn" title="trest"></span><span class="ev-x">Cosgrove Trevor, 2 min <span class="muted">HC Olomouc, ZHVP, do 37:49</span></span></li><li class="ev ev-pen"><span class="ev-t">36:10</span><span class="dot dot-warn" title="trest"></span><span class="ev-x">Štencel Jan, 20 min <span class="muted">BANES Motor České Budějovice, krosček, do 60:00</span></span></li><li class="ev ev-pen"><span class="ev-t">39:57</span><span class="dot dot-warn" title="trest"></span><span class="ev-x">Krastenbergs Renars, 2 min <span class="muted">BANES Motor České Budějovice, podražení, do 41:57</span></span></li><li class="ev ev-pen"><span class="ev-t">53:34</span><span class="dot dot-warn" title="trest"></span><span class="ev-x">Nordsäter Lucas, 2 min <span class="muted">BANES Motor České Budějovice, podražení, do 55:34</span></span></li></ul>
     </details>
     <details>
       <summary>15. kolo: BANES Motor České Budějovice 3:0 Mountfield HK, a.s.
         <span class="muted small">(27.10.2026, 6318 diváků)</span></summary>
-      <p class="small kv"><span class="muted">⭐ Nejlepší hráči</span><span>Motor: Klouček Milan · soupeř: Škorvánek Stanislav</span></p>
+      <p class="small kv"><span class="muted">Nejlepší hráči</span><span>Motor: Klouček Milan · soupeř: Škorvánek Stanislav</span></p>
       <p class="small kv"><span class="muted">Střely Motor–soupeř</span><span>24:26 (8:8, 9:9, 7:9)</span></p><p class="small kv"><span class="muted">Rozhodčí</span><span>Robin Šír, Filip Vrba · čároví Michal Axman, Patrik Augusta</span></p><p class="small kv"><span class="muted">Chyběli</span><span>Andersen Ole Einar, Lev Jakub, Mařík Matyáš, Pour Jakub, Strmeň Jan, Vála Ondřej</span></p>
       <ul class="changes"><li class="ev ev-pen"><span class="ev-t">16:47</span><span class="dot dot-warn" title="trest"></span><span class="ev-x">Krastenbergs Renars, 2 min <span class="muted">BANES Motor České Budějovice, podražení, do 18:47</span></span></li><li class="ev ev-pen"><span class="ev-t">30:55</span><span class="dot dot-warn" title="trest"></span><span class="ev-x">Klima Kevin Petr, 2 min <span class="muted">Mountfield HK, a.s., držení protihráče, do 32:55</span></span></li><li class="ev ev-pen"><span class="ev-t">31:28</span><span class="dot dot-warn" title="trest"></span><span class="ev-x">Krastenbergs Renars, 2 min <span class="muted">BANES Motor České Budějovice, podražení, do 33:28</span></span></li><li class="ev ev-pen"><span class="ev-t">35:07</span><span class="dot dot-warn" title="trest"></span><span class="ev-x">Pláněk Martin, 2 min <span class="muted">Mountfield HK, a.s., nedovolené bránění, do 37:07</span></span></li><li class="ev"><span class="ev-t">37:54</span><span class="dot dot-pos" title="gól"></span><span class="ev-x"><strong>Olesen Nick Alexander</strong> (Lantoši Róbert, Hoch Štěpán) <span class="muted">BANES Motor České Budějovice, 5/5</span></span></li><li class="ev"><span class="ev-t">38:51</span><span class="dot dot-pos" title="gól"></span><span class="ev-x"><strong>Ordoš Jan</strong> (Krastenbergs Renars, Bell Parker) <span class="muted">BANES Motor České Budějovice, 5/5</span></span></li><li class="ev ev-pen"><span class="ev-t">39:03</span><span class="dot dot-warn" title="trest"></span><span class="ev-x">Kalina Petr, 2 min <span class="muted">Mountfield HK, a.s., podražení, do 41:03</span></span></li><li class="ev ev-pen"><span class="ev-t">42:05</span><span class="dot dot-warn" title="trest"></span><span class="ev-x">Ordoš Jan, 2 min <span class="muted">BANES Motor České Budějovice, vysoká hůl, do 44:05</span></span></li><li class="ev ev-pen"><span class="ev-t">44:05</span><span class="dot dot-warn" title="trest"></span><span class="ev-x">Ordoš Jan, 2 min <span class="muted">BANES Motor České Budějovice, vysoká hůl, do 46:05</span></span></li><li class="ev ev-pen"><span class="ev-t">49:19</span><span class="dot dot-warn" title="trest"></span><span class="ev-x">lavička (HL), 2 min <span class="muted">Mountfield HK, a.s., příliš mnoho hráčů na ledě, do 51:19</span></span></li><li class="ev"><span class="ev-t">58:12</span><span class="dot dot-pos" title="gól"></span><span class="ev-x"><strong>Beránek Martin</strong> (Toman Matěj) <span class="muted">BANES Motor České Budějovice, 5/5</span></span></li></ul>
     </details>
     <details>
       <summary>14. kolo: BK Mladá Boleslav 3:2 BANES Motor České Budějovice
         <span class="muted small">(25.10.2026, 2799 diváků)</span></summary>
-      <p class="small kv"><span class="muted">⭐ Nejlepší hráči</span><span>Motor: Nedorost Václav · soupeř: Gardoň Matěj</span></p>
+      <p class="small kv"><span class="muted">Nejlepší hráči</span><span>Motor: Nedorost Václav · soupeř: Gardoň Matěj</span></p>
       <p class="small kv"><span class="muted">Střely Motor–soupeř</span><span>30:34 (13:13, 3:13, 13:7, 1:1)</span></p><p class="small kv"><span class="muted">Rozhodčí</span><span>Matěj Sýkora, Jan Jaroš · čároví Jiří Ondráček (KD90), Michal Zíka</span></p><p class="small kv"><span class="muted">Chyběli</span><span>Andersen Ole Einar, Bell Parker, Kachyňa Ondřej, Lev Jakub, Mařík Matyáš, Strmeň Jan</span></p><p class="small kv"><span class="muted">Nájezdy Motoru</span><span>Koláček Josef <span class="dot dot-neg dot-after" title="ne"></span>, Olesen Nick Alexander <span class="dot dot-neg dot-after" title="ne"></span>, Lantoši Róbert <span class="dot dot-neg dot-after" title="ne"></span>, Štencel Jan <span class="dot dot-neg dot-after" title="ne"></span>, Krastenbergs Renars <span class="dot dot-neg dot-after" title="ne"></span></span></p>
       <ul class="changes"><li class="ev ev-pen"><span class="ev-t">13:12</span><span class="dot dot-warn" title="trest"></span><span class="ev-x">Lantoši Róbert, 2 min <span class="muted">BANES Motor České Budějovice, podražení, do 14:18</span></span></li><li class="ev"><span class="ev-t">14:18</span><span class="dot dot-neg" title="gól"></span><span class="ev-x"><strong>Skalický Pavol</strong> (Hyka Tomáš, Gardoň Matěj) <span class="muted">BK Mladá Boleslav, 5/4</span></span></li><li class="ev ev-pen"><span class="ev-t">20:00</span><span class="dot dot-warn" title="trest"></span><span class="ev-x">Kubíček Šimon, 2 min <span class="muted">BK Mladá Boleslav, hrubost, do 22:00</span></span></li><li class="ev ev-pen"><span class="ev-t">20:00</span><span class="dot dot-warn" title="trest"></span><span class="ev-x">Beránek Martin, 2 min <span class="muted">BANES Motor České Budějovice, hrubost, do 22:00</span></span></li><li class="ev ev-pen"><span class="ev-t">24:00</span><span class="dot dot-warn" title="trest"></span><span class="ev-x">Kubíček Šimon, 5 min <span class="muted">BK Mladá Boleslav, BTK, do 29:00</span></span></li><li class="ev ev-pen"><span class="ev-t">24:00</span><span class="dot dot-warn" title="trest"></span><span class="ev-x">Beránek Martin, 5 min <span class="muted">BANES Motor České Budějovice, BTK, do 29:00</span></span></li><li class="ev ev-pen"><span class="ev-t">31:09</span><span class="dot dot-warn" title="trest"></span><span class="ev-x">Pour Jakub, 2 min <span class="muted">BANES Motor České Budějovice, podražení, do 32:49</span></span></li><li class="ev"><span class="ev-t">32:49</span><span class="dot dot-neg" title="gól"></span><span class="ev-x"><strong>Skalický Pavol</strong> (Hyka Tomáš, Fořt Tomáš) <span class="muted">BK Mladá Boleslav, 5/4</span></span></li><li class="ev ev-pen"><span class="ev-t">38:33</span><span class="dot dot-warn" title="trest"></span><span class="ev-x">lavička (HL), 2 min <span class="muted">BK Mladá Boleslav, příliš mnoho hráčů na ledě, do 40:33</span></span></li><li class="ev ev-pen"><span class="ev-t">43:12</span><span class="dot dot-warn" title="trest"></span><span class="ev-x">Moravec David, 2 min <span class="muted">BK Mladá Boleslav, hákování, do 45:12</span></span></li><li class="ev ev-pen"><span class="ev-t">45:01</span><span class="dot dot-warn" title="trest"></span><span class="ev-x">Lichtag Jakub, 2 min <span class="muted">BK Mladá Boleslav, podražení, do 47:01</span></span></li><li class="ev"><span class="ev-t">50:10</span><span class="dot dot-pos" title="gól"></span><span class="ev-x"><strong>Beránek Martin</strong> (Kundrátek Tomáš, Toman Matěj) <span class="muted">BANES Motor České Budějovice, 5/5</span></span></li><li class="ev ev-pen"><span class="ev-t">51:29</span><span class="dot dot-warn" title="trest"></span><span class="ev-x">Hejduk Marek, 2 min <span class="muted">BANES Motor České Budějovice, vysoká hůl, do 53:29</span></span></li><li class="ev ev-pen"><span class="ev-t">52:37</span><span class="dot dot-warn" title="trest"></span><span class="ev-x">Gardoň Matěj, 2 min <span class="muted">BK Mladá Boleslav, napadení rozhodčího, do 54:37</span></span></li><li class="ev"><span class="ev-t">56:33</span><span class="dot dot-pos" title="gól"></span><span class="ev-x"><strong>Vráblík Roman</strong> (Nedorost Václav, Olesen Nick Alexander) <span class="muted">BANES Motor České Budějovice, 5/5</span></span></li><li class="ev"><span class="ev-t">65:00</span><span class="dot dot-neg" title="gól"></span><span class="ev-x"><strong>Gavars Felikss</strong> <span class="muted">BK Mladá Boleslav, SN</span></span></li></ul>
     </details>
@@ -471,16 +558,16 @@
     </div>
     
     <div class="card">
-      <h2>Nejlepší hráč utkání (Motor)</h2>
-      <p class="muted small">Podle oficiálních zápisů (18 zápasů s vyhlášením).</p>
+      <h2>Nejlepší hráč utkání (Motor)<button class="info-btn" type="button" aria-expanded="false" aria-label="Vysvětlivka" title="Vysvětlivka">i</button></h2>
+<p class="muted small note" hidden>Podle oficiálních zápisů (18 zápasů s vyhlášením).</p>
       <table class="tbl-best">
         <thead><tr><th>Hráč</th><th>×</th><th>Kola</th></tr></thead>
         <tbody><tr><td>Klouček Milan</td><td><strong>4</strong></td><td>1, 2, 13, 15</td></tr><tr><td>Lantoši Róbert</td><td><strong>4</strong></td><td>4, 8, 9, 18</td></tr><tr><td>Ahl Filip</td><td><strong>2</strong></td><td>7, 12</td></tr><tr><td>Nedorost Václav</td><td><strong>2</strong></td><td>14, 16</td></tr><tr><td>Štencel Jan</td><td><strong>2</strong></td><td>3, 11</td></tr><tr><td>Beránek Martin</td><td><strong>1</strong></td><td>10</td></tr><tr><td>Hoch Štěpán</td><td><strong>1</strong></td><td>17</td></tr><tr><td>Olesen Nick Alexander</td><td><strong>1</strong></td><td>5</td></tr><tr><td>Strmeň Jan</td><td><strong>1</strong></td><td>6</td></tr></tbody>
       </table>
     </div>
     <div class="card">
-      <h2>Vítězné a první góly</h2>
-      <p class="muted small">Vítězný gól = gól Motoru, po kterém už soupeř nevyrovnal
+      <h2>Vítězné a první góly<button class="info-btn" type="button" aria-expanded="false" aria-label="Vysvětlivka" title="Vysvětlivka">i</button></h2>
+<p class="muted small note" hidden>Vítězný gól = gól Motoru, po kterém už soupeř nevyrovnal
       (u výher v nájezdech se nepočítá). 1. gól = Motor otevřel skóre zápasu.</p>
       <table class="tbl-gwg">
         <thead><tr><th>Hráč</th><th><span class="lbl-full">Vítězné</span><span class="lbl-short">VG</span></th><th><span class="lbl-full">Kola</span><span class="lbl-short">K.</span></th><th><span class="lbl-full">1. gól</span><span class="lbl-short">1.G</span></th><th><span class="lbl-full">Kola</span><span class="lbl-short">K.</span></th></tr></thead>
@@ -488,8 +575,8 @@
       </table>
     </div>
     <div class="card">
-      <h2>Nejčastější dvojice nahrávač → střelec</h2>
-      <p class="muted small">Z oficiálních zápisů — kolikrát hráč nahrával na gól
+      <h2>Nejčastější dvojice nahrávač → střelec<button class="info-btn" type="button" aria-expanded="false" aria-label="Vysvětlivka" title="Vysvětlivka">i</button></h2>
+<p class="muted small note" hidden>Z oficiálních zápisů — kolikrát hráč nahrával na gól
       konkrétnímu střelci (první i druhá asistence; sloupec A1 = z toho jako první).</p>
       <table class="tbl-pairs"><thead><tr><th><span class="lbl-full">Nahrávač</span><span class="lbl-short">Nahr.</span></th><th><span class="lbl-full">Střelec</span><span class="lbl-short">Stř.</span></th><th><span class="lbl-full">Góly</span><span class="lbl-short">G</span></th><th><span class="lbl-full">z toho 1. asist.</span><span class="lbl-short">A1</span></th><th><span class="lbl-full">Kola</span><span class="lbl-short">K.</span></th></tr></thead><tbody><tr><td>Lantoši Róbert</td><td>Olesen Nick Alexander</td><td><strong>6</strong></td><td>4</td><td class='muted'>5, 7, 8, 13, 15, 18</td></tr><tr><td>Lantoši Róbert</td><td>Bell Parker</td><td><strong>4</strong></td><td>2</td><td class='muted'>3, 8, 17, 18</td></tr><tr><td>Hoch Štěpán</td><td>Ordoš Jan</td><td><strong>4</strong></td><td>1</td><td class='muted'>5, 6, 11</td></tr><tr><td>Štencel Jan</td><td>Olesen Nick Alexander</td><td><strong>3</strong></td><td>2</td><td class='muted'>5, 8</td></tr><tr><td>Lantoši Róbert</td><td>Koláček Josef</td><td><strong>3</strong></td><td>1</td><td class='muted'>12, 13</td></tr><tr><td>Ahl Filip</td><td>Bell Parker</td><td><strong>2</strong></td><td>2</td><td class='muted'>1, 8</td></tr><tr><td>Hoch Štěpán</td><td>Lantoši Róbert</td><td><strong>2</strong></td><td>2</td><td class='muted'>8, 10</td></tr><tr><td>Vála Ondřej</td><td>Ordoš Jan</td><td><strong>2</strong></td><td>2</td><td class='muted'>5, 9</td></tr><tr><td>Štencel Jan</td><td>Ahl Filip</td><td><strong>2</strong></td><td>1</td><td class='muted'>7, 10</td></tr><tr><td>Štencel Jan</td><td>Bell Parker</td><td><strong>2</strong></td><td>1</td><td class='muted'>3, 18</td></tr><tr><td>Toman Matěj</td><td>Beránek Martin</td><td><strong>2</strong></td><td>1</td><td class='muted'>14, 15</td></tr><tr><td>Pýcha Pavel</td><td>Hoch Štěpán</td><td><strong>2</strong></td><td>1</td><td class='muted'>4, 18</td></tr><tr><td>Hoch Štěpán</td><td>Olesen Nick Alexander</td><td><strong>2</strong></td><td>0</td><td class='muted'>13, 15</td></tr><tr><td>Bulíř Michal</td><td>Pour Jakub</td><td><strong>2</strong></td><td>0</td><td class='muted'>1, 8</td></tr><tr><td>Olesen Nick Alexander</td><td>Ahl Filip</td><td><strong>1</strong></td><td>1</td><td class='muted'>10</td></tr></tbody></table>
       
@@ -497,8 +584,8 @@
         <summary>Další dvojice <span class="muted small">(43)</span></summary>
         <table class="tbl-pairs"><thead><tr><th><span class="lbl-full">Nahrávač</span><span class="lbl-short">Nahr.</span></th><th><span class="lbl-full">Střelec</span><span class="lbl-short">Stř.</span></th><th><span class="lbl-full">Góly</span><span class="lbl-short">G</span></th><th><span class="lbl-full">z toho 1. asist.</span><span class="lbl-short">A1</span></th><th><span class="lbl-full">Kola</span><span class="lbl-short">K.</span></th></tr></thead><tbody><tr><td>Nedorost Václav</td><td>Ahl Filip</td><td><strong>1</strong></td><td>1</td><td class='muted'>13</td></tr><tr><td>Vráblík Roman</td><td>Beránek Martin</td><td><strong>1</strong></td><td>1</td><td class='muted'>6</td></tr><tr><td>Kundrátek Tomáš</td><td>Beránek Martin</td><td><strong>1</strong></td><td>1</td><td class='muted'>14</td></tr><tr><td>Ordoš Jan</td><td>Hoch Štěpán</td><td><strong>1</strong></td><td>1</td><td class='muted'>4</td></tr><tr><td>Lantoši Róbert</td><td>Hoch Štěpán</td><td><strong>1</strong></td><td>1</td><td class='muted'>17</td></tr><tr><td>Ahl Filip</td><td>Koláček Josef</td><td><strong>1</strong></td><td>1</td><td class='muted'>12</td></tr><tr><td>Štencel Jan</td><td>Koláček Josef</td><td><strong>1</strong></td><td>1</td><td class='muted'>13</td></tr><tr><td>Toman Matěj</td><td>Olesen Nick Alexander</td><td><strong>1</strong></td><td>1</td><td class='muted'>2</td></tr><tr><td>Beránek Martin</td><td>Olesen Nick Alexander</td><td><strong>1</strong></td><td>1</td><td class='muted'>12</td></tr><tr><td>Bell Parker</td><td>Olesen Nick Alexander</td><td><strong>1</strong></td><td>1</td><td class='muted'>18</td></tr><tr><td>Andersen Ole Einar</td><td>Ordoš Jan</td><td><strong>1</strong></td><td>1</td><td class='muted'>6</td></tr><tr><td>Hejduk Marek</td><td>Ordoš Jan</td><td><strong>1</strong></td><td>1</td><td class='muted'>11</td></tr><tr><td>Krastenbergs Renars</td><td>Ordoš Jan</td><td><strong>1</strong></td><td>1</td><td class='muted'>15</td></tr><tr><td>Krastenbergs Renars</td><td>Pour Jakub</td><td><strong>1</strong></td><td>1</td><td class='muted'>1</td></tr><tr><td>Pýcha Pavel</td><td>Pour Jakub</td><td><strong>1</strong></td><td>1</td><td class='muted'>2</td></tr><tr><td>Hoch Štěpán</td><td>Pour Jakub</td><td><strong>1</strong></td><td>1</td><td class='muted'>3</td></tr><tr><td>Ahl Filip</td><td>Pour Jakub</td><td><strong>1</strong></td><td>1</td><td class='muted'>8</td></tr><tr><td>Koláček Josef</td><td>Toman Matěj</td><td><strong>1</strong></td><td>1</td><td class='muted'>13</td></tr><tr><td>Štencel Jan</td><td>Vráblík Roman</td><td><strong>1</strong></td><td>1</td><td class='muted'>11</td></tr><tr><td>Nedorost Václav</td><td>Vráblík Roman</td><td><strong>1</strong></td><td>1</td><td class='muted'>14</td></tr><tr><td>Nordsäter Lucas</td><td>Zachar Marek</td><td><strong>1</strong></td><td>1</td><td class='muted'>10</td></tr><tr><td>Krastenbergs Renars</td><td>Štencel Jan</td><td><strong>1</strong></td><td>1</td><td class='muted'>3</td></tr><tr><td>Olesen Nick Alexander</td><td>Štencel Jan</td><td><strong>1</strong></td><td>1</td><td class='muted'>5</td></tr><tr><td>Bell Parker</td><td>Štencel Jan</td><td><strong>1</strong></td><td>1</td><td class='muted'>11</td></tr><tr><td>Klouček Milan</td><td>Ahl Filip</td><td><strong>1</strong></td><td>0</td><td class='muted'>13</td></tr><tr><td>Olesen Nick Alexander</td><td>Bell Parker</td><td><strong>1</strong></td><td>0</td><td class='muted'>17</td></tr><tr><td>Kachyňa Ondřej</td><td>Beránek Martin</td><td><strong>1</strong></td><td>0</td><td class='muted'>6</td></tr><tr><td>Koláček Josef</td><td>Hoch Štěpán</td><td><strong>1</strong></td><td>0</td><td class='muted'>18</td></tr><tr><td>Vála Ondřej</td><td>Lantoši Róbert</td><td><strong>1</strong></td><td>0</td><td class='muted'>8</td></tr><tr><td>Pýcha Pavel</td><td>Lantoši Róbert</td><td><strong>1</strong></td><td>0</td><td class='muted'>10</td></tr><tr><td>Vráblík Roman</td><td>Olesen Nick Alexander</td><td><strong>1</strong></td><td>0</td><td class='muted'>2</td></tr><tr><td>Bulíř Michal</td><td>Olesen Nick Alexander</td><td><strong>1</strong></td><td>0</td><td class='muted'>5</td></tr><tr><td>Ordoš Jan</td><td>Olesen Nick Alexander</td><td><strong>1</strong></td><td>0</td><td class='muted'>12</td></tr><tr><td>Olesen Nick Alexander</td><td>Ordoš Jan</td><td><strong>1</strong></td><td>0</td><td class='muted'>5</td></tr><tr><td>Bell Parker</td><td>Ordoš Jan</td><td><strong>1</strong></td><td>0</td><td class='muted'>15</td></tr><tr><td>Nordsäter Lucas</td><td>Pour Jakub</td><td><strong>1</strong></td><td>0</td><td class='muted'>2</td></tr><tr><td>Lantoši Róbert</td><td>Pour Jakub</td><td><strong>1</strong></td><td>0</td><td class='muted'>3</td></tr><tr><td>Kundrátek Tomáš</td><td>Toman Matěj</td><td><strong>1</strong></td><td>0</td><td class='muted'>13</td></tr><tr><td>Hoch Štěpán</td><td>Vráblík Roman</td><td><strong>1</strong></td><td>0</td><td class='muted'>11</td></tr><tr><td>Olesen Nick Alexander</td><td>Vráblík Roman</td><td><strong>1</strong></td><td>0</td><td class='muted'>14</td></tr><tr><td>Toman Matěj</td><td>Zachar Marek</td><td><strong>1</strong></td><td>0</td><td class='muted'>10</td></tr><tr><td>Bulíř Michal</td><td>Štencel Jan</td><td><strong>1</strong></td><td>0</td><td class='muted'>3</td></tr><tr><td>Lantoši Róbert</td><td>Štencel Jan</td><td><strong>1</strong></td><td>0</td><td class='muted'>5</td></tr></tbody></table>
       </details>
-      <h2 style="margin-top:18px">Trojice u gólu</h2>
-      <p class="muted small">Střelec + obě asistence, bez ohledu na to, kdo měl jakou roli
+      <h2 style="margin-top:18px">Trojice u gólu<button class="info-btn" type="button" aria-expanded="false" aria-label="Vysvětlivka" title="Vysvětlivka">i</button></h2>
+<p class="muted small note" hidden>Střelec + obě asistence, bez ohledu na to, kdo měl jakou roli
       (jen trojice, které spolu byly u gólu aspoň 2×).</p>
       <table class="tbl-trios">
         <thead><tr><th><span class="lbl-full">Hráči</span><span class="lbl-short">H</span></th><th><span class="lbl-full">Góly</span><span class="lbl-short">G</span></th><th><span class="lbl-full">Kola</span><span class="lbl-short">K.</span></th></tr></thead>
@@ -506,8 +593,8 @@
       </table>
     </div>
     <div class="card">
-      <h2>Kdo chyběl na soupisce</h2>
-      <p class="muted small">Podle oficiálních zápisů (18 zápasů). Počítají se jen
+      <h2>Kdo chyběl na soupisce<button class="info-btn" type="button" aria-expanded="false" aria-label="Vysvětlivka" title="Vysvětlivka">i</button></h2>
+<p class="muted small note" hidden>Podle oficiálních zápisů (18 zápasů). Počítají se jen
       hráči, kteří už v sezóně aspoň jednou nastoupili — posila tedy před debutem nechybí.
       „V řadě" = kolik posledních zápasů po sobě chybí; u hráčů, kteří z kádru odešli,
       bude číslo dál růst.</p>
@@ -517,8 +604,8 @@
       </table>
     </div>
     <div class="card">
-      <h2>Formace na ledě</h2>
-      <p class="muted small">Kdo byl spolu na ledě, když padl gól (z oficiálních zápisů,
+      <h2>Formace na ledě<button class="info-btn" type="button" aria-expanded="false" aria-label="Vysvětlivka" title="Vysvětlivka">i</button></h2>
+<p class="muted small note" hidden>Kdo byl spolu na ledě, když padl gól (z oficiálních zápisů,
       18 zápasů; brankáři se nepočítají). GF = vstřelené, GA = obdržené,
       Z = v kolika zápasech formace byla u gólu. Dvojice = přesně 2 obránci na ledě,
       trojice = přesně 3 útočníci — přesilovky ve složení 4+1 nebo hra bez brankáře se
@@ -531,8 +618,8 @@
       <table class="tbl-form-5"><thead><tr><th><span class="lbl-full">Pětka</span><span class="lbl-short">5</span></th><th>GF</th><th>GA</th><th>+/-</th><th><span class="lbl-full">GF 5/5</span><span class="lbl-short">GF EV</span></th><th><span class="lbl-full">GA 5/5</span><span class="lbl-short">GA EV</span></th><th><span class="lbl-full">GF přesil.</span><span class="lbl-short">PP</span></th><th><span class="lbl-full">GA oslab.</span><span class="lbl-short">SH</span></th><th>Z</th></tr></thead><tbody><tr><td>Nordsäter Lucas · Vála Ondřej · Hoch Štěpán · Ordoš Jan · Pour Jakub</td><td>1</td><td>2</td><td><strong>-1</strong></td><td>1</td><td>2</td><td>0</td><td>0</td><td>3</td></tr><tr><td>Vráblík Roman · Štencel Jan · Bulíř Michal · Lantoši Róbert · Olesen Nick Alexander</td><td>1</td><td>2</td><td><strong>-1</strong></td><td>1</td><td>2</td><td>0</td><td>0</td><td>2</td></tr><tr><td>Vráblík Roman · Štencel Jan · Bulíř Michal · Krastenbergs Renars · Ordoš Jan</td><td>2</td><td>0</td><td><strong>+2</strong></td><td>2</td><td>0</td><td>0</td><td>0</td><td>2</td></tr><tr><td>Kachyňa Ondřej · Nordsäter Lucas · Ahl Filip · Bulíř Michal · Pour Jakub</td><td>1</td><td>1</td><td><strong>0</strong></td><td>1</td><td>1</td><td>0</td><td>0</td><td>2</td></tr><tr><td>Mccormack Graeme · Vráblík Roman · Hoch Štěpán · Lantoši Róbert · Olesen Nick Alexander</td><td>0</td><td>2</td><td><strong>-2</strong></td><td>0</td><td>2</td><td>0</td><td>0</td><td>1</td></tr><tr><td>Nedorost Václav · Pýcha Pavel · Hoch Štěpán · Lantoši Róbert · Olesen Nick Alexander</td><td>0</td><td>2</td><td><strong>-2</strong></td><td>0</td><td>2</td><td>0</td><td>0</td><td>2</td></tr></tbody></table>
     </div>
     <div class="card">
-      <h2>Na ledě: góly pro / proti</h2>
-      <p class="muted small">Kolik gólů padlo, když byl hráč Motoru na ledě
+      <h2>Na ledě: góly pro / proti<button class="info-btn" type="button" aria-expanded="false" aria-label="Vysvětlivka" title="Vysvětlivka">i</button></h2>
+<p class="muted small note" hidden>Kolik gólů padlo, když byl hráč Motoru na ledě
       (z oficiálních zápisů, 18 zápasů; brankáři se nepočítají).
       GF = vstřelené, GA = obdržené, EV = při stejném počtu hráčů,
       PP = Motor v přesilovce, SH = Motor v oslabení. Součet za celou
@@ -543,8 +630,8 @@
       </table>
     </div>
     <div class="card">
-      <h2>Disciplína podle typu</h2>
-      <p class="muted small">Počet provinění hráčů Motoru podle oficiálních zápisů
+      <h2>Disciplína podle typu<button class="info-btn" type="button" aria-expanded="false" aria-label="Vysvětlivka" title="Vysvětlivka">i</button></h2>
+<p class="muted small note" hidden>Počet provinění hráčů Motoru podle oficiálních zápisů
       (18 zápasů). Navazující tresty za totéž (např. 5 + 20 min) se
       počítají jako jedno provinění. Význam kódů je pod tabulkou, řadit jde klepnutím
       na sloupec.</p>
@@ -566,8 +653,8 @@
   <section class="tabsection bento" data-tab="bilance">
     
   <div class="card card-chart">
-    <h2>Bilance výher a proher</h2>
-    <p class="muted small">Výhra +1, prohra −1 (jakýmkoliv způsobem), kumulativně od 1. kola.
+    <h2>Bilance výher a proher<button class="info-btn" type="button" aria-expanded="false" aria-label="Vysvětlivka" title="Vysvětlivka">i</button></h2>
+<p class="muted small note" hidden>Výhra +1, prohra −1 (jakýmkoliv způsobem), kumulativně od 1. kola.
     Body v tabulce (systém 3-2-1-0): <strong>29</strong></p>
     
     <div class="chart" data-w="760" data-pts='[[42.0, 144.0, 0, "Start sezóny"], [53.7, 175.5, -1, "1. kolo: Mladá Boleslav (doma) 2:3p"], [65.3, 144.0, 0, "2. kolo: Hradec Králové (venku) 0:2"], [77.0, 112.5, 1, "3. kolo: Olomouc (doma) 3:2"], [88.7, 144.0, 0, "4. kolo: Karlovy Vary (venku) 5:1"], [100.3, 112.5, 1, "5. kolo: Litvínov (doma) 5:4"], [112.0, 144.0, 0, "6. kolo: Pardubice (venku) 5:2"], [123.7, 175.5, -1, "7. kolo: Sparta Praha (venku) 4:2"], [135.3, 144.0, 0, "8. kolo: Kometa Brno (doma) 5:1"], [147.0, 175.5, -1, "9. kolo: Plzeň (venku) 4:1"], [158.7, 144.0, 0, "10. kolo: Liberec (doma) 4:3"], [170.3, 112.5, 1, "11. kolo: Vítkovice (venku) 1:3"], [182.0, 144.0, 0, "12. kolo: Kladno (doma) 2:3"], [193.7, 112.5, 1, "13. kolo: Třinec (venku) 2:6"], [205.3, 144.0, 0, "14. kolo: Mladá Boleslav (venku) 3:2sn"], [217.0, 112.5, 1, "15. kolo: Hradec Králové (doma) 3:0"], [228.7, 144.0, 0, "16. kolo: Olomouc (venku) 4:0"], [240.3, 175.5, -1, "17. kolo: Karlovy Vary (doma) 2:3"], [252.0, 144.0, 0, "18. kolo: Litvínov (venku) 3:4"]]'>
@@ -613,20 +700,20 @@
   </div>
 
     <div class="card">
-      <h2>Bilance po třetinách</h2>
-      <p class="muted small">V/R/P = kolikrát Motor třetinu vyhrál / remizoval / prohrál.
+      <h2>Bilance po třetinách<button class="info-btn" type="button" aria-expanded="false" aria-label="Vysvětlivka" title="Vysvětlivka">i</button></h2>
+<p class="muted small note" hidden>V/R/P = kolikrát Motor třetinu vyhrál / remizoval / prohrál.
       Střely ze souhrnu oficiálních zápisů (18 zápasů).</p>
-      <h3 class='scope-h'>Celkem</h3><table class="tbl-periods"><thead><tr><th>Třetina</th><th>V</th><th>R</th><th>P</th><th><span class="lbl-full">Góly</span><span class="lbl-short">G</span></th><th><span class="lbl-full">Střely</span><span class="lbl-short">Stř</span></th><th><span class="lbl-full">Střely/zápas</span><span class="lbl-short">Ø</span></th></tr></thead><tbody><tr><td>1. třetina</td><td>5</td><td>7</td><td>6</td><td><strong>13:15</strong></td><td>188:200</td><td>10.4:11.1</td></tr><tr><td>2. třetina</td><td>5</td><td>6</td><td>7</td><td><strong>16:18</strong></td><td>156:202</td><td>8.7:11.2</td></tr><tr><td>3. třetina</td><td>8</td><td>5</td><td>5</td><td><strong>20:15</strong></td><td>152:176</td><td>8.4:9.8</td></tr><tr><td>Prodloužení</td><td>0</td><td>1</td><td>1</td><td><strong>0:1</strong></td><td>1:3</td><td>0.5:1.5</td></tr></tbody></table><h3 class='scope-h'>Doma</h3><table class="tbl-periods"><thead><tr><th>Třetina</th><th>V</th><th>R</th><th>P</th><th><span class="lbl-full">Góly</span><span class="lbl-short">G</span></th><th><span class="lbl-full">Střely</span><span class="lbl-short">Stř</span></th><th><span class="lbl-full">Střely/zápas</span><span class="lbl-short">Ø</span></th></tr></thead><tbody><tr><td>1. třetina</td><td>2</td><td>4</td><td>2</td><td><strong>7:6</strong></td><td>90:77</td><td>11.2:9.6</td></tr><tr><td>2. třetina</td><td>3</td><td>3</td><td>2</td><td><strong>8:6</strong></td><td>81:89</td><td>10.1:11.1</td></tr><tr><td>3. třetina</td><td>4</td><td>3</td><td>1</td><td><strong>11:6</strong></td><td>77:83</td><td>9.6:10.4</td></tr><tr><td>Prodloužení</td><td>0</td><td>0</td><td>1</td><td><strong>0:1</strong></td><td>0:2</td><td>0.0:2.0</td></tr></tbody></table><h3 class='scope-h'>Venku</h3><table class="tbl-periods"><thead><tr><th>Třetina</th><th>V</th><th>R</th><th>P</th><th><span class="lbl-full">Góly</span><span class="lbl-short">G</span></th><th><span class="lbl-full">Střely</span><span class="lbl-short">Stř</span></th><th><span class="lbl-full">Střely/zápas</span><span class="lbl-short">Ø</span></th></tr></thead><tbody><tr><td>1. třetina</td><td>3</td><td>3</td><td>4</td><td><strong>6:9</strong></td><td>98:123</td><td>9.8:12.3</td></tr><tr><td>2. třetina</td><td>2</td><td>3</td><td>5</td><td><strong>8:12</strong></td><td>75:113</td><td>7.5:11.3</td></tr><tr><td>3. třetina</td><td>4</td><td>2</td><td>4</td><td><strong>9:9</strong></td><td>75:93</td><td>7.5:9.3</td></tr><tr><td>Prodloužení</td><td>0</td><td>1</td><td>0</td><td><strong>0:0</strong></td><td>1:1</td><td>1.0:1.0</td></tr></tbody></table>
+      <div class='scope-grid'><div class='scope'><h3 class='scope-h'>Celkem</h3><table class="tbl-periods"><thead><tr><th>Třetina</th><th>V</th><th>R</th><th>P</th><th><span class="lbl-full">Góly</span><span class="lbl-short">G</span></th><th><span class="lbl-full">Střely</span><span class="lbl-short">Stř</span></th><th><span class="lbl-full">Střely/zápas</span><span class="lbl-short">Ø</span></th></tr></thead><tbody><tr><td>1. třetina</td><td>5</td><td>7</td><td>6</td><td><strong>13:15</strong></td><td>188:200</td><td>10.4:11.1</td></tr><tr><td>2. třetina</td><td>5</td><td>6</td><td>7</td><td><strong>16:18</strong></td><td>156:202</td><td>8.7:11.2</td></tr><tr><td>3. třetina</td><td>8</td><td>5</td><td>5</td><td><strong>20:15</strong></td><td>152:176</td><td>8.4:9.8</td></tr><tr><td>Prodloužení</td><td>0</td><td>1</td><td>1</td><td><strong>0:1</strong></td><td>1:3</td><td>0.5:1.5</td></tr></tbody></table></div><div class='scope'><h3 class='scope-h'>Doma</h3><table class="tbl-periods"><thead><tr><th>Třetina</th><th>V</th><th>R</th><th>P</th><th><span class="lbl-full">Góly</span><span class="lbl-short">G</span></th><th><span class="lbl-full">Střely</span><span class="lbl-short">Stř</span></th><th><span class="lbl-full">Střely/zápas</span><span class="lbl-short">Ø</span></th></tr></thead><tbody><tr><td>1. třetina</td><td>2</td><td>4</td><td>2</td><td><strong>7:6</strong></td><td>90:77</td><td>11.2:9.6</td></tr><tr><td>2. třetina</td><td>3</td><td>3</td><td>2</td><td><strong>8:6</strong></td><td>81:89</td><td>10.1:11.1</td></tr><tr><td>3. třetina</td><td>4</td><td>3</td><td>1</td><td><strong>11:6</strong></td><td>77:83</td><td>9.6:10.4</td></tr><tr><td>Prodloužení</td><td>0</td><td>0</td><td>1</td><td><strong>0:1</strong></td><td>0:2</td><td>0.0:2.0</td></tr></tbody></table></div><div class='scope'><h3 class='scope-h'>Venku</h3><table class="tbl-periods"><thead><tr><th>Třetina</th><th>V</th><th>R</th><th>P</th><th><span class="lbl-full">Góly</span><span class="lbl-short">G</span></th><th><span class="lbl-full">Střely</span><span class="lbl-short">Stř</span></th><th><span class="lbl-full">Střely/zápas</span><span class="lbl-short">Ø</span></th></tr></thead><tbody><tr><td>1. třetina</td><td>3</td><td>3</td><td>4</td><td><strong>6:9</strong></td><td>98:123</td><td>9.8:12.3</td></tr><tr><td>2. třetina</td><td>2</td><td>3</td><td>5</td><td><strong>8:12</strong></td><td>75:113</td><td>7.5:11.3</td></tr><tr><td>3. třetina</td><td>4</td><td>2</td><td>4</td><td><strong>9:9</strong></td><td>75:93</td><td>7.5:9.3</td></tr><tr><td>Prodloužení</td><td>0</td><td>1</td><td>0</td><td><strong>0:0</strong></td><td>1:1</td><td>1.0:1.0</td></tr></tbody></table></div></div>
     </div>
     <div class="card">
-      <h2>Výsledek podle stavu po třetinách</h2>
-      <p class="muted small">V = výhra v základní době, VP = výhra po prodloužení/nájezdech,
+      <h2>Výsledek podle stavu po třetinách<button class="info-btn" type="button" aria-expanded="false" aria-label="Vysvětlivka" title="Vysvětlivka">i</button></h2>
+<p class="muted small note" hidden>V = výhra v základní době, VP = výhra po prodloužení/nájezdech,
       PP = prohra po prodloužení/nájezdech, P = prohra. Body podle systému 3-2-1-0.</p>
-      <h3 class='scope-h'>Celkem</h3><table class="tbl-state"><thead><tr><th>Stav</th><th>Z</th><th>V</th><th>VP</th><th>PP</th><th>P</th><th><span class="lbl-full">Body</span><span class="lbl-short">B</span></th></tr></thead><tbody><tr><td>po 1. třetině vedl</td><td>5</td><td>3</td><td>0</td><td>1</td><td>1</td><td><strong>10</strong></td></tr><tr><td>po 1. třetině nerozhodně</td><td>7</td><td>5</td><td>0</td><td>0</td><td>2</td><td><strong>15</strong></td></tr><tr><td>po 1. třetině prohrával</td><td>6</td><td>1</td><td>0</td><td>1</td><td>4</td><td><strong>4</strong></td></tr><tr><td>po 2. třetině vedl</td><td>6</td><td>5</td><td>0</td><td>1</td><td>0</td><td><strong>16</strong></td></tr><tr><td>po 2. třetině nerozhodně</td><td>3</td><td>1</td><td>0</td><td>0</td><td>2</td><td><strong>3</strong></td></tr><tr><td>po 2. třetině prohrával</td><td>9</td><td>3</td><td>0</td><td>1</td><td>5</td><td><strong>10</strong></td></tr></tbody></table><h3 class='scope-h'>Doma</h3><table class="tbl-state"><thead><tr><th>Stav</th><th>Z</th><th>V</th><th>VP</th><th>PP</th><th>P</th><th><span class="lbl-full">Body</span><span class="lbl-short">B</span></th></tr></thead><tbody><tr><td>po 1. třetině vedl</td><td>2</td><td>1</td><td>0</td><td>1</td><td>0</td><td><strong>4</strong></td></tr><tr><td>po 1. třetině nerozhodně</td><td>4</td><td>4</td><td>0</td><td>0</td><td>0</td><td><strong>12</strong></td></tr><tr><td>po 1. třetině prohrával</td><td>2</td><td>0</td><td>0</td><td>0</td><td>2</td><td><strong>0</strong></td></tr><tr><td>po 2. třetině vedl</td><td>4</td><td>3</td><td>0</td><td>1</td><td>0</td><td><strong>10</strong></td></tr><tr><td>po 2. třetině prohrával</td><td>4</td><td>2</td><td>0</td><td>0</td><td>2</td><td><strong>6</strong></td></tr></tbody></table><h3 class='scope-h'>Venku</h3><table class="tbl-state"><thead><tr><th>Stav</th><th>Z</th><th>V</th><th>VP</th><th>PP</th><th>P</th><th><span class="lbl-full">Body</span><span class="lbl-short">B</span></th></tr></thead><tbody><tr><td>po 1. třetině vedl</td><td>3</td><td>2</td><td>0</td><td>0</td><td>1</td><td><strong>6</strong></td></tr><tr><td>po 1. třetině nerozhodně</td><td>3</td><td>1</td><td>0</td><td>0</td><td>2</td><td><strong>3</strong></td></tr><tr><td>po 1. třetině prohrával</td><td>4</td><td>1</td><td>0</td><td>1</td><td>2</td><td><strong>4</strong></td></tr><tr><td>po 2. třetině vedl</td><td>2</td><td>2</td><td>0</td><td>0</td><td>0</td><td><strong>6</strong></td></tr><tr><td>po 2. třetině nerozhodně</td><td>3</td><td>1</td><td>0</td><td>0</td><td>2</td><td><strong>3</strong></td></tr><tr><td>po 2. třetině prohrával</td><td>5</td><td>1</td><td>0</td><td>1</td><td>3</td><td><strong>4</strong></td></tr></tbody></table>
+      <div class='scope-grid'><div class='scope'><h3 class='scope-h'>Celkem</h3><table class="tbl-state"><thead><tr><th>Stav</th><th>Z</th><th>V</th><th>VP</th><th>PP</th><th>P</th><th><span class="lbl-full">Body</span><span class="lbl-short">B</span></th></tr></thead><tbody><tr><td>po 1. třetině vedl</td><td>5</td><td>3</td><td>0</td><td>1</td><td>1</td><td><strong>10</strong></td></tr><tr><td>po 1. třetině nerozhodně</td><td>7</td><td>5</td><td>0</td><td>0</td><td>2</td><td><strong>15</strong></td></tr><tr><td>po 1. třetině prohrával</td><td>6</td><td>1</td><td>0</td><td>1</td><td>4</td><td><strong>4</strong></td></tr><tr><td>po 2. třetině vedl</td><td>6</td><td>5</td><td>0</td><td>1</td><td>0</td><td><strong>16</strong></td></tr><tr><td>po 2. třetině nerozhodně</td><td>3</td><td>1</td><td>0</td><td>0</td><td>2</td><td><strong>3</strong></td></tr><tr><td>po 2. třetině prohrával</td><td>9</td><td>3</td><td>0</td><td>1</td><td>5</td><td><strong>10</strong></td></tr></tbody></table></div><div class='scope'><h3 class='scope-h'>Doma</h3><table class="tbl-state"><thead><tr><th>Stav</th><th>Z</th><th>V</th><th>VP</th><th>PP</th><th>P</th><th><span class="lbl-full">Body</span><span class="lbl-short">B</span></th></tr></thead><tbody><tr><td>po 1. třetině vedl</td><td>2</td><td>1</td><td>0</td><td>1</td><td>0</td><td><strong>4</strong></td></tr><tr><td>po 1. třetině nerozhodně</td><td>4</td><td>4</td><td>0</td><td>0</td><td>0</td><td><strong>12</strong></td></tr><tr><td>po 1. třetině prohrával</td><td>2</td><td>0</td><td>0</td><td>0</td><td>2</td><td><strong>0</strong></td></tr><tr><td>po 2. třetině vedl</td><td>4</td><td>3</td><td>0</td><td>1</td><td>0</td><td><strong>10</strong></td></tr><tr><td>po 2. třetině prohrával</td><td>4</td><td>2</td><td>0</td><td>0</td><td>2</td><td><strong>6</strong></td></tr></tbody></table></div><div class='scope'><h3 class='scope-h'>Venku</h3><table class="tbl-state"><thead><tr><th>Stav</th><th>Z</th><th>V</th><th>VP</th><th>PP</th><th>P</th><th><span class="lbl-full">Body</span><span class="lbl-short">B</span></th></tr></thead><tbody><tr><td>po 1. třetině vedl</td><td>3</td><td>2</td><td>0</td><td>0</td><td>1</td><td><strong>6</strong></td></tr><tr><td>po 1. třetině nerozhodně</td><td>3</td><td>1</td><td>0</td><td>0</td><td>2</td><td><strong>3</strong></td></tr><tr><td>po 1. třetině prohrával</td><td>4</td><td>1</td><td>0</td><td>1</td><td>2</td><td><strong>4</strong></td></tr><tr><td>po 2. třetině vedl</td><td>2</td><td>2</td><td>0</td><td>0</td><td>0</td><td><strong>6</strong></td></tr><tr><td>po 2. třetině nerozhodně</td><td>3</td><td>1</td><td>0</td><td>0</td><td>2</td><td><strong>3</strong></td></tr><tr><td>po 2. třetině prohrával</td><td>5</td><td>1</td><td>0</td><td>1</td><td>3</td><td><strong>4</strong></td></tr></tbody></table></div></div>
     </div>
     <div class="card">
       <h2>Nájezdy v sezóně</h2>
-      <p class="muted small">1 zápasů rozhodnutých nájezdy,
+      <p class="muted small keep">1 zápasů rozhodnutých nájezdy,
       bilance 0–1.</p>
       <table class="tbl-so">
         <thead><tr><th>Střelec</th><th><span class="lbl-full">Pokusy</span><span class="lbl-short">Pok</span></th><th><span class="lbl-full">Proměnil</span><span class="lbl-short">G</span></th><th><span class="lbl-full">Neproměnil</span><span class="lbl-short">X</span></th><th>%</th></tr></thead>
@@ -661,8 +748,8 @@
       </details>
     </div>
     <div class="card">
-      <h2>Rozhodčí v zápasech Motoru</h2>
-      <p class="muted small">Bilance V-VP-PP-P z pohledu Motoru, trestné minuty na zápas
+      <h2>Rozhodčí v zápasech Motoru<button class="info-btn" type="button" aria-expanded="false" aria-label="Vysvětlivka" title="Vysvětlivka">i</button></h2>
+<p class="muted small note" hidden>Bilance V-VP-PP-P z pohledu Motoru, trestné minuty na zápas
       (Motor / soupeř, navazující tresty sloučené).</p>
       <table class="tbl-refs">
         <thead><tr><th>Rozhodčí</th><th><span class="lbl-full">Funkce</span><span class="lbl-short">F</span></th><th>Z</th><th><span class="lbl-full">Bilance</span><span class="lbl-short">Bil.</span></th><th><span class="lbl-full">TM Motor</span><span class="lbl-short">TM M</span></th><th><span class="lbl-full">TM soupeř</span><span class="lbl-short">TM S</span></th><th><span class="lbl-full">Kola</span><span class="lbl-short">K.</span></th></tr></thead>
@@ -718,8 +805,8 @@
     <input type="search" class="search-box" id="search-mesice" placeholder="Hledat hráče" autocomplete="off">
     
   <div class="card">
-    <h2>Měsíční přehled</h2>
-    <p class="muted small">Zápas zachycený ranním během se počítá do měsíce,
+    <h2>Měsíční přehled<button class="info-btn" type="button" aria-expanded="false" aria-label="Vysvětlivka" title="Vysvětlivka">i</button></h2>
+<p class="muted small note" hidden>Zápas zachycený ranním během se počítá do měsíce,
     kdy se skutečně hrál (většinou večer předtím), ne do dne, kdy proběhl běh skriptu.
     Poslední (ještě "otevřený") měsíc se počítá vždy z aktuálního stavu sezóny, takže
     se do něj promítnou i pozdější opravy statistik na hcmotor.cz; uzavřené měsíce
@@ -729,7 +816,7 @@
       <summary>listopad 2026 <span class="muted small">(22 hráčů)</span></summary>
       <table>
         <thead><tr><th>Hráč</th><th>Z</th><th>G</th><th>A</th><th>B</th></tr></thead>
-        <tbody><tr><td>Lantoši Róbert</td><td>2</td><td>0</td><td>4</td><td><strong>4</strong></td></tr><tr><td>Bell Parker</td><td>2</td><td>2</td><td>1</td><td><strong>3</strong></td></tr><tr><td>Olesen Nick Alexander</td><td>2</td><td>2</td><td>1</td><td><strong>3</strong></td></tr><tr><td>Hoch Štěpán</td><td>2</td><td>2</td><td>0</td><td><strong>2</strong></td></tr><tr><td>Štencel Jan</td><td>2</td><td>0</td><td>1</td><td><strong>1</strong></td></tr><tr><td>Koláček Josef</td><td>2</td><td>0</td><td>1</td><td><strong>1</strong></td></tr><tr><td>Pýcha Pavel</td><td>2</td><td>0</td><td>1</td><td><strong>1</strong></td></tr><tr><td>Vráblík Roman</td><td>2</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>Krastenbergs Renars</td><td>2</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>Toman Matěj</td><td>2</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>Kundrátek Tomáš</td><td>2</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>McCormack Graeme</td><td>3</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>Beránek Martin</td><td>2</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>Hejduk Marek</td><td>2</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>Nordsäter Lucas</td><td>2</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>Nedorost Václav</td><td>2</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>Ordoš Jan</td><td>2</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>Bulíř Michal</td><td>1</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>Lev Jakub</td><td>1</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>Pour Jakub</td><td>2</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>Zachar Marek</td><td>1</td><td>0</td><td>0</td><td><strong>0</strong></td></tr></tbody>
+        <tbody><tr><td>Lantoši Róbert</td><td>2</td><td>0</td><td>4</td><td><strong>4</strong></td></tr><tr><td>Bell Parker</td><td>2</td><td>2</td><td>1</td><td><strong>3</strong></td></tr><tr><td>Olesen Nick Alexander</td><td>2</td><td>2</td><td>1</td><td><strong>3</strong></td></tr><tr><td>Hoch Štěpán</td><td>2</td><td>2</td><td>0</td><td><strong>2</strong></td></tr><tr><td>Koláček Josef</td><td>2</td><td>0</td><td>1</td><td><strong>1</strong></td></tr><tr><td>Štencel Jan</td><td>2</td><td>0</td><td>1</td><td><strong>1</strong></td></tr><tr><td>Pýcha Pavel</td><td>2</td><td>0</td><td>1</td><td><strong>1</strong></td></tr><tr><td>Nedorost Václav</td><td>2</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>Zachar Marek</td><td>1</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>Nordsäter Lucas</td><td>2</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>Ordoš Jan</td><td>2</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>Vráblík Roman</td><td>2</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>Bulíř Michal</td><td>1</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>Toman Matěj</td><td>2</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>McCormack Graeme</td><td>3</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>Beránek Martin</td><td>2</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>Lev Jakub</td><td>1</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>Pour Jakub</td><td>2</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>Kundrátek Tomáš</td><td>2</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>Hejduk Marek</td><td>2</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>Krastenbergs Renars</td><td>2</td><td>0</td><td>0</td><td><strong>0</strong></td></tr></tbody>
       </table>
       <table>
         <thead><tr><th>Brankář</th><th>Z</th></tr></thead>
@@ -740,18 +827,18 @@
       <summary>říjen 2026 <span class="muted small">(27 hráčů)</span></summary>
       <table>
         <thead><tr><th>Hráč</th><th>Z</th><th>G</th><th>A</th><th>B</th></tr></thead>
-        <tbody><tr><td>Lantoši Róbert</td><td>10</td><td>2</td><td>8</td><td><strong>10</strong></td></tr><tr><td>Štencel Jan</td><td>10</td><td>2</td><td>5</td><td><strong>7</strong></td></tr><tr><td>Olesen Nick Alexander</td><td>10</td><td>5</td><td>2</td><td><strong>7</strong></td></tr><tr><td>Ahl Filip</td><td>9</td><td>3</td><td>3</td><td><strong>6</strong></td></tr><tr><td>Hoch Štěpán</td><td>10</td><td>0</td><td>6</td><td><strong>6</strong></td></tr><tr><td>Toman Matěj</td><td>10</td><td>1</td><td>3</td><td><strong>4</strong></td></tr><tr><td>Koláček Josef</td><td>8</td><td>3</td><td>1</td><td><strong>4</strong></td></tr><tr><td>Beránek Martin</td><td>10</td><td>3</td><td>1</td><td><strong>4</strong></td></tr><tr><td>Ordoš Jan</td><td>10</td><td>3</td><td>1</td><td><strong>4</strong></td></tr><tr><td>Bell Parker</td><td>7</td><td>1</td><td>2</td><td><strong>3</strong></td></tr><tr><td>Vráblík Roman</td><td>10</td><td>2</td><td>0</td><td><strong>2</strong></td></tr><tr><td>Krastenbergs Renars</td><td>6</td><td>1</td><td>1</td><td><strong>2</strong></td></tr><tr><td>Kundrátek Tomáš</td><td>6</td><td>0</td><td>2</td><td><strong>2</strong></td></tr><tr><td>Vála Ondřej</td><td>8</td><td>0</td><td>2</td><td><strong>2</strong></td></tr><tr><td>Nedorost Václav</td><td>10</td><td>0</td><td>2</td><td><strong>2</strong></td></tr><tr><td>Andersen Ole Einar Engeland</td><td>0</td><td>0</td><td>1</td><td><strong>1</strong></td></tr><tr><td>Hejduk Marek</td><td>9</td><td>0</td><td>1</td><td><strong>1</strong></td></tr><tr><td>Nordsäter Lucas</td><td>10</td><td>0</td><td>1</td><td><strong>1</strong></td></tr><tr><td>Bulíř Michal</td><td>10</td><td>0</td><td>1</td><td><strong>1</strong></td></tr><tr><td>Pour Jakub</td><td>9</td><td>1</td><td>0</td><td><strong>1</strong></td></tr><tr><td>Zachar Marek</td><td>10</td><td>1</td><td>0</td><td><strong>1</strong></td></tr><tr><td>Pýcha Pavel</td><td>10</td><td>0</td><td>1</td><td><strong>1</strong></td></tr><tr><td>Kachyňa Ondřej</td><td>5</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>Lev Jakub</td><td>1</td><td>0</td><td>0</td><td><strong>0</strong></td></tr></tbody>
+        <tbody><tr><td>Lantoši Róbert</td><td>10</td><td>2</td><td>8</td><td><strong>10</strong></td></tr><tr><td>Olesen Nick Alexander</td><td>10</td><td>5</td><td>2</td><td><strong>7</strong></td></tr><tr><td>Štencel Jan</td><td>10</td><td>2</td><td>5</td><td><strong>7</strong></td></tr><tr><td>Ahl Filip</td><td>9</td><td>3</td><td>3</td><td><strong>6</strong></td></tr><tr><td>Hoch Štěpán</td><td>10</td><td>0</td><td>6</td><td><strong>6</strong></td></tr><tr><td>Koláček Josef</td><td>8</td><td>3</td><td>1</td><td><strong>4</strong></td></tr><tr><td>Ordoš Jan</td><td>10</td><td>3</td><td>1</td><td><strong>4</strong></td></tr><tr><td>Toman Matěj</td><td>10</td><td>1</td><td>3</td><td><strong>4</strong></td></tr><tr><td>Beránek Martin</td><td>10</td><td>3</td><td>1</td><td><strong>4</strong></td></tr><tr><td>Bell Parker</td><td>7</td><td>1</td><td>2</td><td><strong>3</strong></td></tr><tr><td>Nedorost Václav</td><td>10</td><td>0</td><td>2</td><td><strong>2</strong></td></tr><tr><td>Vála Ondřej</td><td>8</td><td>0</td><td>2</td><td><strong>2</strong></td></tr><tr><td>Vráblík Roman</td><td>10</td><td>2</td><td>0</td><td><strong>2</strong></td></tr><tr><td>Kundrátek Tomáš</td><td>6</td><td>0</td><td>2</td><td><strong>2</strong></td></tr><tr><td>Krastenbergs Renars</td><td>6</td><td>1</td><td>1</td><td><strong>2</strong></td></tr><tr><td>Zachar Marek</td><td>10</td><td>1</td><td>0</td><td><strong>1</strong></td></tr><tr><td>Nordsäter Lucas</td><td>10</td><td>0</td><td>1</td><td><strong>1</strong></td></tr><tr><td>Bulíř Michal</td><td>10</td><td>0</td><td>1</td><td><strong>1</strong></td></tr><tr><td>Pour Jakub</td><td>9</td><td>1</td><td>0</td><td><strong>1</strong></td></tr><tr><td>Andersen Ole Einar Engeland</td><td>0</td><td>0</td><td>1</td><td><strong>1</strong></td></tr><tr><td>Hejduk Marek</td><td>9</td><td>0</td><td>1</td><td><strong>1</strong></td></tr><tr><td>Pýcha Pavel</td><td>10</td><td>0</td><td>1</td><td><strong>1</strong></td></tr><tr><td>Lev Jakub</td><td>1</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>Kachyňa Ondřej</td><td>5</td><td>0</td><td>0</td><td><strong>0</strong></td></tr></tbody>
       </table>
       <table>
         <thead><tr><th>Brankář</th><th>Z</th></tr></thead>
-        <tbody><tr><td>Klouček Milan</td><td>5</td></tr><tr><td>Mařík Matyáš</td><td>5</td></tr><tr><td>Strmeň Jan</td><td>3</td></tr></tbody>
+        <tbody><tr><td>Mařík Matyáš</td><td>5</td></tr><tr><td>Klouček Milan</td><td>5</td></tr><tr><td>Strmeň Jan</td><td>3</td></tr></tbody>
       </table>
     </details>
     <details>
       <summary>září 2026 <span class="muted small">(23 hráčů)</span></summary>
       <table>
         <thead><tr><th>Hráč</th><th>Z</th><th>G</th><th>A</th><th>B</th></tr></thead>
-        <tbody><tr><td>Hoch Štěpán</td><td>6</td><td>1</td><td>4</td><td><strong>5</strong></td></tr><tr><td>Štencel Jan</td><td>6</td><td>2</td><td>3</td><td><strong>5</strong></td></tr><tr><td>Olesen Nick Alexander</td><td>5</td><td>3</td><td>2</td><td><strong>5</strong></td></tr><tr><td>Ordoš Jan</td><td>6</td><td>3</td><td>1</td><td><strong>4</strong></td></tr><tr><td>Lantoši Róbert</td><td>6</td><td>0</td><td>4</td><td><strong>4</strong></td></tr><tr><td>Bulíř Michal</td><td>6</td><td>0</td><td>3</td><td><strong>3</strong></td></tr><tr><td>Pour Jakub</td><td>6</td><td>3</td><td>0</td><td><strong>3</strong></td></tr><tr><td>Vráblík Roman</td><td>6</td><td>0</td><td>2</td><td><strong>2</strong></td></tr><tr><td>Krastenbergs Renars</td><td>6</td><td>0</td><td>2</td><td><strong>2</strong></td></tr><tr><td>Bell Parker</td><td>6</td><td>2</td><td>0</td><td><strong>2</strong></td></tr><tr><td>Pýcha Pavel</td><td>6</td><td>0</td><td>2</td><td><strong>2</strong></td></tr><tr><td>Kachyňa Ondřej</td><td>5</td><td>0</td><td>1</td><td><strong>1</strong></td></tr><tr><td>Beránek Martin</td><td>6</td><td>1</td><td>0</td><td><strong>1</strong></td></tr><tr><td>Vála Ondřej</td><td>6</td><td>0</td><td>1</td><td><strong>1</strong></td></tr><tr><td>Nordsäter Lucas</td><td>6</td><td>0</td><td>1</td><td><strong>1</strong></td></tr><tr><td>Ahl Filip</td><td>6</td><td>0</td><td>1</td><td><strong>1</strong></td></tr><tr><td>Toman Matěj</td><td>6</td><td>0</td><td>1</td><td><strong>1</strong></td></tr><tr><td>Andersen Ole Einar Engeland</td><td>5</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>Hejduk Marek</td><td>6</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>Kundrátek Tomáš</td><td>2</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>Zachar Marek</td><td>6</td><td>0</td><td>0</td><td><strong>0</strong></td></tr></tbody>
+        <tbody><tr><td>Olesen Nick Alexander</td><td>5</td><td>3</td><td>2</td><td><strong>5</strong></td></tr><tr><td>Štencel Jan</td><td>6</td><td>2</td><td>3</td><td><strong>5</strong></td></tr><tr><td>Hoch Štěpán</td><td>6</td><td>1</td><td>4</td><td><strong>5</strong></td></tr><tr><td>Lantoši Róbert</td><td>6</td><td>0</td><td>4</td><td><strong>4</strong></td></tr><tr><td>Ordoš Jan</td><td>6</td><td>3</td><td>1</td><td><strong>4</strong></td></tr><tr><td>Pour Jakub</td><td>6</td><td>3</td><td>0</td><td><strong>3</strong></td></tr><tr><td>Bulíř Michal</td><td>6</td><td>0</td><td>3</td><td><strong>3</strong></td></tr><tr><td>Vráblík Roman</td><td>6</td><td>0</td><td>2</td><td><strong>2</strong></td></tr><tr><td>Bell Parker</td><td>6</td><td>2</td><td>0</td><td><strong>2</strong></td></tr><tr><td>Pýcha Pavel</td><td>6</td><td>0</td><td>2</td><td><strong>2</strong></td></tr><tr><td>Krastenbergs Renars</td><td>6</td><td>0</td><td>2</td><td><strong>2</strong></td></tr><tr><td>Nordsäter Lucas</td><td>6</td><td>0</td><td>1</td><td><strong>1</strong></td></tr><tr><td>Vála Ondřej</td><td>6</td><td>0</td><td>1</td><td><strong>1</strong></td></tr><tr><td>Ahl Filip</td><td>6</td><td>0</td><td>1</td><td><strong>1</strong></td></tr><tr><td>Kachyňa Ondřej</td><td>5</td><td>0</td><td>1</td><td><strong>1</strong></td></tr><tr><td>Toman Matěj</td><td>6</td><td>0</td><td>1</td><td><strong>1</strong></td></tr><tr><td>Beránek Martin</td><td>6</td><td>1</td><td>0</td><td><strong>1</strong></td></tr><tr><td>Zachar Marek</td><td>6</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>Andersen Ole Einar Engeland</td><td>5</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>Kundrátek Tomáš</td><td>2</td><td>0</td><td>0</td><td><strong>0</strong></td></tr><tr><td>Hejduk Marek</td><td>6</td><td>0</td><td>0</td><td><strong>0</strong></td></tr></tbody>
       </table>
       <table>
         <thead><tr><th>Brankář</th><th>Z</th></tr></thead>
@@ -805,7 +892,7 @@
 </div>
 
 <script>
-var CURRENT_UPDATED = "15.11.2026 10:02";
+var CURRENT_UPDATED = "15.11.2026 10:40";
 
 function initTabbar() {
   try {
@@ -879,6 +966,8 @@ function initSortableTables() {
             th.classList.add('sortable');
             th.addEventListener('click', function() {
               var rows = Array.prototype.slice.call(tbody.querySelectorAll('tr'));
+              var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+              for (var q = 0; q < rows.length; q++) { rows[q]._top = rows[q].getBoundingClientRect().top; }
               var asc = !th.classList.contains('sort-asc');
               for (var x = 0; x < ths.length; x++) {
                 ths[x].classList.remove('sort-asc', 'sort-desc');
@@ -901,6 +990,27 @@ function initSortableTables() {
               for (var y = 0; y < rows.length; y++) {
                 tbody.appendChild(rows[y]);
               }
+              if (!reduce) {
+                var moved = [];
+                for (var f = 0; f < rows.length; f++) {
+                  var d = rows[f]._top - rows[f].getBoundingClientRect().top;
+                  if (d) {
+                    rows[f].style.transition = 'none';
+                    rows[f].style.transform = 'translateY(' + d + 'px)';
+                    moved.push(rows[f]);
+                  }
+                }
+                if (moved.length) {
+                  void tbody.offsetHeight;
+                  for (var g2 = 0; g2 < moved.length; g2++) {
+                    moved[g2].style.transition = 'transform .18s ease-out';
+                    moved[g2].style.transform = '';
+                  }
+                  setTimeout(function() {
+                    for (var h2 = 0; h2 < moved.length; h2++) { moved[h2].style.transition = ''; }
+                  }, 220);
+                }
+              }
             });
           })(ths[c], c);
         }
@@ -909,6 +1019,77 @@ function initSortableTables() {
   } catch (e) {
     if (window.console && window.console.error) { window.console.error('řazení tabulek selhalo:', e); }
   }
+}
+
+// Rozcestník dlouhých záložek (Sezóna, Bilance) se zvýrazněním aktuální sekce.
+function initSectionIndex() {
+  try {
+    var secs = document.querySelectorAll('.tabsection');
+    for (var s = 0; s < secs.length; s++) {
+      (function(sec) {
+        var cards = [];
+        for (var i = 0; i < sec.children.length; i++) {
+          var k = sec.children[i];
+          if (k.classList.contains('card') && k.querySelector('h2')) cards.push(k);
+        }
+        if (cards.length < 8) return;
+        var tab = sec.getAttribute('data-tab');
+        var body = document.createElement('div');
+        body.className = 'sec-body bento';
+        var nav = document.createElement('nav');
+        nav.className = 'sec-index';
+        nav.setAttribute('aria-label', 'Rozcestník sekce');
+        var ul = document.createElement('ul');
+        var kids = Array.prototype.slice.call(sec.children);
+        for (var a = 0; a < kids.length; a++) body.appendChild(kids[a]);
+        var links = [];
+        for (var n = 0; n < cards.length; n++) {
+          cards[n].id = 'c-' + tab + '-' + n;
+          var c = cards[n].querySelector('h2').cloneNode(true);
+          var btn = c.querySelector('.info-btn');
+          if (btn) c.removeChild(btn);
+          var li = document.createElement('li');
+          var link = document.createElement('a');
+          link.href = '#c-' + tab + '-' + n;
+          link.textContent = c.textContent.trim();
+          li.appendChild(link);
+          ul.appendChild(li);
+          links.push(link);
+        }
+        nav.appendChild(ul);
+        sec.classList.add('has-index');
+        sec.appendChild(nav);
+        sec.appendChild(body);
+        links[0].classList.add('is-on');
+        if ('IntersectionObserver' in window) {
+          var io = new IntersectionObserver(function(entries) {
+            for (var e = 0; e < entries.length; e++) {
+              if (!entries[e].isIntersecting) continue;
+              for (var l = 0; l < links.length; l++) {
+                links[l].classList.toggle('is-on', links[l].getAttribute('href') === '#' + entries[e].target.id);
+              }
+            }
+          }, { rootMargin: '-90px 0px -65% 0px' });
+          for (var o = 0; o < cards.length; o++) io.observe(cards[o]);
+        }
+      })(secs[s]);
+    }
+  } catch (e) {
+    if (window.console && window.console.error) { window.console.error('rozcestník selhal:', e); }
+  }
+}
+
+// Vysvětlivky u nadpisů: tlačítko "i" je rozbalí.
+function initInfo() {
+  document.addEventListener('click', function(e) {
+    var b = e.target && e.target.closest ? e.target.closest('.info-btn') : null;
+    if (!b) return;
+    var note = b.parentNode.nextElementSibling;
+    if (!note || !note.classList.contains('note')) return;
+    var open = note.hidden;
+    note.hidden = !open;
+    b.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
 }
 
 function normalizeText(s) {
@@ -1090,6 +1271,8 @@ function initChart() {
 function initAll() {
   initNumericColumns();
   initChart();
+  initInfo();
+  initSectionIndex();
   initTabbar();
   initBadge();
   initSortableTables();
