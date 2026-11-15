@@ -1,5 +1,5 @@
 {
- "aktualizovano": "15.11.2026 10:40",
+ "aktualizovano": "15.11.2026 11:26",
  "zapasy": [
   {
    "kolo": 1,
@@ -487,7 +487,7 @@
       "min": "2",
       "od": "07:43",
       "do": "09:43",
-      "duvod": "příliš mnoho hráčů na ledě"
+      "duvod": "příliš mnoho hráčů"
      },
      {
       "cas": "09:58",
@@ -497,7 +497,7 @@
       "min": "2",
       "od": "09:58",
       "do": "10:38",
-      "duvod": "držení protihráče"
+      "duvod": "držení"
      },
      {
       "cas": "25:51",
@@ -527,7 +527,7 @@
       "min": "2",
       "od": "36:38",
       "do": "38:38",
-      "duvod": "držení protihráče"
+      "duvod": "držení"
      },
      {
       "cas": "39:15",
@@ -537,7 +537,7 @@
       "min": "2",
       "od": "39:15",
       "do": "41:15",
-      "duvod": "držení protihráče"
+      "duvod": "držení"
      },
      {
       "cas": "44:11",
@@ -587,7 +587,7 @@
       "min": "2",
       "od": "61:57",
       "do": "62:13",
-      "duvod": "nedovolené bránění brankáře"
+      "duvod": "nedovolené bránění brankáři"
      }
     ],
     "nejlepsi": {
@@ -1107,7 +1107,7 @@
       "min": "2",
       "od": "18:32",
       "do": "20:32",
-      "duvod": "držení protihráče"
+      "duvod": "držení"
      },
      {
       "cas": "26:41",
@@ -1709,7 +1709,7 @@
       "min": "2",
       "od": "08:58",
       "do": "10:58",
-      "duvod": "držení hokejky"
+      "duvod": "držení hole"
      },
      {
       "cas": "11:19",
@@ -1719,7 +1719,7 @@
       "min": "2",
       "od": "11:19",
       "do": "13:19",
-      "duvod": "podražení"
+      "duvod": "podrážení"
      },
      {
       "cas": "18:45",
@@ -1729,7 +1729,7 @@
       "min": "2",
       "od": "18:45",
       "do": "20:45",
-      "duvod": "VRAZ"
+      "duvod": "vražení na hrazení"
      },
      {
       "cas": "24:52",
@@ -1759,7 +1759,7 @@
       "min": "2",
       "od": "29:23",
       "do": "31:23",
-      "duvod": "podražení"
+      "duvod": "podrážení"
      },
      {
       "cas": "29:29",
@@ -1809,7 +1809,7 @@
       "min": "2",
       "od": "48:12",
       "do": "50:12",
-      "duvod": "podražení"
+      "duvod": "podrážení"
      },
      {
       "cas": "56:36",
@@ -1819,7 +1819,7 @@
       "min": "2",
       "od": "56:36",
       "do": "58:36",
-      "duvod": "podražení"
+      "duvod": "podrážení"
      }
     ],
     "nejlepsi": {
@@ -2402,7 +2402,7 @@
       "min": "2",
       "od": "00:14",
       "do": "02:14",
-      "duvod": "podražení"
+      "duvod": "podrážení"
      },
      {
       "cas": "14:26",
@@ -2412,7 +2412,7 @@
       "min": "2",
       "od": "14:26",
       "do": "16:15",
-      "duvod": "příliš mnoho hráčů na ledě"
+      "duvod": "příliš mnoho hráčů"
      },
      {
       "cas": "20:33",
@@ -2422,7 +2422,7 @@
       "min": "2",
       "od": "20:33",
       "do": "22:06",
-      "duvod": "příliš mnoho hráčů na ledě"
+      "duvod": "příliš mnoho hráčů"
      },
      {
       "cas": "31:16",
@@ -2452,7 +2452,7 @@
       "min": "2",
       "od": "50:02",
       "do": "52:02",
-      "duvod": "držení protihráče"
+      "duvod": "držení"
      },
      {
       "cas": "50:32",
@@ -2462,7 +2462,7 @@
       "min": "2",
       "od": "50:32",
       "do": "52:32",
-      "duvod": "podražení"
+      "duvod": "podrážení"
      }
     ],
     "nejlepsi": {
@@ -3142,7 +3142,7 @@
       "min": "2",
       "od": "00:56",
       "do": "02:56",
-      "duvod": "podražení"
+      "duvod": "podrážení"
      },
      {
       "cas": "01:46",
@@ -3152,7 +3152,7 @@
       "min": "2",
       "od": "01:46",
       "do": "03:46",
-      "duvod": "podražení"
+      "duvod": "podrážení"
      },
      {
       "cas": "07:19",
@@ -3182,7 +3182,7 @@
       "min": "2",
       "od": "12:51",
       "do": "14:51",
-      "duvod": "podražení"
+      "duvod": "podrážení"
      },
      {
       "cas": "16:17",
@@ -3192,7 +3192,7 @@
       "min": "2",
       "od": "16:17",
       "do": "18:17",
-      "duvod": "podražení"
+      "duvod": "podrážení"
      },
      {
       "cas": "21:00",
@@ -3202,7 +3202,7 @@
       "min": "2",
       "od": "21:00",
       "do": "22:21",
-      "duvod": "podražení"
+      "duvod": "podrážení"
      },
      {
       "cas": "31:47",
@@ -3222,7 +3222,7 @@
       "min": "2",
       "od": "33:26",
       "do": "34:26",
-      "duvod": "držení protihráče"
+      "duvod": "držení"
      },
      {
       "cas": "44:52",
@@ -3242,7 +3242,7 @@
       "min": "2",
       "od": "46:23",
       "do": "48:23",
-      "duvod": "podražení"
+      "duvod": "podrážení"
      },
      {
       "cas": "51:15",
@@ -3252,7 +3252,7 @@
       "min": "2",
       "od": "51:15",
       "do": "52:38",
-      "duvod": "podražení"
+      "duvod": "podrážení"
      },
      {
       "cas": "59:02",
@@ -3262,7 +3262,7 @@
       "min": "2",
       "od": "59:02",
       "do": "59:31",
-      "duvod": "podražení"
+      "duvod": "podrážení"
      }
     ],
     "nejlepsi": {
@@ -3885,7 +3885,7 @@
       "min": "2",
       "od": "08:45",
       "do": "10:45",
-      "duvod": "podražení"
+      "duvod": "podrážení"
      },
      {
       "cas": "11:11",
@@ -3905,7 +3905,7 @@
       "min": "2",
       "od": "11:11",
       "do": "13:11",
-      "duvod": "zásah do hlavy nebo krku"
+      "duvod": "zásah do oblasti hlavy a krku"
      },
      {
       "cas": "13:11",
@@ -3925,7 +3925,7 @@
       "min": "2",
       "od": "32:03",
       "do": "34:03",
-      "duvod": "držení protihráče"
+      "duvod": "držení"
      },
      {
       "cas": "53:23",
@@ -3935,7 +3935,7 @@
       "min": "2",
       "od": "53:23",
       "do": "55:18",
-      "duvod": "podražení"
+      "duvod": "podrážení"
      },
      {
       "cas": "58:59",
@@ -4547,7 +4547,7 @@
       "min": "2",
       "od": "10:23",
       "do": "12:23",
-      "duvod": "příliš mnoho hráčů na ledě"
+      "duvod": "příliš mnoho hráčů"
      },
      {
       "cas": "16:21",
@@ -4567,7 +4567,7 @@
       "min": "2",
       "od": "22:11",
       "do": "24:11",
-      "duvod": "držení protihráče"
+      "duvod": "držení"
      },
      {
       "cas": "27:42",
@@ -4587,7 +4587,7 @@
       "min": "2",
       "od": "31:16",
       "do": "33:16",
-      "duvod": "napadení rozhodčího"
+      "duvod": "napadání rozhodčích"
      },
      {
       "cas": "35:20",
@@ -4597,7 +4597,7 @@
       "min": "2",
       "od": "35:20",
       "do": "37:20",
-      "duvod": "podražení"
+      "duvod": "podrážení"
      },
      {
       "cas": "36:58",
@@ -4607,7 +4607,7 @@
       "min": "5",
       "od": "36:58",
       "do": "41:58",
-      "duvod": "zásah do hlavy nebo krku"
+      "duvod": "zásah do oblasti hlavy a krku"
      },
      {
       "cas": "41:58",
@@ -4617,7 +4617,7 @@
       "min": "20",
       "od": "41:58",
       "do": "60:00",
-      "duvod": "zásah do hlavy nebo krku"
+      "duvod": "zásah do oblasti hlavy a krku"
      },
      {
       "cas": "41:58",
@@ -4637,7 +4637,7 @@
       "min": "2",
       "od": "44:58",
       "do": "46:58",
-      "duvod": "držení protihráče"
+      "duvod": "držení"
      },
      {
       "cas": "49:17",
@@ -4647,7 +4647,7 @@
       "min": "2",
       "od": "49:17",
       "do": "51:17",
-      "duvod": "podražení"
+      "duvod": "podrážení"
      },
      {
       "cas": "55:18",
@@ -5282,7 +5282,7 @@
       "min": "2",
       "od": "23:29",
       "do": "25:29",
-      "duvod": "podražení"
+      "duvod": "podrážení"
      },
      {
       "cas": "24:42",
@@ -5302,7 +5302,7 @@
       "min": "2",
       "od": "37:58",
       "do": "39:58",
-      "duvod": "podražení"
+      "duvod": "podrážení"
      },
      {
       "cas": "46:12",
@@ -5322,7 +5322,7 @@
       "min": "2",
       "od": "49:16",
       "do": "49:25",
-      "duvod": "podražení"
+      "duvod": "podrážení"
      },
      {
       "cas": "49:42",
@@ -5362,7 +5362,7 @@
       "min": "2",
       "od": "53:33",
       "do": "55:33",
-      "duvod": "podražení"
+      "duvod": "podrážení"
      },
      {
       "cas": "56:18",
@@ -5372,7 +5372,7 @@
       "min": "2",
       "od": "56:18",
       "do": "58:18",
-      "duvod": "ZHVP"
+      "duvod": "zdržování hry – vystřelení nebo vyhození puku mimo hřiště"
      }
     ],
     "nejlepsi": {
@@ -5942,7 +5942,7 @@
       "min": "2",
       "od": "03:51",
       "do": "05:51",
-      "duvod": "ZHVP"
+      "duvod": "zdržování hry – vystřelení nebo vyhození puku mimo hřiště"
      },
      {
       "cas": "15:00",
@@ -5962,7 +5962,7 @@
       "min": "2",
       "od": "26:03",
       "do": "28:03",
-      "duvod": "zásah do hlavy nebo krku"
+      "duvod": "zásah do oblasti hlavy a krku"
      },
      {
       "cas": "34:58",
@@ -5982,7 +5982,7 @@
       "min": "2",
       "od": "39:37",
       "do": "39:57",
-      "duvod": "podražení"
+      "duvod": "podrážení"
      }
     ],
     "nejlepsi": {
@@ -6608,7 +6608,7 @@
       "min": "2",
       "od": "01:09",
       "do": "03:09",
-      "duvod": "ZHPV"
+      "duvod": "zdržování hry – porušení postupu vhazování"
      },
      {
       "cas": "03:46",
@@ -6618,7 +6618,7 @@
       "min": "2",
       "od": "03:46",
       "do": "04:49",
-      "duvod": "VRAZ"
+      "duvod": "vražení na hrazení"
      },
      {
       "cas": "10:34",
@@ -6628,7 +6628,7 @@
       "min": "2",
       "od": "10:34",
       "do": "12:34",
-      "duvod": "podražení"
+      "duvod": "podrážení"
      },
      {
       "cas": "17:31",
@@ -6638,7 +6638,7 @@
       "min": "5",
       "od": "17:31",
       "do": "22:31",
-      "duvod": "BTK"
+      "duvod": "bitka"
      },
      {
       "cas": "17:31",
@@ -6648,7 +6648,7 @@
       "min": "5",
       "od": "17:31",
       "do": "22:31",
-      "duvod": "BTK"
+      "duvod": "bitka"
      },
      {
       "cas": "27:57",
@@ -6668,7 +6668,7 @@
       "min": "2",
       "od": "37:42",
       "do": "38:32",
-      "duvod": "ZHVP"
+      "duvod": "zdržování hry – vystřelení nebo vyhození puku mimo hřiště"
      },
      {
       "cas": "48:07",
@@ -6678,7 +6678,7 @@
       "min": "2",
       "od": "48:07",
       "do": "50:07",
-      "duvod": "podražení"
+      "duvod": "podrážení"
      },
      {
       "cas": "59:42",
@@ -7255,7 +7255,7 @@
       "min": "2",
       "od": "19:08",
       "do": "21:08",
-      "duvod": "držení protihráče"
+      "duvod": "držení"
      },
      {
       "cas": "23:19",
@@ -7265,7 +7265,7 @@
       "min": "2",
       "od": "23:19",
       "do": "25:19",
-      "duvod": "podražení"
+      "duvod": "podrážení"
      },
      {
       "cas": "35:32",
@@ -7295,7 +7295,7 @@
       "min": "2",
       "od": "50:58",
       "do": "52:58",
-      "duvod": "držení protihráče"
+      "duvod": "držení"
      },
      {
       "cas": "57:19",
@@ -7305,7 +7305,7 @@
       "min": "20",
       "od": "57:19",
       "do": "60:00",
-      "duvod": "napadení rozhodčího"
+      "duvod": "napadání rozhodčích"
      }
     ],
     "nejlepsi": {
@@ -7884,7 +7884,7 @@
       "min": "2",
       "od": "13:18",
       "do": "13:53",
-      "duvod": "příliš mnoho hráčů na ledě"
+      "duvod": "příliš mnoho hráčů"
      },
      {
       "cas": "15:47",
@@ -7894,7 +7894,7 @@
       "min": "2",
       "od": "15:47",
       "do": "17:09",
-      "duvod": "nedovolené bránění brankáře"
+      "duvod": "nedovolené bránění brankáři"
      },
      {
       "cas": "18:50",
@@ -7904,7 +7904,7 @@
       "min": "2",
       "od": "18:50",
       "do": "20:50",
-      "duvod": "podražení"
+      "duvod": "podrážení"
      },
      {
       "cas": "27:46",
@@ -7914,7 +7914,7 @@
       "min": "2",
       "od": "27:46",
       "do": "29:46",
-      "duvod": "držení protihráče"
+      "duvod": "držení"
      },
      {
       "cas": "29:12",
@@ -7924,7 +7924,7 @@
       "min": "2",
       "od": "29:12",
       "do": "31:12",
-      "duvod": "podražení"
+      "duvod": "podrážení"
      },
      {
       "cas": "30:20",
@@ -7944,7 +7944,7 @@
       "min": "2",
       "od": "32:42",
       "do": "34:42",
-      "duvod": "držení protihráče"
+      "duvod": "držení"
      },
      {
       "cas": "42:46",
@@ -7954,7 +7954,7 @@
       "min": "2",
       "od": "42:46",
       "do": "43:25",
-      "duvod": "podražení"
+      "duvod": "podrážení"
      },
      {
       "cas": "53:28",
@@ -7984,7 +7984,7 @@
       "min": "2",
       "od": "60:00",
       "do": "60:00",
-      "duvod": "NESP"
+      "duvod": "nesportovní chování"
      }
     ],
     "nejlepsi": {
@@ -8624,7 +8624,7 @@
       "min": "2",
       "od": "04:01",
       "do": "06:01",
-      "duvod": "podražení"
+      "duvod": "podrážení"
      },
      {
       "cas": "13:10",
@@ -8634,7 +8634,7 @@
       "min": "2",
       "od": "13:10",
       "do": "15:10",
-      "duvod": "držení protihráče"
+      "duvod": "držení"
      },
      {
       "cas": "13:10",
@@ -8684,7 +8684,7 @@
       "min": "2",
       "od": "20:54",
       "do": "22:54",
-      "duvod": "příliš mnoho hráčů na ledě"
+      "duvod": "příliš mnoho hráčů"
      },
      {
       "cas": "35:49",
@@ -8694,7 +8694,7 @@
       "min": "2",
       "od": "35:49",
       "do": "37:49",
-      "duvod": "ZHVP"
+      "duvod": "zdržování hry – vystřelení nebo vyhození puku mimo hřiště"
      },
      {
       "cas": "39:06",
@@ -8724,7 +8724,7 @@
       "min": "2",
       "od": "55:23",
       "do": "57:23",
-      "duvod": "NESP"
+      "duvod": "nesportovní chování"
      },
      {
       "cas": "57:10",
@@ -9291,7 +9291,7 @@
       "min": "2",
       "od": "13:12",
       "do": "14:18",
-      "duvod": "podražení"
+      "duvod": "podrážení"
      },
      {
       "cas": "20:00",
@@ -9321,7 +9321,7 @@
       "min": "5",
       "od": "24:00",
       "do": "29:00",
-      "duvod": "BTK"
+      "duvod": "bitka"
      },
      {
       "cas": "24:00",
@@ -9331,7 +9331,7 @@
       "min": "5",
       "od": "24:00",
       "do": "29:00",
-      "duvod": "BTK"
+      "duvod": "bitka"
      },
      {
       "cas": "31:09",
@@ -9341,7 +9341,7 @@
       "min": "2",
       "od": "31:09",
       "do": "32:49",
-      "duvod": "podražení"
+      "duvod": "podrážení"
      },
      {
       "cas": "38:33",
@@ -9351,7 +9351,7 @@
       "min": "2",
       "od": "38:33",
       "do": "40:33",
-      "duvod": "příliš mnoho hráčů na ledě"
+      "duvod": "příliš mnoho hráčů"
      },
      {
       "cas": "43:12",
@@ -9371,7 +9371,7 @@
       "min": "2",
       "od": "45:01",
       "do": "47:01",
-      "duvod": "podražení"
+      "duvod": "podrážení"
      },
      {
       "cas": "51:29",
@@ -9391,7 +9391,7 @@
       "min": "2",
       "od": "52:37",
       "do": "54:37",
-      "duvod": "napadení rozhodčího"
+      "duvod": "napadání rozhodčích"
      }
     ],
     "nejlepsi": {
@@ -9990,7 +9990,7 @@
       "min": "2",
       "od": "16:47",
       "do": "18:47",
-      "duvod": "podražení"
+      "duvod": "podrážení"
      },
      {
       "cas": "30:55",
@@ -10000,7 +10000,7 @@
       "min": "2",
       "od": "30:55",
       "do": "32:55",
-      "duvod": "držení protihráče"
+      "duvod": "držení"
      },
      {
       "cas": "31:28",
@@ -10010,7 +10010,7 @@
       "min": "2",
       "od": "31:28",
       "do": "33:28",
-      "duvod": "podražení"
+      "duvod": "podrážení"
      },
      {
       "cas": "35:07",
@@ -10030,7 +10030,7 @@
       "min": "2",
       "od": "39:03",
       "do": "41:03",
-      "duvod": "podražení"
+      "duvod": "podrážení"
      },
      {
       "cas": "42:05",
@@ -10060,7 +10060,7 @@
       "min": "2",
       "od": "49:19",
       "do": "51:19",
-      "duvod": "příliš mnoho hráčů na ledě"
+      "duvod": "příliš mnoho hráčů"
      }
     ],
     "nejlepsi": {
@@ -10642,7 +10642,7 @@
       "min": "2",
       "od": "27:20",
       "do": "29:20",
-      "duvod": "držení protihráče"
+      "duvod": "držení"
      },
      {
       "cas": "30:27",
@@ -10672,7 +10672,7 @@
       "min": "2",
       "od": "35:49",
       "do": "37:49",
-      "duvod": "ZHVP"
+      "duvod": "zdržování hry – vystřelení nebo vyhození puku mimo hřiště"
      },
      {
       "cas": "36:10",
@@ -10692,7 +10692,7 @@
       "min": "2",
       "od": "39:57",
       "do": "41:57",
-      "duvod": "podražení"
+      "duvod": "podrážení"
      },
      {
       "cas": "53:34",
@@ -10702,7 +10702,7 @@
       "min": "2",
       "od": "53:34",
       "do": "55:34",
-      "duvod": "podražení"
+      "duvod": "podrážení"
      }
     ],
     "nejlepsi": {
@@ -11258,7 +11258,7 @@
       "min": "2",
       "od": "15:30",
       "do": "17:30",
-      "duvod": "držení protihráče"
+      "duvod": "držení"
      },
      {
       "cas": "22:15",
@@ -11268,7 +11268,7 @@
       "min": "2",
       "od": "22:15",
       "do": "24:15",
-      "duvod": "podražení"
+      "duvod": "podrážení"
      },
      {
       "cas": "26:57",
@@ -11278,7 +11278,7 @@
       "min": "2",
       "od": "26:57",
       "do": "28:57",
-      "duvod": "podražení"
+      "duvod": "podrážení"
      },
      {
       "cas": "32:21",
@@ -11961,7 +11961,7 @@
       "min": "2",
       "od": "19:59",
       "do": "20:20",
-      "duvod": "podražení"
+      "duvod": "podrážení"
      },
      {
       "cas": "24:49",
@@ -11971,7 +11971,7 @@
       "min": "2",
       "od": "24:49",
       "do": "26:49",
-      "duvod": "držení protihráče"
+      "duvod": "držení"
      },
      {
       "cas": "28:00",
@@ -11991,7 +11991,7 @@
       "min": "2",
       "od": "31:03",
       "do": "33:03",
-      "duvod": "podražení"
+      "duvod": "podrážení"
      },
      {
       "cas": "49:14",
@@ -12031,7 +12031,7 @@
       "min": "2",
       "od": "59:02",
       "do": "60:00",
-      "duvod": "SPR"
+      "duvod": "sevření puku rukou"
      }
     ],
     "nejlepsi": {
