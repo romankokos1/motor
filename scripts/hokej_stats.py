@@ -1946,240 +1946,324 @@ def build_on_ice(zapasy: list) -> dict:
 
 
 PAGE_CSS = """
-  /* ===== Tokeny: světlý režim (výchozí), tmavý podle systému ===== */
+  /* ===== Písma (vlastní, bez volání cizích serverů) ===== */
+  @font-face { font-family: "Archivo"; font-weight: 700; font-style: normal; font-display: swap; src: url(fonts/archivo-latin-ext-700-normal.woff2) format("woff2"); unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
+  @font-face { font-family: "Archivo"; font-weight: 700; font-style: normal; font-display: swap; src: url(fonts/archivo-latin-700-normal.woff2) format("woff2"); unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+  @font-face { font-family: "Archivo"; font-weight: 800; font-style: normal; font-display: swap; src: url(fonts/archivo-latin-ext-800-normal.woff2) format("woff2"); unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
+  @font-face { font-family: "Archivo"; font-weight: 800; font-style: normal; font-display: swap; src: url(fonts/archivo-latin-800-normal.woff2) format("woff2"); unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+  @font-face { font-family: "IBM Plex Sans"; font-weight: 400; font-style: normal; font-display: swap; src: url(fonts/ibm-plex-sans-latin-ext-400-normal.woff2) format("woff2"); unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
+  @font-face { font-family: "IBM Plex Sans"; font-weight: 400; font-style: normal; font-display: swap; src: url(fonts/ibm-plex-sans-latin-400-normal.woff2) format("woff2"); unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+  @font-face { font-family: "IBM Plex Sans"; font-weight: 500; font-style: normal; font-display: swap; src: url(fonts/ibm-plex-sans-latin-ext-500-normal.woff2) format("woff2"); unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
+  @font-face { font-family: "IBM Plex Sans"; font-weight: 500; font-style: normal; font-display: swap; src: url(fonts/ibm-plex-sans-latin-500-normal.woff2) format("woff2"); unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+  @font-face { font-family: "IBM Plex Sans"; font-weight: 600; font-style: normal; font-display: swap; src: url(fonts/ibm-plex-sans-latin-ext-600-normal.woff2) format("woff2"); unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
+  @font-face { font-family: "IBM Plex Sans"; font-weight: 600; font-style: normal; font-display: swap; src: url(fonts/ibm-plex-sans-latin-600-normal.woff2) format("woff2"); unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+  @font-face { font-family: "IBM Plex Mono"; font-weight: 400; font-style: normal; font-display: swap; src: url(fonts/ibm-plex-mono-latin-ext-400-normal.woff2) format("woff2"); unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
+  @font-face { font-family: "IBM Plex Mono"; font-weight: 400; font-style: normal; font-display: swap; src: url(fonts/ibm-plex-mono-latin-400-normal.woff2) format("woff2"); unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+  @font-face { font-family: "IBM Plex Mono"; font-weight: 500; font-style: normal; font-display: swap; src: url(fonts/ibm-plex-mono-latin-ext-500-normal.woff2) format("woff2"); unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
+  @font-face { font-family: "IBM Plex Mono"; font-weight: 500; font-style: normal; font-display: swap; src: url(fonts/ibm-plex-mono-latin-500-normal.woff2) format("woff2"); unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+
+  /* ===== Tokeny: papír a tiskařská čerň; tmavý režim podle systému ===== */
   :root {
-    --bg: #f4f6f8; --surface: #ffffff; --surface-2: #f8f9fb;
-    --line: rgba(14, 22, 33, .065); --line-strong: rgba(14, 22, 33, .10);
-    --text: #0e1621; --text-2: rgba(14, 22, 33, .68); --text-3: rgba(14, 22, 33, .45);
-    --accent: #2f88bb; --neg: #c4687a; --warn: #b88a2e; --hover: rgba(14, 22, 33, .022);
+    --bg: #F5F3EE; --surface: #F5F3EE; --surface-2: #ECE9E1;
+    --line: #D9D5CB; --line-strong: #14161A;
+    --text: #14161A; --text-2: rgba(20, 22, 26, .74); --text-3: rgba(20, 22, 26, .58);
+    --accent: #C8321F; --accent-2: #2B4C6F; --neg: #2B4C6F; --warn: #A06A00; --hover: rgba(20, 22, 26, .035);
+    --f-head: "Archivo", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+    --f-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --f-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+    --tabbar-h: 46px;
     color-scheme: light;
   }
   @media (prefers-color-scheme: dark) {
     :root {
-      --bg: #090c11; --surface: #0f141b; --surface-2: #151b24;
-      --line: rgba(255, 255, 255, .05); --line-strong: rgba(255, 255, 255, .085);
-      --text: #e8edf3; --text-2: rgba(232, 237, 243, .66); --text-3: rgba(232, 237, 243, .42);
-      --accent: #8fd3ff; --neg: #f2a0ad; --warn: #eec872; --hover: rgba(255, 255, 255, .022);
+      --bg: #101216; --surface: #101216; --surface-2: #181B20;
+      --line: #2B2E35; --line-strong: #ECE9E1;
+      --text: #ECE9E1; --text-2: rgba(236, 233, 225, .76); --text-3: rgba(236, 233, 225, .56);
+      --accent: #F0604B; --accent-2: #86AAD3; --neg: #86AAD3; --warn: #D9A441; --hover: rgba(236, 233, 225, .05);
       color-scheme: dark;
     }
   }
 
   * { box-sizing: border-box; }
   html { -webkit-text-size-adjust: 100%; }
+  @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
   body {
     margin: 0; background: var(--bg); color: var(--text);
-    font: 14px/1.5 "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    font: 400 14px/1.5 var(--f-body);
     -webkit-font-smoothing: antialiased; -webkit-tap-highlight-color: transparent;
   }
-  a { color: var(--text-2); text-decoration: none; border-bottom: 1px solid var(--line-strong); }
-  a:hover { color: var(--text); border-color: var(--text-3); }
+  a { color: inherit; text-decoration: none; border-bottom: 1px solid var(--line); transition: border-color .15s ease, color .15s ease; }
+  a:hover { color: var(--accent); border-color: var(--accent); }
   p { margin: 8px 0; }
-  .wrap { max-width: 1180px; margin: 0 auto; padding: 28px 24px 72px; }
+  .wrap { max-width: 1240px; margin: 0 auto; padding: 0 32px 96px; }
 
-  /* ===== Hlavička ===== */
-  .app-header { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px 24px; flex-wrap: wrap; margin-bottom: 16px; }
-  h1 { font-size: 20px; font-weight: 650; letter-spacing: -.02em; margin: 0; line-height: 1.25; }
-  .meta { color: var(--text-3); font-size: 13px; margin-top: 2px; }
-  .header-side { display: flex; gap: 6px 18px; align-items: center; flex-wrap: wrap; font-size: 13px; color: var(--text-3); }
-  .live { display: inline-flex; align-items: center; color: var(--text-2); font-variant-numeric: tabular-nums; }
+  /* ===== Hlavička: jeden tenký řádek ===== */
+  .app-header { display: flex; justify-content: space-between; align-items: baseline; gap: 6px 28px; flex-wrap: wrap; padding: 18px 0 14px; }
+  h1 { font: 800 19px/1.2 var(--f-head); letter-spacing: -.01em; margin: 0; display: inline; }
+  .meta { display: inline; margin-left: 12px; color: var(--text-3); font-size: 13px; }
+  .header-side { display: flex; gap: 4px 20px; align-items: baseline; flex-wrap: wrap; font-size: 13px; color: var(--text-3); }
+  .header-side a { border-bottom-color: transparent; }
+  .header-side a:hover { border-bottom-color: var(--accent); }
+  .live { display: inline-flex; align-items: center; font-family: var(--f-mono); font-size: 12px; color: var(--text-2); }
 
-  /* ===== Záložky (na počítači nahoře, na mobilu dole) ===== */
+  /* ===== Záložky: textové, podtržení aktivní ===== */
   .tabbar {
-    position: sticky; top: 0; z-index: 30; display: flex; gap: 2px; overflow-x: auto;
-    margin: 0 -24px 22px; padding: 10px 24px;
-    background: color-mix(in oklab, var(--bg) 84%, transparent);
-    -webkit-backdrop-filter: saturate(1.3) blur(12px); backdrop-filter: saturate(1.3) blur(12px);
-    border-bottom: 1px solid var(--line);
+    position: sticky; top: 0; z-index: 30; display: flex; gap: 26px; overflow-x: auto;
+    height: var(--tabbar-h); margin: 0 0 28px; padding: 0;
+    background: var(--bg); border-top: 2px solid var(--line-strong); border-bottom: 1px solid var(--line);
   }
   .tab-btn {
     position: relative; display: inline-flex; align-items: center; gap: 7px; flex: none;
-    padding: 7px 12px; border-radius: 9px; border: 1px solid transparent; background: none;
-    color: var(--text-3); font: inherit; font-size: 13px; font-weight: 500; cursor: pointer;
+    padding: 0; border: 0; background: none; color: var(--text-3);
+    font: 600 13px/1 var(--f-body); letter-spacing: .02em; cursor: pointer; transition: color .15s ease;
   }
-  .tab-btn svg { width: 15px; height: 15px; flex-shrink: 0; }
+  .tab-btn svg { display: none; width: 20px; height: 20px; flex-shrink: 0; }
+  .tab-btn::after { content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 3px; background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform .2s ease; }
   .tab-btn:hover { color: var(--text); }
-  .tab-btn.is-active { color: var(--text); background: var(--surface); border-color: var(--line-strong); }
-  .tab-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-  .badge-dot {
-    display: none; position: absolute; top: 5px; right: 5px; width: 6px; height: 6px; border-radius: 50%;
-    background: var(--accent); box-shadow: 0 0 8px var(--accent);
-  }
+  .tab-btn.is-active { color: var(--text); }
+  .tab-btn.is-active::after { transform: scaleX(1); }
+  .tab-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+  .badge-dot { display: none; position: absolute; top: 12px; right: -9px; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
   .tab-btn.has-badge .badge-dot { display: block; }
   .tabsection.is-hidden { display: none; }
-  .scope-h { margin: 16px 0 6px; font-size: 12px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--text-3); }
-  .scope-h:first-of-type { margin-top: 8px; }
 
-  /* ===== Bento mřížka ===== */
-  .bento { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 14px; align-items: stretch; }
-  .bento > * { grid-column: span 6; min-width: 0; }
-  .card {
-    background: var(--surface); border: 1px solid var(--line-strong); border-radius: 16px;
-    padding: 20px 22px; overflow-x: auto;
-  }
-  .card h2 { font-size: 13px; font-weight: 600; color: var(--text); margin: 0 0 2px; letter-spacing: -.005em; }
+  /* ===== Mřížka: 12 sloupců, tabulky bez karet ===== */
+  .bento { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 40px; row-gap: 8px; align-items: start; }
+  .bento > * { grid-column: span 12; min-width: 0; }
+  .card { padding: 14px 0 34px; border-top: 2px solid var(--line-strong); scroll-margin-top: calc(var(--tabbar-h) + 18px); }
+  .card h2 { font: 800 19px/1.2 var(--f-head); letter-spacing: -.01em; color: var(--text); margin: 0 0 4px; display: flex; align-items: center; gap: 10px; }
   .card h2 + p.muted.small { margin-top: 2px; }
   .muted { color: var(--text-3); margin: 0; }
-  .small { font-size: 12.5px; margin: 8px 0 0; line-height: 1.5; }
+  .small { font-size: 13px; margin: 8px 0 0; line-height: 1.5; }
   .card > p.small:not(.muted) { color: var(--text-2); }
   .section-title { font-size: 13px; font-weight: 600; color: var(--text-3); margin: 14px 0 -4px; }
-
-  /* ===== KPI ===== */
-  .kpi { display: flex; flex-direction: column; min-height: 176px; }
-  .kpi h2 { color: var(--text-3); font-weight: 500; font-size: 12.5px; }
-  .kpi-num {
-    font-size: 60px; line-height: .95; font-weight: 800; letter-spacing: -.05em;
-    margin-top: auto; padding-top: 20px; font-variant-numeric: tabular-nums;
+  .scope-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 4px 40px; margin-top: 10px; }
+  .scope-h { margin: 18px 0 0; font: 700 12px/1 var(--f-body); letter-spacing: .09em; text-transform: uppercase; color: var(--text); }
+  .scope-h::before { content: ""; display: inline-block; width: 8px; height: 8px; margin-right: 8px; background: var(--accent); }
+  .scope:nth-child(2) .scope-h::before { background: var(--accent-2); }
+  .scope:nth-child(3) .scope-h::before { background: var(--text-3); }
+  .info-btn {
+    flex: none; width: 18px; height: 18px; padding: 0; border: 1px solid var(--text-3); border-radius: 50%;
+    background: none; color: var(--text-3); font: italic 600 11px/1 var(--f-head); cursor: pointer; transition: all .15s ease;
   }
-  .kpi-num i { font-style: normal; color: var(--text-3); font-weight: 300; font-size: .62em; margin: 0 .26em; position: relative; top: -.16em; }
-  .kpi-quad { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
-  .kpi-quad .kpi-sub { margin-top: 8px; }
-  .kpi-num-md { font-size: 46px; }
-  .kpi-num-sm { font-size: 32px; padding-top: 6px; letter-spacing: -.04em; }
-  .kpi-sub { color: var(--text-3); font-size: 12.5px; margin-top: 10px; display: flex; align-items: center; }
-  .kpi-title { font-size: 32px; font-weight: 750; letter-spacing: -.035em; line-height: 1.05; margin-top: auto; padding-top: 20px; }
-  .kpi-foot { color: var(--text-3); font-size: 12.5px; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); }
-  .form-dots { display: flex; gap: 8px; margin-top: 14px; }
-  .kpi-stack { gap: 18px; }
-  .kpi-stack .kpi-num-md { padding-top: 14px; }
-  .kpi-split { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding-top: 16px; border-top: 1px solid var(--line); margin-top: auto; }
+  .info-btn:hover, .info-btn[aria-expanded="true"] { color: var(--bg); background: var(--text); border-color: var(--text); }
+  p.note { max-width: 62ch; }
 
-  /* Přehled: příští zápas / body / forma jen jako nenápadný pruh */
-  .tabsection[data-tab="prehled"] .kpi { min-height: 0; padding: 14px 18px; }
-  .tabsection[data-tab="prehled"] .kpi-title { font-size: 17px; font-weight: 650; letter-spacing: -.015em; padding-top: 6px; margin-top: 0; }
-  .tabsection[data-tab="prehled"] .kpi-num { font-size: 22px; font-weight: 700; letter-spacing: -.02em; padding-top: 6px; margin-top: 0; }
-  .tabsection[data-tab="prehled"] .kpi-sub { margin-top: 4px; }
-  .tabsection[data-tab="prehled"] .kpi-foot { margin-top: 6px; padding-top: 0; border-top: 0; }
-  .tabsection[data-tab="prehled"] .form-dots { margin-top: 8px; gap: 6px; }
-  .tabsection[data-tab="prehled"] .form-dots .dot-lg { width: 8px; height: 8px; }
+  /* ===== Úvodní výsledek (Přehled) ===== */
+  .hero { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 56px; padding: 4px 0 40px; }
+  .hero-kicker { font: 600 12px/1.3 var(--f-body); letter-spacing: .09em; text-transform: uppercase; color: var(--text-3); }
+  .hero-score { display: flex; align-items: baseline; margin: 10px 0 0 -2px; font: 800 clamp(56px, 7vw, 88px)/.9 var(--f-head); letter-spacing: -.045em; font-variant-numeric: tabular-nums; }
+  .hero-score i { font-style: normal; font-weight: 700; color: var(--text-3); margin: 0 .04em; position: relative; top: -.06em; }
+  .hero.win .hero-score .m { color: var(--accent); }
+  .hero-teams { margin-top: 10px; font: 700 16px/1.3 var(--f-head); }
+  .hero-teams span { color: var(--text-3); font-weight: 700; }
+  .hero-teams b { color: var(--text); font-weight: 800; }
+  .hero-res { margin-top: 6px; font-size: 13px; color: var(--text-2); }
+  .hero-goals { list-style: none; margin: 14px 0 0; padding: 0; border-top: 1px solid var(--line); }
+  .hero-goals li { display: grid; grid-template-columns: 52px minmax(0, 1fr); gap: 4px 12px; align-items: baseline; padding: 9px 0 9px 12px; border-bottom: 1px solid var(--line); position: relative; }
+  .hero-goals li::before { content: ""; position: absolute; left: 0; top: 10px; bottom: 10px; width: 3px; background: var(--line); }
+  .hero-goals li.m::before { background: var(--accent); }
+  .hero-goals .t { font: 400 13px var(--f-mono); color: var(--text-3); }
+  .hero-goals .who { font-weight: 600; }
+  .hero-goals li.o .who { font-weight: 500; color: var(--text-2); }
+  .hero-goals .as { color: var(--text-3); font-size: 13px; margin-left: 8px; font-weight: 400; }
+  .hero-foot { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px 32px; flex-wrap: wrap; margin-top: 22px; }
+  .hero-stats { display: flex; gap: 26px; margin: 0; }
+  .hero-stats div { min-width: 0; }
+  .hero-stats dt { font: 600 11px/1.2 var(--f-body); letter-spacing: .09em; text-transform: uppercase; color: var(--text-3); }
+  .hero-stats dd { margin: 4px 0 0; font: 800 20px/1 var(--f-head); letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+  .hero-stats dd small { font: 500 13px var(--f-body); letter-spacing: 0; color: var(--text-3); margin-left: 4px; }
+  .form-sq { display: flex; gap: 5px; align-items: center; }
+  .form-sq > b { font: 600 11px/1.2 var(--f-body); letter-spacing: .09em; text-transform: uppercase; color: var(--text-3); margin-right: 6px; }
+  .fsq { width: 16px; height: 16px; background: var(--text); }
+  .fsq-V { background: var(--accent); }
+  .fsq-VP { background: transparent; box-shadow: inset 0 0 0 2px var(--accent); }
+  .fsq-PP { background: transparent; box-shadow: inset 0 0 0 2px var(--text-3); }
+  .fsq-P { background: var(--text-3); }
+  .nextline { display: grid; grid-template-columns: 130px minmax(0, 1.2fr) minmax(0, 1fr) minmax(0, 1.6fr); gap: 6px 24px; align-items: baseline; padding: 16px 0 18px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); margin-bottom: 28px; }
+  .nextline .lbl { font: 700 11px/1.2 var(--f-body); letter-spacing: .09em; text-transform: uppercase; color: var(--accent); }
+  .nextline .opp { font: 800 20px/1.2 var(--f-head); letter-spacing: -.01em; }
+  .nextline .where, .nextline .when { color: var(--text-2); font-size: 13.5px; }
+
+  /* ===== Rozcestník sekce (Sezóna, Bilance) ===== */
+  .sec-index { display: none; }
+  @media (min-width: 1100px) {
+    .bento.has-index { grid-template-columns: 148px minmax(0, 1fr); column-gap: 44px; }
+    .bento.has-index > .sec-index { display: block; grid-column: 1; position: sticky; top: calc(var(--tabbar-h) + 24px); align-self: start; }
+    .bento.has-index > .sec-body { grid-column: 2; }
+  }
+  .sec-index ul { list-style: none; margin: 0; padding: 0; border-left: 1px solid var(--line); }
+  .sec-index a { display: block; padding: 5px 0 5px 14px; margin-left: -1px; border: 0; border-left: 3px solid transparent; font-size: 13px; line-height: 1.3; color: var(--text-3); transition: color .15s ease, border-color .15s ease; }
+  .sec-index a:hover { color: var(--text); }
+  .sec-index a.is-on { color: var(--text); font-weight: 600; border-left-color: var(--accent); }
+
+  /* ===== KPI (zbytek: bilance V/VP/PP/P, doma/venku) ===== */
+  .kpi { display: flex; flex-direction: column; }
+  .kpi h2 { font: 700 12px/1.2 var(--f-body); letter-spacing: .09em; text-transform: uppercase; color: var(--text-3); }
+  .kpi-num { font: 800 36px/1 var(--f-head); letter-spacing: -.04em; padding-top: 12px; font-variant-numeric: tabular-nums; }
+  .kpi-num i { font-style: normal; color: var(--text-3); font-weight: 700; font-size: .62em; margin: 0 .14em; position: relative; top: -.1em; }
+  .kpi-quad { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+  .kpi-quad .kpi-sub { margin-top: 6px; }
+  .kpi-num-md { font-size: 32px; }
+  .kpi-num-sm { font-size: 26px; padding-top: 6px; letter-spacing: -.035em; }
+  .kpi-sub { color: var(--text-3); font-size: 13px; margin-top: 8px; display: flex; align-items: center; }
+  .kpi-stack { gap: 28px; }
+  .kpi-split { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
 
   /* ===== Graf ===== */
-  .chart { position: relative; margin-top: 16px; }
+  .chart { position: relative; margin-top: 18px; }
   .chart svg { display: block; width: 100%; height: auto; overflow: visible; touch-action: pan-y; }
   .g-grid, .g-zero, .g-line, .g-cross { vector-effect: non-scaling-stroke; }
   .g-grid { stroke: var(--line); stroke-width: 1; }
-  .g-zero { stroke: var(--line-strong); stroke-width: 1; stroke-dasharray: 3 4; }
-  .g-axis { fill: var(--text-3); font-size: 11px; font-family: inherit; font-variant-numeric: tabular-nums; }
-  .g-line { fill: none; stroke: var(--accent); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
-  .g-end { fill: var(--accent); stroke: var(--surface); stroke-width: 2; }
-  .g-halo { fill: var(--accent); opacity: .16; }
-  .g-cross { stroke: var(--text-3); stroke-width: 1; stroke-dasharray: 2 3; }
+  .g-zero { stroke: var(--text-3); stroke-width: 1; stroke-dasharray: 3 4; }
+  .g-axis { fill: var(--text-3); font-size: 11px; font-family: var(--f-mono); }
+  .g-line { fill: none; stroke: var(--accent); stroke-width: 2.25; stroke-linejoin: miter; stroke-linecap: butt; }
+  .g-end { fill: var(--accent); stroke: var(--bg); stroke-width: 2; }
+  .g-halo { fill: var(--accent); opacity: .14; }
+  .g-cross { stroke: var(--text); stroke-width: 1; }
   .chart-tip {
     position: absolute; top: 0; transform: translate(-50%, 0); pointer-events: none;
-    background: var(--surface-2); border: 1px solid var(--line-strong); border-radius: 9px;
-    padding: 7px 10px; font-size: 12px; color: var(--text-2); white-space: nowrap;
+    background: var(--text); color: var(--bg); padding: 6px 10px; font-size: 12px; white-space: nowrap;
   }
-  .chart-tip b { color: var(--text); font-weight: 700; font-size: 14px; margin-right: 6px; font-variant-numeric: tabular-nums; }
+  .chart-tip b { font: 700 14px var(--f-mono); margin-right: 8px; }
 
   /* ===== Tabulky ===== */
-  table { width: 100%; border-collapse: collapse; font-size: 13.5px; margin-top: 12px; }
-  th, td { text-align: left; padding: 12px 12px; border-bottom: 1px solid var(--line); white-space: nowrap; }
-  th { color: var(--text-3); font-weight: 500; font-size: 12px; padding-top: 4px; padding-bottom: 10px; }
-  th:first-child, td:first-child { padding-left: 2px; }
-  th:last-child, td:last-child { padding-right: 2px; }
+  table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 14px; margin-top: 10px; }
+  th, td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+  th {
+    position: sticky; top: var(--tabbar-h); z-index: 2; background: var(--bg);
+    color: var(--text-3); font: 600 11px/1.2 var(--f-body); letter-spacing: .08em; text-transform: uppercase;
+    padding-top: 10px; padding-bottom: 8px; border-bottom: 1px solid var(--line-strong);
+  }
+  th:first-child, td:first-child { padding-left: 4px; }
+  th:last-child, td:last-child { padding-right: 4px; }
   tbody tr:last-child td { border-bottom: 0; }
+  td:first-child { transition: padding-left .15s ease, box-shadow .15s ease; }
   tbody tr:hover td { background: var(--hover); }
-  th.num, td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  tbody tr:hover td:first-child { box-shadow: inset 2px 0 0 var(--accent); padding-left: 10px; }
+  th.num, td.num { text-align: right; font-family: var(--f-mono); font-size: 13px; font-variant-numeric: tabular-nums; }
+  th.num { font-family: var(--f-body); font-size: 11px; }
   td.num { color: var(--text-2); }
-  td strong { font-weight: 650; color: var(--text); }
+  td strong { font-weight: 600; color: var(--text); }
+  td.num strong { font-weight: 500; color: var(--text); }
+  td:nth-child(2):not(.num), td:first-child:not(.num) { font-weight: 500; }
   tr.no-baseline td { color: var(--text-3); font-style: italic; }
   th.sortable { cursor: pointer; user-select: none; }
-  th.sortable:hover { color: var(--text-2); }
+  th.sortable:hover { color: var(--text); }
   th.sortable::after {
     content: ""; display: inline-block; margin-left: 5px; vertical-align: middle;
     border: 3.5px solid transparent; border-top-color: currentColor; opacity: 0; transform: translateY(2px);
   }
   th.sortable:hover::after { opacity: .5; }
+  th.sort-desc { color: var(--text); }
+  th.sort-asc { color: var(--text); }
   th.sort-desc::after { opacity: 1; border-top-color: var(--accent); }
   th.sort-asc::after { opacity: 1; border-top-color: transparent; border-bottom-color: var(--accent); transform: translateY(-2px); }
   .lbl-short { display: none; }
   a.bil { border: 0; margin-left: 6px; color: var(--text-3); font-size: .9em; }
   a.bil:hover { color: var(--accent); }
   .small.kv { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 12px; color: var(--text-2); margin: 6px 0 0; }
-  .small.kv:first-of-type { margin-top: 4px; }
+  .small.kv:first-of-type { margin-top: 6px; }
+  .tbl-skaters, .tbl-goalkeepers { max-width: 780px; }
+  .tbl-state td:first-child, .tbl-periods td:first-child, .tbl-form-5 td:first-child { white-space: normal; }
+  .tbl-disc th, .tbl-disc td { padding-left: 4px; padding-right: 4px; }
+  .tbl-disc th { letter-spacing: .03em; }
+  .tbl-form-5 td:first-child { min-width: 240px; }
+  .scope .lbl-full { display: none; }
+  .scope .lbl-short { display: inline; }
+  .scope th, .scope td { padding-left: 5px; padding-right: 5px; }
+  .scope td.num { font-size: 12px; }
 
   /* ===== Seznamy, časová osa, rozbalovací bloky ===== */
-  .changes { list-style: none; margin: 10px 0 0; padding: 0; }
-  .changes li { padding: 10px 0; border-bottom: 1px solid var(--line); color: var(--text-2); }
+  .changes { list-style: none; margin: 8px 0 0; padding: 0; }
+  .changes li { padding: 9px 0; border-bottom: 1px solid var(--line); color: var(--text-2); }
   .changes li:last-child { border-bottom: 0; }
   .changes li strong { color: var(--text); font-weight: 600; }
-  .ev { display: grid; grid-template-columns: 46px 10px minmax(0, 1fr); align-items: baseline; gap: 10px; }
+  .ev { display: grid; grid-template-columns: 50px 10px minmax(0, 1fr); align-items: baseline; gap: 10px; }
   .ev .dot { margin: 0; align-self: center; }
-  .ev-t { color: var(--text-3); font-size: 12.5px; font-variant-numeric: tabular-nums; }
+  .ev-t { color: var(--text-3); font: 400 13px var(--f-mono); }
   .ev-x { white-space: normal; }
-  .ev-x .muted { font-size: 12.5px; margin-left: 6px; }
+  .ev-x .muted { font-size: 13px; margin-left: 6px; }
   details { border-bottom: 1px solid var(--line); }
   details:last-child { border-bottom: 0; }
   summary {
-    cursor: pointer; list-style: none; padding: 12px 0; font-weight: 550; color: var(--text);
-    display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap;
+    cursor: pointer; list-style: none; padding: 13px 0; font-weight: 600; color: var(--text);
+    display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: 10px; align-items: baseline; transition: color .15s ease;
   }
+  summary:hover { color: var(--accent); }
   summary::-webkit-details-marker { display: none; }
   summary::before {
     content: ""; width: 6px; height: 6px; flex: none; position: relative; top: -2px;
-    border-right: 1.5px solid var(--text-3); border-bottom: 1.5px solid var(--text-3);
+    border-right: 2px solid currentColor; border-bottom: 2px solid currentColor;
     transform: rotate(-45deg); transition: transform .15s ease;
   }
   details[open] > summary::before { transform: rotate(45deg); }
-  summary .muted.small { font-weight: 400; margin: 0; }
-  details > :last-child { margin-bottom: 12px; }
+  summary .muted.small { grid-column: 2; font-weight: 400; margin: 0; }
+  details > :last-child { margin-bottom: 14px; }
 
-  /* ===== Stavové tečky ===== */
+  /* ===== Stavové tečky (bez záře) ===== */
   .dot {
-    display: inline-block; width: 7px; height: 7px; border-radius: 50%; flex: none;
+    display: inline-block; width: 8px; height: 8px; border-radius: 50%; flex: none;
     background: var(--text-3); margin: 0 8px 1px 0; vertical-align: middle;
   }
-  .dot-lg { width: 10px; height: 10px; margin: 0; }
+  .dot-lg { width: 12px; height: 12px; margin: 0; }
   .dot-after { margin: 0 2px 1px 6px; }
-  .dot-pos { background: var(--accent); box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent) 14%, transparent), 0 0 10px color-mix(in oklab, var(--accent) 55%, transparent); }
-  .dot-neg { background: var(--neg); box-shadow: 0 0 0 3px color-mix(in oklab, var(--neg) 14%, transparent), 0 0 10px color-mix(in oklab, var(--neg) 45%, transparent); }
-  .dot-warn { background: var(--warn); box-shadow: 0 0 8px color-mix(in oklab, var(--warn) 45%, transparent); }
+  .dot-pos { background: var(--accent); }
+  .dot-neg { background: var(--accent-2); }
+  .dot-warn { background: var(--warn); }
   .dot-pos-ring { background: transparent; box-shadow: inset 0 0 0 2px var(--accent); }
-  .dot-neg-ring { background: transparent; box-shadow: inset 0 0 0 2px var(--neg); }
+  .dot-neg-ring { background: transparent; box-shadow: inset 0 0 0 2px var(--accent-2); }
   .dot-ring { background: transparent; box-shadow: inset 0 0 0 1.5px var(--text-3); }
 
   /* ===== Vyhledávání ===== */
   .search-box {
-    display: block; width: 100%; padding: 10px 14px; font: inherit; font-size: 13.5px; color: var(--text);
-    background: var(--surface); border: 1px solid var(--line-strong); border-radius: 11px;
+    display: block; width: 100%; max-width: 420px; padding: 9px 2px; font: inherit; font-size: 15px; color: var(--text);
+    background: none; border: 0; border-bottom: 2px solid var(--line-strong); border-radius: 0; margin-bottom: 16px;
   }
   .search-box::placeholder { color: var(--text-3); }
-  .search-box:focus { outline: none; border-color: var(--accent); }
+  .search-box:focus { outline: none; border-bottom-color: var(--accent); }
   tr.search-hidden, details.search-hidden, li.search-hidden { display: none; }
+  .tabsection[data-tab="historie"] .card, .tabsection[data-tab="mesice"] .card { max-width: 780px; }
+  .tabsection[data-tab="zapas"] .card { max-width: 900px; }
 
   /* ===== Potáhni-pro-obnovení, skeleton ===== */
   .pull-indicator {
     position: fixed; top: 0; left: 0; right: 0; z-index: 55; display: flex; align-items: center; justify-content: center;
-    height: 46px; margin-top: -46px; color: var(--text-3); font-size: 12.5px;
+    height: 46px; margin-top: -46px; color: var(--text-3); font-size: 13px;
     background: var(--bg); border-bottom: 1px solid var(--line); transition: margin-top .15s ease, color .15s ease;
   }
   .pull-indicator.is-ready { color: var(--accent); font-weight: 600; }
-  .skeleton-overlay { position: fixed; inset: 0; z-index: 60; background: var(--bg); padding: 28px 24px; transition: opacity .25s ease; }
+  .skeleton-overlay { position: fixed; inset: 0; z-index: 60; background: var(--bg); padding: 28px 32px; transition: opacity .2s ease; }
   .skeleton-overlay.is-hidden { opacity: 0; pointer-events: none; }
   .skeleton-block {
-    background: linear-gradient(90deg, var(--surface) 25%, var(--surface-2) 37%, var(--surface) 63%);
+    background: linear-gradient(90deg, var(--surface-2) 25%, var(--line) 37%, var(--surface-2) 63%);
     background-size: 400% 100%; animation: skeleton-shimmer 1.4s ease infinite;
-    border: 1px solid var(--line); border-radius: 16px; margin: 0 auto 14px; max-width: 1132px;
+    margin: 0 auto 14px; max-width: 1176px;
   }
   @keyframes skeleton-shimmer { 0% { background-position: 100% 50%; } 100% { background-position: 0 50%; } }
-  @media (prefers-reduced-motion: reduce) { .skeleton-block { animation: none; } summary::before { transition: none; } }
-
-  /* ===== Rozvržení bento podle šířky ===== */
-  @media (min-width: 641px) {
-    .bento > .kpi { grid-column: span 3; }
+  @media (prefers-reduced-motion: reduce) {
+    .skeleton-block { animation: none; }
+    summary::before, .tab-btn::after, td:first-child { transition: none; }
   }
+
+  /* ===== Rozvržení podle šířky ===== */
   @media (min-width: 980px) {
-    .bento > .kpi { grid-column: span 2; }
-    .bento > .kpi-next { grid-column: span 2; }
-    .bento > .kpi-form { grid-column: span 2; }
-    .bento > .card-changes { grid-column: span 2; }
-    .bento > .card:has(.tbl-milestones) { grid-column: span 4; }
-    .bento > .card-chart { grid-column: span 4; }
-    .bento > .kpi-stack { grid-column: span 2; }
-    .bento > .card:has(.tbl-best) { grid-column: span 2; }
-    .bento > .card:has(.tbl-gwg) { grid-column: span 4; }
-    .bento > .card:has(.tbl-periods), .bento > .card:has(.tbl-state) { grid-column: span 3; }
-    .bento > .card:has(.tbl-so) { grid-column: span 4; }
-    .bento > .card:has(.tbl-att) { grid-column: span 2; }
+    .bento > .card { grid-column: span 6; }
+    .bento > .hero, .bento > .nextline,
+    .bento > .card:has(.tbl-periods), .bento > .card:has(.tbl-state),
+    .bento > .card:has(.tbl-skaters), .bento > .card:has(.tbl-goalkeepers),
+    .bento > .card:has(.tbl-refs), .bento > .card:has(.tbl-so), .bento > .card:has(.tbl-gwg), .bento > .card:has(.tbl-pairs), .bento > .card:has(.tbl-disc), .bento > .card:has(.tbl-disc-team), .bento > .card:has(thead th:nth-child(6)) { grid-column: span 12; }
+    .bento > .card:has(.tbl-milestones) { grid-column: span 8; }
+    .bento > .card-changes { grid-column: span 4; }
+    .scope-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .bento > .card-chart { grid-column: span 8; }
+    .bento > .kpi-stack { grid-column: span 4; }
+    .tabsection[data-tab="historie"] .card, .tabsection[data-tab="mesice"] .card, .tabsection[data-tab="zapas"] .card { grid-column: span 12; }
+  }
+  @media (max-width: 979px) {
+    .hero { grid-template-columns: 1fr; gap: 28px; }
+    .nextline { grid-template-columns: 1fr 1fr; }
+    .nextline .lbl { grid-column: 1 / -1; }
   }
 
   /* ===== Mobil: obsah se posouvá, záložky dole ===== */
@@ -2187,32 +2271,36 @@ PAGE_CSS = """
     html, body { height: 100%; touch-action: manipulation; }
     body { display: flex; flex-direction: column; height: 100vh; height: 100dvh; overflow: hidden; }
     .wrap { max-width: 100%; flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; padding: 0; }
-    .app-header { order: 0; flex: 0 0 auto; padding: 14px 14px 10px; padding-top: calc(14px + env(safe-area-inset-top)); margin: 0; align-items: flex-start; }
-    .header-side { font-size: 12px; gap: 4px 12px; }
+    .app-header { order: 0; flex: 0 0 auto; padding: 12px 16px 10px; padding-top: calc(12px + env(safe-area-inset-top)); margin: 0; align-items: baseline; border-bottom: 2px solid var(--line-strong); }
+    h1 { font-size: 17px; }
+    .meta { display: block; margin: 2px 0 0; font-size: 12px; }
+    .header-side { font-size: 12px; gap: 2px 14px; }
     .app-content {
       order: 1; flex: 1 1 auto; min-height: 0; overflow-y: auto; -webkit-overflow-scrolling: touch;
-      padding: 4px 10px calc(24px + env(safe-area-inset-bottom));
+      padding: 8px 16px calc(28px + env(safe-area-inset-bottom));
     }
-    h1 { font-size: 17px; }
-    .bento { gap: 10px; }
-    .bento > .kpi:not(.kpi-next):not(.kpi-stack) { grid-column: span 3; }
-    .card { padding: 14px 14px; border-radius: 14px; }
-    .kpi { min-height: 140px; }
-    .tabsection[data-tab="prehled"] .kpi { min-height: 0; padding: 12px 14px; }
-    .tabsection[data-tab="prehled"] .kpi-num { font-size: 20px; }
-    .tabsection[data-tab="prehled"] .kpi-title { font-size: 16px; }
-    .kpi-num { font-size: 46px; }
-    .kpi-num-md { font-size: 36px; }
-    .kpi-num-sm { font-size: 28px; }
+    .bento { column-gap: 0; }
+    .card { padding: 12px 0 26px; overflow-x: auto; scroll-margin-top: 8px; }
+    .card h2 { font-size: 17px; }
+    th { position: static; }
+    .hero { padding: 18px 0 26px; gap: 22px; border-top: 0; }
+    .hero-score { font-size: 64px; margin-left: -2px; }
+    .hero-stats { gap: 22px; }
+    .hero-stats dd { font-size: 18px; }
+    .nextline { grid-template-columns: 1fr; padding: 14px 0 16px; }
+    .kpi-num { font-size: 32px; }
+    .kpi-num-md { font-size: 28px; }
+    .kpi-num-sm { font-size: 24px; }
+    .kpi-split { gap: 16px; }
     .g-axis { font-size: 22px; }
-    .kpi-title { font-size: 26px; }
-    table { font-size: 12.5px; }
-    th, td { padding: 10px 6px; }
-    th { font-size: 11px; }
+    table { font-size: 13px; }
+    th, td { padding: 9px 6px; }
+    th { font-size: 10.5px; letter-spacing: .05em; }
     .lbl-full { display: none; }
     .lbl-short { display: inline; }
     .hide-m { display: none; }
     .small.kv { grid-template-columns: 1fr; gap: 0; }
+    .skeleton-overlay { padding: 18px 16px; }
 
     /* Hráči v poli: jméno + Z/G/A/B */
     .tbl-skaters th:nth-child(1), .tbl-skaters td:nth-child(1),
@@ -2230,15 +2318,15 @@ PAGE_CSS = """
     .tbl-goalkeepers th:nth-child(12), .tbl-goalkeepers td:nth-child(12) { display: none; }
 
     .tabbar {
-      order: 2; position: static; flex: 0 0 auto; margin: 0; padding: 4px 4px calc(4px + env(safe-area-inset-bottom));
-      gap: 0; overflow: visible; border-bottom: 0; border-top: 1px solid var(--line-strong);
-      background: var(--surface); -webkit-backdrop-filter: none; backdrop-filter: none;
+      order: 2; position: static; flex: 0 0 auto; height: auto; margin: 0; padding: 4px 4px calc(4px + env(safe-area-inset-bottom));
+      gap: 0; overflow: visible; border-bottom: 0; border-top: 2px solid var(--line-strong);
     }
-    .tab-btn { flex: 1; min-width: 0; flex-direction: column; gap: 3px; padding: 7px 2px 5px; border: 0; border-radius: 10px; }
-    .tab-btn.is-active { background: none; color: var(--accent); }
-    .tab-btn svg { width: 20px; height: 20px; }
+    .tab-btn { flex: 1; min-width: 0; flex-direction: column; gap: 3px; padding: 8px 2px 6px; font-size: 10px; letter-spacing: 0; }
+    .tab-btn::after { display: none; }
+    .tab-btn.is-active { color: var(--accent); }
+    .tab-btn svg { display: block; }
     .tab-btn span { font-size: 10px; line-height: 1.1; white-space: nowrap; }
-    .badge-dot { top: 3px; right: calc(50% - 15px); }
+    .badge-dot { top: 5px; right: calc(50% - 15px); }
   }
 """
 
@@ -2338,11 +2426,11 @@ def render_html(
         nm = next_match
         cas_lbl = nm["cas"] if nm["cas"] else "čas bude upřesněn"
         next_match_html = f"""
-  <div class="card kpi kpi-next">
-    <h2>Příští zápas</h2>
-    <div class="kpi-title">{esc(nm["soupeř"])}</div>
-    <div class="kpi-sub"><span class="dot {"dot-pos" if nm["doma"] else "dot-ring"}"></span>{"Doma" if nm["doma"] else "Venku"}, {nm["kolo"]}. kolo</div>
-    <div class="kpi-foot">{esc(nm["datum"])}, {esc(cas_lbl)}, {esc(nm["misto"])}</div>
+  <div class="nextline">
+    <span class="lbl">Příští zápas</span>
+    <span class="opp">{esc(nm["soupeř"])}</span>
+    <span class="where"><span class="dot {"dot-pos" if nm["doma"] else "dot-ring"}"></span>{"Doma" if nm["doma"] else "Venku"}, {nm["kolo"]}. kolo</span>
+    <span class="when">{esc(nm["datum"])}, {esc(cas_lbl)}, {esc(nm["misto"])}</span>
   </div>
 """
     else:
@@ -2499,6 +2587,64 @@ def render_html(
     gk = _game_by_kolo(games)
     absences = build_absences(zapis_all)
 
+    # --- Úvodní výsledek Přehledu: poslední odehraný zápas písmem
+    hero_html = ""
+    if played_g:
+        lg = played_g[-1]
+        lz = next((z for z in zapis_all if z["kolo"] == lg["kolo"]), None)
+        vs = re.match(r"\s*(\d+)\s*:\s*(\d+)", lg.get("vysledek") or "")
+        if vs:
+            sd, sh = vs.group(1), vs.group(2)
+        elif lz:
+            sd, sh = str(lz["skore_domaci"]), str(lz["skore_hoste"])
+        else:
+            sd = sh = None
+        if sd is not None:
+            motor_home = lg["domaci"] == CLUB_NAME
+            rt = _result_type(lg)
+            word = {"V": "Výhra", "VP": "Výhra po prodloužení či nájezdech",
+                    "PP": "Prohra po prodloužení či nájezdech", "P": "Prohra"}.get(rt, "")
+            kick = [f'{lg["kolo"]}. kolo', esc(lg.get("datum") or "")]
+            if lz and lz.get("divaci"):
+                kick.append(f'{esc(lz["divaci"])} diváků')
+            def _tm(name):
+                return f"<b>{esc(name)}</b>" if name == CLUB_NAME else f"<span>{esc(name)}</span>"
+            goals_li = ""
+            if lz:
+                for g in _game_goals(lz):
+                    mot = _is_motor(g["tym"])
+                    asi = f'<span class="as">{esc(", ".join(g["asistence"]))}</span>' if g["asistence"] else ""
+                    goals_li += (f'<li class="{"m" if mot else "o"}"><span class="t">{esc(g["cas"])}</span>'
+                                 f'<span><span class="who">{esc(g["strelec"])}</span>{asi}</span></li>')
+            form_sq = "".join(
+                f'<span class="fsq fsq-{_result_type(g)}" title="{g["kolo"]}. kolo: {esc(_opp(g))} '
+                f'{esc(g.get("vysledek") or "")} ({RES_WORD.get(_result_type(g), "")})"></span>'
+                for g in played_g[-5:] if _result_type(g)
+            )
+            st = streaks or {}
+            stats = (f'<div><dt>Body</dt><dd>{league_points}</dd></div>'
+                     f'<div><dt>Na zápas</dt><dd>{ppg}</dd></div>')
+            if st.get("vysledek_pocet", 0) >= 2:
+                stats += (f'<div><dt>Série</dt><dd>{st["vysledek_pocet"]}×'
+                          f'<small>{esc(st["vysledek_typ"])}</small></dd></div>')
+            hero_html = f"""
+  <div class="hero{" win" if rt in ("V", "VP") else ""}">
+    <div>
+      <div class="hero-kicker">{" · ".join(kick)}</div>
+      <div class="hero-score" aria-label="Výsledek {sd}:{sh}"><span{' class="m"' if motor_home else ""}>{sd}</span><i>:</i><span{'' if motor_home else ' class="m"'}>{sh}</span></div>
+      <div class="hero-teams">{_tm(lg["domaci"])} <span>–</span> {_tm(lg["hoste"])}</div>
+      <div class="hero-res">{word}</div>
+    </div>
+    <div>
+      <ol class="hero-goals" aria-label="Střelci" style="list-style:none">{goals_li}</ol>
+      <div class="hero-foot">
+        <dl class="hero-stats">{stats}</dl>
+        <div class="form-sq" aria-label="Posledních 5 zápasů"><b>Forma</b>{form_sq}</div>
+      </div>
+    </div>
+  </div>
+"""
+
     def souper_of(z: dict) -> str:
         g = gk.get(z["kolo"])
         if g:
@@ -2537,7 +2683,11 @@ def render_html(
         game_blocks = []
         for i, z in enumerate(zapis_games):
             timeline_items = []
-            for g in sorted(z["goly"] + z["tresty"], key=lambda e: e["vteriny"]):
+            def _ev_key(e):
+                if "strelec" not in e and not str(e.get("od", ""))[:1].isdigit():
+                    return 10 ** 6  # trest bez času v zápise (TS) na konec
+                return e["vteriny"]
+            for g in sorted(z["goly"] + z["tresty"], key=_ev_key):
                 if "strelec" in g:
                     asist = f" ({', '.join(g['asistence'])})" if g["asistence"] else ""
                     timeline_items.append(
@@ -2545,6 +2695,14 @@ def render_html(
                         f'<span class="dot {"dot-pos" if _is_motor(g["tym"]) else "dot-neg"}" title="gól"></span>'
                         f'<span class="ev-x"><strong>{esc(g["strelec"])}</strong>{esc(asist)} '
                         f'<span class="muted">{esc(g["tym"])}, {esc(g["situace"])}</span></span></li>'
+                    )
+                elif not str(g.get("od", ""))[:1].isdigit():
+                    mn = str(g["min"])
+                    timeline_items.append(
+                        f'<li class="ev ev-pen"><span class="ev-t">–</span>'
+                        f'<span class="dot dot-warn" title="trest"></span>'
+                        f'<span class="ev-x">{esc(g["hrac"])}, {esc(mn + (" min" if mn.isdigit() else ""))} '
+                        f'<span class="muted">{esc(g["tym"])}, {esc(g["duvod"])}, bez času v zápise</span></span></li>'
                     )
                 else:
                     timeline_items.append(
@@ -2564,9 +2722,7 @@ def render_html(
         zapas_html = f"""
   <div class="card">
     <h2>🏒 Poslední zápasy — průběh</h2>
-    <p class="muted small">Časy a čísla hráčů podle oficiálního zápisu o utkání
-    (hokejovyzapis.cz); překlad zkratek trestů je odhad, může se stát,
-    že některá sedí špatně.</p>
+    <p class="muted small">Časy a čísla hráčů podle oficiálního zápisu o utkání (hokejovyzapis.cz).</p>
     {"".join(game_blocks)}
   </div>
 """
@@ -2762,7 +2918,8 @@ def render_html(
                     f"<th>{lbl('Body','B')}</th></tr></thead><tbody>{''.join(rows)}</tbody></table>")
 
         def scoped(fn):
-            return "".join(f"<h3 class='scope-h'>{nm}</h3>{fn(pers[k])}" for k, nm in SCOPES)
+            return ("<div class='scope-grid'>" + "".join(
+                f"<div class='scope'><h3 class='scope-h'>{nm}</h3>{fn(pers[k])}</div>" for k, nm in SCOPES) + "</div>")
 
         periods_html = f"""
     <div class="card">
@@ -2802,7 +2959,7 @@ def render_html(
         shootout_html = f"""
     <div class="card">
       <h2>🎯 Nájezdy v sezóně</h2>
-      <p class="muted small">{len(so['zapasy'])} zápasů rozhodnutých nájezdy,
+      <p class="muted small keep">{len(so['zapasy'])} zápasů rozhodnutých nájezdy,
       bilance {sum(x['vyhra'] for x in so['zapasy'])}–{sum(not x['vyhra'] for x in so['zapasy'])}.</p>
       <table class="tbl-so">
         <thead><tr><th>Střelec</th><th>{lbl("Pokusy","Pok")}</th><th>{lbl("Proměnil","G")}</th><th>{lbl("Neproměnil","X")}</th><th>%</th></tr></thead>
@@ -3112,15 +3269,13 @@ def render_html(
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" href="icon-192.png" type="image/png">
-<meta name="theme-color" content="#f4f6f8" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#090c11" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#F5F3EE" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#101216" media="(prefers-color-scheme: dark)">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="HC Motor stats">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="preload" href="fonts/archivo-latin-800-normal.woff2" as="font" type="font/woff2" crossorigin>
 <style>{PAGE_CSS}</style>
 </head>
 <body>
@@ -3135,8 +3290,7 @@ def render_html(
 <div class="wrap">
  <header class="app-header">
   <div>
-   <h1>HC Motor České Budějovice</h1>
-   <div class="meta">Statistiky hráčů, {esc(SEASON_LABEL)}</div>
+   <h1>HC Motor České Budějovice</h1><span class="meta">Statistiky, {esc(SEASON_LABEL)}</span>
   </div>
   <div class="header-side">
    <span class="live"><span class="dot dot-pos"></span>Aktualizováno {now}</span>
@@ -3178,12 +3332,13 @@ def render_html(
 </nav>
  <div class="app-content" id="app-content">
   <section class="tabsection bento" data-tab="prehled">
-    {next_match_html}{kpi_points_html}{kpi_form_html}
+    {hero_html}{next_match_html}
+{milestones_html}
     <div class="card card-changes">
       <h2>Změny od minulé aktualizace</h2>
       {changes_html}
     </div>
-{milestones_html}{schedule_html}{corrections_html}
+{schedule_html}{corrections_html}
   </section>
 
   <section class="tabsection bento" data-tab="zapas">
@@ -3304,6 +3459,8 @@ function initSortableTables() {{
             th.classList.add('sortable');
             th.addEventListener('click', function() {{
               var rows = Array.prototype.slice.call(tbody.querySelectorAll('tr'));
+              var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+              for (var q = 0; q < rows.length; q++) {{ rows[q]._top = rows[q].getBoundingClientRect().top; }}
               var asc = !th.classList.contains('sort-asc');
               for (var x = 0; x < ths.length; x++) {{
                 ths[x].classList.remove('sort-asc', 'sort-desc');
@@ -3326,6 +3483,27 @@ function initSortableTables() {{
               for (var y = 0; y < rows.length; y++) {{
                 tbody.appendChild(rows[y]);
               }}
+              if (!reduce) {{
+                var moved = [];
+                for (var f = 0; f < rows.length; f++) {{
+                  var d = rows[f]._top - rows[f].getBoundingClientRect().top;
+                  if (d) {{
+                    rows[f].style.transition = 'none';
+                    rows[f].style.transform = 'translateY(' + d + 'px)';
+                    moved.push(rows[f]);
+                  }}
+                }}
+                if (moved.length) {{
+                  void tbody.offsetHeight;
+                  for (var g2 = 0; g2 < moved.length; g2++) {{
+                    moved[g2].style.transition = 'transform .18s ease-out';
+                    moved[g2].style.transform = '';
+                  }}
+                  setTimeout(function() {{
+                    for (var h2 = 0; h2 < moved.length; h2++) {{ moved[h2].style.transition = ''; }}
+                  }}, 220);
+                }}
+              }}
             }});
           }})(ths[c], c);
         }}
@@ -3334,6 +3512,77 @@ function initSortableTables() {{
   }} catch (e) {{
     if (window.console && window.console.error) {{ window.console.error('řazení tabulek selhalo:', e); }}
   }}
+}}
+
+// Rozcestník dlouhých záložek (Sezóna, Bilance) se zvýrazněním aktuální sekce.
+function initSectionIndex() {{
+  try {{
+    var secs = document.querySelectorAll('.tabsection');
+    for (var s = 0; s < secs.length; s++) {{
+      (function(sec) {{
+        var cards = [];
+        for (var i = 0; i < sec.children.length; i++) {{
+          var k = sec.children[i];
+          if (k.classList.contains('card') && k.querySelector('h2')) cards.push(k);
+        }}
+        if (cards.length < 8) return;
+        var tab = sec.getAttribute('data-tab');
+        var body = document.createElement('div');
+        body.className = 'sec-body bento';
+        var nav = document.createElement('nav');
+        nav.className = 'sec-index';
+        nav.setAttribute('aria-label', 'Rozcestník sekce');
+        var ul = document.createElement('ul');
+        var kids = Array.prototype.slice.call(sec.children);
+        for (var a = 0; a < kids.length; a++) body.appendChild(kids[a]);
+        var links = [];
+        for (var n = 0; n < cards.length; n++) {{
+          cards[n].id = 'c-' + tab + '-' + n;
+          var c = cards[n].querySelector('h2').cloneNode(true);
+          var btn = c.querySelector('.info-btn');
+          if (btn) c.removeChild(btn);
+          var li = document.createElement('li');
+          var link = document.createElement('a');
+          link.href = '#c-' + tab + '-' + n;
+          link.textContent = c.textContent.trim();
+          li.appendChild(link);
+          ul.appendChild(li);
+          links.push(link);
+        }}
+        nav.appendChild(ul);
+        sec.classList.add('has-index');
+        sec.appendChild(nav);
+        sec.appendChild(body);
+        links[0].classList.add('is-on');
+        if ('IntersectionObserver' in window) {{
+          var io = new IntersectionObserver(function(entries) {{
+            for (var e = 0; e < entries.length; e++) {{
+              if (!entries[e].isIntersecting) continue;
+              for (var l = 0; l < links.length; l++) {{
+                links[l].classList.toggle('is-on', links[l].getAttribute('href') === '#' + entries[e].target.id);
+              }}
+            }}
+          }}, {{ rootMargin: '-90px 0px -65% 0px' }});
+          for (var o = 0; o < cards.length; o++) io.observe(cards[o]);
+        }}
+      }})(secs[s]);
+    }}
+  }} catch (e) {{
+    if (window.console && window.console.error) {{ window.console.error('rozcestník selhal:', e); }}
+  }}
+}}
+
+// Vysvětlivky u nadpisů: tlačítko "i" je rozbalí.
+function initInfo() {{
+  document.addEventListener('click', function(e) {{
+    var b = e.target && e.target.closest ? e.target.closest('.info-btn') : null;
+    if (!b) return;
+    var note = b.parentNode.nextElementSibling;
+    if (!note || !note.classList.contains('note')) return;
+    var open = note.hidden;
+    note.hidden = !open;
+    b.setAttribute('aria-expanded', open ? 'true' : 'false');
+  }});
 }}
 
 function normalizeText(s) {{
@@ -3515,6 +3764,8 @@ function initChart() {{
 function initAll() {{
   initNumericColumns();
   initChart();
+  initInfo();
+  initSectionIndex();
   initTabbar();
   initBadge();
   initSortableTables();
@@ -3537,9 +3788,14 @@ if (document.readyState === 'loading') {{
     # stavové ✅/❌ (nájezdy, výsledky) jako barevné tečky.
     page = re.sub(r'(<h2[^>]*>)\s*(?:[\U0001F000-\U0001FAFF\u2600-\u27BF\u2B00-\u2BFF\u2190-\u21FF\u2300-\u23FF][\ufe0f\u200d]?)+\s*',
                   r'\1', page)
-    page = re.sub(r'<p class="small">\s*(?:[\U0001F000-\U0001FAFF\u2600-\u27BF\u2300-\u23FF][\ufe0f\u200d]?\s*)?([^<:]{3,40}):\s*',
+    page = re.sub(r'<p class="small">\s*(?:[\U0001F000-\U0001FAFF\u2600-\u27BF\u2300-\u23FF\u2B00-\u2BFF][\ufe0f\u200d]?\s*)?([^<:]{3,40}):\s*',
                   r'<p class="small kv"><span class="muted">\1</span><span>', page)
     page = re.sub(r'(<p class="small kv"><span class="muted">[^<]*</span><span>)(.*?)</p>', r'\1\2</span></p>', page)
+    def _fold_note(m):
+        return (f'{m.group(1)}{m.group(2)}<button class="info-btn" type="button" aria-expanded="false" '
+                f'aria-label="Vysvětlivka" title="Vysvětlivka">i</button></h2>\n'
+                f'<p class="muted small note" hidden>{m.group(3)}</p>')
+    page = re.sub(r'(<h2[^>]*>)([^<]*)</h2>\s*<p class="muted small">(.*?)</p>', _fold_note, page, flags=re.S)
     page = page.replace("✅", '<span class="dot dot-pos dot-after" title="ano"></span>')
     page = page.replace("❌", '<span class="dot dot-neg dot-after" title="ne"></span>')
     return page
