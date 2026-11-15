@@ -1,5 +1,5 @@
 {
- "aktualizovano": "15.11.2026 16:02",
+ "aktualizovano": "15.11.2026 20:43",
  "zapasy": [
   {
    "kolo": 1,
@@ -12113,11 +12113,645 @@
    "datum": "neděle 15.11.",
    "domaci": "České Budějovice",
    "hoste": "Pardubice",
-   "odehrano": false,
-   "vysledek": "",
+   "odehrano": true,
+   "vysledek": "2:1",
    "hokejcz_id": "2928381",
-   "sestava": null,
-   "zapis": null
+   "sestava": {
+    "A": {
+     "nazev": "BANES Motor České Budějovice",
+     "hraci": [
+      {
+       "c": "35",
+       "jmeno": "KLOUČEK Milan",
+       "post": "GK",
+       "hral": true
+      },
+      {
+       "c": "21",
+       "jmeno": "MAŘÍK Matyáš",
+       "post": "GK",
+       "hral": false
+      },
+      {
+       "c": "7",
+       "jmeno": "ŠTENCEL Jan",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "84",
+       "jmeno": "KUNDRÁTEK Tomáš",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "8",
+       "jmeno": "NORDSÄTER Lucas",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "72",
+       "jmeno": "MCCORMACK Graeme",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "69",
+       "jmeno": "VRÁBLÍK Roman",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "13",
+       "jmeno": "NEDOROST Václav",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "98",
+       "jmeno": "KACHYŇA Ondřej",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "95",
+       "jmeno": "OLESEN Nick Alexander",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "42",
+       "jmeno": "HOCH Štěpán",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "16",
+       "jmeno": "LANTOŠI Róbert",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "64",
+       "jmeno": "POUR Jakub",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "92",
+       "jmeno": "BELL Parker",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "61",
+       "jmeno": "AHL Filip",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "45",
+       "jmeno": "ORDOŠ Jan",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "88",
+       "jmeno": "BULÍŘ Michal",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "26",
+       "jmeno": "ZACHAR Marek",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "56",
+       "jmeno": "BERÁNEK Martin",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "20",
+       "jmeno": "TOMAN Matěj",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "22",
+       "jmeno": "KOLÁČEK Josef",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "37",
+       "jmeno": "HEJDUK Marek",
+       "post": "F",
+       "hral": true
+      }
+     ],
+     "brankari": [
+      {
+       "c": "35",
+       "od": "00:00"
+      }
+     ],
+     "lavicka": [
+      {
+       "jmeno": "Róbert Petrovický",
+       "funkce": "Hlavní trenér"
+      },
+      {
+       "jmeno": "Valdemar Jiruš",
+       "funkce": "Asistent trenéra"
+      },
+      {
+       "jmeno": "Pavel Bláha",
+       "funkce": "Vedoucí týmu"
+      },
+      {
+       "jmeno": "Pavel Vlašic",
+       "funkce": "Kustod"
+      },
+      {
+       "jmeno": "Jiří Rotbauer",
+       "funkce": "Kustod"
+      },
+      {
+       "jmeno": "Stanislav Hrubec",
+       "funkce": "Trenér brankářů"
+      },
+      {
+       "jmeno": "Filip Krejčí",
+       "funkce": "Lékař"
+      },
+      {
+       "jmeno": "David Vrbata",
+       "funkce": "Asistent trenéra"
+      }
+     ]
+    },
+    "B": {
+     "nazev": "HC DYNAMO PARDUBICE",
+     "hraci": [
+      {
+       "c": "32",
+       "jmeno": "SUBBAN Malcolm",
+       "post": "GK",
+       "hral": true
+      },
+      {
+       "c": "35",
+       "jmeno": "WILL Roman",
+       "post": "GK",
+       "hral": false
+      },
+      {
+       "c": "15",
+       "jmeno": "LUDVIG John",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "79",
+       "jmeno": "TOURIGNY Miguël",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "33",
+       "jmeno": "KOŠŤÁLEK Jan",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "41",
+       "jmeno": "ČEREŠŇÁK Peter",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "25",
+       "jmeno": "ŠČOTKA Jan",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "43",
+       "jmeno": "GAZDA Daniel",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "7",
+       "jmeno": "DVOŘÁK Tomáš",
+       "post": "D",
+       "hral": true
+      },
+      {
+       "c": "4",
+       "jmeno": "MIKLIŠ Ondřej",
+       "post": "D",
+       "hral": false
+      },
+      {
+       "c": "19",
+       "jmeno": "ČERVENKA Roman",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "71",
+       "jmeno": "SOBOTKA Vladimír",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "89",
+       "jmeno": "MANDÁT Jan",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "96",
+       "jmeno": "SMEJKAL Jiří",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "98",
+       "jmeno": "TOMÁŠEK David",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "93",
+       "jmeno": "STRÁNSKÝ Matěj",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "44",
+       "jmeno": "POULÍČEK Patrik",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "92",
+       "jmeno": "NOSEK Tomáš",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "94",
+       "jmeno": "LAUKO Jakub",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "29",
+       "jmeno": "KELEMEN Miloš",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "11",
+       "jmeno": "KONDELÍK Jáchym",
+       "post": "F",
+       "hral": true
+      },
+      {
+       "c": "61",
+       "jmeno": "KAUT Martin",
+       "post": "F",
+       "hral": true
+      }
+     ],
+     "brankari": [
+      {
+       "c": "32",
+       "od": "00:00"
+      }
+     ],
+     "lavicka": [
+      {
+       "jmeno": "Filip Pešán",
+       "funkce": "Hlavní trenér"
+      },
+      {
+       "jmeno": "Karel Mlejnek",
+       "funkce": "Asistent trenéra"
+      },
+      {
+       "jmeno": "Václav Kočí",
+       "funkce": "Asistent trenéra"
+      },
+      {
+       "jmeno": "Aleš Bílek",
+       "funkce": "Kustod"
+      },
+      {
+       "jmeno": "Michal Borovička",
+       "funkce": "Kustod"
+      },
+      {
+       "jmeno": "Adam Ručka",
+       "funkce": "Fyzioterapeut"
+      },
+      {
+       "jmeno": "Tomáš Hrubý",
+       "funkce": "Vedoucí týmu"
+      },
+      {
+       "jmeno": "Jiří Sklenář",
+       "funkce": "Trenér brankářů"
+      }
+     ]
+    }
+   },
+   "zapis": {
+    "goly": [
+     {
+      "cas": "13:14",
+      "vteriny": 794,
+      "tym": "HC DYNAMO PARDUBICE",
+      "strelec": "Tomášek David",
+      "asistence": [
+       "Tourigny Miguël"
+      ],
+      "situace": "5/5",
+      "na_ledu_za": [
+       "Stránský Matěj",
+       "Smejkal Jiří",
+       "Ščotka Jan",
+       "Tourigny Miguël",
+       "Tomášek David"
+      ],
+      "na_ledu_proti": [
+       "Toman Matěj",
+       "Mccormack Graeme",
+       "Nordsäter Lucas",
+       "Hejduk Marek",
+       "Beránek Martin"
+      ]
+     },
+     {
+      "cas": "28:12",
+      "vteriny": 1692,
+      "tym": "BANES Motor České Budějovice",
+      "strelec": "Ordoš Jan",
+      "asistence": [
+       "Kundrátek Tomáš",
+       "Koláček Josef"
+      ],
+      "situace": "5/4",
+      "na_ledu_za": [
+       "Ordoš Jan",
+       "Kundrátek Tomáš",
+       "Koláček Josef",
+       "Bulíř Michal",
+       "Mccormack Graeme"
+      ],
+      "na_ledu_proti": [
+       "Kelemen Miloš",
+       "Sobotka Vladimír",
+       "Dvořák Tomáš",
+       "Gazda Daniel"
+      ]
+     },
+     {
+      "cas": "39:16",
+      "vteriny": 2356,
+      "tym": "BANES Motor České Budějovice",
+      "strelec": "Beránek Martin",
+      "asistence": [
+       "Nordsäter Lucas"
+      ],
+      "situace": "5/5",
+      "na_ledu_za": [
+       "Beránek Martin",
+       "Nordsäter Lucas",
+       "Koláček Josef",
+       "Hoch Štěpán",
+       "Mccormack Graeme"
+      ],
+      "na_ledu_proti": [
+       "Lauko Jakub",
+       "Nosek Tomáš",
+       "Košťálek Jan",
+       "Ščotka Jan",
+       "Poulíček Patrik"
+      ]
+     }
+    ],
+    "tresty": [
+     {
+      "cas": "03:24",
+      "vteriny": 204,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Hoch Štěpán",
+      "min": "2",
+      "od": "03:24",
+      "do": "05:24",
+      "duvod": "držení"
+     },
+     {
+      "cas": "04:23",
+      "vteriny": 263,
+      "tym": "HC DYNAMO PARDUBICE",
+      "hrac": "Košťálek Jan",
+      "min": "2",
+      "od": "04:23",
+      "do": "06:23",
+      "duvod": "podrážení"
+     },
+     {
+      "cas": "10:33",
+      "vteriny": 633,
+      "tym": "HC DYNAMO PARDUBICE",
+      "hrac": "Košťálek Jan",
+      "min": "2",
+      "od": "10:33",
+      "do": "12:33",
+      "duvod": "podrážení"
+     },
+     {
+      "cas": "17:54",
+      "vteriny": 1074,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Toman Matěj",
+      "min": "2",
+      "od": "17:54",
+      "do": "19:54",
+      "duvod": "hrubost"
+     },
+     {
+      "cas": "17:54",
+      "vteriny": 1074,
+      "tym": "HC DYNAMO PARDUBICE",
+      "hrac": "Ludvig John",
+      "min": "2",
+      "od": "17:54",
+      "do": "19:54",
+      "duvod": "sekání"
+     },
+     {
+      "cas": "19:22",
+      "vteriny": 1162,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Bulíř Michal",
+      "min": "2",
+      "od": "19:22",
+      "do": "21:22",
+      "duvod": "držení"
+     },
+     {
+      "cas": "25:09",
+      "vteriny": 1509,
+      "tym": "HC DYNAMO PARDUBICE",
+      "hrac": "Čerešňák Peter",
+      "min": "2",
+      "od": "25:09",
+      "do": "27:09",
+      "duvod": "držení"
+     },
+     {
+      "cas": "27:36",
+      "vteriny": 1656,
+      "tym": "HC DYNAMO PARDUBICE",
+      "hrac": "Čerešňák Peter",
+      "min": "2",
+      "od": "27:36",
+      "do": "28:12",
+      "duvod": "nesportovní chování"
+     },
+     {
+      "cas": "32:37",
+      "vteriny": 1957,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Kundrátek Tomáš",
+      "min": "2",
+      "od": "32:37",
+      "do": "34:37",
+      "duvod": "sekání"
+     },
+     {
+      "cas": "49:13",
+      "vteriny": 2953,
+      "tym": "HC DYNAMO PARDUBICE",
+      "hrac": "Ščotka Jan",
+      "min": "2",
+      "od": "49:13",
+      "do": "51:13",
+      "duvod": "nedovolené bránění"
+     },
+     {
+      "cas": "53:40",
+      "vteriny": 3220,
+      "tym": "HC DYNAMO PARDUBICE",
+      "hrac": "Lauko Jakub",
+      "min": "2",
+      "od": "53:40",
+      "do": "55:40",
+      "duvod": "podrážení"
+     },
+     {
+      "cas": "53:49",
+      "vteriny": 3229,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Olesen Nick Alexander",
+      "min": "2",
+      "od": "53:49",
+      "do": "55:49",
+      "duvod": "vysoká hůl"
+     },
+     {
+      "cas": "55:40",
+      "vteriny": 3340,
+      "tym": "HC DYNAMO PARDUBICE",
+      "hrac": "Lauko Jakub",
+      "min": "10",
+      "od": "55:40",
+      "do": "60:00",
+      "duvod": "napadání rozhodčích"
+     }
+    ],
+    "nejlepsi": {
+     "A": {
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Ordoš Jan"
+     },
+     "B": {
+      "tym": "HC DYNAMO PARDUBICE",
+      "hrac": "Tomášek David"
+     }
+    },
+    "bez_brankare": {
+     "A": [
+      [
+       3600,
+       null
+      ]
+     ],
+     "B": [
+      [
+       3484,
+       null
+      ]
+     ]
+    },
+    "datum": "15.11.2026",
+    "rozhodci": {
+     "hlavni": [
+      "Matěj Sýkora",
+      "Jakub Zeliska"
+     ],
+     "carovi": [
+      "Michal Zíka",
+      "Stanislav Hnát"
+     ]
+    },
+    "divaci": "6421",
+    "tretiny": [
+     {
+      "tretina": "1",
+      "goly": [
+       0,
+       1
+      ],
+      "strely": [
+       11,
+       13
+      ]
+     },
+     {
+      "tretina": "2",
+      "goly": [
+       2,
+       0
+      ],
+      "strely": [
+       6,
+       9
+      ]
+     },
+     {
+      "tretina": "3",
+      "goly": [
+       0,
+       0
+      ],
+      "strely": [
+       11,
+       8
+      ]
+     }
+    ],
+    "najezdy": []
+   }
   },
   {
    "kolo": 20,
