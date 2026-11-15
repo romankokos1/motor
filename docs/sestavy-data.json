@@ -1,5 +1,5 @@
 {
- "aktualizovano": "14.11.2026 22:15",
+ "aktualizovano": "15.11.2026 10:02",
  "zapasy": [
   {
    "kolo": 1,
@@ -12929,6 +12929,21 @@
     "g": 0,
     "a": 0,
     "b": 0
+   }
+  },
+  "McCormack Graeme": {
+   "typ": "skater",
+   "motor": {
+    "z": 0,
+    "g": 0,
+    "a": 0,
+    "b": 0
+   },
+   "extraliga": {
+    "z": 255,
+    "g": 32,
+    "a": 79,
+    "b": 111
    }
   }
  }
