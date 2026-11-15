@@ -157,5 +157,10 @@
     "typ": "skater",
     "motor": {"z": 2, "g": 0, "a": 0, "b": 0},
     "extraliga": {"z": 2, "g": 0, "a": 0, "b": 0}
+  },
+  "McCormack Graeme": {
+    "typ": "skater",
+    "motor": {"z": 0, "g": 0, "a": 0, "b": 0},
+    "extraliga": {"z": 255, "g": 32, "a": 79, "b": 111}
   }
 }
