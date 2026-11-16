@@ -1,0 +1,35 @@
+name: Sestavy před zápasem
+
+# Jednou denně (dopoledne). Pokud se dnes ani zítra nehraje, skončí během
+# pár vteřin bez jediného dotazu na web. Den před zápasem udělá jeden dotaz,
+# v den zápasu počká na okno od 3 hodin před výkopem a pak každých 15 minut
+# zkouší zápis až do výkopu. Sestavy ukládá do docs/sestavy-data.json
+# (stránka sestavy.html je z prohlížeče stáhnout nemůže).
+on:
+  schedule:
+    - cron: "37 9 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sestavy-predem
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 400
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Instalace závislostí
+        run: pip install -r scripts/requirements.txt
+
+      - name: Sledovat sestavy v okně zápasu
+        run: python scripts/sestavy_predem.py
