@@ -1501,6 +1501,24 @@ def fetch_zapis(hokejcz_id: str) -> dict | None:
     }
 
 
+def fetch_sestava_predem(hokejcz_id: str) -> dict | None:
+    """Sestavy ze zápisu ještě PŘED zápasem (kluby je do zápisu vyplňují
+    hodiny předem). Stejný tvar jako zapis["sestava"], ale bez gólů a
+    trestů. Vrací None, pokud zápis nemá tabulky týmů nebo v nich zatím
+    není žádný nastoupivší hráč."""
+    soup = fetch(HOKEJOVYZAPIS_URL_TMPL.format(id=hokejcz_id))
+    tables = soup.select("table.tab-team")
+    if len(tables) < 2:
+        return None
+    domaci = _parse_zapis_team_table(tables[0])
+    hoste = _parse_zapis_team_table(tables[1])
+    hrali = [sum(1 for p in t["poradi"] if p["hral"]) for t in (domaci, hoste)]
+    print(f"Sestavy předem {hokejcz_id}: {domaci['nazev']} {hrali[0]} hráčů, {hoste['nazev']} {hrali[1]} hráčů.")
+    if not any(hrali):
+        return None
+    return _lineup_payload(soup, domaci, hoste)
+
+
 def _lineup_payload(soup, domaci: dict, hoste: dict) -> dict:
     """Surová data sestav pro docs/sestavy.html (formátování řeší stránka)."""
     gch, bench = _parse_goalie_changes(soup), _parse_bench(soup)
@@ -1541,6 +1559,13 @@ def write_lineups_json(games: list, zapis_state: dict) -> None:
             print(f"Sestavy: rozpis na hokej.cz nedostupný ({exc}), ID zápasů chybí.")
             hk = []
         zk = {z["kolo"]: z for z in zapis_state.get("zapasy", [])}
+        predem = {}  # sestavy neodehraných kol stažené před zápasem (scripts/sestavy_predem.py)
+        try:
+            for p in json.loads(LINEUPS_JSON.read_text(encoding="utf-8")).get("zapasy", []):
+                if p.get("sestava") and not p.get("odehrano"):
+                    predem[p["kolo"]] = (p["sestava"], p.get("sestava_cas"))
+        except Exception:
+            pass
         out = []
         for g in sorted(games, key=lambda g: g["kolo"]):
             z = zk.get(g["kolo"]) or {}
@@ -1550,9 +1575,11 @@ def write_lineups_json(games: list, zapis_state: dict) -> None:
                 "domaci": g.get("domaci", ""),
                 "hoste": g.get("hoste", ""),
                 "odehrano": bool(g.get("odehrano")),
+                "cas": g.get("cas") or "",
                 "vysledek": g.get("vysledek") or "",
                 "hokejcz_id": z.get("hokejcz_id") or find_hokejcz_id(g, hk),
-                "sestava": z.get("sestava"),
+                "sestava": z.get("sestava") or (predem.get(g["kolo"]) or (None, None))[0],
+                "sestava_cas": None if z.get("sestava") else (predem.get(g["kolo"]) or (None, None))[1],
                 "zapis": _report_payload(z) if z.get("sestava") else None,
             })
         LINEUPS_JSON.write_text(json.dumps(
