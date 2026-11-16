@@ -223,7 +223,8 @@ function loadSelected() {
   if (g.sestava) {
     render(modelFromData(g));
     if (!g.zapis) $("paste-box").style.display = "block";
-    setStatus(`Ze zápisu uloženého při denní aktualizaci (${DATA.aktualizovano}).`, "ok");
+    setStatus(g.zapis ? `Ze zápisu uloženého při denní aktualizaci (${DATA.aktualizovano}).`
+      : `Sestavy z oficiálního zápisu, stav k ${g.sestava_cas || DATA.aktualizovano}. Poslední změny v nich můžeš doplnit vložením zápisu.`, "ok");
   } else if (g.hokejcz_id) {
     $("result").classList.add("hidden");
     loadLive(g.hokejcz_id);
