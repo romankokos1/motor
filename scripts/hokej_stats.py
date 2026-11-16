@@ -1911,7 +1911,8 @@ def build_comebacks(zapasy: list, games: list, kde: str | None = None) -> dict:
     if kde:
         zapasy = [z for z in zapasy if _motor_side(z) == kde]
     gk = _game_by_kolo(games)
-    out = {k: {"z": 0, "V": 0, "VP": 0, "PP": 0, "P": 0} for k in ("proh1", "proh2", "ved1", "ved2")}
+    out = {k: {"z": 0, "V": 0, "VP": 0, "PP": 0, "P": 0}
+           for k in ("proh1", "proh2", "ved1", "ved2", "k_cisty", "k_otocil", "k_ztratil", "k_nic")}
     for z in zapasy:
         res = _result_type(gk.get(z["kolo"]))
         if not res:
@@ -1922,7 +1923,10 @@ def build_comebacks(zapasy: list, games: list, kde: str | None = None) -> dict:
                 break
             d += 1 if _is_motor(g["tym"]) else -1
             lo, hi = min(lo, d), max(hi, d)
-        for key, ok in (("proh1", lo <= -1), ("proh2", lo <= -2), ("ved1", hi >= 1), ("ved2", hi >= 2)):
+        vyhral = res in ("V", "VP")
+        prubeh = (("k_otocil" if lo < 0 else "k_cisty") if vyhral
+                  else ("k_ztratil" if hi > 0 else "k_nic"))
+        for key, ok in (("proh1", lo <= -1), ("proh2", lo <= -2), ("ved1", hi >= 1), ("ved2", hi >= 2), (prubeh, True)):
             if ok:
                 out[key]["z"] += 1
                 out[key][res] += 1
@@ -2280,9 +2284,9 @@ PAGE_CSS = """
   .small.kv:first-of-type { margin-top: 6px; }
   .tbl-skaters, .tbl-goalkeepers { max-width: 780px; }
   .tbl-state td:first-child, .tbl-periods td:first-child, .tbl-form-5 td:first-child { white-space: normal; }
-  .tbl-comeback tr.grp td { font-weight: 600; color: var(--text-2); background: var(--surface-2); padding-top: 6px; padding-bottom: 6px; }
   .tbl-comeback td:first-child { white-space: normal; }
-  .tbl-comeback tbody tr.grp:hover td { background: var(--surface-2); box-shadow: none; padding-left: 4px; }
+  .cb-key { margin: 10px 0 0; font-size: 13.5px; color: var(--text-2); }
+  .cb-key strong { font-weight: 600; }
   .tbl-disc th, .tbl-disc td { padding-left: 4px; padding-right: 4px; }
   .tbl-disc th { }
   .tbl-form-5 td:first-child { min-width: 240px; }
@@ -3043,29 +3047,32 @@ def render_html(
         cbs = {k: build_comebacks(zapis_all, games, k or None) for k, _ in SCOPES}
 
         def comeback_table(c):
-            def cell(n, z, good):
-                if not z:
-                    return "<td>–</td><td>–</td>"
-                cls = ("sgn-pos" if good else "sgn-neg") if n else ""
-                pct = f"{round(100 * n / z)} %" if z >= 5 else "–"
-                return f'<td class="{cls}"><strong>{n}</strong> z {z}</td><td>{pct}</td>'
-
-            def row(label, n, z, good):
-                return f"<tr><td>{label}</td>{cell(n, z, good)}</tr>"
-            p1, p2, v1, v2 = c["proh1"], c["proh2"], c["ved1"], c["ved2"]
-            if not (p1["z"] or v1["z"]):
+            if not c["proh1"]["z"] and not c["ved1"]["z"] and not c["k_nic"]["z"]:
                 return "<p class='muted small'>Zatím žádný zápas.</p>"
-            rows = (
-                row("Otočil zápas", p1["V"] + p1["VP"], p1["z"], True)
-                + row("Aspoň bod", p1["V"] + p1["VP"] + p1["PP"], p1["z"], True)
-                + row("Otočil z manka 2+", p2["V"] + p2["VP"], p2["z"], True)
-                + "<tr class='grp'><td colspan='3'>Když Motor vedl</td></tr>"
-                + row("Vedení udržel", v1["V"], v1["z"], True)
-                + row("Ztratil vedení", v1["PP"] + v1["P"], v1["z"], False)
-                + row("Ztratil vedení o 2+", v2["PP"] + v2["P"], v2["z"], False)
-            )
-            return ("<table class=\"tbl-comeback\"><thead><tr><th>Ukazatel</th><th>Zápasů</th><th>%</th></tr></thead>"
-                    "<tbody><tr class='grp'><td colspan='3'>Když Motor prohrával</td></tr>" + rows + "</tbody></table>")
+
+            def cnt(n):
+                return f'<td class="num"><strong>{n}</strong></td>' if n else '<td class="num">0</td>'
+            rows = ""
+            for key, label, cls in (("k_cisty", "Vyhrál a nikdy neprohrával", ""),
+                                    ("k_otocil", "Vyhrál po prohrávání (otočil)", " sgn-pos"),
+                                    ("k_ztratil", "Nevyhrál, ale vedl (ztratil vedení)", " sgn-neg"),
+                                    ("k_nic", "Nevyhrál a nikdy nevedl", "")):
+                e = c[key]
+                if not e["z"]:
+                    continue
+                rows += (f"<tr><td>{label}</td><td class='num{cls}'><strong>{e['z']}</strong></td></tr>")
+
+            def pct(n, z):
+                return f" ({round(100 * n / z)} %)" if z >= 5 else ""
+            p1, v1 = c["proh1"], c["ved1"]
+            otocil, ztratil = p1["V"] + p1["VP"], v1["PP"] + v1["P"]
+            klic = ""
+            if p1["z"]:
+                klic += f"<p class='cb-key'>Z prohrávaných zápasů otočil <strong class='sg-pos'>{otocil} z {p1['z']}</strong>{pct(otocil, p1['z'])}</p>"
+            if v1["z"]:
+                klic += f"<p class='cb-key'>Z vedených zápasů ztratil vedení <strong class='sg-neg'>{ztratil} z {v1['z']}</strong>{pct(ztratil, v1['z'])}</p>"
+            return ("<table class=\"tbl-comeback\"><thead><tr><th>Jak zápas dopadl</th><th>Zápasů</th></tr></thead>"
+                    f"<tbody>{rows}</tbody></table>{klic}")
 
         periods_html = f"""
     <div class="card">
@@ -3082,11 +3089,11 @@ def render_html(
     </div>
     <div class="card">
       <h2>🔄 Otáčení zápasů</h2>
-      <p class="muted small">Podle průběhu skóre v řádné hrací době (60 minut) z oficiálních zápisů.
-      Otočil zápas = někdy prohrával, ale nakonec vyhrál (i po prodloužení či nájezdech).
-      Aspoň bod = někdy prohrával, ale nakonec získal aspoň bod. 2+ = o dva a více gólů. Vedení udržel = vedl a vyhrál v základní době.
-      Ztratil vedení = někdy vedl, ale nakonec nevyhrál ani po prodloužení či nájezdech.
-      Procenta se ukazují od pěti zápasů v dané situaci.</p>
+      <p class="muted small">Podle průběhu skóre v řádné hrací době (60 minut). Každý zápas je v tabulce
+      právě jednou podle konce. Výhra je i po prodloužení či nájezdech, nevyhrál = prohra včetně
+      prohry v prodloužení či po nájezdech. Dva řádky pod tabulkou: „otočil“ = ze zápasů, kdy Motor
+      někdy prohrával, kolik nakonec vyhrál; „ztratil vedení“ = ze zápasů, kdy někdy vedl, kolik nevyhrál.
+      Procenta se ukazují od pěti zápasů.</p>
       {scoped(comeback_table, cbs)}
     </div>"""
     else:
