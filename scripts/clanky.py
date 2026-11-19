@@ -289,7 +289,15 @@ def title_from_preview(nahled):
 
 
 def hcmotor_body(soup, nahled=""):
-    """Titulek z nadpisu článku a perex z prvního odstavce pod ním."""
+    """Titulek a perex článku hcmotor.cz: <div class="article-top"> s <h1> a <div class="perex">."""
+    top = soup.select_one(".article-top")
+    if top:
+        h1, px = top.find("h1"), top.select_one(".perex")
+        ht = re.sub(r"\s+", " ", h1.get_text(" ")).strip() if h1 else ""
+        pt = re.sub(r"\s+", " ", px.get_text(" ")).strip() if px else ""
+        if ht:
+            return ht, pt
+    # záloha pro jiné rozložení stránky: první nadpis a odstavec pod ním
     heads = []
     for h in soup.find_all(["h1", "h2", "h3"]):
         ht = re.sub(r"\s+", " ", h.get_text(" ")).strip()
@@ -623,7 +631,7 @@ def make_record(item, src_name, matchers, manual=False):
         "rucne": manual,
         "hraci": tag_players(text, matchers),
         **({"bez_casu": True} if item.get("bez_casu") else {}),
-        **({"ver": 3} if src_name == "HC Motor" else {}),
+        **({"ver": 4} if src_name == "HC Motor" else {}),
         **({"t_rss": item["_rss_t"]} if item.get("_rss") else {}),
         **({"t_vypis": item["_key"]} if item.get("_key") and not item.get("_rss") else {}),
     }
@@ -724,7 +732,7 @@ def watch_title(rec, it, errors, checks):
 
 def cleanup(data):
     """Odstraní záznamy hcmotor.cz z prvního (vadného) načtení: rozbité kódování, datum v titulku, menu."""
-    data["clanky"] = [c for c in data["clanky"] if not (c["zdroj"] == "HC Motor" and c.get("ver") != 3)]
+    data["clanky"] = [c for c in data["clanky"] if not (c["zdroj"] == "HC Motor" and c.get("ver") != 4)]
 
 
 def scan(cfg):
