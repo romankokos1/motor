@@ -1,9 +1,106 @@
 {
- "aktualizace": "2026-11-19T13:50+01:00",
+ "aktualizace": "2026-11-19T17:21+01:00",
  "clanky": [
   {
+   "url": "https://www.hokej.cz/telh-online-ctvrty-s-osmym-sparta-chce-bodovat-a-dotahnout-motor/5099280",
+   "titulek": "TELH ONLINE: Čtvrtý s osmým! Sparta chce bodovat a dotáhnout Motor",
+   "perex": "Na našem webu má Motor zrovna dnes svůj den s řadou speciálních článků. V Českých Budějovicích ale hostí pražskou Spartu. Ozdobí Jihočeši tento čtvrtek třemi body? Na Hokej.cz můžete utkání sledovat prostřednictvím textového online přenosu.",
+   "zdroj": "hokej.cz",
+   "datum": "2026-11-19T17:00+01:00",
+   "pridano": "2026-11-19T17:20+01:00",
+   "rucne": false,
+   "hraci": [],
+   "t_rss": "TELH ONLINE: Čtvrtý s osmým! Sparta chce bodovat a dotáhnout Motor",
+   "zapas": "2026-20",
+   "typ": "online"
+  },
+  {
+   "url": "https://isport.blesk.cz/clanek/hokej-tipsport-extraliga/482328/kometa-se-vzdava-stezky-vsadi-na-slovenskeho-veterana-z-nhl-resi-se-take-utocnici.html",
+   "titulek": "Po Stezkovi může do Komety zamířit slovenský veterán NHL",
+   "perex": "Kometa nabízí brankáře Aleše Stezku jiným klubům a zvažuje příchod Jaroslava Haláka. Ve hře jsou také změny mezi útočníky.",
+   "zdroj": "iSport",
+   "datum": "2026-11-19T16:48+01:00",
+   "pridano": "2026-11-19T17:20+01:00",
+   "rucne": false,
+   "hraci": [],
+   "t_vypis": "kometa se vzdává stezky! vsadí na slovenského veterána z nhl? řeší se také útočníci",
+   "souper": "2026-21",
+   "zapas": "2026-21",
+   "typ": null
+  },
+  {
+   "url": "https://www.hokej.cz/vanocni-utkani-motoru-bude-opet-patrit-charite-bude-prekonan-milion-korun/5099353",
+   "titulek": "Vánoční utkání Motoru bude opět patřit charitě, bude překonán milion korun?",
+   "perex": "Hokejové Vánoce v Českých Budějovicích budou mít znovu charitativní rozměr. Banes Motor České Budějovice věnuje své poslední domácí utkání před Štědrým dnem, které se odehraje v úterý 22. prosince proti Olomouci, pro Centrum Bazalka. Spolupráce klubu s organizací pomáhající lidem se zdravotním postižením už přinesla…",
+   "zdroj": "hokej.cz",
+   "datum": "2026-11-19T16:29+01:00",
+   "pridano": "2026-11-19T17:20+01:00",
+   "rucne": false,
+   "hraci": [],
+   "t_rss": "Vánoční utkání Motoru bude opět patřit charitě, bude překonán milion korun?",
+   "zapas": null,
+   "typ": null
+  },
+  {
+   "url": "https://www.hokej.cz/hokej-v-cislech-motor-vi-proc-ho-prodlouzil-brankar-krade-vyhry-slabinu-ma-jen/5099371",
+   "titulek": "Hokej v číslech: Motor ví, proč ho prodloužil. Brankář krade výhry, slabinu má jen...",
+   "perex": "České Budějovice se po 19 kolech drží na čtvrtém místě tabulky, přestože mají vyrovnané skóre 51:51. Motor navíc vyřešil otázku jedničky na další roky, když s Milanem Kloučkem prodloužil smlouvu o dva roky s opcí. Co na výkony jihočeského gólmana říkají pokročilé metriky?",
+   "zdroj": "hokej.cz",
+   "datum": "2026-11-19T15:45+01:00",
+   "pridano": "2026-11-19T17:20+01:00",
+   "rucne": false,
+   "hraci": [
+    "Milan Klouček"
+   ],
+   "t_rss": "Hokej v číslech: Motor ví, proč ho prodloužil. Brankář krade výhry, slabinu má jen...",
+   "zapas": null,
+   "typ": "prestup",
+   "skupina": "https://hcmotor.cz/clanek.asp?id=13927"
+  },
+  {
+   "url": "https://www.hokej.cz/duo-k-k-z-komety-jihlava-ulovila-dalsi-posily-jedna-ma-bronz-z-ms-18/5099372",
+   "titulek": "Duo K+K z Komety. Jihlava ulovila další posily, jedna má bronz z MS 18",
+   "perex": "Jihlava to se záchranou juniorské extraligy (a pochopitelně i vyššími cíli) myslí vážně, po slovenských nováčcích totiž přivedla v rychlém sledu další posily. Konkrétně dva útočníky z brněnské Komety – Jana Kerblera a Vojtěcha Kubína.",
+   "zdroj": "hokej.cz",
+   "datum": "2026-11-19T15:09+01:00",
+   "pridano": "2026-11-19T17:20+01:00",
+   "rucne": false,
+   "hraci": [],
+   "t_rss": "Duo K+K z Komety. Jihlava ulovila další posily, jedna má bronz z MS 18",
+   "souper": "2026-21",
+   "zapas": "2026-21",
+   "typ": "prestup"
+  },
+  {
+   "url": "https://www.idnes.cz/hokej/extraliga/kometa-brno-extraliga-presilovky-krize-libor-zabransky-majitel-trener.A261119_120817_hokej_icer",
+   "titulek": "Dostáváme do držky, přiznal Zábranský. Hráčům Komety dál věří, výměny odmítá",
+   "perex": "Dva zápasy, dvanáct inkasovaných gólů. Hokejisté brněnské Komety se po reprezentační přestávce trápí. Po výprasku 2:6 v Pardubicích schytali ještě tvrdší direkt v Hradci Králové, kde prohráli 0:6. „Bohužel dostáváme klasicky do držky a je pouze na nás, jak se z toho zvedneme,” přiznal majitel a hlavní trenér Brňanů…",
+   "zdroj": "iDNES",
+   "datum": "2026-11-19T15:08+01:00",
+   "pridano": "2026-11-19T17:20+01:00",
+   "rucne": false,
+   "hraci": [],
+   "t_rss": "Dostáváme do držky, přiznal Zábranský. Hráčům Komety dál věří, výměny odmítá",
+   "souper": "2026-21",
+   "zapas": "2026-21",
+   "typ": "prestup"
+  },
+  {
+   "url": "https://www.hokej.cz/top-fotky-motoru-deti-zeny-i-fans-vzkaz-pro-prikryla-vysmaty-kondelik/5099378",
+   "titulek": "TOP fotky Motoru: Děti, ženy i fans. Vzkaz pro Přikryla, vysmátý Kondelík",
+   "perex": "Motor patří k příjemným překvapením letošního ročníku, i díky domácím výkonům a výsledkům mu patří výborná čtvrtá příčka extraligové tabulky. Jak to v českobudějovické Budvar aréně vypadalo v dosavadním průběhu sezony? Mrkněte na povedené snímky z dílny tamního dvorního fotografa Petra Tibitanzla...",
+   "zdroj": "hokej.cz",
+   "datum": "2026-11-19T14:19+01:00",
+   "pridano": "2026-11-19T17:20+01:00",
+   "rucne": false,
+   "hraci": [],
+   "t_rss": "TOP fotky Motoru: Děti, ženy i fans. Vzkaz pro Přikryla, vysmátý Kondelík",
+   "zapas": null,
+   "typ": null
+  },
+  {
    "url": "https://www.sport.cz/clanek/hokej-extraliga-videomomenty-sparta-chce-odcinit-fiasko-ceka-ji-oblibeny-souper-5578886",
-   "titulek": "Videomomenty. Sparta chce odčinit fiasko, čeká ji oblíbený soupeř",
+   "titulek": "HOKEJ ONLINE: Videomomenty. Sparta v akci, chce odčinit fiasko",
    "perex": "Tipsport extraliga nabízí ve čtvrtek předehrávku 20. kola, v níž hokejisté Českých Budějovic hostí od 17:30 Spartu. Čtvrtí Jihočeši patří mezi nejpříjemnější překvapení sezony, zatímco favorizovaní Pražané jsou v tabulce až osmí. Sport.cz vám nabízí v této online reportáži nejdůležitější údaje a ve video ukázkách i…",
    "zdroj": "Sport.cz",
    "datum": "2026-11-19T12:08+01:00",
@@ -11,9 +108,14 @@
    "rucne": false,
    "hraci": [],
    "zapas": "2026-20",
-   "typ": null,
-   "skupina": "https://www.hokej.cz/ctvrty-s-osmym-sparta-potrebuje-bodovat-a-dotahnout-motor/5099280",
-   "t_rss": "Videomomenty. Sparta chce odčinit fiasko, čeká ji oblíbený soupeř"
+   "typ": "online",
+   "t_rss": "HOKEJ ONLINE: Videomomenty. Sparta v akci, chce odčinit fiasko",
+   "puvodni": [
+    {
+     "titulek": "Videomomenty. Sparta chce odčinit fiasko, čeká ji oblíbený soupeř",
+     "zmeneno": "2026-11-19T17:20+01:00"
+    }
+   ]
   },
   {
    "url": "https://isport.blesk.cz/clanek/hokej-tipsport-extraliga/482310/zakulisi-budejovic-naladovy-genius-olesen-kundratek-z-flaksy-skvely-sef-kabiny.html",
@@ -31,7 +133,7 @@
     "Václav Nedorost"
    ],
    "zapas": null,
-   "typ": null,
+   "typ": "rozhovor",
    "t_vypis": "zákulisí budějovic: náladový génius olesen. kundrátek? z flaksy skvělý šéf kabiny",
    "mluvi": [
     "Václav Nedorost"
@@ -154,8 +256,7 @@
    "rucne": false,
    "hraci": [],
    "zapas": "2026-20",
-   "typ": null,
-   "skupina": "https://www.hokej.cz/ctvrty-s-osmym-sparta-potrebuje-bodovat-a-dotahnout-motor/5099280",
+   "typ": "preview",
    "t_rss": "Čtvrtý s osmým! Sparta potřebuje bodovat a dotáhnout Motor"
   },
   {
@@ -168,7 +269,7 @@
    "rucne": false,
    "hraci": [],
    "zapas": "2026-20",
-   "typ": null,
+   "typ": "preview",
    "t_rss": "Tohle je váš den, Banes Motor České Budějovice!"
   },
   {
@@ -487,7 +588,7 @@
    "ver": 3,
    "t_vypis": ", václav plachta ve čtvrtek přijede sparta! vyprodáme podruhé za sebou budvar arénu?",
    "zapas": "2026-20",
-   "typ": null
+   "typ": "preview"
   },
   {
    "url": "https://hcmotor.cz/clanek.asp?id=13908",
@@ -608,7 +709,7 @@
    "ver": 3,
    "t_vypis": ", marek dvořák jan ordoš hodnotí zápas s pardubicemi: klobouk dolů před všemi kluky!",
    "zapas": "2026-19",
-   "typ": null,
+   "typ": "rozhovor",
    "mluvi": [
     "Jan Ordoš"
    ]
@@ -679,7 +780,7 @@
     "Martin Beránek"
    ],
    "zapas": "2026-19",
-   "typ": null,
+   "typ": "reportaz",
    "t_vypis": "hokej souhrn budějovice přetlačily pardubice, sparta doma padla s hradcem aktualizováno"
   },
   {
@@ -750,7 +851,7 @@
    "ver": 3,
    "t_vypis": ", tomáš david neděle přinese souboj s obhájcem titulu. na led budvar arény přijíždí pardubice",
    "zapas": "2026-19",
-   "typ": null
+   "typ": "preview"
   },
   {
    "url": "https://sport.ceskatelevize.cz/clanek/hokej/trinec-podruhe-v-sezone-porazil-liberec-oslabeny-litvinov-nestacil-na-budejovice-159946",
@@ -828,7 +929,7 @@
    "ver": 3,
    "t_vypis": ", martin vašíček extraliga se vrací! motor míří na led litvínova",
    "zapas": "2026-18",
-   "typ": null
+   "typ": "preview"
   },
   {
    "url": "https://hcmotor.cz/clanek.asp?id=13912",
@@ -845,7 +946,7 @@
    "ver": 3,
    "t_vypis": ", marek dvořák tomáš kundrátek odpovídá fanouškům! kdo je dj v kabině a s kým je největší legrace?",
    "zapas": null,
-   "typ": null,
+   "typ": "rozhovor",
    "mluvi": [
     "Tomáš Kundrátek"
    ]
@@ -915,7 +1016,7 @@
    "ver": 3,
    "t_vypis": ", roman kokoš motorácký dotazník: co prozradil graeme mccormack?",
    "zapas": null,
-   "typ": null,
+   "typ": "rozhovor",
    "mluvi": [
     "Graeme McCormack"
    ]
@@ -1065,7 +1166,7 @@
    "ver": 3,
    "t_vypis": ", marek dvořák motor v neděli přivítá karlovy vary! vstupenky jsou stále k dostání!",
    "zapas": "2026-17",
-   "typ": null
+   "typ": "preview"
   },
   {
    "url": "https://www.sport.cz/clanek/hokej-extraliga-hokejove-prestupy-online-plzen-i-boleslav-oznamily-prvni-posily-5437465",
