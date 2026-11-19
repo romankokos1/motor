@@ -248,7 +248,7 @@ def read_rss(url):
 
 
 def read_listing(url, pattern, with_dates=False):
-    soup = BeautifulSoup(get(url).text, "html.parser")
+    soup = BeautifulSoup(get(url).content, "html.parser")
     rx = re.compile(pattern)
     seen = {}
     for a in soup.find_all("a", href=True):
@@ -256,30 +256,24 @@ def read_listing(url, pattern, with_dates=False):
         if not rx.match(href):
             continue
         text = re.sub(r"\s+", " ", a.get_text(" ")).strip()
+        if with_dates:
+            # hcmotor.cz: odkaz obsahuje „datum, autor titulek“ – bereme jen datum,
+            # titulek a perex se dotáhnou z článku; odkazy bez data (menu, staré) přeskočíme
+            if not REL_DATE.match(text):
+                continue
+            d, has_time = parse_rel_date(text)
+            if href not in seen:
+                seen[href] = {"url": href, "titulek": "", "nahled": text, "perex": "",
+                              "datum": d, "bez_casu": not has_time}
+            continue
         it = seen.setdefault(href, {"url": href, "titulek": "", "perex": "", "datum": None})
         if len(text) > len(it["titulek"]):
             it["titulek"] = text
-        if with_dates and it["datum"] is None:
-            # datum a anotace hledej v nejbližším obalu odkazu
-            box = a
-            for _ in range(4):
-                box = box.parent
-                if box is None:
-                    break
-                btxt = re.sub(r"\s+", " ", box.get_text(" ")).strip()
-                d, has_time = parse_rel_date(btxt)
-                if d:
-                    it["datum"], it["bez_casu"] = d, not has_time
-                    rest = btxt.replace(text, "")
-                    rest = REL_DATE.sub("", rest).strip(" -–|·")
-                    if len(rest) > 40:
-                        it["perex"] = clean_text(rest)
-                    break
-    return [it for it in seen.values() if it["titulek"]]
+    return [it for it in seen.values() if it["titulek"] or it.get("nahled")]
 
 
 def read_article_meta(url):
-    soup = BeautifulSoup(get(url).text, "html.parser")
+    soup = BeautifulSoup(get(url).content, "html.parser")
 
     def meta(*keys):
         for k in keys:
@@ -296,8 +290,8 @@ def read_article_meta(url):
     if perex.strip() in ("Motor České Budějovice", ""):
         perex = ""
         for p_ in soup.find_all("p"):
-            t_ = p_.get_text(" ").strip()
-            if len(t_) > 60:
+            t_ = re.sub(r"\s+", " ", p_.get_text(" ")).strip()
+            if len(t_) > 80 and not REL_DATE.match(t_):
                 perex = t_
                 break
     date = parse_date(meta("article:published_time", "og:published_time", "date",
@@ -531,8 +525,16 @@ def make_record(item, src_name, matchers, manual=False):
 
 # ---------- režimy ----------
 
+def cleanup(data):
+    """Odstraní záznamy hcmotor.cz z prvního (vadného) načtení: rozbité kódování, datum v titulku, menu."""
+    bad = re.compile(r"[èìøùÌÈ]|archiv èlánk")
+    data["clanky"] = [c for c in data["clanky"] if not (
+        c["zdroj"] == "HC Motor" and (bad.search(c["titulek"] + c["perex"]) or REL_DATE.match(c["titulek"])))]
+
+
 def scan(cfg):
     data = load_data()
+    cleanup(data)
     known = {c["url"] for c in data["clanky"]} | set(data.get("odebrane", []))
     matchers = player_matchers(load_players(cfg))
     added, report = 0, []
@@ -557,7 +559,7 @@ def scan(cfg):
         for url, it in candidates.items():
             if url in known or source_for(url, cfg) is not src:
                 continue
-            if not is_relevant(src, url, f'{it["titulek"]} {it["perex"]}', cfg, matchers):
+            if not is_relevant(src, url, f'{it["titulek"] or it.get("nahled", "")} {it["perex"]}', cfg, matchers):
                 continue
             if not it["perex"] or not it["datum"] or not it["titulek"]:
                 try:
@@ -570,6 +572,8 @@ def scan(cfg):
                 except Exception as e:  # noqa: BLE001
                     errors.append(f"článek {url}: {e}")
             if not it["titulek"]:
+                continue
+            if src.get("vyloucit") and re.search(src["vyloucit"], it["titulek"]):
                 continue
             data["clanky"].append(make_record(it, src["nazev"], matchers))
             known.add(url)

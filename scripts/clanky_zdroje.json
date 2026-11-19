@@ -86,7 +86,7 @@
       "hokej_v_url": "",
       "vse": true,
       "datum_ve_vypisu": true,
-      "vyloucit": "^(JUN|DOR|STD|MLD|U\\d{2}|SŽ|MŽ|ŽENY|Junioři|Dorost|Mládež)\\b"
+      "vyloucit": "\\b(JUN|DOR|SDO|MDO|STD|MLD|SŽ[AB]?|MŽ[AB]?|U\\d{2}|ŽENY|ŽEN)\\s*:|Týden v mládeži"
     },
     {
       "id": "cro",
