@@ -18,14 +18,22 @@
   --bg:#FFFFFF; --surface-2:#F3F4F6; --line:#E4E6EA; --line-strong:#C5C9CF;
   --text:#15181C; --text-2:#3F454D; --text-3:#6A717B;
   --accent:#1F5FA8; --accent-2:#6B4FA3; --pos:#1E7B3A; --neg:#C2352A; --warn:#A06A00; --hover:#F3F4F6;
-  --bar:46px; --top:var(--bar);
+  --bar:46px; --top:var(--bar); --tint:5%;
 }
+/* barvy zdrojů (podle webů) – --z výplň, --zt text na výplni */
+.z-isport{--z:#A3121D;--zt:#FFFFFF}
+.z-hokejcz{--z:#3AA6E0;--zt:#08263D}
+.z-denik{--z:#1F4B99;--zt:#FFFFFF}
+.z-idnes{--z:#F2A900;--zt:#1A1A1A}
+.z-sportcz{--z:#3A3F47;--zt:#FFFFFF}
+.z-jiny{--z:#8A9099;--zt:#FFFFFF}
 @media (prefers-color-scheme:dark){
   :root{
     --bg:#121416; --surface-2:#1B1E22; --line:#2A2E34; --line-strong:#444A52;
     --text:#ECEEF0; --text-2:#B9BFC6; --text-3:#8F969F;
-    --accent:#6EA8F0; --accent-2:#B39DE0; --pos:#4CC27A; --neg:#F0685D; --warn:#D9A441; --hover:#1B1E22;
+    --accent:#6EA8F0; --accent-2:#B39DE0; --pos:#4CC27A; --neg:#F0685D; --warn:#D9A441; --hover:#1B1E22; --tint:10%;
   }
+  .z-sportcz{--z:#7C838D;--zt:#FFFFFF}
 }
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
@@ -71,19 +79,24 @@ main{max-width:1280px;margin:0 auto;padding:8px 24px 64px}
 .day-h .n{margin-left:auto}
 
 /* řádek článku */
-.row{display:grid;grid-template-columns:48px 92px minmax(0,1fr);gap:0 14px;padding:10px 8px;border-bottom:1px solid var(--line)}
+.row{display:grid;grid-template-columns:48px 92px minmax(0,1fr);gap:0 14px;padding:10px 8px 10px 12px;border-bottom:1px solid var(--line);
+     background:color-mix(in srgb,var(--z) var(--tint),var(--bg));box-shadow:inset 4px 0 0 var(--z)}
 .row:last-child{border-bottom:0}
-.row:hover{background:var(--hover);box-shadow:inset 2px 0 0 var(--accent)}
+.row:hover{background:color-mix(in srgb,var(--z) calc(var(--tint) * 2),var(--bg))}
 tbody tr:hover td{background:var(--hover)}
 tbody tr:hover td:first-child{box-shadow:inset 2px 0 0 var(--accent)}
 .t{color:var(--text-3);font-size:14px;padding-top:1px}
-.s{color:var(--text-2);font-size:14px;font-weight:500;padding-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.s{align-self:start;justify-self:start;max-width:100%;background:var(--z);color:var(--zt);font-size:12px;font-weight:600;line-height:18px;padding:1px 6px;margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .h{font-weight:500;text-decoration:none}
 .h:hover{color:var(--accent);text-decoration:underline;text-underline-offset:2px}
 .new{display:inline-block;margin-right:8px;font-size:11px;font-weight:600;letter-spacing:.06em;color:var(--accent);vertical-align:1px}
 .row.is-new .h{font-weight:600}
 .p{margin-top:2px;color:var(--text-2);font-size:14px}
-.pl{margin-top:4px;color:var(--text-3);font-size:13px}
+.pl{margin-top:6px;font-size:14px;color:var(--text)}
+.pl span{color:var(--text-3);margin-right:6px}
+.pl b{font-weight:500}
+.pl b+b::before{content:", ";font-weight:400;color:var(--text-3)}
+.sq{display:inline-block;width:9px;height:9px;background:var(--z);margin-right:6px;vertical-align:0}
 .more{margin:24px 0 0;background:none;border:1px solid var(--line-strong);border-radius:0;padding:7px 16px;cursor:pointer}
 .more:hover{border-color:var(--accent);color:var(--accent)}
 .empty{padding:32px 0;color:var(--text-3)}
@@ -140,7 +153,7 @@ td b{font-weight:600}
   .filters{gap:2px 14px}
   .filters select{margin-left:0;width:100%;margin-top:6px}
   .row{grid-template-columns:40px minmax(0,1fr);padding:10px 6px}
-  .s{grid-column:2;grid-row:1;font-size:13px}
+  .s{grid-column:2;grid-row:1;margin-bottom:4px}
   .row>div:last-child{grid-column:2}
   .t{grid-row:1 / span 2;font-size:13px}
   table{font-size:13px}
@@ -205,6 +218,8 @@ const store = {
 };
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const when = a => new Date(a.datum || a.pridano);
+const ZC = {"iSport":"isport","hokej.cz":"hokejcz","Deník":"denik","iDNES":"idnes","Sport.cz":"sportcz"};
+const zc = n => "z-" + (ZC[n] || "jiny");
 const dayKey = d => `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
 const hhmm = d => String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0");
 const dm = d => `${d.getDate()}. ${d.getMonth()+1}.`;
@@ -257,7 +272,7 @@ function renderFilters(){
     .sort((a,b) => a.split(" ").pop().localeCompare(b.split(" ").pop(), "cs"));
   $("filters").innerHTML =
     `<button class="f" data-s="" aria-pressed="${!src}">Vše<b>${all.length}</b></button>` +
-    names.map(n => `<button class="f" data-s="${esc(n)}" aria-pressed="${src===n}">${esc(n)}<b>${counts[n]}</b></button>`).join("") +
+    names.map(n => `<button class="f ${zc(n)}" data-s="${esc(n)}" aria-pressed="${src===n}"><i class="sq" aria-hidden="true"></i>${esc(n)}<b>${counts[n]}</b></button>`).join("") +
     (players.length ? `<select id="pl" aria-label="Hráč"><option value="">Všichni hráči</option>${players.map(p => `<option${p===player?" selected":""}>${esc(p)}</option>`).join("")}</select>` : "");
   $("filters").querySelectorAll(".f").forEach(b => b.onclick = () => { src = b.dataset.s; shown = PAGE; renderFilters(); renderFeed(); });
   const pl = $("pl");
@@ -283,12 +298,12 @@ function renderFeed(){
       <div class="day-h" id="d${gi}"><h2 id="dh${gi}">${title}</h2>${sub ? `<span>${sub}</span>` : ""}<span class="n">${n} ${plural(n,"článek","články","článků")}</span></div>
       ${g.list.map(a => {
         const isNew = lastVisit && a.pridano > lastVisit, d = when(a);
-        return `<article class="row${isNew ? " is-new" : ""}">
+        return `<article class="row ${zc(a.zdroj)}${isNew ? " is-new" : ""}">
           <div class="t">${a.datum ? hhmm(d) : "–"}</div>
           <div class="s">${esc(a.zdroj)}</div>
           <div>${isNew ? `<span class="new">NOVÉ</span>` : ""}<a class="h" href="${esc(a.url)}" target="_blank" rel="noopener">${esc(a.titulek)}</a>
             ${a.perex ? `<div class="p">${esc(a.perex)}</div>` : ""}
-            ${(a.hraci || []).length ? `<div class="pl">${a.hraci.map(esc).join(" · ")}</div>` : ""}
+            ${(a.hraci || []).length ? `<div class="pl"><span>Hráči</span>${a.hraci.map(h => `<b>${esc(h)}</b>`).join("")}</div>` : ""}
           </div></article>`;
       }).join("")}</section>`;
   }).join("");
@@ -342,7 +357,7 @@ function stats(keyFn){
 const signed = v => v === 0 ? `<span class="zero">0</span>` : `<span class="${v>0?"pos":"neg"}">${v>0?"+":"−"}${Math.abs(v)}</span>`;
 
 const COLS = (first, firstShort) => [
-  {id:"k",    label:first, short:firstShort, num:false, cell:r => esc(r.k), cls:"lead"},
+  {id:"k",    label:first, short:firstShort, num:false, cell:r => first === "Zdroj" ? `<span class="${zc(r.k)}"><i class="sq" aria-hidden="true"></i>${esc(r.k)}</span>` : esc(r.k), cls:"lead"},
   {id:"total",label:"Celkem", short:"Celk.", num:true, cell:r => `<b>${r.total}</b>`},
   {id:"w",    label:"7 dní", short:"7 d", num:true, cell:r => r.w},
   {id:"ch",   label:"Změna", short:"±", num:true, cell:r => signed(r.ch)},
