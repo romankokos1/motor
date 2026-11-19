@@ -69,11 +69,12 @@ main{max-width:1280px;margin:0 auto;padding:8px 24px 64px}
 .f b{font-weight:400;color:var(--text-3);margin-left:4px}
 .f:hover{color:var(--accent)}
 .f[aria-pressed="true"]{color:var(--text);font-weight:600;box-shadow:inset 0 -2px 0 var(--accent)}
-.filters select{margin-left:auto;background:var(--bg);border:1px solid var(--line-strong);border-radius:0;padding:4px 8px;font-size:14px}
+.sel{margin-left:auto;display:flex;gap:8px}
+.sel select{background:var(--bg);border:1px solid var(--line-strong);border-radius:0;padding:4px 8px;font-size:14px}
 
 /* den */
 .day{margin-top:28px}
-.day-h{display:flex;align-items:baseline;gap:10px;border-top:1px solid var(--line-strong);padding-top:12px;margin-bottom:2px;scroll-margin-top:calc(var(--top) + 8px)}
+.day-h{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 10px;border-top:1px solid var(--line-strong);padding-top:12px;margin-bottom:2px;scroll-margin-top:calc(var(--top) + 8px)}
 .day-h h2{margin:0;font-size:18px;font-weight:600}
 .day-h span{color:var(--text-3);font-size:14px}
 .day-h .n{margin-left:auto}
@@ -92,6 +93,16 @@ tbody tr:hover td:first-child{box-shadow:inset 2px 0 0 var(--accent)}
 .new{display:inline-block;margin-right:8px;font-size:11px;font-weight:600;letter-spacing:.06em;color:var(--accent);vertical-align:1px}
 .row.is-new .h{font-weight:600}
 .p{margin-top:2px;color:var(--text-2);font-size:14px}
+.meta{margin-top:5px;font-size:13px;color:var(--text-2);display:flex;flex-wrap:wrap;gap:2px 14px;align-items:baseline}
+.typ{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text-2)}
+.typ.zraneni{color:var(--warn)}
+.zl{background:none;border:0;padding:0;cursor:pointer;color:var(--accent);font-size:13px;text-decoration:underline;text-underline-offset:2px;text-decoration-color:color-mix(in srgb,var(--accent) 40%,transparent)}
+.zl:hover{text-decoration-color:var(--accent)}
+.also{margin-top:6px;font-size:13px;color:var(--text-3);display:flex;flex-wrap:wrap;gap:4px 6px;align-items:center}
+.also a{background:var(--z);color:var(--zt);font-size:12px;font-weight:600;line-height:18px;padding:1px 6px;text-decoration:none}
+.also a:hover{text-decoration:underline}
+.res{font-weight:600}
+.res.pos{color:var(--pos)} .res.neg{color:var(--neg)}
 .pl{margin-top:6px;font-size:14px;color:var(--text)}
 .pl span{color:var(--text-3);margin-right:6px}
 .pl b{font-weight:500}
@@ -151,7 +162,8 @@ td b{font-weight:600}
   main{padding:0 14px 32px}
   .grid{gap:0}
   .filters{gap:2px 14px}
-  .filters select{margin-left:0;width:100%;margin-top:6px}
+  .sel{margin-left:0;width:100%;margin-top:6px}
+  .sel select{flex:1;min-width:0}
   .row{grid-template-columns:40px minmax(0,1fr);padding:10px 6px}
   .s{grid-column:2;grid-row:1;margin-bottom:4px}
   .row>div:last-child{grid-column:2}
@@ -171,6 +183,7 @@ td b{font-weight:600}
   <div class="in" role="tablist">
     <div class="brand">HC Motor · články</div>
     <button class="tab" role="tab" id="tab-clanky" aria-controls="p-clanky" aria-selected="true">Články</button>
+    <button class="tab" role="tab" id="tab-zapasy" aria-controls="p-zapasy" aria-selected="false">Zápasy</button>
     <button class="tab" role="tab" id="tab-prehled" aria-controls="p-prehled" aria-selected="false">Přehled</button>
     <div class="upd" id="upd"></div>
   </div>
@@ -185,6 +198,13 @@ td b{font-weight:600}
         <button class="more" id="more" hidden>Starší články</button>
       </div>
       <aside class="c2 index" id="index" hidden><h3>Dny</h3><nav id="idx"></nav></aside>
+    </div>
+  </section>
+
+  <section id="p-zapasy" role="tabpanel" aria-labelledby="tab-zapasy" hidden>
+    <div class="grid">
+      <div class="c10" id="zfeedcol"><div id="zfeed"></div></div>
+      <aside class="c2 index" id="zindex" hidden><h3>Zápasy</h3><nav id="zidx"></nav></aside>
     </div>
   </section>
 
@@ -210,6 +230,8 @@ const PAGE = 150, INDEX_MIN = 8, DAY = 864e5;
 const DAYS = ["neděle","pondělí","úterý","středa","čtvrtek","pátek","sobota"];
 const DSHORT = ["ne","po","út","st","čt","pá","so"];
 const MONTHS = ["ledna","února","března","dubna","května","června","července","srpna","září","října","listopadu","prosince"];
+const TYPY = {online:"Online", reportaz:"Reportáž", rozhovor:"Rozhovor", prestup:"Smlouva/přestup", zraneni:"Zranění"};
+const ZC = {"iSport":"isport","hokej.cz":"hokejcz","Deník":"denik","iDNES":"idnes","Sport.cz":"sportcz"};
 const reduced = matchMedia("(prefers-reduced-motion: reduce)");
 const $ = id => document.getElementById(id);
 const store = {
@@ -217,27 +239,28 @@ const store = {
   set(k,v){ try{ localStorage.setItem(k,v) }catch(e){} }
 };
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-const when = a => new Date(a.datum || a.pridano);
-const ZC = {"iSport":"isport","hokej.cz":"hokejcz","Deník":"denik","iDNES":"idnes","Sport.cz":"sportcz"};
 const zc = n => "z-" + (ZC[n] || "jiny");
+const when = a => new Date(a.datum || a.pridano);
 const dayKey = d => `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
 const hhmm = d => String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0");
 const dm = d => `${d.getDate()}. ${d.getMonth()+1}.`;
 const plural = (n, a, b, c) => n===1 ? a : (n>=2 && n<=4 ? b : c);
 
-let all = [], shown = PAGE, src = "", player = "", lastVisit = null, observer = null;
+let all = [], matches = {}, shown = PAGE, src = "", player = "", typ = "", lastVisit = null;
+const observers = {};
 
 /* ---------- záložky ---------- */
 const tabs = [...document.querySelectorAll(".tab")];
-function select(tab){
+function select(tab, keepScroll){
   tabs.forEach(t => {
     const on = t === tab;
     t.setAttribute("aria-selected", on);
     t.tabIndex = on ? 0 : -1;
     $(t.getAttribute("aria-controls")).hidden = !on;
   });
-  history.replaceState(null, "", tab.id === "tab-prehled" ? "#prehled" : location.pathname);
-  scrollTo(0, 0);
+  const h = {"tab-zapasy":"#zapasy","tab-prehled":"#prehled"}[tab.id];
+  history.replaceState(null, "", h || location.pathname);
+  if (!keepScroll) scrollTo(0, 0);
 }
 tabs.forEach((t, i) => {
   t.onclick = () => select(t);
@@ -255,7 +278,59 @@ document.querySelectorAll(".info").forEach(b => b.onclick = () => {
   $(b.getAttribute("aria-controls")).hidden = !open;
 });
 
-/* ---------- články ---------- */
+/* ---------- zápasy ---------- */
+const isHome = m => m.domaci.includes("Budějovice");
+const opp = m => isHome(m) ? m.hoste : m.domaci;
+function result(m){
+  const r = (m.vysledek || "").match(/(\d+)\s*:\s*(\d+)\s*(\w*)/);
+  if (!r) return "";
+  const my = +(isHome(m) ? r[1] : r[2]), th = +(isHome(m) ? r[2] : r[1]);
+  const win = my > th, extra = r[3] ? " " + r[3] : "";
+  return `<span class="res ${win ? "pos" : "neg"}">${my}:${th}${extra} ${win ? "výhra" : "prohra"}</span>`;
+}
+function matchLabel(m){ return `${m.kolo}. kolo · ${isHome(m) ? "doma" : "venku"} ${opp(m)}`; }
+function goMatch(id){
+  select($("tab-zapasy"), true);
+  const el = $(`m-${id}`);
+  if (el) el.scrollIntoView({behavior: reduced.matches ? "auto" : "smooth", block: "start"});
+}
+
+/* ---------- řádky článků ---------- */
+// sloučí články se stejnou skupinou; hlavní je nejdřív zveřejněný
+function stories(items){
+  const byG = new Map(), out = [];
+  items.forEach(a => {
+    if (!a.skupina){ out.push({main:a, others:[]}); return; }
+    if (!byG.has(a.skupina)){ const st = {members:[]}; byG.set(a.skupina, st); out.push(st); }
+    byG.get(a.skupina).members.push(a);
+  });
+  return out.map(s => {
+    if (!s.members) return s;
+    const m = s.members.slice().sort((a,b) => when(a) - when(b));
+    return {main: m[0], others: m.slice(1)};
+  });
+}
+
+function rowHtml(st, ctx){
+  const a = st.main, d = when(a);
+  const isNew = lastVisit && [a, ...st.others].some(x => x.pridano > lastVisit);
+  const m = a.zapas && matches[a.zapas];
+  const meta = [];
+  if (a.typ) meta.push(`<span class="typ ${a.typ}">${TYPY[a.typ] || a.typ}</span>`);
+  if (m && ctx !== "zapas") meta.push(`<button class="zl" data-z="${esc(m.id)}">${esc(matchLabel(m))}</button>`);
+  if (ctx === "zapas") meta.push(`<span>${DSHORT[d.getDay()]} ${dm(d)}</span>`);
+  return `<article class="row ${zc(a.zdroj)}${isNew ? " is-new" : ""}">
+    <div class="t">${a.datum ? hhmm(d) : "–"}</div>
+    <div class="s">${esc(a.zdroj)}</div>
+    <div>${isNew ? `<span class="new">NOVÉ</span>` : ""}<a class="h" href="${esc(a.url)}" target="_blank" rel="noopener">${esc(a.titulek)}</a>
+      ${a.perex ? `<div class="p">${esc(a.perex)}</div>` : ""}
+      ${meta.length ? `<div class="meta">${meta.join("")}</div>` : ""}
+      ${(a.hraci || []).length ? `<div class="pl"><span>Hráči</span>${a.hraci.map(h => `<b>${esc(h)}</b>`).join("")}</div>` : ""}
+      ${st.others.length ? `<div class="also">Také na:${st.others.map(o => `<a class="${zc(o.zdroj)}" href="${esc(o.url)}" target="_blank" rel="noopener" title="${esc(o.titulek)}">${esc(o.zdroj)}</a>`).join("")}</div>` : ""}
+    </div></article>`;
+}
+
+/* ---------- záložka Články ---------- */
 function dayLabel(d){
   const today = new Date(), y = new Date(today - DAY);
   const full = `${DAYS[d.getDay()]} ${d.getDate()}. ${MONTHS[d.getMonth()]}` + (d.getFullYear() !== today.getFullYear() ? ` ${d.getFullYear()}` : "");
@@ -270,72 +345,92 @@ function renderFilters(){
   const names = Object.keys(counts).sort((a,b) => counts[b] - counts[a] || a.localeCompare(b, "cs"));
   const players = [...new Set(all.flatMap(a => a.hraci || []))]
     .sort((a,b) => a.split(" ").pop().localeCompare(b.split(" ").pop(), "cs"));
+  const types = Object.keys(TYPY).filter(t => all.some(a => a.typ === t));
   $("filters").innerHTML =
     `<button class="f" data-s="" aria-pressed="${!src}">Vše<b>${all.length}</b></button>` +
     names.map(n => `<button class="f ${zc(n)}" data-s="${esc(n)}" aria-pressed="${src===n}"><i class="sq" aria-hidden="true"></i>${esc(n)}<b>${counts[n]}</b></button>`).join("") +
-    (players.length ? `<select id="pl" aria-label="Hráč"><option value="">Všichni hráči</option>${players.map(p => `<option${p===player?" selected":""}>${esc(p)}</option>`).join("")}</select>` : "");
+    `<span class="sel">` +
+    (types.length ? `<select id="ty" aria-label="Typ článku"><option value="">Všechny typy</option>${types.map(t => `<option value="${t}"${t===typ?" selected":""}>${TYPY[t]}</option>`).join("")}</select>` : "") +
+    (players.length ? `<select id="pl" aria-label="Hráč"><option value="">Všichni hráči</option>${players.map(p => `<option${p===player?" selected":""}>${esc(p)}</option>`).join("")}</select>` : "") +
+    `</span>`;
   $("filters").querySelectorAll(".f").forEach(b => b.onclick = () => { src = b.dataset.s; shown = PAGE; renderFilters(); renderFeed(); });
-  const pl = $("pl");
+  const pl = $("pl"), ty = $("ty");
   if (pl) pl.onchange = () => { player = pl.value; shown = PAGE; renderFeed(); };
+  if (ty) ty.onchange = () => { typ = ty.value; shown = PAGE; renderFeed(); };
 }
 
 function renderFeed(){
-  const items = all.filter(a => (!src || a.zdroj === src) && (!player || (a.hraci || []).includes(player)));
-  const feed = $("feed");
-  if (!items.length){
-    feed.innerHTML = `<div class="empty">Žádné články</div>`;
-    $("more").hidden = true; $("index").hidden = true; return;
+  const items = all.filter(a => (!src || a.zdroj === src) && (!player || (a.hraci || []).includes(player)) && (!typ || a.typ === typ));
+  const st = stories(items);
+  if (!st.length){
+    $("feed").innerHTML = `<div class="empty">Žádné články</div>`;
+    $("more").hidden = true; renderIndex("index", "idx", "feedcol", []); return;
   }
   const groups = [];
-  items.slice(0, shown).forEach(a => {
-    const d = when(a), k = dayKey(d);
+  st.slice(0, shown).forEach(s => {
+    const d = when(s.main), k = dayKey(d);
     if (!groups.length || groups[groups.length-1].k !== k) groups.push({k, d, list: []});
-    groups[groups.length-1].list.push(a);
+    groups[groups.length-1].list.push(s);
   });
-  feed.innerHTML = groups.map((g, gi) => {
+  $("feed").innerHTML = groups.map((g, gi) => {
     const [title, sub] = dayLabel(g.d), n = g.list.length;
     return `<section class="day" aria-labelledby="dh${gi}">
-      <div class="day-h" id="d${gi}"><h2 id="dh${gi}">${title}</h2>${sub ? `<span>${sub}</span>` : ""}<span class="n">${n} ${plural(n,"článek","články","článků")}</span></div>
-      ${g.list.map(a => {
-        const isNew = lastVisit && a.pridano > lastVisit, d = when(a);
-        return `<article class="row ${zc(a.zdroj)}${isNew ? " is-new" : ""}">
-          <div class="t">${a.datum ? hhmm(d) : "–"}</div>
-          <div class="s">${esc(a.zdroj)}</div>
-          <div>${isNew ? `<span class="new">NOVÉ</span>` : ""}<a class="h" href="${esc(a.url)}" target="_blank" rel="noopener">${esc(a.titulek)}</a>
-            ${a.perex ? `<div class="p">${esc(a.perex)}</div>` : ""}
-            ${(a.hraci || []).length ? `<div class="pl"><span>Hráči</span>${a.hraci.map(h => `<b>${esc(h)}</b>`).join("")}</div>` : ""}
-          </div></article>`;
-      }).join("")}</section>`;
+      <div class="day-h" id="d${gi}"><h2 id="dh${gi}">${title}</h2>${sub ? `<span>${sub}</span>` : ""}<span class="n">${n} ${plural(n,"zpráva","zprávy","zpráv")}</span></div>
+      ${g.list.map(s => rowHtml(s, "feed")).join("")}</section>`;
   }).join("");
-  $("more").hidden = items.length <= shown;
-  renderIndex(groups);
+  $("more").hidden = st.length <= shown;
+  renderIndex("index", "idx", "feedcol", groups.map((g, i) => ({id: `d${i}`, label: dayLabel(g.d)[2]})));
+}
+$("more").onclick = () => { shown += PAGE; renderFeed(); };
+
+/* ---------- záložka Zápasy ---------- */
+function renderMatches(){
+  const by = new Map();
+  all.forEach(a => { if (a.zapas && matches[a.zapas]){ if (!by.has(a.zapas)) by.set(a.zapas, []); by.get(a.zapas).push(a); } });
+  const list = [...by.keys()].map(id => matches[id]).sort((a,b) => b.start.localeCompare(a.start));
+  if (!list.length){ $("zfeed").innerHTML = `<div class="empty">Zatím žádné články k zápasům</div>`; renderIndex("zindex","zidx","zfeedcol",[]); return; }
+  $("zfeed").innerHTML = list.map(m => {
+    const d = new Date(m.start), items = by.get(m.id).slice().sort((a,b) => when(a) - when(b));
+    const st = stories(items), n = st.length;
+    const teams = `${m.domaci} – ${m.hoste}`;
+    return `<section class="day" aria-labelledby="mh-${m.id}">
+      <div class="day-h" id="m-${esc(m.id)}"><h2 id="mh-${m.id}">${m.kolo}. kolo</h2><span>${DSHORT[d.getDay()]} ${dm(d)} ${hhmm(d)} · ${esc(teams)}</span>${result(m)}<span class="n">${n} ${plural(n,"zpráva","zprávy","zpráv")}</span></div>
+      ${st.map(s => rowHtml(s, "zapas")).join("")}</section>`;
+  }).join("");
+  renderIndex("zindex", "zidx", "zfeedcol", list.map(m => ({id: `m-${m.id}`, label: `${m.kolo}. ${opp(m)}`})));
 }
 
-function renderIndex(groups){
-  if (observer) observer.disconnect();
-  const show = groups.length >= INDEX_MIN;
-  $("index").hidden = !show;
-  $("feedcol").className = show ? "c10" : "c12";
+/* ---------- rejstřík ---------- */
+function renderIndex(asideId, navId, colId, entries){
+  if (observers[asideId]) observers[asideId].disconnect();
+  const show = entries.length >= INDEX_MIN;
+  $(asideId).hidden = !show;
+  $(colId).className = show ? "c10" : "c12";
   if (!show) return;
-  $("idx").innerHTML = groups.map((g, i) => `<a href="#d${i}" data-i="${i}">${dayLabel(g.d)[2]}</a>`).join("");
-  const links = [...$("idx").querySelectorAll("a")];
+  const nav = $(navId);
+  nav.innerHTML = entries.map(e => `<a href="#${esc(e.id)}" data-t="${esc(e.id)}">${esc(e.label)}</a>`).join("");
+  const links = [...nav.querySelectorAll("a")];
+  const secs = entries.map(e => $(e.id).closest("section"));
   links.forEach(l => l.onclick = e => {
     e.preventDefault();
-    $(`d${l.dataset.i}`).scrollIntoView({behavior: reduced.matches ? "auto" : "smooth", block: "start"});
+    $(l.dataset.t).scrollIntoView({behavior: reduced.matches ? "auto" : "smooth", block: "start"});
   });
   const visible = new Set();
-  observer = new IntersectionObserver(entries => {
-    entries.forEach(en => en.isIntersecting ? visible.add(en.target) : visible.delete(en.target));
-    const secs = [...document.querySelectorAll("#feed .day")];
+  const ob = new IntersectionObserver(es => {
+    es.forEach(en => en.isIntersecting ? visible.add(en.target) : visible.delete(en.target));
     const first = secs.findIndex(s => visible.has(s));
     if (first < 0) return;
     links.forEach((l, i) => l.classList.toggle("cur", i === first));
-    const nav = $("idx"), cur = links[first];
-    if (nav.scrollWidth > nav.clientWidth) nav.scrollLeft = cur.offsetLeft - nav.offsetLeft - 8;
+    if (nav.scrollWidth > nav.clientWidth) nav.scrollLeft = links[first].offsetLeft - nav.offsetLeft - 8;
   }, {rootMargin: "-60px 0px -55% 0px"});
-  document.querySelectorAll("#feed .day").forEach(s => observer.observe(s));
+  secs.forEach(s => ob.observe(s));
+  observers[asideId] = ob;
 }
-$("more").onclick = () => { shown += PAGE; renderFeed(); };
+
+document.addEventListener("click", e => {
+  const b = e.target.closest(".zl");
+  if (b) goMatch(b.dataset.z);
+});
 
 /* ---------- přehled ---------- */
 function stats(keyFn){
@@ -411,14 +506,16 @@ function flip(tbody, order){
 /* ---------- start ---------- */
 fetch("clanky.json", {cache: "no-store"}).then(r => r.json()).then(data => {
   all = (data.clanky || []).slice().sort((a,b) => when(b) - when(a));
+  (data.zapasy || []).forEach(m => matches[m.id] = m);
   lastVisit = store.get("clanky-posledni-navsteva");
   const newest = all.reduce((m, a) => a.pridano > m ? a.pridano : m, "");
   if (newest) store.set("clanky-posledni-navsteva", newest);
   if (data.aktualizace){ const u = new Date(data.aktualizace); $("upd").textContent = `Aktualizace ${dm(u)} ${hhmm(u)}`; }
-  renderFilters(); renderFeed();
+  renderFilters(); renderFeed(); renderMatches();
   sortableTable($("t-zdroje"), stats(a => [a.zdroj]), COLS("Zdroj", "Zdroj"), "total");
   sortableTable($("t-hraci"), stats(a => a.hraci || []), COLS("Hráč", "Hráč"), "total");
   if (location.hash === "#prehled") select($("tab-prehled"));
+  if (location.hash === "#zapasy") select($("tab-zapasy"));
 }).catch(() => { $("feed").innerHTML = `<div class="empty">Data se nepodařilo načíst</div>`; });
 })();
 </script>
