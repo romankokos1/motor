@@ -1,18 +1,79 @@
 {
- "aktualizace": "2026-11-19T17:53+01:00",
+ "aktualizace": "2026-11-19T20:32+01:00",
  "clanky": [
   {
+   "url": "https://sport.ceskatelevize.cz/clanek/hokej/motor-se-ve-treti-tretine-zadrel-sparta-predvedla-velkolepy-obrat-160034",
+   "titulek": "Motor se ve třetí třetině zadřel, Sparta předvedla velkolepý obrat",
+   "perex": "Nevšední výsledkovou otočku předvedla Sparta na ledě Českých Budějovic. Pražané prohrávali v předehrávce 20. kola extraligy po dvou třetinách už 1:4, ale v poslední části pětigólovou smrští otočili téměř ztracený zápas ve vítězství 6:4.",
+   "zdroj": "ČT sport",
+   "datum": "2026-11-19T19:58+01:00",
+   "pridano": "2026-11-19T20:32+01:00",
+   "rucne": false,
+   "hraci": [],
+   "t_rss": "Motor se ve třetí třetině zadřel, Sparta předvedla velkolepý obrat",
+   "zapas": "2026-20",
+   "typ": "reportaz"
+  },
+  {
+   "url": "https://www.hokej.cz/epicke-povstani-sparty-otocila-ze-stavu-1-4-motor-se-zadrel-ve-tretim-dejstvi/5099379",
+   "titulek": "Epické povstání Sparty! Otočila ze stavu 1:4, Motor se zadřel ve třetím dějství",
+   "perex": "Vznášela se nad ní hrozba dalšího průšvihu, po 40 minutách ostatně ztrácela tři góly. Sparta ale v Českých Budějovicích přežila klinickou smrt a nadechla se k nevídané obrátce: vzpouru dvěma trefami řídil útočník Matěj Blümel. Pražané tím svého oblíbeného soka stáhli na jediný bodík.",
+   "zdroj": "hokej.cz",
+   "datum": "2026-11-19T19:57+01:00",
+   "pridano": "2026-11-19T20:31+01:00",
+   "rucne": false,
+   "hraci": [],
+   "t_rss": "Epické povstání Sparty! Otočila ze stavu 1:4, Motor se zadřel ve třetím dějství",
+   "zapas": "2026-20",
+   "typ": "reportaz"
+  },
+  {
+   "url": "https://ceskobudejovicky.denik.cz/hokej/hokej-extraliga-motor-sparta-prohra-vyprodano/",
+   "titulek": "Motor vedl nad Spartou už o tři góly, ale vítězství bral nakonec soupeř...",
+   "perex": "Podruhé v sezoně byla Budvar aréna vyprodána a opět byla svědkem velkého hokejového večera. Jenže tentokrá se špatným koncem. V předehrávce dvacátého kola Tipsport extraligy vedli hokejisté Banes Motoru České Budějovice nad Spartou Praha už 4:1, přesto nakonec prohráli 4:6... Další zápas odehrají v neděli v Brně s…",
+   "zdroj": "Deník",
+   "datum": "2026-11-19T19:09+01:00",
+   "pridano": "2026-11-19T20:31+01:00",
+   "rucne": false,
+   "hraci": [],
+   "t_rss": "Motor vedl nad Spartou už o tři góly, ale vítězství bral nakonec soupeř...",
+   "zapas": "2026-20",
+   "typ": "reportaz"
+  },
+  {
+   "url": "https://www.hokej.cz/uz-tretim-rokem-ofenzivni-jistota-motor-si-hycka-sikovneho-dana/5099382",
+   "titulek": "Už třetím rokem ofenzivní jistota: Motor si hýčká šikovného Dána",
+   "perex": "Střelec = zboží, za které se na trhu platí zlatem. Motor má své zlato už třetím rokem v Nicku Olesenovi. Jih Čech 31letému dánskému reprezentantovi sedl, letos s bilancí 10+5 vládne týmové tabulce střelců, v produktivitě je druhý za Róbertem Lantošim. A válet by měl dál, podepsáno má až do konce příští sezony.",
+   "zdroj": "hokej.cz",
+   "datum": "2026-11-19T18:00+01:00",
+   "pridano": "2026-11-19T20:31+01:00",
+   "rucne": false,
+   "hraci": [
+    "Nick Alexander Olesen",
+    "Róbert Lantoši"
+   ],
+   "t_rss": "Už třetím rokem ofenzivní jistota: Motor si hýčká šikovného Dána",
+   "zapas": null,
+   "typ": null
+  },
+  {
    "url": "https://www.idnes.cz/hokej/extraliga/predehravka-20-kolo-ceske-budejovice-sparta-online-zpravodajstvi.A261119_133905_hokej_drev",
-   "titulek": "Extraliga ONLINE: Č. Budějovice - Sparta 0:0, zaskočí Jihočeši dalšího favorita?",
+   "titulek": "České Budějovice - Sparta 4:6, velkolepý obrat hostů, ve třetí třetině dali pět gólů",
    "perex": "Souboj hokejistů Českých Budějovic a Sparty načíná program 20. extraligového kola. Jihočeši po nedělní výhře nad Pardubicemi (2:1) usilují o další cenný skalp jednoho z hlavních favoritů na titul, Pražané mají příležitost přiblížit se pozici v první čtyřce. Utkání sledujeme od 17.30 prostřednictvím podrobné online…",
    "zdroj": "iDNES",
    "datum": "2026-11-19T17:33+01:00",
    "pridano": "2026-11-19T17:52+01:00",
    "rucne": false,
    "hraci": [],
-   "t_rss": "Extraliga ONLINE: Č. Budějovice - Sparta 0:0, zaskočí Jihočeši dalšího favorita?",
+   "t_rss": "České Budějovice - Sparta 4:6, velkolepý obrat hostů, ve třetí třetině dali pět gólů",
    "zapas": "2026-20",
-   "typ": "online"
+   "typ": "reportaz",
+   "puvodni": [
+    {
+     "titulek": "Extraliga ONLINE: Č. Budějovice - Sparta 0:0, zaskočí Jihočeši dalšího favorita?",
+     "zmeneno": "2026-11-19T20:32+01:00"
+    }
+   ]
   },
   {
    "url": "https://www.hokej.cz/telh-online-ctvrty-s-osmym-sparta-chce-bodovat-a-dotahnout-motor/5099280",
@@ -113,7 +174,7 @@
   },
   {
    "url": "https://www.sport.cz/clanek/hokej-extraliga-videomomenty-sparta-chce-odcinit-fiasko-ceka-ji-oblibeny-souper-5578886",
-   "titulek": "HOKEJ ONLINE: Videomomenty. Sparta přežila další kritickou chvíli",
+   "titulek": "SESTŘIH: Sparta po senzačním obratu ovládla strhující duel proti Motoru",
    "perex": "Tipsport extraliga nabízí ve čtvrtek předehrávku 20. kola, v níž hokejisté Českých Budějovic hostí od 17:30 Spartu. Čtvrtí Jihočeši patří mezi nejpříjemnější překvapení sezony, zatímco favorizovaní Pražané jsou v tabulce až osmí. Sport.cz vám nabízí v této online reportáži nejdůležitější údaje a ve video ukázkách i…",
    "zdroj": "Sport.cz",
    "datum": "2026-11-19T12:08+01:00",
@@ -121,8 +182,8 @@
    "rucne": false,
    "hraci": [],
    "zapas": "2026-20",
-   "typ": "online",
-   "t_rss": "HOKEJ ONLINE: Videomomenty. Sparta přežila další kritickou chvíli",
+   "typ": "preview",
+   "t_rss": "SESTŘIH: Sparta po senzačním obratu ovládla strhující duel proti Motoru",
    "puvodni": [
     {
      "titulek": "Videomomenty. Sparta chce odčinit fiasko, čeká ji oblíbený soupeř",
@@ -131,6 +192,10 @@
     {
      "titulek": "HOKEJ ONLINE: Videomomenty. Sparta v akci, chce odčinit fiasko",
      "zmeneno": "2026-11-19T17:52+01:00"
+    },
+    {
+     "titulek": "HOKEJ ONLINE: Videomomenty. Sparta přežila další kritickou chvíli",
+     "zmeneno": "2026-11-19T20:31+01:00"
     }
    ]
   },
@@ -216,7 +281,7 @@
   },
   {
    "url": "https://isport.blesk.cz/clanek/hokej-tipsport-extraliga/482296/online-ceske-budejovice-sparta-prazane-jedou-na-led-rozjeteho-motoru.html",
-   "titulek": "ONLINE: České Budějovice - Sparta 0:0. Pražané hrají na ledě rozjetého Motoru",
+   "titulek": "České Budějovice - Sparta 4:6. MEGA obrat Pražanů! Rozhodla pětigólová smršť ve třetí třetině",
    "perex": "Čtvrtý Motor přivítá na domácím ledě sedmou Spartu v rámci 20. kola hokejové Tipsport extraligy. Oba soupeře aktuálně dělí pouhé čtyři body. Čtvrtí Jihočeši vstupují do zápasu ve velmi dobrém rozpoložení. Po reprezentační přestávce zvítězili na ledě Litvínova 4:3 a následně doma porazili úřadujícího mistra z Pardubic…",
    "zdroj": "iSport",
    "datum": "2026-11-19T10:00+01:00",
@@ -224,12 +289,16 @@
    "rucne": false,
    "hraci": [],
    "zapas": "2026-20",
-   "typ": "online",
-   "t_rss": "ONLINE: České Budějovice - Sparta 0:0. Pražané hrají na ledě rozjetého Motoru",
+   "typ": "reportaz",
+   "t_rss": "České Budějovice - Sparta 4:6. MEGA obrat Pražanů! Rozhodla pětigólová smršť ve třetí třetině",
    "puvodni": [
     {
      "titulek": "ONLINE: České Budějovice - Sparta. Pražané jedou na led rozjetého Motoru",
      "zmeneno": "2026-11-19T17:52+01:00"
+    },
+    {
+     "titulek": "ONLINE: České Budějovice - Sparta 0:0. Pražané hrají na ledě rozjetého Motoru",
+     "zmeneno": "2026-11-19T20:31+01:00"
     }
    ]
   },
