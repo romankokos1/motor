@@ -301,7 +301,7 @@ def hcmotor_body(soup, nahled=""):
         perex = ""
         for p_ in h.find_all_next("p", limit=12):
             t_ = re.sub(r"\s+", " ", p_.get_text(" ")).strip()
-            if len(t_) > 40 and not REL_DATE.match(t_):
+            if len(t_) > 40 and not REL_DATE.match(t_) and not re.search(r"\|| cm\b|\bkg\b", t_):
                 perex = t_
                 break
         return ht, perex
@@ -466,7 +466,9 @@ def assign_match(a, matches):
         k = opponent_key(m)
         if not k or not re.search(SOUPERI[k], text):
             continue
-        score = abs(diff) - (10 * DAY_S if re.search(SOUPERI[k], title) else 0)
+        # soupeř v titulku má přednost – ale ne u souhrnů kola, kde je v titulku víc týmů
+        in_title = re.search(SOUPERI[k], title) and sum(1 for rx in SOUPERI.values() if re.search(rx, title)) == 1
+        score = abs(diff) - (10 * DAY_S if in_title else 0)
         if bd is None or score < bd:
             best, bd = m, score
     return best
@@ -490,7 +492,7 @@ def group(articles):
     for i in range(n):
         for j in range(i + 1, n):
             ai, aj = articles[i], articles[j]
-            if ai["zdroj"] == aj["zdroj"] or ai.get("typ") != aj.get("typ"):
+            if ai["zdroj"] == aj["zdroj"] or ai.get("typ") != aj.get("typ") or ai.get("souper") != aj.get("souper"):
                 continue
             if ai.get("zapas") != aj.get("zapas"):
                 continue
@@ -532,6 +534,9 @@ def enrich(data, cfg):
     data["zapasy"] = matches
     for a in data["clanky"]:
         a["hraci"] = tag_players(f'{a["titulek"]} {a["perex"]}', matchers)
+        if a.get("souper"):
+            a["zapas"], a["typ"] = a["souper"], classify(a, False)
+            continue
         m = assign_match(a, matches)
         a["zapas"] = m["id"] if m else None
         after = bool(m and a.get("datum") and (a["datum"] >= m["start"] or
@@ -577,23 +582,120 @@ def make_record(item, src_name, matchers, manual=False):
         "rucne": manual,
         "hraci": tag_players(text, matchers),
         **({"bez_casu": True} if item.get("bez_casu") else {}),
-        **({"ver": 2} if src_name == "HC Motor" else {}),
+        **({"ver": 3} if src_name == "HC Motor" else {}),
+        **({"t_rss": item["_rss_t"]} if item.get("_rss") else {}),
+        **({"t_vypis": item["_key"]} if item.get("_key") and not item.get("_rss") else {}),
     }
 
 
 # ---------- režimy ----------
 
+SOUPER_DNI = 4  # kolik dní před zápasem sbírat články o soupeři
+MAX_KONTROL = 10  # kolik článků za běh se smí kvůli titulku stáhnout znovu
+
+# přísnější vzory soupeřů pro články, které Motor nezmiňují (bez diakritiky, s velkým písmenem)
+SOUPERI_PRESNE = {
+    "sparta": r"\bSpart\w*", "kometa": r"\bKomet\w*|\bBrn[oaeu]\b|\bBrnens\w*",
+    "plzen": r"\bPlz(en|n)\w*|\bSkodovk\w*", "liberec": r"\bLiber(ec|c)\w*|\bBil\w* Tygr\w*",
+    "vitkovice": r"\bVitkovic\w*|\bOstrav\w*", "pardubice": r"\bPardubic\w*",
+    "litvinov": r"\bLitvinov\w*|\bVerv[aouy]\b", "olomouc": r"\bOlomou\w*|\bKohout\w*",
+    "karlovy": r"\bKarlov\w* Var\w*|\bVar(y|ech|um)\b|\bEnergi\w*", "boleslav": r"\bBoleslav\w*",
+    "hradec": r"\bHrad(ec|ci|ce)\b|\bHradeck\w*|\bMountfield\w*", "trinec": r"\bTrin(ec|ce|ci|cem|cu)\b|\bOcelar\w*",
+    "kladno": r"\bKladn\w*|\bRytir\w*",
+}
+
+
+def opponent_match(src, url, text, upcoming):
+    """Článek o nejbližším soupeři (bez zmínky o Motoru) – jen hokejové rubriky celostátních webů."""
+    if not upcoming or src.get("povinne") or src.get("vse"):
+        return None
+    marker = src.get("hokej_v_url", "")
+    if marker and marker not in url:
+        return None
+    if not marker and src["id"] != "hokejcz":
+        return None
+    t = deaccent(text)
+    for m in upcoming:
+        k = opponent_key(m)
+        if k and re.search(SOUPERI_PRESNE[k], t):
+            return m
+    return None
+
+
+def fill_meta(it, url, errors):
+    if it["perex"] and it["datum"] and it["titulek"]:
+        return
+    try:
+        m = read_article_meta(url, it.get("nahled", ""))
+        if m["titulek"]:
+            it["titulek"] = m["titulek"]  # z výpisu bývá titulek slepený s perexem
+        it["perex"] = it["perex"] or m["perex"]
+        if not it["datum"] and m["datum"]:
+            it["datum"], it["bez_casu"] = m["datum"], m.get("bez_casu", False)
+    except Exception as e:  # noqa: BLE001
+        errors.append(f"článek {url}: {e}")
+
+
+def tnorm(t):
+    t = re.sub(r"[„“”\"'‚‘’«»]", '"', t or "")
+    t = re.sub(r"[–—−]", "-", t)
+    return re.sub(r"\s+", " ", t).strip().lower()
+
+
+def listing_key(it):
+    return tnorm(REL_DATE.sub("", it.get("nahled") or it["titulek"] or "", count=1))
+
+
+def change_title(rec, new):
+    if not new or tnorm(new) == tnorm(rec["titulek"]):
+        return False
+    rec.setdefault("puvodni", []).append({"titulek": rec["titulek"], "zmeneno": now_iso()})
+    rec["titulek"] = new
+    return True
+
+
+def watch_title(rec, it, errors, checks):
+    """Hlídá přepsané titulky u článků, které jsou pořád ve výpisu/RSS. Vrací počet stažení."""
+    if it.get("_rss"):
+        seen = clean_text(it["titulek"])
+        if "t_rss" not in rec:
+            rec["t_rss"] = seen
+        elif tnorm(seen) != tnorm(rec["t_rss"]):
+            change_title(rec, seen)
+            rec["t_rss"] = seen
+        return 0
+    key = listing_key(it)
+    if not key:
+        return 0
+    if "t_vypis" not in rec:
+        rec["t_vypis"] = key
+        return 0
+    if key == rec["t_vypis"] or checks >= MAX_KONTROL:
+        return 0
+    rec["t_vypis"] = key
+    try:  # výpis se změnil → ověř titulek přímo v článku
+        m = read_article_meta(rec["url"], it.get("nahled", ""))
+        change_title(rec, m["titulek"])
+    except Exception as e:  # noqa: BLE001
+        errors.append(f"kontrola {rec['url']}: {e}")
+    return 1
+
+
 def cleanup(data):
     """Odstraní záznamy hcmotor.cz z prvního (vadného) načtení: rozbité kódování, datum v titulku, menu."""
-    data["clanky"] = [c for c in data["clanky"] if not (c["zdroj"] == "HC Motor" and c.get("ver") != 2)]
+    data["clanky"] = [c for c in data["clanky"] if not (c["zdroj"] == "HC Motor" and c.get("ver") != 3)]
 
 
 def scan(cfg):
     data = load_data()
     cleanup(data)
     known = {c["url"] for c in data["clanky"]} | set(data.get("odebrane", []))
+    index = {c["url"]: c for c in data["clanky"]}
     matchers = player_matchers(load_players(cfg))
-    added, report = 0, []
+    now = datetime.now(TZ).timestamp()
+    upcoming = [m for m in load_matches(data) if not m.get("odehrano") and not m.get("odlozeno")
+                and 0 <= datetime.fromisoformat(m["start"]).timestamp() - now <= SOUPER_DNI * DAY_S]
+    added, report, checks = 0, [], 0
 
     for src in cfg["zdroje"]:
         candidates, errors = {}, []
@@ -601,6 +703,8 @@ def scan(cfg):
             try:
                 for it in read_rss(u):
                     it["url"] = canon(it["url"])
+                    it["_rss"] = True
+                    it["_rss_t"] = clean_text(it["titulek"])
                     candidates.setdefault(it["url"], it)
             except Exception as e:  # noqa: BLE001
                 errors.append(f"RSS {u}: {e}")
@@ -613,25 +717,32 @@ def scan(cfg):
 
         hits = 0
         for url, it in candidates.items():
-            if url in known or source_for(url, cfg) is not src:
+            if source_for(url, cfg) is not src:
                 continue
-            if not is_relevant(src, url, f'{it["titulek"] or it.get("nahled", "")} {it["perex"]}', cfg, matchers):
+            if url in index:
+                checks += watch_title(index[url], it, errors, checks)
                 continue
-            if not it["perex"] or not it["datum"] or not it["titulek"]:
-                try:
-                    m = read_article_meta(url, it.get("nahled", ""))
-                    if m["titulek"]:
-                        it["titulek"] = m["titulek"]  # z výpisu bývá titulek slepený s perexem
-                    it["perex"] = it["perex"] or m["perex"]
-                    if not it["datum"] and m["datum"]:
-                        it["datum"], it["bez_casu"] = m["datum"], m.get("bez_casu", False)
-                except Exception as e:  # noqa: BLE001
-                    errors.append(f"článek {url}: {e}")
+            if url in known:
+                continue
+            text = f'{it["titulek"] or it.get("nahled", "")} {it["perex"]}'
+            opp = None
+            if not is_relevant(src, url, text, cfg, matchers):
+                opp = opponent_match(src, url, text, upcoming)
+                if not opp:
+                    continue
+            it["_key"] = listing_key(it)
+            fill_meta(it, url, errors)
             if not it["titulek"]:
                 continue
             if src.get("vyloucit") and re.search(src["vyloucit"], it["titulek"]):
                 continue
-            data["clanky"].append(make_record(it, src["nazev"], matchers))
+            if opp and not opponent_match(src, url, f'{it["titulek"]} {it["perex"]}', upcoming):
+                continue
+            rec = make_record(it, src["nazev"], matchers)
+            if opp:
+                rec["souper"] = opp["id"]
+            data["clanky"].append(rec)
+            index[url] = rec
             known.add(url)
             hits += 1
         added += hits
