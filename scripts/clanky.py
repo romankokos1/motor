@@ -368,7 +368,7 @@ TYP_REPORT = re.compile(r"\d+\s*:\s*\d+|porazil|pretlac|zvitez|otocil|porazk|zdo
 TYP_ROZHOVOR_JMENO = re.compile(r"^[A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ][a-záčďéěíňóřšťúůýž-]+(?: [A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ][a-záčďéěíňóřšťúůýž-]+)?: ")
 TYP_ROZHOVOR = re.compile(r"rozhovor|lici\b|rika\b|rekl\b|priznal|vzkazuje|popsal|tvrdi|hlasi\b|"
                           r"predstavuje|[„\"].+[“\"]")
-TYPY = {"online": "Online", "zraneni": "Zranění", "prestup": "Smlouva/přestup",
+TYPY = {"preview": "Preview", "online": "Online", "zraneni": "Zranění", "prestup": "Smlouva/přestup",
         "reportaz": "Reportáž", "rozhovor": "Rozhovor"}
 
 SOUPERI = {
@@ -494,6 +494,10 @@ def group(articles):
             ai, aj = articles[i], articles[j]
             if ai["zdroj"] == aj["zdroj"] or ai.get("typ") != aj.get("typ") or ai.get("souper") != aj.get("souper"):
                 continue
+            # slučuje se jen zpráva (smlouva, přestup, zranění, ostatní); preview, online, reportáž
+            # a rozhovor je vlastní zpracování každého webu – ty patří k zápasu, ne do jedné skupiny
+            if ai.get("typ") in ("preview", "online", "reportaz", "rozhovor"):
+                continue
             if ai.get("zapas") != aj.get("zapas"):
                 continue
             (ti, si, pi), (tj, sj, pj) = info[i], info[j]
@@ -565,13 +569,23 @@ def enrich(data, cfg):
         a["typ"] = classify(a, after)
         if a["typ"] == "prestup":
             a["zapas"] = None  # kádrové zprávy k zápasu nepatří
-    group(data["clanky"])
-    for a in data["clanky"]:
-        sp = [] if a.get("souper") else speakers(a, matchers)
+        sp = speakers(a, matchers)
         if sp:
             a["mluvi"] = sp
         else:
             a.pop("mluvi", None)
+        if not a["typ"] and sp:
+            a["typ"] = "rozhovor"       # dotazníky, „odpovídá fanouškům“, „hodnotí zápas“…
+        elif not a["typ"] and a["zapas"] and not after:
+            # k zápasu, vydáno před jeho začátkem – kromě dne zápasu s výsledkem v textu
+            # (čas začátku v rozpisu nemusí sedět, např. nedělní zápasy)
+            same_day = a.get("datum", "")[:10] == m["start"][:10]
+            score = re.search(r"(?<![\d:])\d\s?:\s?\d(?![\d:])", f'{a["titulek"]} {a["perex"][:200]}')
+            a["typ"] = "reportaz" if same_day and score else "preview"
+    for a in data["clanky"]:
+        if a.get("souper"):
+            a.pop("mluvi", None)
+    group(data["clanky"])
 
 
 # ---------- data ----------
