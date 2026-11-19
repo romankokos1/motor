@@ -1,15 +1,21 @@
 {
- "aktualizace": "2026-11-19T11:56+01:00",
+ "aktualizace": "2026-11-19T12:04+01:00",
  "clanky": [
   {
-   "url": "https://hcmotor.cz/clanek.asp?id=11955",
-   "titulek": "Sledujte zápasy mládee IVÌ!",
-   "perex": "Motorácká mláde navázala spolupráci s Czech Ice Hockey TV, streamovací slubou, která vyuívá plnì automatizovaných kamer k ivým pøenosùm nejen mládenických zápasù. Zaregistrujte se",
-   "zdroj": "HC Motor",
-   "datum": null,
-   "pridano": "2026-11-19T11:56+01:00",
+   "url": "https://isport.blesk.cz/clanek/hokej-tipsport-extraliga/482310/zakulisi-budejovic-naladovy-genius-olesen-kundratek-z-flaksy-skvely-sef-kabiny.html",
+   "titulek": "Nedorost pustil fanoušky do kabiny Motoru. Co prozradil?",
+   "perex": "Václav Nedorost odhaluje zákulisí Motoru České Budějovice, mluví o Olesenovi, Kundrátkovi i trejdu McCormacka za Válu.",
+   "zdroj": "iSport",
+   "datum": "2026-11-19T12:00+01:00",
+   "pridano": "2026-11-19T12:04+01:00",
    "rucne": false,
-   "hraci": [],
+   "hraci": [
+    "Graeme McCormack",
+    "Nick Alexander Olesen",
+    "Ondřej Vála",
+    "Tomáš Kundrátek",
+    "Václav Nedorost"
+   ],
    "zapas": null,
    "typ": null
   },
@@ -88,7 +94,7 @@
    "hraci": [],
    "zapas": null,
    "typ": "prestup",
-   "skupina": "https://www.sport.cz/clanek/hokej-extraliga-ceske-budejovice-si-pojistily-sluzby-sveho-brankare-5578482"
+   "skupina": "https://hcmotor.cz/clanek.asp?id=13927"
   },
   {
    "url": "https://ceskobudejovicky.denik.cz/hokej/golman-milan-kloucek-prodlouzil-smlouvu-v-banes-motoru/",
@@ -103,7 +109,7 @@
    ],
    "zapas": null,
    "typ": "prestup",
-   "skupina": "https://www.sport.cz/clanek/hokej-extraliga-ceske-budejovice-si-pojistily-sluzby-sveho-brankare-5578482"
+   "skupina": "https://hcmotor.cz/clanek.asp?id=13927"
   },
   {
    "url": "https://www.sport.cz/clanek/hokej-extraliga-ceske-budejovice-si-pojistily-sluzby-sveho-brankare-5578482",
@@ -118,7 +124,7 @@
    ],
    "zapas": null,
    "typ": "prestup",
-   "skupina": "https://www.sport.cz/clanek/hokej-extraliga-ceske-budejovice-si-pojistily-sluzby-sveho-brankare-5578482"
+   "skupina": "https://hcmotor.cz/clanek.asp?id=13927"
   },
   {
    "url": "https://ceskobudejovicky.denik.cz/hokej/graeme-mccormack-motor-ceske-budejovice-rozhovor-budoucnost-vaclav-nedorost/",
@@ -134,6 +140,22 @@
    ],
    "zapas": null,
    "typ": "prestup"
+  },
+  {
+   "url": "https://hcmotor.cz/clanek.asp?id=13927",
+   "titulek": "Milan Klouček pokračuje v Motoru! Smlouvu prodloužil o další dvě sezony",
+   "perex": "Brankář",
+   "zdroj": "HC Motor",
+   "datum": "2026-11-18T12:00+01:00",
+   "pridano": "2026-11-19T12:04+01:00",
+   "rucne": false,
+   "hraci": [
+    "Milan Klouček"
+   ],
+   "bez_casu": true,
+   "zapas": null,
+   "typ": "prestup",
+   "skupina": "https://hcmotor.cz/clanek.asp?id=13927"
   },
   {
    "url": "https://www.hokej.cz/utocnici-z-extraligy-na-nule-krec-v-plzni-nebo-brne-odkud-jim-to-ne-pali/5099021",
@@ -161,6 +183,33 @@
    ],
    "zapas": null,
    "typ": "rozhovor"
+  },
+  {
+   "url": "https://hcmotor.cz/clanek.asp?id=13908",
+   "titulek": "Odkud pocházejí hráči Motoru? Prozkoumejte novou interaktivní mapu",
+   "perex": "Kde se narodili hráči, kteří v průběhu let oblékli dres Motoru? Jak se daná rodiště vyvíjela v průběhu času? Odpověď nově nabízí interaktivní mapa zachycující místa narození všech hokejistů s alespoň jedním startem za českobudějovický A-tým.",
+   "zdroj": "HC Motor",
+   "datum": "2026-11-17T12:00+01:00",
+   "pridano": "2026-11-19T12:04+01:00",
+   "rucne": false,
+   "hraci": [],
+   "bez_casu": true,
+   "zapas": null,
+   "typ": null
+  },
+  {
+   "url": "https://hcmotor.cz/clanek.asp?id=13925",
+   "titulek": "Ve čtvrtek přijede Sparta! Vyprodáme podruhé za sebou Budvar arénu?",
+   "perex": "Program po reprezentační pauze pokračuje a již ve čtvrtek od 17:30 čeká na Motor další domácí zápas! Po vítězství nad pardubickým Dynamem dorazí pod Černou věž další",
+   "zdroj": "HC Motor",
+   "datum": "2026-11-17T12:00+01:00",
+   "pridano": "2026-11-19T12:04+01:00",
+   "rucne": false,
+   "hraci": [],
+   "bez_casu": true,
+   "zapas": "2026-19",
+   "typ": "reportaz",
+   "skupina": "https://hcmotor.cz/clanek.asp?id=13921"
   },
   {
    "url": "https://www.sport.cz/clanek/hokej-extraliga-lotyssky-reprezentant-predcasne-konci-v-motoru-angazma-mu-nesedlo-5577887",
@@ -214,7 +263,39 @@
    "rucne": false,
    "hraci": [],
    "zapas": "2026-19",
+   "typ": "reportaz",
+   "skupina": "https://hcmotor.cz/clanek.asp?id=13921"
+  },
+  {
+   "url": "https://hcmotor.cz/clanek.asp?id=13923",
+   "titulek": "Jan Ordoš hodnotí zápas s Pardubicemi: Klobouk dolů před všemi kluky!",
+   "perex": "Proti Pardubicím vstřelil již svou sedmou letošní branku. Ta týmu nakonec pomohla srovnat a poté i otočit zápas na konečných 2:1. Cenného skalpu si Jan Ordoš váží, zároveň ale zdůrazňuje, že je potřeba v dobré práci především pokračovat. V rozhovoru pro klubovou televizi se pak kromě hodnocení zápasu dostává i k…",
+   "zdroj": "HC Motor",
+   "datum": "2026-11-16T12:00+01:00",
+   "pridano": "2026-11-19T12:04+01:00",
+   "rucne": false,
+   "hraci": [
+    "Jan Ordoš"
+   ],
+   "bez_casu": true,
+   "zapas": "2026-19",
    "typ": "reportaz"
+  },
+  {
+   "url": "https://hcmotor.cz/clanek.asp?id=13924",
+   "titulek": "Renārs Krastenbergs opouští Motor, míří do finského HPK",
+   "perex": "Právě před 20 lety zemřel ve věku 86 let bývalý českobudějovický útočník Jan Homolka. V A týmu hrál 6 sezon (1940-46), cca 30...",
+   "zdroj": "HC Motor",
+   "datum": "2026-11-16T12:00+01:00",
+   "pridano": "2026-11-19T12:04+01:00",
+   "rucne": false,
+   "hraci": [
+    "Renars Krastenbergs"
+   ],
+   "bez_casu": true,
+   "zapas": null,
+   "typ": "prestup",
+   "skupina": "https://hcmotor.cz/clanek.asp?id=13924"
   },
   {
    "url": "https://isport.blesk.cz/clanek/hokej-tipsport-extraliga/482181/ceresnakuv-cerny-vikend-ze-sklepa-mu-ukradli-drahe-kolo-pak-mu-kypely-emoce-na-motoru.html",
@@ -238,7 +319,8 @@
    "rucne": false,
    "hraci": [],
    "zapas": "2026-19",
-   "typ": "reportaz"
+   "typ": "reportaz",
+   "skupina": "https://hcmotor.cz/clanek.asp?id=13921"
   },
   {
    "url": "https://sport.ceskatelevize.cz/clanek/hokej/motor-ceske-budejovice-dynamo-pardubice-159971",
@@ -255,426 +337,49 @@
    "typ": null
   },
   {
-   "url": "https://hcmotor.cz/clanek.asp?id=10106",
-   "titulek": "Aplikace",
-   "perex": "archiv èlánkù archiv aktualit 2012 2013 2014 2015 2016 2017 2018 2019 2020 2021 2022 2023 2024 2025 2026 leden únor bøezen duben kvìten èerven èervenec srpen záøí øíjen listopad vzestupnì sestupnì bez anotací vèetnì anotací posledních 30 Dostupné kategorie Vyberte kategorii » Aktuální zpráva » Fotogalerie »…",
+   "url": "https://hcmotor.cz/clanek.asp?id=13921",
+   "titulek": "Motor České Budějovice",
+   "perex": "Českobudějovické hokejisty čekal po výhře na ledě Litvínova opravdu náročný zápas s úřadujícími mistry z Pardubic. I přesto, že Motor prohrával, dokázal díky brankám Ordoše a Beránka zápas otočit a před vyprodanou arénou srazil na kolena druhý celek tabulky!",
    "zdroj": "HC Motor",
    "datum": "2026-11-15T12:00+01:00",
-   "pridano": "2026-11-19T11:56+01:00",
-   "rucne": false,
-   "hraci": [],
-   "bez_casu": true,
-   "zapas": null,
-   "typ": null
-  },
-  {
-   "url": "https://hcmotor.cz/clanek.asp?id=13927",
-   "titulek": "vèera , Tisková zpráva Milan Klouèek pokraèuje v Motoru! Smlouvu prodlouil o dalí dvì sezony",
-   "perex": "pøed 2 dny, Roman Koko Odkud pocházejí hráèi Motoru? Prozkoumejte novou interaktivní mapu pøed 2 dny, Václav Plachta Ve ètvrtek pøijede Sparta! Vyprodáme podruhé za sebou Budvar arénu? pøed 2 dny, Václav Plachta JUN: Zápas v Jihlavì rozhodla tøetí tøetina pøed 3 dny, Marek Dvoøák Jan Ordo hodnotí zápas s…",
-   "zdroj": "HC Motor",
-   "datum": "2026-11-15T12:00+01:00",
-   "pridano": "2026-11-19T11:56+01:00",
-   "rucne": false,
-   "hraci": [],
-   "bez_casu": true,
-   "zapas": null,
-   "typ": "prestup"
-  },
-  {
-   "url": "https://hcmotor.cz/clanek.asp?id=13908",
-   "titulek": "pøed 2 dny, Roman Koko Odkud pocházejí hráèi Motoru? Prozkoumejte novou interaktivní mapu",
-   "perex": "vèera , Tisková zpráva Milan Klouèek pokraèuje v Motoru! Smlouvu prodlouil o dalí dvì sezony pøed 2 dny, Václav Plachta Ve ètvrtek pøijede Sparta! Vyprodáme podruhé za sebou Budvar arénu? pøed 2 dny, Václav Plachta JUN: Zápas v Jihlavì rozhodla tøetí tøetina pøed 3 dny, Marek Dvoøák Jan Ordo hodnotí zápas s…",
-   "zdroj": "HC Motor",
-   "datum": "2026-11-15T12:00+01:00",
-   "pridano": "2026-11-19T11:56+01:00",
-   "rucne": false,
-   "hraci": [],
-   "bez_casu": true,
-   "zapas": null,
-   "typ": "prestup"
-  },
-  {
-   "url": "https://hcmotor.cz/clanek.asp?id=13925",
-   "titulek": "pøed 2 dny, Václav Plachta Ve ètvrtek pøijede Sparta! Vyprodáme podruhé za sebou Budvar arénu?",
-   "perex": "vèera , Tisková zpráva Milan Klouèek pokraèuje v Motoru! Smlouvu prodlouil o dalí dvì sezony pøed 2 dny, Roman Koko Odkud pocházejí hráèi Motoru? Prozkoumejte novou interaktivní mapu pøed 2 dny, Václav Plachta JUN: Zápas v Jihlavì rozhodla tøetí tøetina pøed 3 dny, Marek Dvoøák Jan Ordo hodnotí zápas s…",
-   "zdroj": "HC Motor",
-   "datum": "2026-11-15T12:00+01:00",
-   "pridano": "2026-11-19T11:56+01:00",
-   "rucne": false,
-   "hraci": [],
-   "bez_casu": true,
-   "zapas": null,
-   "typ": "prestup"
-  },
-  {
-   "url": "https://hcmotor.cz/clanek.asp?id=13926",
-   "titulek": "pøed 2 dny, Václav Plachta JUN: Zápas v Jihlavì rozhodla tøetí tøetina",
-   "perex": "vèera , Tisková zpráva Milan Klouèek pokraèuje v Motoru! Smlouvu prodlouil o dalí dvì sezony pøed 2 dny, Roman Koko Odkud pocházejí hráèi Motoru? Prozkoumejte novou interaktivní mapu pøed 2 dny, Václav Plachta Ve ètvrtek pøijede Sparta! Vyprodáme podruhé za sebou Budvar arénu? pøed 3 dny, Marek Dvoøák Jan Ordo…",
-   "zdroj": "HC Motor",
-   "datum": "2026-11-15T12:00+01:00",
-   "pridano": "2026-11-19T11:56+01:00",
-   "rucne": false,
-   "hraci": [],
-   "bez_casu": true,
-   "zapas": null,
-   "typ": "prestup"
-  },
-  {
-   "url": "https://hcmotor.cz/clanek.asp?id=13923",
-   "titulek": "pøed 3 dny, Marek Dvoøák Jan Ordo hodnotí zápas s Pardubicemi: Klobouk dolù pøed vemi kluky!",
-   "perex": "vèera , Tisková zpráva Milan Klouèek pokraèuje v Motoru! Smlouvu prodlouil o dalí dvì sezony pøed 2 dny, Roman Koko Odkud pocházejí hráèi Motoru? Prozkoumejte novou interaktivní mapu pøed 2 dny, Václav Plachta Ve ètvrtek pøijede Sparta! Vyprodáme podruhé za sebou Budvar arénu? pøed 2 dny, Václav Plachta JUN: Zápas…",
-   "zdroj": "HC Motor",
-   "datum": "2026-11-15T12:00+01:00",
-   "pridano": "2026-11-19T11:56+01:00",
-   "rucne": false,
-   "hraci": [],
-   "bez_casu": true,
-   "zapas": null,
-   "typ": "prestup"
-  },
-  {
-   "url": "https://hcmotor.cz/clanek.asp?id=13924",
-   "titulek": "pøed 3 dny, Tisková zpráva Renārs Krastenbergs opoutí Motor, míøí do finského HPK",
-   "perex": "vèera , Tisková zpráva Milan Klouèek pokraèuje v Motoru! Smlouvu prodlouil o dalí dvì sezony pøed 2 dny, Roman Koko Odkud pocházejí hráèi Motoru? Prozkoumejte novou interaktivní mapu pøed 2 dny, Václav Plachta Ve ètvrtek pøijede Sparta! Vyprodáme podruhé za sebou Budvar arénu? pøed 2 dny, Václav Plachta JUN: Zápas…",
-   "zdroj": "HC Motor",
-   "datum": "2026-11-15T12:00+01:00",
-   "pridano": "2026-11-19T11:56+01:00",
+   "pridano": "2026-11-19T12:04+01:00",
    "rucne": false,
    "hraci": [
-    "Renars Krastenbergs"
+    "Jan Ordoš",
+    "Martin Beránek"
    ],
    "bez_casu": true,
-   "zapas": null,
-   "typ": "prestup",
-   "skupina": "https://hcmotor.cz/clanek.asp?id=13924"
-  },
-  {
-   "url": "https://hcmotor.cz/clanek.asp?id=13921",
-   "titulek": "15.11.2026, Martin Vaíèek CEB - PCE 2:1 - Motor pøed vyprodanou halou pokoøil mistry z Pardubic!",
-   "perex": "vèera , Tisková zpráva Milan Klouèek pokraèuje v Motoru! Smlouvu prodlouil o dalí dvì sezony pøed 2 dny, Roman Koko Odkud pocházejí hráèi Motoru? Prozkoumejte novou interaktivní mapu pøed 2 dny, Václav Plachta Ve ètvrtek pøijede Sparta! Vyprodáme podruhé za sebou Budvar arénu? pøed 2 dny, Václav Plachta JUN: Zápas…",
-   "zdroj": "HC Motor",
-   "datum": "2026-11-15T12:00+01:00",
-   "pridano": "2026-11-19T11:56+01:00",
-   "rucne": false,
-   "hraci": [],
-   "bez_casu": true,
-   "zapas": null,
-   "typ": "prestup"
+   "zapas": "2026-19",
+   "typ": "reportaz",
+   "skupina": "https://hcmotor.cz/clanek.asp?id=13921"
   },
   {
    "url": "https://hcmotor.cz/clanek.asp?id=13922",
-   "titulek": "15.11.2026, Roman Koko Motor otoèil zápas s Pardubicemi. Martin Beránek: Chtìli jsme jim vlézt pod kùi",
-   "perex": "vèera , Tisková zpráva Milan Klouèek pokraèuje v Motoru! Smlouvu prodlouil o dalí dvì sezony pøed 2 dny, Roman Koko Odkud pocházejí hráèi Motoru? Prozkoumejte novou interaktivní mapu pøed 2 dny, Václav Plachta Ve ètvrtek pøijede Sparta! Vyprodáme podruhé za sebou Budvar arénu? pøed 2 dny, Václav Plachta JUN: Zápas…",
+   "titulek": "Motor otočil zápas s Pardubicemi. Martin Beránek: Chtěli jsme jim vlézt pod kůži",
+   "perex": "Českobudějovičtí hokejisté zvládli domácí souboj s vedoucími Pardubicemi. Proti jednomu z největších favoritů extraligy sice museli otáčet nepříznivý vývoj, po dvou třetinách už ale vedli 2:1 a svůj těsný náskok dokázali ve třetí části uhájit. Po reprezentační přestávce tak drží stoprocentní bodovou úspěšnost.",
    "zdroj": "HC Motor",
    "datum": "2026-11-15T12:00+01:00",
-   "pridano": "2026-11-19T11:56+01:00",
+   "pridano": "2026-11-19T12:04+01:00",
    "rucne": false,
    "hraci": [
     "Martin Beránek"
    ],
    "bez_casu": true,
-   "zapas": null,
-   "typ": "prestup"
+   "zapas": "2026-19",
+   "typ": "reportaz"
   },
   {
    "url": "https://hcmotor.cz/clanek.asp?id=13918",
-   "titulek": "14.11.2026, Tomá David Nedìle pøinese souboj s obhájcem titulu. Na led Budvar arény pøijídí Pardubice",
-   "perex": "vèera , Tisková zpráva Milan Klouèek pokraèuje v Motoru! Smlouvu prodlouil o dalí dvì sezony pøed 2 dny, Roman Koko Odkud pocházejí hráèi Motoru? Prozkoumejte novou interaktivní mapu pøed 2 dny, Václav Plachta Ve ètvrtek pøijede Sparta! Vyprodáme podruhé za sebou Budvar arénu? pøed 2 dny, Václav Plachta JUN: Zápas…",
+   "titulek": "Neděle přinese souboj s obhájcem titulu. Na led Budvar arény přijíždí Pardubice",
+   "perex": "V rámci 19. kola základní části dorazí na jih Čech úřadující mistr extraligy z Pardubic. Motor tak před zaplněnou Budvar arénou čeká souboj s jedním z nejtěžších soupeřů. Ještě nemáte vstupenky? S nákupem příliš neváhejte! V prodeji jich zbývá už jen posledních několik desítek. Zakoupit je můžete",
    "zdroj": "HC Motor",
-   "datum": "2026-11-15T12:00+01:00",
-   "pridano": "2026-11-19T11:56+01:00",
+   "datum": "2026-11-14T12:00+01:00",
+   "pridano": "2026-11-19T12:04+01:00",
    "rucne": false,
    "hraci": [],
    "bez_casu": true,
-   "zapas": null,
-   "typ": "prestup"
-  },
-  {
-   "url": "https://hcmotor.cz/clanek.asp?id=13919",
-   "titulek": "14.11.2026, Marek Dvoøák SDO: Dalí výhra, drama rozhodl Shrbený!",
-   "perex": "vèera , Tisková zpráva Milan Klouèek pokraèuje v Motoru! Smlouvu prodlouil o dalí dvì sezony pøed 2 dny, Roman Koko Odkud pocházejí hráèi Motoru? Prozkoumejte novou interaktivní mapu pøed 2 dny, Václav Plachta Ve ètvrtek pøijede Sparta! Vyprodáme podruhé za sebou Budvar arénu? pøed 2 dny, Václav Plachta JUN: Zápas…",
-   "zdroj": "HC Motor",
-   "datum": "2026-11-15T12:00+01:00",
-   "pridano": "2026-11-19T11:56+01:00",
-   "rucne": false,
-   "hraci": [],
-   "bez_casu": true,
-   "zapas": null,
-   "typ": "prestup"
-  },
-  {
-   "url": "https://hcmotor.cz/clanek.asp?id=13920",
-   "titulek": "14.11.2026, Václav Plachta JUN: Z 0:2 na 4:2! Motor otoèil duel s Mladou Boleslaví",
-   "perex": "vèera , Tisková zpráva Milan Klouèek pokraèuje v Motoru! Smlouvu prodlouil o dalí dvì sezony pøed 2 dny, Roman Koko Odkud pocházejí hráèi Motoru? Prozkoumejte novou interaktivní mapu pøed 2 dny, Václav Plachta Ve ètvrtek pøijede Sparta! Vyprodáme podruhé za sebou Budvar arénu? pøed 2 dny, Václav Plachta JUN: Zápas…",
-   "zdroj": "HC Motor",
-   "datum": "2026-11-15T12:00+01:00",
-   "pridano": "2026-11-19T11:56+01:00",
-   "rucne": false,
-   "hraci": [],
-   "bez_casu": true,
-   "zapas": null,
-   "typ": "prestup"
-  },
-  {
-   "url": "https://hcmotor.cz/clanek.asp?id=13914",
-   "titulek": "13.11.2026, Václav Plachta JUN: Gólová tøetí tøetina rozhodla o vítìzství nad Libercem",
-   "perex": "vèera , Tisková zpráva Milan Klouèek pokraèuje v Motoru! Smlouvu prodlouil o dalí dvì sezony pøed 2 dny, Roman Koko Odkud pocházejí hráèi Motoru? Prozkoumejte novou interaktivní mapu pøed 2 dny, Václav Plachta Ve ètvrtek pøijede Sparta! Vyprodáme podruhé za sebou Budvar arénu? pøed 2 dny, Václav Plachta JUN: Zápas…",
-   "zdroj": "HC Motor",
-   "datum": "2026-11-15T12:00+01:00",
-   "pridano": "2026-11-19T11:56+01:00",
-   "rucne": false,
-   "hraci": [],
-   "bez_casu": true,
-   "zapas": null,
-   "typ": "prestup"
-  },
-  {
-   "url": "https://hcmotor.cz/clanek.asp?id=13916",
-   "titulek": "13.11.2026, Marek Dvoøák SDO: Obrat dokonal v prodlouení Tobiá!",
-   "perex": "vèera , Tisková zpráva Milan Klouèek pokraèuje v Motoru! Smlouvu prodlouil o dalí dvì sezony pøed 2 dny, Roman Koko Odkud pocházejí hráèi Motoru? Prozkoumejte novou interaktivní mapu pøed 2 dny, Václav Plachta Ve ètvrtek pøijede Sparta! Vyprodáme podruhé za sebou Budvar arénu? pøed 2 dny, Václav Plachta JUN: Zápas…",
-   "zdroj": "HC Motor",
-   "datum": "2026-11-15T12:00+01:00",
-   "pridano": "2026-11-19T11:56+01:00",
-   "rucne": false,
-   "hraci": [],
-   "bez_casu": true,
-   "zapas": null,
-   "typ": "prestup"
-  },
-  {
-   "url": "https://hcmotor.cz/clanek.asp?id=13917",
-   "titulek": "13.11.2026, Václav Plachta, Foto: Matyá Rjabi LIT  CEB 3:4 - Motor veze z Litvínova tøi body, dvougólový Olesen rozhodl",
-   "perex": "vèera , Tisková zpráva Milan Klouèek pokraèuje v Motoru! Smlouvu prodlouil o dalí dvì sezony pøed 2 dny, Roman Koko Odkud pocházejí hráèi Motoru? Prozkoumejte novou interaktivní mapu pøed 2 dny, Václav Plachta Ve ètvrtek pøijede Sparta! Vyprodáme podruhé za sebou Budvar arénu? pøed 2 dny, Václav Plachta JUN: Zápas…",
-   "zdroj": "HC Motor",
-   "datum": "2026-11-15T12:00+01:00",
-   "pridano": "2026-11-19T11:56+01:00",
-   "rucne": false,
-   "hraci": [
-    "Nick Alexander Olesen"
-   ],
-   "bez_casu": true,
-   "zapas": null,
-   "typ": "prestup"
-  },
-  {
-   "url": "https://hcmotor.cz/clanek.asp?id=13910",
-   "titulek": "12.11.2026, Martin Vaíèek Extraliga se vrací! Motor míøí na led Litvínova",
-   "perex": "vèera , Tisková zpráva Milan Klouèek pokraèuje v Motoru! Smlouvu prodlouil o dalí dvì sezony pøed 2 dny, Roman Koko Odkud pocházejí hráèi Motoru? Prozkoumejte novou interaktivní mapu pøed 2 dny, Václav Plachta Ve ètvrtek pøijede Sparta! Vyprodáme podruhé za sebou Budvar arénu? pøed 2 dny, Václav Plachta JUN: Zápas…",
-   "zdroj": "HC Motor",
-   "datum": "2026-11-15T12:00+01:00",
-   "pridano": "2026-11-19T11:56+01:00",
-   "rucne": false,
-   "hraci": [],
-   "bez_casu": true,
-   "zapas": null,
-   "typ": "prestup"
-  },
-  {
-   "url": "https://hcmotor.cz/clanek.asp?id=13911",
-   "titulek": "12.11.2026, Martin Vaíèek JAK SI VEDLI MOTORÁCI V REPREZENTAÈNÍCH VÝBÌRECH?",
-   "perex": "vèera , Tisková zpráva Milan Klouèek pokraèuje v Motoru! Smlouvu prodlouil o dalí dvì sezony pøed 2 dny, Roman Koko Odkud pocházejí hráèi Motoru? Prozkoumejte novou interaktivní mapu pøed 2 dny, Václav Plachta Ve ètvrtek pøijede Sparta! Vyprodáme podruhé za sebou Budvar arénu? pøed 2 dny, Václav Plachta JUN: Zápas…",
-   "zdroj": "HC Motor",
-   "datum": "2026-11-15T12:00+01:00",
-   "pridano": "2026-11-19T11:56+01:00",
-   "rucne": false,
-   "hraci": [],
-   "bez_casu": true,
-   "zapas": null,
-   "typ": "prestup"
-  },
-  {
-   "url": "https://hcmotor.cz/clanek.asp?id=13912",
-   "titulek": "11.11.2026, Marek Dvoøák Tomá Kundrátek odpovídá fanoukùm! Kdo je DJ v kabinì a s kým je nejvìtí legrace?",
-   "perex": "vèera , Tisková zpráva Milan Klouèek pokraèuje v Motoru! Smlouvu prodlouil o dalí dvì sezony pøed 2 dny, Roman Koko Odkud pocházejí hráèi Motoru? Prozkoumejte novou interaktivní mapu pøed 2 dny, Václav Plachta Ve ètvrtek pøijede Sparta! Vyprodáme podruhé za sebou Budvar arénu? pøed 2 dny, Václav Plachta JUN: Zápas…",
-   "zdroj": "HC Motor",
-   "datum": "2026-11-15T12:00+01:00",
-   "pridano": "2026-11-19T11:56+01:00",
-   "rucne": false,
-   "hraci": [
-    "Tomáš Kundrátek"
-   ],
-   "bez_casu": true,
-   "zapas": null,
-   "typ": "prestup"
-  },
-  {
-   "url": "https://hcmotor.cz/clanek.asp?id=13902",
-   "titulek": "10.11.2026, Václav Plachta Samuel Dranèák boduje v juniorce, v Táboøe nastupuje po boku Pecha",
-   "perex": "vèera , Tisková zpráva Milan Klouèek pokraèuje v Motoru! Smlouvu prodlouil o dalí dvì sezony pøed 2 dny, Roman Koko Odkud pocházejí hráèi Motoru? Prozkoumejte novou interaktivní mapu pøed 2 dny, Václav Plachta Ve ètvrtek pøijede Sparta! Vyprodáme podruhé za sebou Budvar arénu? pøed 2 dny, Václav Plachta JUN: Zápas…",
-   "zdroj": "HC Motor",
-   "datum": "2026-11-15T12:00+01:00",
-   "pridano": "2026-11-19T11:56+01:00",
-   "rucne": false,
-   "hraci": [],
-   "bez_casu": true,
-   "zapas": null,
-   "typ": "prestup"
-  },
-  {
-   "url": "https://hcmotor.cz/clanek.asp?id=13909",
-   "titulek": "09.11.2026, Jakub David Róbert Lantoi pomìøil síly s olympijským kanoistou Fuksou. S mistrem svìta onkou si vyzkouel leteckou akrobacii",
-   "perex": "vèera , Tisková zpráva Milan Klouèek pokraèuje v Motoru! Smlouvu prodlouil o dalí dvì sezony pøed 2 dny, Roman Koko Odkud pocházejí hráèi Motoru? Prozkoumejte novou interaktivní mapu pøed 2 dny, Václav Plachta Ve ètvrtek pøijede Sparta! Vyprodáme podruhé za sebou Budvar arénu? pøed 2 dny, Václav Plachta JUN: Zápas…",
-   "zdroj": "HC Motor",
-   "datum": "2026-11-15T12:00+01:00",
-   "pridano": "2026-11-19T11:56+01:00",
-   "rucne": false,
-   "hraci": [],
-   "bez_casu": true,
-   "zapas": null,
-   "typ": "prestup"
-  },
-  {
-   "url": "https://hcmotor.cz/clanek.asp?id=13906",
-   "titulek": "08.11.2026, Michal pírek KDE JE JIM KONEC: Jan Trummer trénoval enskou reprezentaci Spojených arabských emirátù",
-   "perex": "vèera , Tisková zpráva Milan Klouèek pokraèuje v Motoru! Smlouvu prodlouil o dalí dvì sezony pøed 2 dny, Roman Koko Odkud pocházejí hráèi Motoru? Prozkoumejte novou interaktivní mapu pøed 2 dny, Václav Plachta Ve ètvrtek pøijede Sparta! Vyprodáme podruhé za sebou Budvar arénu? pøed 2 dny, Václav Plachta JUN: Zápas…",
-   "zdroj": "HC Motor",
-   "datum": "2026-11-15T12:00+01:00",
-   "pridano": "2026-11-19T11:56+01:00",
-   "rucne": false,
-   "hraci": [],
-   "bez_casu": true,
-   "zapas": null,
-   "typ": "prestup"
-  },
-  {
-   "url": "https://hcmotor.cz/clanek.asp?id=13905",
-   "titulek": "07.11.2026, Roman Koko Motorácký dotazník: Co prozradil Graeme McCormack?",
-   "perex": "vèera , Tisková zpráva Milan Klouèek pokraèuje v Motoru! Smlouvu prodlouil o dalí dvì sezony pøed 2 dny, Roman Koko Odkud pocházejí hráèi Motoru? Prozkoumejte novou interaktivní mapu pøed 2 dny, Václav Plachta Ve ètvrtek pøijede Sparta! Vyprodáme podruhé za sebou Budvar arénu? pøed 2 dny, Václav Plachta JUN: Zápas…",
-   "zdroj": "HC Motor",
-   "datum": "2026-11-15T12:00+01:00",
-   "pridano": "2026-11-19T11:56+01:00",
-   "rucne": false,
-   "hraci": [
-    "Graeme McCormack"
-   ],
-   "bez_casu": true,
-   "zapas": null,
-   "typ": "prestup"
-  },
-  {
-   "url": "https://hcmotor.cz/clanek.asp?id=13907",
-   "titulek": "05.11.2026, Tisková zpráva Talentovaný bek Václav Nedorost podepsal novou smlouvu!",
-   "perex": "vèera , Tisková zpráva Milan Klouèek pokraèuje v Motoru! Smlouvu prodlouil o dalí dvì sezony pøed 2 dny, Roman Koko Odkud pocházejí hráèi Motoru? Prozkoumejte novou interaktivní mapu pøed 2 dny, Václav Plachta Ve ètvrtek pøijede Sparta! Vyprodáme podruhé za sebou Budvar arénu? pøed 2 dny, Václav Plachta JUN: Zápas…",
-   "zdroj": "HC Motor",
-   "datum": "2026-11-15T12:00+01:00",
-   "pridano": "2026-11-19T11:56+01:00",
-   "rucne": false,
-   "hraci": [
-    "Václav Nedorost"
-   ],
-   "bez_casu": true,
-   "zapas": null,
-   "typ": "prestup"
-  },
-  {
-   "url": "https://hcmotor.cz/clanek.asp?id=13901",
-   "titulek": "04.11.2026, Klub Motor zná výsledky prùzkumu, od konce listopadu vyzkouí døívìjí zaèátky nedìlních zápasù!",
-   "perex": "vèera , Tisková zpráva Milan Klouèek pokraèuje v Motoru! Smlouvu prodlouil o dalí dvì sezony pøed 2 dny, Roman Koko Odkud pocházejí hráèi Motoru? Prozkoumejte novou interaktivní mapu pøed 2 dny, Václav Plachta Ve ètvrtek pøijede Sparta! Vyprodáme podruhé za sebou Budvar arénu? pøed 2 dny, Václav Plachta JUN: Zápas…",
-   "zdroj": "HC Motor",
-   "datum": "2026-11-15T12:00+01:00",
-   "pridano": "2026-11-19T11:56+01:00",
-   "rucne": false,
-   "hraci": [],
-   "bez_casu": true,
-   "zapas": null,
-   "typ": "prestup"
-  },
-  {
-   "url": "https://hcmotor.cz/clanek.asp?id=13903",
-   "titulek": "04.11.2026, Martin Vaíèek S asistentem trenéra Valdemarem Jiruem o reprezentaèní pøestávce",
-   "perex": "vèera , Tisková zpráva Milan Klouèek pokraèuje v Motoru! Smlouvu prodlouil o dalí dvì sezony pøed 2 dny, Roman Koko Odkud pocházejí hráèi Motoru? Prozkoumejte novou interaktivní mapu pøed 2 dny, Václav Plachta Ve ètvrtek pøijede Sparta! Vyprodáme podruhé za sebou Budvar arénu? pøed 2 dny, Václav Plachta JUN: Zápas…",
-   "zdroj": "HC Motor",
-   "datum": "2026-11-15T12:00+01:00",
-   "pridano": "2026-11-19T11:56+01:00",
-   "rucne": false,
-   "hraci": [
-    "Ondřej Vála"
-   ],
-   "bez_casu": true,
-   "zapas": null,
-   "typ": "prestup"
-  },
-  {
-   "url": "https://hcmotor.cz/clanek.asp?id=13904",
-   "titulek": "04.11.2026, Redakce OFFLINE - Ptejte se Tomáe Kundrátka!",
-   "perex": "vèera , Tisková zpráva Milan Klouèek pokraèuje v Motoru! Smlouvu prodlouil o dalí dvì sezony pøed 2 dny, Roman Koko Odkud pocházejí hráèi Motoru? Prozkoumejte novou interaktivní mapu pøed 2 dny, Václav Plachta Ve ètvrtek pøijede Sparta! Vyprodáme podruhé za sebou Budvar arénu? pøed 2 dny, Václav Plachta JUN: Zápas…",
-   "zdroj": "HC Motor",
-   "datum": "2026-11-15T12:00+01:00",
-   "pridano": "2026-11-19T11:56+01:00",
-   "rucne": false,
-   "hraci": [
-    "Tomáš Kundrátek"
-   ],
-   "bez_casu": true,
-   "zapas": null,
-   "typ": "prestup"
-  },
-  {
-   "url": "https://hcmotor.cz/clanek.asp?id=13899",
-   "titulek": "03.11.2026, Zbynìk Rýpar Týden v mládei #9: Junioøi pøivezli bod, starí áci A dominovali v Táboøe",
-   "perex": "vèera , Tisková zpráva Milan Klouèek pokraèuje v Motoru! Smlouvu prodlouil o dalí dvì sezony pøed 2 dny, Roman Koko Odkud pocházejí hráèi Motoru? Prozkoumejte novou interaktivní mapu pøed 2 dny, Václav Plachta Ve ètvrtek pøijede Sparta! Vyprodáme podruhé za sebou Budvar arénu? pøed 2 dny, Václav Plachta JUN: Zápas…",
-   "zdroj": "HC Motor",
-   "datum": "2026-11-15T12:00+01:00",
-   "pridano": "2026-11-19T11:56+01:00",
-   "rucne": false,
-   "hraci": [],
-   "bez_casu": true,
-   "zapas": null,
-   "typ": "prestup"
-  },
-  {
-   "url": "https://hcmotor.cz/clanek.asp?id=13900",
-   "titulek": "03.11.2026, Tomá David Josef Koláèek: Málo støílíme, mìli bychom zaèít dávat oklivé góly",
-   "perex": "vèera , Tisková zpráva Milan Klouèek pokraèuje v Motoru! Smlouvu prodlouil o dalí dvì sezony pøed 2 dny, Roman Koko Odkud pocházejí hráèi Motoru? Prozkoumejte novou interaktivní mapu pøed 2 dny, Václav Plachta Ve ètvrtek pøijede Sparta! Vyprodáme podruhé za sebou Budvar arénu? pøed 2 dny, Václav Plachta JUN: Zápas…",
-   "zdroj": "HC Motor",
-   "datum": "2026-11-15T12:00+01:00",
-   "pridano": "2026-11-19T11:56+01:00",
-   "rucne": false,
-   "hraci": [],
-   "bez_casu": true,
-   "zapas": null,
-   "typ": "prestup"
-  },
-  {
-   "url": "https://hcmotor.cz/clanek.asp?id=13897",
-   "titulek": "01.11.2026, Roman Koko CEB - KVA 2:3 - Motor dotáhl dvoubrankovou ztrátu, poslední slovo ale mìly Vary",
-   "perex": "vèera , Tisková zpráva Milan Klouèek pokraèuje v Motoru! Smlouvu prodlouil o dalí dvì sezony pøed 2 dny, Roman Koko Odkud pocházejí hráèi Motoru? Prozkoumejte novou interaktivní mapu pøed 2 dny, Václav Plachta Ve ètvrtek pøijede Sparta! Vyprodáme podruhé za sebou Budvar arénu? pøed 2 dny, Václav Plachta JUN: Zápas…",
-   "zdroj": "HC Motor",
-   "datum": "2026-11-15T12:00+01:00",
-   "pridano": "2026-11-19T11:56+01:00",
-   "rucne": false,
-   "hraci": [],
-   "bez_casu": true,
-   "zapas": null,
-   "typ": "prestup"
-  },
-  {
-   "url": "https://hcmotor.cz/clanek.asp?id=13898",
-   "titulek": "01.11.2026, Martin Vaíèek Fanouci jsou fantastiètí, øíká nový obránce McCormack",
-   "perex": "vèera , Tisková zpráva Milan Klouèek pokraèuje v Motoru! Smlouvu prodlouil o dalí dvì sezony pøed 2 dny, Roman Koko Odkud pocházejí hráèi Motoru? Prozkoumejte novou interaktivní mapu pøed 2 dny, Václav Plachta Ve ètvrtek pøijede Sparta! Vyprodáme podruhé za sebou Budvar arénu? pøed 2 dny, Václav Plachta JUN: Zápas…",
-   "zdroj": "HC Motor",
-   "datum": "2026-11-15T12:00+01:00",
-   "pridano": "2026-11-19T11:56+01:00",
-   "rucne": false,
-   "hraci": [
-    "Graeme McCormack"
-   ],
-   "bez_casu": true,
-   "zapas": null,
-   "typ": "prestup"
-  },
-  {
-   "url": "https://hcmotor.cz/clanek.asp?id=13895",
-   "titulek": "31.10.2026, Marek Dvoøák Motor v nedìli pøivítá Karlovy Vary! Vstupenky jsou stále k dostání!",
-   "perex": "vèera , Tisková zpráva Milan Klouèek pokraèuje v Motoru! Smlouvu prodlouil o dalí dvì sezony pøed 2 dny, Roman Koko Odkud pocházejí hráèi Motoru? Prozkoumejte novou interaktivní mapu pøed 2 dny, Václav Plachta Ve ètvrtek pøijede Sparta! Vyprodáme podruhé za sebou Budvar arénu? pøed 2 dny, Václav Plachta JUN: Zápas…",
-   "zdroj": "HC Motor",
-   "datum": "2026-11-15T12:00+01:00",
-   "pridano": "2026-11-19T11:56+01:00",
-   "rucne": false,
-   "hraci": [],
-   "bez_casu": true,
-   "zapas": null,
-   "typ": "prestup"
+   "zapas": "2026-19",
+   "typ": null
   },
   {
    "url": "https://sport.ceskatelevize.cz/clanek/hokej/trinec-podruhe-v-sezone-porazil-liberec-oslabeny-litvinov-nestacil-na-budejovice-159946",
@@ -699,6 +404,235 @@
    "hraci": [],
    "zapas": "2026-18",
    "typ": "reportaz"
+  },
+  {
+   "url": "https://hcmotor.cz/clanek.asp?id=13917",
+   "titulek": "Motor České Budějovice",
+   "perex": "Zimní stadion Ivana Hlinky nabídl hned v úvodu několik šancí. Jako první zahrozili hosté, konkrétně Pour. Člen třetí útočné formace se dostal ke střele z pravé strany, kterou Tomek vyrazil pouze nad sebe. Slovenský brankář tak musel tygřím skokem odpálit kotouč před případnou Zacharovou dorážkou. Domácí odpověděli…",
+   "zdroj": "HC Motor",
+   "datum": "2026-11-13T12:00+01:00",
+   "pridano": "2026-11-19T12:04+01:00",
+   "rucne": false,
+   "hraci": [
+    "Jakub Pour",
+    "Marek Zachar"
+   ],
+   "bez_casu": true,
+   "zapas": null,
+   "typ": null
+  },
+  {
+   "url": "https://hcmotor.cz/clanek.asp?id=13910",
+   "titulek": "Extraliga se vrací! Motor míří na led Litvínova",
+   "perex": "Reprezentační přestávka již skončila, což znamená jediné, vrací se Tipsport extraliga. Motor sehraje osmnácté kolo na ledě Litvínova v pátek 13. listopadu od 17:30.",
+   "zdroj": "HC Motor",
+   "datum": "2026-11-12T12:00+01:00",
+   "pridano": "2026-11-19T12:04+01:00",
+   "rucne": false,
+   "hraci": [],
+   "bez_casu": true,
+   "zapas": "2026-18",
+   "typ": null
+  },
+  {
+   "url": "https://hcmotor.cz/clanek.asp?id=13911",
+   "titulek": "JAK SI VEDLI MOTORÁCI V REPREZENTAČNÍCH VÝBĚRECH?",
+   "perex": "Jak si vedli motoráci, kteří obdrželi pozvánky do mládežnických reprezentačních výběrů? To se dočtete v novém článku",
+   "zdroj": "HC Motor",
+   "datum": "2026-11-12T12:00+01:00",
+   "pridano": "2026-11-19T12:04+01:00",
+   "rucne": false,
+   "hraci": [],
+   "bez_casu": true,
+   "zapas": null,
+   "typ": null
+  },
+  {
+   "url": "https://hcmotor.cz/clanek.asp?id=13912",
+   "titulek": "Tomáš Kundrátek odpovídá fanouškům! Kdo je DJ v kabině a s kým je největší legrace?",
+   "perex": "Minulý týden jste se vy, fanoušci, mohli ptát kapitána Tomáše Kundrátka v rámci offline rozhovoru na cokoliv vás napadlo. Dotazů na kapitána přišlo nepřeberné množství, avšak na všechny by mistr světa z roku 2024 ani odpovědět nemohl. Přinášíme tedy výběr několika nejzajímavějších a často také nejvíce se vyskytujících…",
+   "zdroj": "HC Motor",
+   "datum": "2026-11-11T12:00+01:00",
+   "pridano": "2026-11-19T12:04+01:00",
+   "rucne": false,
+   "hraci": [
+    "Tomáš Kundrátek"
+   ],
+   "bez_casu": true,
+   "zapas": null,
+   "typ": null
+  },
+  {
+   "url": "https://hcmotor.cz/clanek.asp?id=13902",
+   "titulek": "Samuel Drančák boduje v juniorce, v Táboře nastupuje po boku Pecha",
+   "perex": "Samuel Drančák po svém návratu pod Černou věž užívá dvě role. Na jedné straně patří k tahounům juniorské kategorie, kde se Motor drží v popředí tabulky. Na druhé straně to je sbírání zkušeností v mužské kategorii. Stříbrný medailista z mistrovství světa do dvaceti let sice čeká na první ostrý start v dresu Motoru, u…",
+   "zdroj": "HC Motor",
+   "datum": "2026-11-10T12:00+01:00",
+   "pridano": "2026-11-19T12:04+01:00",
+   "rucne": false,
+   "hraci": [
+    "Samuel Drančák"
+   ],
+   "bez_casu": true,
+   "zapas": null,
+   "typ": null
+  },
+  {
+   "url": "https://hcmotor.cz/clanek.asp?id=13909",
+   "titulek": "Róbert Lantoši poměřil síly s olympijským kanoistou Fuksou. S mistrem světa Šonkou si vyzkoušel leteckou akrobacii",
+   "perex": "Útočník Banes Motoru České Budějovice Robert Lantoši se v novém videu postavil netradiční sportovní výzvě po boku olympijského vítěze v rychlostní kanoistice Martina Fuksy. Vyzkoušel si také akrobatický let s mistrem světa Martinem Šonkou. Video vzniklo v rámci partnerství Red Bullu s Tipsport extraligou, které 15.…",
+   "zdroj": "HC Motor",
+   "datum": "2026-11-09T12:00+01:00",
+   "pridano": "2026-11-19T12:04+01:00",
+   "rucne": false,
+   "hraci": [
+    "Róbert Lantoši"
+   ],
+   "bez_casu": true,
+   "zapas": null,
+   "typ": null
+  },
+  {
+   "url": "https://hcmotor.cz/clanek.asp?id=13906",
+   "titulek": "KDE JE JIM KONEC: Jan Trummer trénoval ženskou reprezentaci Spojených arabských emirátů",
+   "perex": "Dvaatřicetiletý českobudějovický odchovanec",
+   "zdroj": "HC Motor",
+   "datum": "2026-11-08T12:00+01:00",
+   "pridano": "2026-11-19T12:04+01:00",
+   "rucne": false,
+   "hraci": [],
+   "bez_casu": true,
+   "zapas": null,
+   "typ": null
+  },
+  {
+   "url": "https://hcmotor.cz/clanek.asp?id=13905",
+   "titulek": "Motorácký dotazník: Co prozradil Graeme McCormack?",
+   "perex": "Reprezentační přestávka přináší další díl našeho tradičního dotazníku. Tentokrát na otázky odpovídal obránce",
+   "zdroj": "HC Motor",
+   "datum": "2026-11-07T12:00+01:00",
+   "pridano": "2026-11-19T12:04+01:00",
+   "rucne": false,
+   "hraci": [
+    "Graeme McCormack"
+   ],
+   "bez_casu": true,
+   "zapas": null,
+   "typ": null
+  },
+  {
+   "url": "https://hcmotor.cz/clanek.asp?id=13907",
+   "titulek": "Talentovaný bek Václav Nedorost podepsal novou smlouvu!",
+   "perex": "Mladý zadák patří mezi velké talenty českobudějovického hokeje a v dosavadním průběhu sezony dokázal, že je připraven udělat další krok ve své kariéře. Své předpoklady už ostatně potvrdil také na mezinárodní scéně, když s českou reprezentací do 18 let vybojoval bronzovou medaili na mistrovství světa. Aktuálně se navíc…",
+   "zdroj": "HC Motor",
+   "datum": "2026-11-05T12:00+01:00",
+   "pridano": "2026-11-19T12:04+01:00",
+   "rucne": false,
+   "hraci": [
+    "Václav Nedorost"
+   ],
+   "bez_casu": true,
+   "zapas": null,
+   "typ": "prestup"
+  },
+  {
+   "url": "https://hcmotor.cz/clanek.asp?id=13901",
+   "titulek": "Motor zná výsledky průzkumu, od konce listopadu vyzkouší dřívější začátky nedělních zápasů!",
+   "perex": "Průzkum probíhal během srpna a září, kdy výzkumný tým Ekonomické fakulty Jihočeské univerzity pod vedením Jiřího Aliny, Petry Vysušilové a Kamila Píchy nejprve uskutečnil 15 hloubkových rozhovorů a následně získal 967 platných odpovědí prostřednictvím online a osobního dotazování. Cílem bylo zjistit, jak fanoušci…",
+   "zdroj": "HC Motor",
+   "datum": "2026-11-04T12:00+01:00",
+   "pridano": "2026-11-19T12:04+01:00",
+   "rucne": false,
+   "hraci": [],
+   "bez_casu": true,
+   "zapas": null,
+   "typ": null
+  },
+  {
+   "url": "https://hcmotor.cz/clanek.asp?id=13903",
+   "titulek": "S asistentem trenéra Valdemarem Jirušem o reprezentační přestávce",
+   "perex": "Nastal čas první reprezentační přestávky. Její průběh z hlediska Banes Motor pro klubový web blíže popsal asistent trenéra Valdemar Jiruš.",
+   "zdroj": "HC Motor",
+   "datum": "2026-11-04T12:00+01:00",
+   "pridano": "2026-11-19T12:04+01:00",
+   "rucne": false,
+   "hraci": [
+    "Ondřej Vála"
+   ],
+   "bez_casu": true,
+   "zapas": null,
+   "typ": null
+  },
+  {
+   "url": "https://hcmotor.cz/clanek.asp?id=13904",
+   "titulek": "OFFLINE - Ptejte se Tomáše Kundrátka!",
+   "perex": "Mistr světa, trojnásobný mistr extraligy, bývalý hráč NHL a účastník tří olympijských turnajů. To je Tomáš Kundrátek. A právě šestatřicetiletého obránce a kapitána Banes Motor se nyní můžete ptát na to, co vás zajímá! Otázky lze pokládat do pátku 6. listopadu",
+   "zdroj": "HC Motor",
+   "datum": "2026-11-04T12:00+01:00",
+   "pridano": "2026-11-19T12:04+01:00",
+   "rucne": false,
+   "hraci": [
+    "Tomáš Kundrátek"
+   ],
+   "bez_casu": true,
+   "zapas": null,
+   "typ": null
+  },
+  {
+   "url": "https://hcmotor.cz/clanek.asp?id=13900",
+   "titulek": "Josef Koláček: Málo střílíme, měli bychom začít dávat ošklivé góly",
+   "perex": "Josef Koláček po utkání proti Karlovým Varům, které Motor těsně prohrál, zhodnotil předvedenou hru, prozradil, jak se mu hraje po návratu po zranění a poodhalil plány týmu na téměř dvoutýdenní volno.",
+   "zdroj": "HC Motor",
+   "datum": "2026-11-03T12:00+01:00",
+   "pridano": "2026-11-19T12:04+01:00",
+   "rucne": false,
+   "hraci": [
+    "Josef Koláček"
+   ],
+   "bez_casu": true,
+   "zapas": "2026-17",
+   "typ": "zraneni"
+  },
+  {
+   "url": "https://hcmotor.cz/clanek.asp?id=13897",
+   "titulek": "Motor České Budějovice",
+   "perex": "Jihočeši proti Karlovým Varům dokázali vyrovnat stav utkání, když se prosadili",
+   "zdroj": "HC Motor",
+   "datum": "2026-11-01T12:00+01:00",
+   "pridano": "2026-11-19T12:04+01:00",
+   "rucne": false,
+   "hraci": [],
+   "bez_casu": true,
+   "zapas": "2026-17",
+   "typ": null
+  },
+  {
+   "url": "https://hcmotor.cz/clanek.asp?id=13898",
+   "titulek": "Fanoušci jsou fantastičtí, říká nový obránce McCormack",
+   "perex": "Motoru poslední utkání před reprezentační přestávkou nevyšlo. Jihočeši podlehli Karlovým Varům o jednu branku. Utkání zhodnotil obránce Graeme McCormack, pro něhož se jednalo o první utkání před domácími příznivci po dokončeném trejdu.",
+   "zdroj": "HC Motor",
+   "datum": "2026-11-01T12:00+01:00",
+   "pridano": "2026-11-19T12:04+01:00",
+   "rucne": false,
+   "hraci": [
+    "Graeme McCormack"
+   ],
+   "bez_casu": true,
+   "zapas": "2026-17",
+   "typ": "rozhovor"
+  },
+  {
+   "url": "https://hcmotor.cz/clanek.asp?id=13895",
+   "titulek": "Motor v neděli přivítá Karlovy Vary! Vstupenky jsou stále k dostání!",
+   "perex": "Neděle je tradičně hracím dnem nejvyšší soutěže. Jinak tomu nebude ani první listopadový den, kdy Motor doma v posledním zápase před první reprezentační pauzou sezony přivítá Karlovy Vary. Zapíšou Budějovice další domácí výhru? Zápas v Budvar areně odstartuje v neděli v 17:00. Vstupenky na utkání jsou k dispozici",
+   "zdroj": "HC Motor",
+   "datum": "2026-10-31T12:00+01:00",
+   "pridano": "2026-11-19T12:04+01:00",
+   "rucne": false,
+   "hraci": [],
+   "bez_casu": true,
+   "zapas": "2026-17",
+   "typ": null
   },
   {
    "url": "https://www.sport.cz/clanek/hokej-extraliga-hokejove-prestupy-online-plzen-i-boleslav-oznamily-prvni-posily-5437465",
