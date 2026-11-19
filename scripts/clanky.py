@@ -272,7 +272,43 @@ def read_listing(url, pattern, with_dates=False):
     return [it for it in seen.values() if it["titulek"] or it.get("nahled")]
 
 
-def read_article_meta(url):
+GENERIC_TITLE = {"motor české budějovice", "hc motor české budějovice", "banes motor české budějovice"}
+
+
+def title_from_preview(nahled):
+    """hcmotor.cz výpis: „15.11.2026, Martin Vašíček CEB - PCE 2:1 - Motor…“ → titulek."""
+    t = REL_DATE.sub("", nahled, count=1).lstrip(" ,")
+    m = re.search(r"\b([A-Z]{2,4}\s*[-–]\s*[A-Z]{2,4}\s+\d+:\d+.*)$", t)
+    if m:
+        return m.group(1).strip()
+    if re.match(r"(Tisková zpráva|Redakce|Klub)\b", t):
+        t = re.sub(r"^(Tisková zpráva|Redakce|Klub)\s*", "", t)
+    else:
+        t = re.sub(r"^[A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ][^\s,]+ [A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ][^\s,]+(, Foto: [^\s,]+ [^\s,]+)?\s+", "", t)
+    return t.strip()
+
+
+def hcmotor_body(soup, nahled=""):
+    """Titulek z nadpisu článku a perex z prvního odstavce pod ním."""
+    heads = []
+    for h in soup.find_all(["h1", "h2", "h3"]):
+        ht = re.sub(r"\s+", " ", h.get_text(" ")).strip()
+        if len(ht) >= 12 and ht.lower() not in GENERIC_TITLE:
+            heads.append((h, ht))
+    if nahled:  # nadpis, který je i ve výpisu, je jistě titulek článku
+        heads.sort(key=lambda x: x[1] not in nahled)
+    for h, ht in heads:
+        perex = ""
+        for p_ in h.find_all_next("p", limit=12):
+            t_ = re.sub(r"\s+", " ", p_.get_text(" ")).strip()
+            if len(t_) > 40 and not REL_DATE.match(t_):
+                perex = t_
+                break
+        return ht, perex
+    return "", ""
+
+
+def read_article_meta(url, nahled=""):
     soup = BeautifulSoup(get(url).content, "html.parser")
 
     def meta(*keys):
@@ -309,6 +345,11 @@ def read_article_meta(url):
     if date is None:
         date, has_time = parse_rel_date(soup.get_text(" ")[:3000])
         bez_casu = bool(date) and not has_time
+    if "hcmotor.cz" in url:
+        ht, hp = hcmotor_body(soup, nahled)
+        if title.strip().lower() in GENERIC_TITLE or not title.strip():
+            title = ht or title_from_preview(nahled)
+        perex = hp or perex
     return {"titulek": clean_text(title), "perex": clean_text(perex), "datum": date, "bez_casu": bez_casu}
 
 
@@ -322,7 +363,7 @@ TYP_PRESTUP = re.compile(r"prestup|smlouv|prodlouzil|prodlouzeni|podepsal|posil[
                          r"mir[ií] do|hostovan|vymen[ay]|zmen[ay] v kadru|pojistil|nove[mh]o? (hrace|obrance|utocnika|golmana)")
 TYP_ZRANENI = re.compile(r"zranen|zranil|operac|marod|mimo hru|vypadne na|vynecha|otres mozku|nemocensk")
 TYP_ONLINE = re.compile(r"\bonline\b")
-TYP_REPORT = re.compile(r"\d+\s*:\s*\d+|porazil|porazk|zdolal|skolil|vyhral|vyhr[au]|vyhre|prohral|prohr[au]|"
+TYP_REPORT = re.compile(r"\d+\s*:\s*\d+|porazil|pretlac|zvitez|otocil|porazk|zdolal|skolil|vyhral|vyhr[au]|vyhre|prohral|prohr[au]|"
                         r"padl[ia]?\b|obrat|veze tri|tri body|bod[ uy]|remiz|v prodlouzeni|najezd|vyprodan")
 TYP_ROZHOVOR_JMENO = re.compile(r"^[A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ][a-záčďéěíňóřšťúůýž-]+(?: [A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ][a-záčďéěíňóřšťúůýž-]+)?: ")
 TYP_ROZHOVOR = re.compile(r"rozhovor|lici\b|rika\b|rekl\b|priznal|vzkazuje|popsal|tvrdi|hlasi\b|"
@@ -360,7 +401,7 @@ def classify(a, has_match_after):
         return "zraneni"
     if TYP_PRESTUP.search(t) or TYP_PRESTUP.search(p[:160]):
         return "prestup"
-    if TYP_ZRANENI.search(p[:160]):
+    if re.search(r"zranen|zranil|operac|marod", p[:160]):
         return "zraneni"
     if has_match_after and (TYP_REPORT.search(t) or TYP_REPORT.search(p[:200])):
         return "reportaz"
@@ -413,19 +454,21 @@ def assign_match(a, matches):
         return None
     t = datetime.fromisoformat(a["datum"]).timestamp()
     text = norm(f'{a["titulek"]} {a["perex"]}')
+    title = norm(a["titulek"])
     best, bd = None, None
     for m in matches:
         if m.get("odlozeno"):
             continue
         ms = datetime.fromisoformat(m["start"]).timestamp()
         diff = t - ms
-        if not (-2 * DAY_S <= diff <= 2 * DAY_S):
+        if not (-3 * DAY_S <= diff <= 2 * DAY_S):  # preview až 3 dny předem, ohlasy 2 dny po
             continue
         k = opponent_key(m)
         if not k or not re.search(SOUPERI[k], text):
             continue
-        if bd is None or abs(diff) < bd:
-            best, bd = m, abs(diff)
+        score = abs(diff) - (10 * DAY_S if re.search(SOUPERI[k], title) else 0)
+        if bd is None or score < bd:
+            best, bd = m, score
     return best
 
 
@@ -520,6 +563,7 @@ def make_record(item, src_name, matchers, manual=False):
         "rucne": manual,
         "hraci": tag_players(text, matchers),
         **({"bez_casu": True} if item.get("bez_casu") else {}),
+        **({"ver": 2} if src_name == "HC Motor" else {}),
     }
 
 
@@ -527,9 +571,7 @@ def make_record(item, src_name, matchers, manual=False):
 
 def cleanup(data):
     """Odstraní záznamy hcmotor.cz z prvního (vadného) načtení: rozbité kódování, datum v titulku, menu."""
-    bad = re.compile(r"[èìøùÌÈ]|archiv èlánk")
-    data["clanky"] = [c for c in data["clanky"] if not (
-        c["zdroj"] == "HC Motor" and (bad.search(c["titulek"] + c["perex"]) or REL_DATE.match(c["titulek"])))]
+    data["clanky"] = [c for c in data["clanky"] if not (c["zdroj"] == "HC Motor" and c.get("ver") != 2)]
 
 
 def scan(cfg):
@@ -563,7 +605,7 @@ def scan(cfg):
                 continue
             if not it["perex"] or not it["datum"] or not it["titulek"]:
                 try:
-                    m = read_article_meta(url)
+                    m = read_article_meta(url, it.get("nahled", ""))
                     if m["titulek"]:
                         it["titulek"] = m["titulek"]  # z výpisu bývá titulek slepený s perexem
                     it["perex"] = it["perex"] or m["perex"]
