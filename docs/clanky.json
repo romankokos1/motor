@@ -1,5 +1,5 @@
 {
- "aktualizace": "2026-11-19T13:29+01:00",
+ "aktualizace": "2026-11-19T13:50+01:00",
  "clanky": [
   {
    "url": "https://www.sport.cz/clanek/hokej-extraliga-videomomenty-sparta-chce-odcinit-fiasko-ceka-ji-oblibeny-souper-5578886",
@@ -32,7 +32,10 @@
    ],
    "zapas": null,
    "typ": null,
-   "t_vypis": "zákulisí budějovic: náladový génius olesen. kundrátek? z flaksy skvělý šéf kabiny"
+   "t_vypis": "zákulisí budějovic: náladový génius olesen. kundrátek? z flaksy skvělý šéf kabiny",
+   "mluvi": [
+    "Václav Nedorost"
+   ]
   },
   {
    "url": "https://www.hokej.cz/litvinov-reaguje-nekdejsi-reprezentant-bali-kufry-ve-sparte/5099374",
@@ -118,7 +121,10 @@
    ],
    "zapas": null,
    "typ": "rozhovor",
-   "t_rss": "Nedorost: Hráči musí být na tlak zvyklí. Proč nepřivedl hvězdy a v čem porušil dohodu?"
+   "t_rss": "Nedorost: Hráči musí být na tlak zvyklí. Proč nepřivedl hvězdy a v čem porušil dohodu?",
+   "mluvi": [
+    "Václav Nedorost"
+   ]
   },
   {
    "url": "https://www.idnes.cz/hokej/extraliga/ceske-budejovice-manazer-obrance-vaclav-nedorost-rozhovor.A261119_986787_hokej_jrv",
@@ -133,7 +139,10 @@
    ],
    "zapas": null,
    "typ": "rozhovor",
-   "t_rss": "Otec? Ne, manažer. Na zimáku si „táto“ ani „synu“ vůbec neříkáme, líčí Nedorost"
+   "t_rss": "Otec? Ne, manažer. Na zimáku si „táto“ ani „synu“ vůbec neříkáme, líčí Nedorost",
+   "mluvi": [
+    "Václav Nedorost"
+   ]
   },
   {
    "url": "https://www.hokej.cz/ctvrty-s-osmym-sparta-potrebuje-bodovat-a-dotahnout-motor/5099280",
@@ -446,7 +455,10 @@
    ],
    "zapas": null,
    "typ": "rozhovor",
-   "t_rss": "Kdo je největší spáč, bavič nebo jedlík? Matěj Toman představuje kabinu Motoru"
+   "t_rss": "Kdo je největší spáč, bavič nebo jedlík? Matěj Toman představuje kabinu Motoru",
+   "mluvi": [
+    "Matěj Toman"
+   ]
   },
   {
    "url": "https://www.hokej.cz/svatecni-derby-opet-pro-vitkovice-ci-dynamo-prvni-nula-poruby-rytiri-obrali-spartu/5099325",
@@ -596,7 +608,10 @@
    "ver": 3,
    "t_vypis": ", marek dvořák jan ordoš hodnotí zápas s pardubicemi: klobouk dolů před všemi kluky!",
    "zapas": "2026-19",
-   "typ": null
+   "typ": null,
+   "mluvi": [
+    "Jan Ordoš"
+   ]
   },
   {
    "url": "https://isport.blesk.cz/clanek/hokej-tipsport-extraliga/482181/ceresnakuv-cerny-vikend-ze-sklepa-mu-ukradli-drahe-kolo-pak-mu-kypely-emoce-na-motoru.html",
@@ -696,7 +711,10 @@
    "ver": 3,
    "t_vypis": ", roman kokoš motor otočil zápas s pardubicemi. martin beránek: chtěli jsme jim vlézt pod kůži",
    "zapas": "2026-19",
-   "typ": "reportaz"
+   "typ": "reportaz",
+   "mluvi": [
+    "Martin Beránek"
+   ]
   },
   {
    "url": "https://hcmotor.cz/clanek.asp?id=13921",
@@ -827,7 +845,10 @@
    "ver": 3,
    "t_vypis": ", marek dvořák tomáš kundrátek odpovídá fanouškům! kdo je dj v kabině a s kým je největší legrace?",
    "zapas": null,
-   "typ": null
+   "typ": null,
+   "mluvi": [
+    "Tomáš Kundrátek"
+   ]
   },
   {
    "url": "https://hcmotor.cz/clanek.asp?id=13902",
@@ -894,7 +915,10 @@
    "ver": 3,
    "t_vypis": ", roman kokoš motorácký dotazník: co prozradil graeme mccormack?",
    "zapas": null,
-   "typ": null
+   "typ": null,
+   "mluvi": [
+    "Graeme McCormack"
+   ]
   },
   {
    "url": "https://hcmotor.cz/clanek.asp?id=13907",
@@ -928,7 +952,10 @@
    "ver": 3,
    "t_vypis": ", redakce offline - ptejte se tomáše kundrátka!",
    "zapas": null,
-   "typ": "zraneni"
+   "typ": "zraneni",
+   "mluvi": [
+    "Tomáš Kundrátek"
+   ]
   },
   {
    "url": "https://hcmotor.cz/clanek.asp?id=13903",
@@ -977,7 +1004,10 @@
    "ver": 3,
    "t_vypis": ", tomáš david josef koláček: málo střílíme, měli bychom začít dávat ošklivé góly",
    "zapas": null,
-   "typ": "rozhovor"
+   "typ": "rozhovor",
+   "mluvi": [
+    "Josef Koláček"
+   ]
   },
   {
    "url": "https://hcmotor.cz/clanek.asp?id=13898",
@@ -994,7 +1024,10 @@
    "ver": 3,
    "t_vypis": ", martin vašíček fanoušci jsou fantastičtí, říká nový obránce mccormack",
    "zapas": "2026-17",
-   "typ": "rozhovor"
+   "typ": "rozhovor",
+   "mluvi": [
+    "Graeme McCormack"
+   ]
   },
   {
    "url": "https://hcmotor.cz/clanek.asp?id=13897",
