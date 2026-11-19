@@ -1,0 +1,54 @@
+name: Článek ručně
+
+# Issue s názvem "+ URL" článek přidá, "- URL" odebere. Reaguje jen na issue od vlastníka repa.
+on:
+  issues:
+    types: [opened]
+
+concurrency:
+  group: clanky
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  run:
+    if: >-
+      github.event.issue.user.login == github.repository_owner &&
+      (startsWith(github.event.issue.title, '+ ') || startsWith(github.event.issue.title, '- '))
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install requests beautifulsoup4
+      - name: Přidat / odebrat
+        id: run
+        env:
+          TITLE: ${{ github.event.issue.title }}
+        run: |
+          URL=$(printf '%s' "$TITLE" | sed -E 's/^[+-] +//; s/[[:space:]].*$//')
+          case "$URL" in https://*|http://*) ;; *) echo "Neplatná adresa"; exit 1;; esac
+          if [ "${TITLE:0:1}" = "+" ]; then python scripts/clanky.py --add "$URL" | tee out.txt
+          else python scripts/clanky.py --remove "$URL" | tee out.txt; fi
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898333+github-actions[bot]@users.noreply.github.com"
+          git add docs/clanky.json
+          git diff --cached --quiet && exit 0
+          git commit -m "Články: ruční úprava"
+          git pull --rebase
+          git push
+      - name: Zavřít issue
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          NUM: ${{ github.event.issue.number }}
+          OK: ${{ job.status }}
+        run: |
+          MSG=$(cat out.txt 2>/dev/null || echo "Nepovedlo se – viz log běhu.")
+          gh issue close "$NUM" --repo "$GITHUB_REPOSITORY" --comment "$MSG"
