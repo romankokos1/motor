@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Články · HC Motor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#111418; --ink2:#4a5058; --ink3:#868c94; --line:#e4e6e9; --bg:#fff; --soft:#f5f6f7;
+    --navy:#0d2240; --yellow:#f2c200;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 "IBM Plex Sans",system-ui,sans-serif}
+  a{color:inherit}
+  .bar{background:var(--navy);color:#fff}
+  .bar .in{max-width:900px;margin:0 auto;padding:10px 16px;display:flex;align-items:baseline;gap:12px}
+  .bar b{font-weight:600;letter-spacing:.02em}
+  .bar span{color:#aeb9c8;font-size:13px}
+  .bar .upd{margin-left:auto;font:12px "IBM Plex Mono",monospace;color:#aeb9c8}
+  .wrap{max-width:900px;margin:0 auto;padding:0 16px 48px}
+  .filters{display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:14px 0 12px;border-bottom:1px solid var(--line)}
+  .chip{border:1px solid var(--line);background:#fff;border-radius:3px;padding:4px 9px;font:inherit;font-size:13px;color:var(--ink2);cursor:pointer}
+  .chip i{font-style:normal;color:var(--ink3);font-family:"IBM Plex Mono",monospace;font-size:12px;margin-left:4px}
+  .chip.on{background:var(--ink);border-color:var(--ink);color:#fff}
+  .chip.on i{color:#9aa0a8}
+  select{margin-left:auto;font:inherit;font-size:13px;padding:4px 6px;border:1px solid var(--line);border-radius:3px;background:#fff;color:var(--ink2)}
+  .day{position:sticky;top:0;background:var(--bg);z-index:1;padding:18px 0 6px;border-bottom:2px solid var(--ink);
+       font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;display:flex;gap:8px}
+  .day em{font-style:normal;color:var(--ink3);font-weight:500}
+  .row{display:grid;grid-template-columns:46px 78px 1fr;gap:0 12px;padding:10px 0 10px 10px;border-bottom:1px solid var(--line);position:relative}
+  .row.new::before{content:"";position:absolute;left:0;top:10px;bottom:10px;width:3px;background:var(--yellow)}
+  .t{font:13px "IBM Plex Mono",monospace;color:var(--ink3);padding-top:1px}
+  .s{font-size:12px;font-weight:500;color:var(--ink2);padding-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .h{font-weight:500;text-decoration:none}
+  .h:hover{text-decoration:underline}
+  .row.new .h{font-weight:600}
+  .p{color:var(--ink2);font-size:13.5px;margin-top:2px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .tags{margin-top:4px;display:flex;flex-wrap:wrap;gap:4px}
+  .tags span{font-size:11.5px;background:var(--soft);color:var(--ink2);padding:1px 6px;border-radius:2px}
+  .more{display:block;margin:20px auto 0;font:inherit;font-size:13px;padding:7px 16px;border:1px solid var(--ink);background:#fff;border-radius:3px;cursor:pointer}
+  .more[hidden]{display:none}
+  .empty{padding:40px 0;color:var(--ink3);text-align:center}
+  @media (max-width:560px){
+    .row{grid-template-columns:40px 1fr;padding-left:8px}
+    .s{grid-column:2;grid-row:1;padding:0;margin-bottom:1px}
+    .row>div:last-child{grid-column:2}
+    .t{grid-row:1/3}
+    select{margin-left:0;width:100%}
+    .bar span:not(.upd){display:none}
+  }
+</style>
+</head>
+<body>
+<div class="bar"><div class="in"><b>ČLÁNKY</b><span>HC Motor České Budějovice</span><span class="upd" id="upd"></span></div></div>
+<div class="wrap">
+  <div class="filters" id="filters"></div>
+  <div id="list"></div>
+  <button class="more" id="more" hidden>Starší články</button>
+</div>
+<script>
+const PAGE = 150;
+const DAYS = ["neděle","pondělí","úterý","středa","čtvrtek","pátek","sobota"];
+const MONTHS = ["ledna","února","března","dubna","května","června","července","srpna","září","října","listopadu","prosince"];
+let all = [], shown = PAGE, src = "", player = "", lastVisit = null;
+
+const store = {
+  get(k){ try{ return localStorage.getItem(k) }catch(e){ return null } },
+  set(k,v){ try{ localStorage.setItem(k,v) }catch(e){} }
+};
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const when = a => new Date(a.datum || a.pridano);
+const dayKey = d => d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
+
+function dayLabel(d){
+  const today = new Date(), y = new Date(); y.setDate(today.getDate()-1);
+  const full = `${DAYS[d.getDay()]} ${d.getDate()}. ${MONTHS[d.getMonth()]}` + (d.getFullYear()!==today.getFullYear() ? " "+d.getFullYear() : "");
+  if (dayKey(d)===dayKey(today)) return ["Dnes", full];
+  if (dayKey(d)===dayKey(y)) return ["Včera", full];
+  return [full, ""];
+}
+const hhmm = d => String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0");
+
+function filtered(){
+  return all.filter(a => (!src || a.zdroj===src) && (!player || (a.hraci||[]).includes(player)));
+}
+
+function renderFilters(){
+  const counts = {};
+  all.forEach(a => counts[a.zdroj] = (counts[a.zdroj]||0)+1);
+  const names = Object.keys(counts).sort((a,b)=>counts[b]-counts[a]);
+  const players = [...new Set(all.flatMap(a=>a.hraci||[]))].sort((a,b)=>a.split(" ").pop().localeCompare(b.split(" ").pop(),"cs"));
+  const f = document.getElementById("filters");
+  f.innerHTML =
+    `<button class="chip ${!src?"on":""}" data-s="">Vše<i>${all.length}</i></button>` +
+    names.map(n=>`<button class="chip ${src===n?"on":""}" data-s="${esc(n)}">${esc(n)}<i>${counts[n]}</i></button>`).join("") +
+    (players.length ? `<select id="pl"><option value="">Všichni hráči</option>${players.map(p=>`<option ${p===player?"selected":""}>${esc(p)}</option>`).join("")}</select>` : "");
+  f.querySelectorAll(".chip").forEach(b => b.onclick = () => { src = b.dataset.s; shown = PAGE; renderFilters(); renderList(); });
+  const pl = document.getElementById("pl");
+  if (pl) pl.onchange = () => { player = pl.value; shown = PAGE; renderList(); };
+}
+
+function renderList(){
+  const items = filtered(), list = document.getElementById("list");
+  if (!items.length){ list.innerHTML = `<div class="empty">Žádné články</div>`; document.getElementById("more").hidden = true; return; }
+  let html = "", cur = "";
+  items.slice(0, shown).forEach(a => {
+    const d = when(a), k = dayKey(d);
+    if (k !== cur){ cur = k; const [l, sub] = dayLabel(d); html += `<div class="day">${l}${sub?`<em>${sub}</em>`:""}</div>`; }
+    const isNew = lastVisit && a.pridano > lastVisit;
+    html += `<div class="row${isNew?" new":""}">
+      <div class="t">${a.datum ? hhmm(d) : "–"}</div>
+      <div class="s">${esc(a.zdroj)}</div>
+      <div><a class="h" href="${esc(a.url)}" target="_blank" rel="noopener">${esc(a.titulek)}</a>
+        ${a.perex?`<div class="p">${esc(a.perex)}</div>`:""}
+        ${(a.hraci||[]).length?`<div class="tags">${a.hraci.map(h=>`<span>${esc(h)}</span>`).join("")}</div>`:""}
+      </div></div>`;
+  });
+  list.innerHTML = html;
+  document.getElementById("more").hidden = items.length <= shown;
+}
+
+document.getElementById("more").onclick = () => { shown += PAGE; renderList(); };
+
+fetch("clanky.json", {cache:"no-store"}).then(r=>r.json()).then(data => {
+  all = (data.clanky||[]).slice().sort((a,b)=>when(b)-when(a));
+  lastVisit = store.get("clanky-posledni-navsteva");
+  const newest = all.reduce((m,a)=>a.pridano>m?a.pridano:m, "");
+  if (newest) store.set("clanky-posledni-navsteva", newest);
+  if (data.aktualizace){ const u = new Date(data.aktualizace); document.getElementById("upd").textContent = `${u.getDate()}. ${u.getMonth()+1}. ${hhmm(u)}`; }
+  renderFilters(); renderList();
+}).catch(() => { document.getElementById("list").innerHTML = `<div class="empty">Data se nepodařilo načíst</div>`; });
+</script>
+</body>
+</html>
