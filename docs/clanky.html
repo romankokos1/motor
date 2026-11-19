@@ -26,6 +26,10 @@
 .z-denik{--z:#1F4B99;--zt:#FFFFFF}
 .z-idnes{--z:#F2A900;--zt:#1A1A1A}
 .z-sportcz{--z:#3A3F47;--zt:#FFFFFF}
+.z-hcmotor{--z:#0D2240;--zt:#F5C400}
+.z-cro{--z:#6B2C68;--zt:#FFFFFF}
+.z-seznam{--z:#D8001E;--zt:#FFFFFF}
+.z-ctsport{--z:#00707A;--zt:#FFFFFF}
 .z-jiny{--z:#8A9099;--zt:#FFFFFF}
 @media (prefers-color-scheme:dark){
   :root{
@@ -34,6 +38,7 @@
     --accent:#6EA8F0; --accent-2:#B39DE0; --pos:#4CC27A; --neg:#F0685D; --warn:#D9A441; --hover:#1B1E22; --tint:10%;
   }
   .z-sportcz{--z:#7C838D;--zt:#FFFFFF}
+  .z-hcmotor{--z:#2B4F8A;--zt:#F5C400}
 }
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
@@ -80,7 +85,7 @@ main{max-width:1280px;margin:0 auto;padding:8px 24px 64px}
 .day-h .n{margin-left:auto}
 
 /* řádek článku */
-.row{display:grid;grid-template-columns:48px 92px minmax(0,1fr);gap:0 14px;padding:10px 8px 10px 12px;border-bottom:1px solid var(--line);
+.row{display:grid;grid-template-columns:48px 108px minmax(0,1fr);gap:0 14px;padding:10px 8px 10px 12px;border-bottom:1px solid var(--line);
      background:color-mix(in srgb,var(--z) var(--tint),var(--bg));box-shadow:inset 4px 0 0 var(--z)}
 .row:last-child{border-bottom:0}
 .row:hover{background:color-mix(in srgb,var(--z) calc(var(--tint) * 2),var(--bg))}
@@ -231,7 +236,7 @@ const DAYS = ["neděle","pondělí","úterý","středa","čtvrtek","pátek","sob
 const DSHORT = ["ne","po","út","st","čt","pá","so"];
 const MONTHS = ["ledna","února","března","dubna","května","června","července","srpna","září","října","listopadu","prosince"];
 const TYPY = {online:"Online", reportaz:"Reportáž", rozhovor:"Rozhovor", prestup:"Smlouva/přestup", zraneni:"Zranění"};
-const ZC = {"iSport":"isport","hokej.cz":"hokejcz","Deník":"denik","iDNES":"idnes","Sport.cz":"sportcz"};
+const ZC = {"iSport":"isport","hokej.cz":"hokejcz","Deník":"denik","iDNES":"idnes","Sport.cz":"sportcz","HC Motor":"hcmotor","ČRo":"cro","Seznam Zprávy":"seznam","ČT sport":"ctsport"};
 const reduced = matchMedia("(prefers-reduced-motion: reduce)");
 const $ = id => document.getElementById(id);
 const store = {
@@ -320,7 +325,7 @@ function rowHtml(st, ctx){
   if (m && ctx !== "zapas") meta.push(`<button class="zl" data-z="${esc(m.id)}">${esc(matchLabel(m))}</button>`);
   if (ctx === "zapas") meta.push(`<span>${DSHORT[d.getDay()]} ${dm(d)}</span>`);
   return `<article class="row ${zc(a.zdroj)}${isNew ? " is-new" : ""}">
-    <div class="t">${a.datum ? hhmm(d) : "–"}</div>
+    <div class="t">${a.datum && !a.bez_casu ? hhmm(d) : "–"}</div>
     <div class="s">${esc(a.zdroj)}</div>
     <div>${isNew ? `<span class="new">NOVÉ</span>` : ""}<a class="h" href="${esc(a.url)}" target="_blank" rel="noopener">${esc(a.titulek)}</a>
       ${a.perex ? `<div class="p">${esc(a.perex)}</div>` : ""}
