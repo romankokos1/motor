@@ -527,6 +527,27 @@ def order_undated(articles):
             a["datum"] = f"{day}T12:{rank:02d}{a['datum'][16:]}"
 
 
+MLUVI = re.compile(r"\b(rika|rekl|lici|hodnoti|zhodnotil|prozradil|popsal|predstavuje|odpovida|vzkazuje|priznal|"
+                   r"tvrdi|hlasi|uvedl|dodal|vysvetluje|rozhovor|dotaznik|ptejte se|offline|promluvil|mluvi|o sobe)\b")
+
+
+def speakers(a, matchers):
+    """Kdo v článku mluví: lidé z kádru/vedení, kteří jsou v titulku rozhovoru nebo výroku."""
+    title = a["titulek"]
+    in_title = tag_players(title, matchers)
+    if not in_title:
+        return []
+    t = norm(title)
+    # „Nedorost: …“, „… Pardubicemi. Martin Beránek: Chtěli jsme…“ (ne „3:4“)
+    for h in re.finditer(r"([A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ][\w-]+(?: [A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ][\w-]+)?): ", title):
+        who = tag_players(h.group(1), matchers)
+        if who:
+            return who
+    if a.get("typ") == "rozhovor" or MLUVI.search(t):
+        return in_title
+    return []
+
+
 def enrich(data, cfg):
     order_undated(data["clanky"])
     matchers = player_matchers(load_players(cfg))
@@ -545,6 +566,12 @@ def enrich(data, cfg):
         if a["typ"] == "prestup":
             a["zapas"] = None  # kádrové zprávy k zápasu nepatří
     group(data["clanky"])
+    for a in data["clanky"]:
+        sp = [] if a.get("souper") else speakers(a, matchers)
+        if sp:
+            a["mluvi"] = sp
+        else:
+            a.pop("mluvi", None)
 
 
 # ---------- data ----------
