@@ -43,7 +43,9 @@
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--bg);color:var(--text);font:400 15px/1.45 "IBM Plex Sans",system-ui,sans-serif;font-variant-numeric:tabular-nums}
-a{color:inherit}
+a{color:var(--text);text-decoration:none;transition:color .12s}
+tbody tr:hover a,
+a:hover{color:var(--accent);text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px}
 button,select{font:inherit;color:inherit}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 [hidden]{display:none!important}
@@ -97,7 +99,7 @@ tbody tr{transition:background-color .12s,box-shadow .12s}
 .t{color:var(--text-3);font-size:14px;padding-top:1px}
 .s{align-self:start;justify-self:start;max-width:100%;background:var(--z);color:var(--zt);font-size:12px;font-weight:600;line-height:18px;padding:1px 6px;margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .h{font-weight:500;text-decoration:none}
-.h:hover{color:var(--accent);text-decoration:underline;text-underline-offset:2px}
+.h:hover{color:var(--accent);text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px}
 .new{display:inline-block;margin-right:8px;font-size:11px;font-weight:600;letter-spacing:.06em;color:var(--accent);vertical-align:1px}
 .row.is-new .h{font-weight:600}
 .p{margin-top:2px;color:var(--text-2);font-size:14px}
@@ -109,6 +111,13 @@ tbody tr{transition:background-color .12s,box-shadow .12s}
 .orig span{color:var(--text-3);font-size:12px}
 .orig s{text-decoration-color:var(--warn);text-decoration-thickness:1px}
 .orig em{font-style:normal;color:var(--text-3);font-size:12px}
+#t-mluvi tbody tr{cursor:pointer}
+#t-mluvi tbody tr.picked{background:var(--hover);box-shadow:inset 2px 0 0 var(--accent)}
+#t-mluvi .web{display:inline-block;white-space:nowrap;margin:1px 4px 1px 0;font-size:11.5px;font-weight:600;line-height:17px;padding:0 5px;background:var(--z);color:var(--zt)}
+#mluvi-detail h3{margin:0;padding:8px 0;font-size:15px;font-weight:600;border-bottom:1px solid var(--line-strong)}
+#mluvi-detail .mr{display:grid;grid-template-columns:64px 104px minmax(0,1fr);gap:0 12px;padding:8px 0;border-bottom:1px solid var(--line);font-size:14px}
+#mluvi-detail .mr .d{color:var(--text-3)}
+#mluvi-detail .mr .s{margin-top:0}
 .sub-h{display:flex;align-items:baseline;gap:10px;margin:14px 0 2px;padding-top:10px;border-top:1px dashed var(--line-strong)}
 .sub-h h3{margin:0;font-size:15px;font-weight:600;color:var(--text-2)}
 .sub-h .n{margin-left:auto;color:var(--text-3);font-size:14px}
@@ -127,7 +136,7 @@ tbody tr{transition:background-color .12s,box-shadow .12s}
 .bub .bm{font-size:12px;color:var(--text-3);margin-bottom:3px}
 .bub .bm b{font-weight:600;color:var(--text-2)}
 .bub a{font-weight:600;font-size:14px;text-decoration:none;color:var(--text)}
-.bub a:hover{color:var(--accent);text-decoration:underline;text-underline-offset:2px}
+.bub a:hover{color:var(--accent);text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px}
 .bub p{margin:4px 0 0;font-size:13.5px;color:var(--text-2)}
 .res{font-weight:600}
 .res.pos{color:var(--pos)} .res.neg{color:var(--neg)}
@@ -179,7 +188,12 @@ td b{font-weight:600}
   .index a{padding:2px 0;box-shadow:inset 0 -2px 0 transparent}
   .index a.cur{box-shadow:inset 0 -2px 0 var(--accent)}
 }
+@media (max-width:1023px){ #mluvi-detail{margin-top:18px} }
 @media (max-width:640px){
+  #t-mluvi th:last-child,#t-mluvi td:last-child{display:none}
+  #mluvi-detail .mr{grid-template-columns:52px minmax(0,1fr)}
+  #mluvi-detail .mr .s{grid-column:2;grid-row:1;margin-bottom:3px}
+  #mluvi-detail .mr .d{grid-row:1 / span 2}
   :root{--top:0px}
   body{padding-bottom:calc(var(--bar) + env(safe-area-inset-bottom))}
   .tabs{position:fixed;top:auto;bottom:0;left:0;right:0;height:calc(var(--bar) + env(safe-area-inset-bottom));border-bottom:0;border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom)}
@@ -247,6 +261,14 @@ td b{font-weight:600}
         <div class="card-h"><h2>Hráči v článcích</h2><button class="info" aria-expanded="false" aria-controls="n-hraci" aria-label="Vysvětlivky">i</button></div>
         <p class="note" id="n-hraci" hidden>Počet článků, v jejichž titulku nebo perexu se hráč objevuje. Změna = rozdíl posledních 7 dní proti předchozím 7 dnům.</p>
         <table id="t-hraci"></table>
+      </div>
+      <div class="card c12">
+        <div class="card-h"><h2>Kdo mluvil</h2><button class="info" aria-expanded="false" aria-controls="n-mluvi" aria-label="Vysvětlivky">i</button></div>
+        <p class="note" id="n-mluvi" hidden>Rozhovory, dotazníky a výroky lidí z Motoru podle titulku článku. Stejná zpráva na více webech se počítá u každého webu zvlášť. Kliknutím na řádek se zobrazí všechny rozhovory dané osoby.</p>
+        <div class="grid">
+          <div class="c6"><table id="t-mluvi"></table></div>
+          <div class="c6" id="mluvi-detail"></div>
+        </div>
       </div>
     </div>
   </section>
@@ -535,9 +557,9 @@ const COLS = (first, firstShort) => [
   {id:"last", label:"Poslední", short:"Posl.", num:true, cell:r => r.last ? dm(new Date(r.last)) : "–"},
 ];
 
-function sortableTable(el, rows, cols, def){
+function sortableTable(el, rows, cols, def, sel){
   let key = def, dir = -1;
-  const rowHtml = r => `<tr data-k="${esc(r.k)}">${cols.map(c => `<td class="${c.num?"num":""} ${c.cls||""}">${c.cell(r)}</td>`).join("")}</tr>`;
+  const rowHtml = r => `<tr data-k="${esc(r.k)}"${sel ? ` tabindex="0"${sel() === r.k ? ' class="picked"' : ""}` : ""}>${cols.map(c => `<td class="${c.num?"num":""} ${c.cls||""}">${c.cell(r)}</td>`).join("")}</tr>`;
   const sorted = () => rows.slice().sort((a,b) => {
     const x = a[key], y = b[key];
     const v = typeof x === "string" ? x.localeCompare(y, "cs") : x - y;
@@ -578,6 +600,47 @@ function flip(tbody, order){
   })));
 }
 
+/* ---------- kdo mluvil ---------- */
+let speaker = "";
+function renderSpeakers(){
+  const now = Date.now(), m = new Map();
+  all.forEach(a => (a.mluvi || []).forEach(k => {
+    if (!m.has(k)) m.set(k, {k, total:0, m30:0, last:0, list:[], web:{}});
+    const r = m.get(k), t = when(a).getTime();
+    r.total++; r.list.push(a);
+    if (now - t < 30*DAY) r.m30++;
+    if (t > r.last) r.last = t;
+    r.web[a.zdroj] = (r.web[a.zdroj] || 0) + 1;
+  }));
+  const rows = [...m.values()];
+  if (!speaker && rows.length) speaker = rows.slice().sort((a,b) => b.last - a.last)[0].k;
+  const cols = [
+    {id:"k", label:"Kdo", short:"Kdo", num:false, cls:"lead", cell:r => esc(r.k)},
+    {id:"total", label:"Rozhovory", short:"Celk.", num:true, cell:r => `<b>${r.total}</b>`},
+    {id:"m30", label:"30 dní", short:"30 d", num:true, cell:r => r.m30},
+    {id:"last", label:"Poslední", short:"Posl.", num:true, cell:r => dm(new Date(r.last))},
+    {id:"weby", label:"Weby", short:"Weby", num:false, cell:r => Object.entries(r.web).sort((a,b) => b[1]-a[1]).map(([w,n]) => `<span class="web ${zc(w)}">${esc(w)}${n > 1 ? " " + n : ""}</span>`).join("")},
+  ];
+  rows.forEach(r => r.weby = Object.keys(r.web).length);
+  sortableTable($("t-mluvi"), rows, cols, "last", () => speaker);
+  const detail = () => {
+    const r = m.get(speaker);
+    $("mluvi-detail").innerHTML = r ? `<h3>${esc(r.k)} · ${r.total} ${plural(r.total,"rozhovor","rozhovory","rozhovorů")}</h3>` +
+      r.list.slice().sort((a,b) => when(b) - when(a)).map(a => { const d = when(a);
+        return `<div class="mr ${zc(a.zdroj)}"><div class="d">${dm(d)}</div><div class="s">${esc(a.zdroj)}</div><div><a href="${esc(a.url)}" target="_blank" rel="noopener">${esc(a.titulek)}</a></div></div>`; }).join("")
+      : `<div class="empty">Zatím žádné rozhovory</div>`;
+  };
+  detail();
+  $("t-mluvi").onkeydown = e => { if ((e.key === "Enter" || e.key === " ") && e.target.matches("tbody tr")){ e.preventDefault(); e.target.click(); } };
+  $("t-mluvi").onclick = e => {
+    const tr = e.target.closest("tbody tr[data-k]");
+    if (!tr || e.target.closest("th")) return;
+    speaker = tr.dataset.k;
+    $("t-mluvi").querySelectorAll("tbody tr").forEach(x => x.classList.toggle("picked", x === tr));
+    detail();
+  };
+}
+
 /* ---------- start ---------- */
 fetch("clanky.json", {cache: "no-store"}).then(r => r.json()).then(data => {
   const allData = (data.clanky || []).slice().sort((a,b) => when(b) - when(a));
@@ -591,6 +654,7 @@ fetch("clanky.json", {cache: "no-store"}).then(r => r.json()).then(data => {
   renderFilters(); renderFeed(); renderMatches();
   sortableTable($("t-zdroje"), stats(a => [a.zdroj]), COLS("Zdroj", "Zdroj"), "total");
   sortableTable($("t-hraci"), stats(a => a.hraci || []), COLS("Hráč", "Hráč"), "total");
+  renderSpeakers();
   if (location.hash === "#prehled") select($("tab-prehled"));
   if (location.hash === "#zapasy") select($("tab-zapasy"));
 }).catch(() => { $("feed").innerHTML = `<div class="empty">Data se nepodařilo načíst</div>`; });
