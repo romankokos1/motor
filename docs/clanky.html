@@ -4,134 +4,408 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
+<meta name="color-scheme" content="light dark">
 <title>Články · HC Motor</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
+@font-face{font-family:"IBM Plex Sans";font-style:normal;font-weight:400;font-display:swap;src:url(fonts/ibm-plex-sans-latin-ext-400-normal.woff2) format("woff2");unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:"IBM Plex Sans";font-style:normal;font-weight:400;font-display:swap;src:url(fonts/ibm-plex-sans-latin-400-normal.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"IBM Plex Sans";font-style:normal;font-weight:500;font-display:swap;src:url(fonts/ibm-plex-sans-latin-ext-500-normal.woff2) format("woff2");unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:"IBM Plex Sans";font-style:normal;font-weight:500;font-display:swap;src:url(fonts/ibm-plex-sans-latin-500-normal.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"IBM Plex Sans";font-style:normal;font-weight:600;font-display:swap;src:url(fonts/ibm-plex-sans-latin-ext-600-normal.woff2) format("woff2");unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:"IBM Plex Sans";font-style:normal;font-weight:600;font-display:swap;src:url(fonts/ibm-plex-sans-latin-600-normal.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+
+:root{
+  --bg:#FFFFFF; --surface-2:#F3F4F6; --line:#E4E6EA; --line-strong:#C5C9CF;
+  --text:#15181C; --text-2:#3F454D; --text-3:#6A717B;
+  --accent:#1F5FA8; --accent-2:#6B4FA3; --pos:#1E7B3A; --neg:#C2352A; --warn:#A06A00; --hover:#F3F4F6;
+  --bar:46px; --top:var(--bar);
+}
+@media (prefers-color-scheme:dark){
   :root{
-    --ink:#111418; --ink2:#4a5058; --ink3:#868c94; --line:#e4e6e9; --bg:#fff; --soft:#f5f6f7;
-    --navy:#0d2240; --yellow:#f2c200;
+    --bg:#121416; --surface-2:#1B1E22; --line:#2A2E34; --line-strong:#444A52;
+    --text:#ECEEF0; --text-2:#B9BFC6; --text-3:#8F969F;
+    --accent:#6EA8F0; --accent-2:#B39DE0; --pos:#4CC27A; --neg:#F0685D; --warn:#D9A441; --hover:#1B1E22;
   }
-  *{box-sizing:border-box}
-  body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 "IBM Plex Sans",system-ui,sans-serif}
-  a{color:inherit}
-  .bar{background:var(--navy);color:#fff}
-  .bar .in{max-width:900px;margin:0 auto;padding:10px 16px;display:flex;align-items:baseline;gap:12px}
-  .bar b{font-weight:600;letter-spacing:.02em}
-  .bar span{color:#aeb9c8;font-size:13px}
-  .bar .upd{margin-left:auto;font:12px "IBM Plex Mono",monospace;color:#aeb9c8}
-  .wrap{max-width:900px;margin:0 auto;padding:0 16px 48px}
-  .filters{display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:14px 0 12px;border-bottom:1px solid var(--line)}
-  .chip{border:1px solid var(--line);background:#fff;border-radius:3px;padding:4px 9px;font:inherit;font-size:13px;color:var(--ink2);cursor:pointer}
-  .chip i{font-style:normal;color:var(--ink3);font-family:"IBM Plex Mono",monospace;font-size:12px;margin-left:4px}
-  .chip.on{background:var(--ink);border-color:var(--ink);color:#fff}
-  .chip.on i{color:#9aa0a8}
-  select{margin-left:auto;font:inherit;font-size:13px;padding:4px 6px;border:1px solid var(--line);border-radius:3px;background:#fff;color:var(--ink2)}
-  .day{position:sticky;top:0;background:var(--bg);z-index:1;padding:18px 0 6px;border-bottom:2px solid var(--ink);
-       font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;display:flex;gap:8px}
-  .day em{font-style:normal;color:var(--ink3);font-weight:500}
-  .row{display:grid;grid-template-columns:46px 78px 1fr;gap:0 12px;padding:10px 0 10px 10px;border-bottom:1px solid var(--line);position:relative}
-  .row.new::before{content:"";position:absolute;left:0;top:10px;bottom:10px;width:3px;background:var(--yellow)}
-  .t{font:13px "IBM Plex Mono",monospace;color:var(--ink3);padding-top:1px}
-  .s{font-size:12px;font-weight:500;color:var(--ink2);padding-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .h{font-weight:500;text-decoration:none}
-  .h:hover{text-decoration:underline}
-  .row.new .h{font-weight:600}
-  .p{color:var(--ink2);font-size:13.5px;margin-top:2px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-  .tags{margin-top:4px;display:flex;flex-wrap:wrap;gap:4px}
-  .tags span{font-size:11.5px;background:var(--soft);color:var(--ink2);padding:1px 6px;border-radius:2px}
-  .more{display:block;margin:20px auto 0;font:inherit;font-size:13px;padding:7px 16px;border:1px solid var(--ink);background:#fff;border-radius:3px;cursor:pointer}
-  .more[hidden]{display:none}
-  .empty{padding:40px 0;color:var(--ink3);text-align:center}
-  @media (max-width:560px){
-    .row{grid-template-columns:40px 1fr;padding-left:8px}
-    .s{grid-column:2;grid-row:1;padding:0;margin-bottom:1px}
-    .row>div:last-child{grid-column:2}
-    .t{grid-row:1/3}
-    select{margin-left:0;width:100%}
-    .bar span:not(.upd){display:none}
-  }
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);font:400 15px/1.45 "IBM Plex Sans",system-ui,sans-serif;font-variant-numeric:tabular-nums}
+a{color:inherit}
+button,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+[hidden]{display:none!important}
+
+/* pruh záložek */
+.tabs{position:sticky;top:0;z-index:20;height:var(--bar);background:var(--bg);border-bottom:1px solid var(--line)}
+.tabs .in{max-width:1280px;height:100%;margin:0 auto;padding:0 24px;display:flex;align-items:stretch;gap:28px}
+.brand{display:flex;align-items:center;font-weight:600;white-space:nowrap}
+.tab{background:none;border:0;padding:0 2px;cursor:pointer;color:var(--text-2);font-weight:500;box-shadow:inset 0 -3px 0 transparent}
+.tab:hover{color:var(--accent)}
+.tab[aria-selected="true"]{color:var(--text);box-shadow:inset 0 -3px 0 var(--accent)}
+.upd{margin-left:auto;display:flex;align-items:center;color:var(--text-3);font-size:13px;white-space:nowrap}
+
+main{max-width:1280px;margin:0 auto;padding:8px 24px 64px}
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:0 32px}
+.c2{grid-column:span 2}.c4{grid-column:span 4}.c6{grid-column:span 6}.c8{grid-column:span 8}.c10{grid-column:span 10}.c12{grid-column:span 12}
+.card{border-top:1px solid var(--line);padding-top:14px;margin-top:24px;min-width:0}
+.card-h{display:flex;align-items:center;gap:8px;margin:0 0 10px}
+.card-h h2{margin:0;font-size:18px;font-weight:600;line-height:1.3}
+.info{width:18px;height:18px;border-radius:50%;border:1px solid var(--line-strong);background:none;padding:0;
+      font-size:11px;font-weight:600;line-height:16px;color:var(--text-3);cursor:pointer;flex:none}
+.info[aria-expanded="true"]{border-color:var(--accent);color:var(--accent)}
+.note{margin:-4px 0 12px;font-size:13px;color:var(--text-2);max-width:62ch}
+
+/* filtr zdrojů */
+.filters{display:flex;flex-wrap:wrap;align-items:center;gap:4px 18px;padding:12px 0 0}
+.f{background:none;border:0;padding:4px 0;cursor:pointer;color:var(--text-2);box-shadow:inset 0 -2px 0 transparent}
+.f b{font-weight:400;color:var(--text-3);margin-left:4px}
+.f:hover{color:var(--accent)}
+.f[aria-pressed="true"]{color:var(--text);font-weight:600;box-shadow:inset 0 -2px 0 var(--accent)}
+.filters select{margin-left:auto;background:var(--bg);border:1px solid var(--line-strong);border-radius:0;padding:4px 8px;font-size:14px}
+
+/* den */
+.day{margin-top:28px}
+.day-h{display:flex;align-items:baseline;gap:10px;border-top:1px solid var(--line-strong);padding-top:12px;margin-bottom:2px;scroll-margin-top:calc(var(--top) + 8px)}
+.day-h h2{margin:0;font-size:18px;font-weight:600}
+.day-h span{color:var(--text-3);font-size:14px}
+.day-h .n{margin-left:auto}
+
+/* řádek článku */
+.row{display:grid;grid-template-columns:48px 92px minmax(0,1fr);gap:0 14px;padding:10px 8px;border-bottom:1px solid var(--line)}
+.row:last-child{border-bottom:0}
+.row:hover{background:var(--hover);box-shadow:inset 2px 0 0 var(--accent)}
+tbody tr:hover td{background:var(--hover)}
+tbody tr:hover td:first-child{box-shadow:inset 2px 0 0 var(--accent)}
+.t{color:var(--text-3);font-size:14px;padding-top:1px}
+.s{color:var(--text-2);font-size:14px;font-weight:500;padding-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.h{font-weight:500;text-decoration:none}
+.h:hover{color:var(--accent);text-decoration:underline;text-underline-offset:2px}
+.new{display:inline-block;margin-right:8px;font-size:11px;font-weight:600;letter-spacing:.06em;color:var(--accent);vertical-align:1px}
+.row.is-new .h{font-weight:600}
+.p{margin-top:2px;color:var(--text-2);font-size:14px}
+.pl{margin-top:4px;color:var(--text-3);font-size:13px}
+.more{margin:24px 0 0;background:none;border:1px solid var(--line-strong);border-radius:0;padding:7px 16px;cursor:pointer}
+.more:hover{border-color:var(--accent);color:var(--accent)}
+.empty{padding:32px 0;color:var(--text-3)}
+
+/* rejstřík */
+.index{position:sticky;top:calc(var(--top) + 24px);align-self:start;margin-top:24px;border-top:1px solid var(--line);padding-top:14px;max-height:calc(100vh - var(--top) - 48px);overflow:auto}
+.index h3{margin:0 0 8px;font-size:13px;font-weight:600;color:var(--text-3)}
+.index a{display:block;padding:3px 0 3px 10px;text-decoration:none;color:var(--text-2);font-size:14px;box-shadow:inset 2px 0 0 var(--line)}
+.index a:hover{color:var(--accent)}
+.index a.cur{color:var(--text);font-weight:600;box-shadow:inset 2px 0 0 var(--accent)}
+
+/* tabulky */
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{position:sticky;top:var(--top);z-index:5;background:var(--surface-2);font-weight:600;color:var(--text-2);border-bottom:1px solid var(--line-strong);white-space:nowrap;padding:0}
+th button{width:100%;background:none;border:0;padding:8px 10px;text-align:inherit;cursor:pointer;font-weight:600;color:inherit}
+th button:hover{color:var(--accent)}
+th[aria-sort] button{color:var(--text)}
+th button::after{content:"";display:inline-block;width:1em;text-align:center;font-size:10px}
+th[aria-sort="descending"] button::after{content:"▼"}
+th[aria-sort="ascending"] button::after{content:"▲"}
+th.num button::after{display:none}
+th.num button::before{content:"";display:inline-block;width:1em;text-align:center;font-size:10px}
+th.num[aria-sort="descending"] button::before{content:"▼"}
+th.num[aria-sort="ascending"] button::before{content:"▲"}
+.num{text-align:right}
+th.num button{text-align:right}
+td.lead{font-weight:500}
+.pos{color:var(--pos)} .neg{color:var(--neg)} .zero{color:var(--text-3)}
+td b{font-weight:600}
+
+@media (max-width:1023px){
+  .c2,.c4,.c6,.c8,.c10{grid-column:span 12}
+  .index{order:-1}
+  .index{position:static;max-height:none;margin-top:16px;padding-top:10px}
+  .index{display:flex;align-items:baseline;gap:12px}
+  .index[hidden]{display:none}
+  .index h3{margin:0;flex:none}
+  .index nav{display:flex;gap:0 14px;overflow-x:auto;white-space:nowrap;scrollbar-width:none;min-width:0}
+  .index nav::-webkit-scrollbar{display:none}
+  .index a{padding:2px 0;box-shadow:inset 0 -2px 0 transparent}
+  .index a.cur{box-shadow:inset 0 -2px 0 var(--accent)}
+}
+@media (max-width:640px){
+  :root{--top:0px}
+  body{padding-bottom:calc(var(--bar) + env(safe-area-inset-bottom))}
+  .tabs{position:fixed;top:auto;bottom:0;left:0;right:0;height:calc(var(--bar) + env(safe-area-inset-bottom));border-bottom:0;border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom)}
+  .tabs .in{padding:0;gap:0}
+  .brand,.upd{display:none}
+  .tab{flex:1;box-shadow:inset 0 3px 0 transparent}
+  .tab[aria-selected="true"]{box-shadow:inset 0 3px 0 var(--accent)}
+  main{padding:0 14px 32px}
+  .grid{gap:0}
+  .filters{gap:2px 14px}
+  .filters select{margin-left:0;width:100%;margin-top:6px}
+  .row{grid-template-columns:40px minmax(0,1fr);padding:10px 6px}
+  .s{grid-column:2;grid-row:1;font-size:13px}
+  .row>div:last-child{grid-column:2}
+  .t{grid-row:1 / span 2;font-size:13px}
+  table{font-size:13px}
+  td{padding:7px 5px}
+  th button{padding:7px 5px}
+  td.lead{overflow-wrap:anywhere}
+  .lg{display:none}
+}
+@media (min-width:641px){ .sm{display:none} }
+@media (prefers-reduced-motion:reduce){ *{scroll-behavior:auto!important;transition:none!important} }
 </style>
 </head>
 <body>
-<div class="bar"><div class="in"><b>ČLÁNKY</b><span>HC Motor České Budějovice</span><span class="upd" id="upd"></span></div></div>
-<div class="wrap">
-  <div class="filters" id="filters"></div>
-  <div id="list"></div>
-  <button class="more" id="more" hidden>Starší články</button>
-</div>
-<script>
-const PAGE = 150;
-const DAYS = ["neděle","pondělí","úterý","středa","čtvrtek","pátek","sobota"];
-const MONTHS = ["ledna","února","března","dubna","května","června","července","srpna","září","října","listopadu","prosince"];
-let all = [], shown = PAGE, src = "", player = "", lastVisit = null;
+<header class="tabs">
+  <div class="in" role="tablist">
+    <div class="brand">HC Motor · články</div>
+    <button class="tab" role="tab" id="tab-clanky" aria-controls="p-clanky" aria-selected="true">Články</button>
+    <button class="tab" role="tab" id="tab-prehled" aria-controls="p-prehled" aria-selected="false">Přehled</button>
+    <div class="upd" id="upd"></div>
+  </div>
+</header>
 
+<main>
+  <section id="p-clanky" role="tabpanel" aria-labelledby="tab-clanky">
+    <div class="grid">
+      <div class="c10" id="feedcol">
+        <div class="filters" id="filters"></div>
+        <div id="feed"></div>
+        <button class="more" id="more" hidden>Starší články</button>
+      </div>
+      <aside class="c2 index" id="index" hidden><h3>Dny</h3><nav id="idx"></nav></aside>
+    </div>
+  </section>
+
+  <section id="p-prehled" role="tabpanel" aria-labelledby="tab-prehled" hidden>
+    <div class="grid">
+      <div class="card c6">
+        <div class="card-h"><h2>Zdroje</h2><button class="info" aria-expanded="false" aria-controls="n-zdroje" aria-label="Vysvětlivky">i</button></div>
+        <p class="note" id="n-zdroje" hidden>7 dní = články za posledních 7 dní. Změna = rozdíl proti předchozím 7 dnům. Poslední = datum nejnovějšího článku.</p>
+        <table id="t-zdroje"></table>
+      </div>
+      <div class="card c6">
+        <div class="card-h"><h2>Hráči v článcích</h2><button class="info" aria-expanded="false" aria-controls="n-hraci" aria-label="Vysvětlivky">i</button></div>
+        <p class="note" id="n-hraci" hidden>Počet článků, v jejichž titulku nebo perexu se hráč objevuje. Změna = rozdíl posledních 7 dní proti předchozím 7 dnům.</p>
+        <table id="t-hraci"></table>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+(() => {
+const PAGE = 150, INDEX_MIN = 8, DAY = 864e5;
+const DAYS = ["neděle","pondělí","úterý","středa","čtvrtek","pátek","sobota"];
+const DSHORT = ["ne","po","út","st","čt","pá","so"];
+const MONTHS = ["ledna","února","března","dubna","května","června","července","srpna","září","října","listopadu","prosince"];
+const reduced = matchMedia("(prefers-reduced-motion: reduce)");
+const $ = id => document.getElementById(id);
 const store = {
   get(k){ try{ return localStorage.getItem(k) }catch(e){ return null } },
   set(k,v){ try{ localStorage.setItem(k,v) }catch(e){} }
 };
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const when = a => new Date(a.datum || a.pridano);
-const dayKey = d => d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
-
-function dayLabel(d){
-  const today = new Date(), y = new Date(); y.setDate(today.getDate()-1);
-  const full = `${DAYS[d.getDay()]} ${d.getDate()}. ${MONTHS[d.getMonth()]}` + (d.getFullYear()!==today.getFullYear() ? " "+d.getFullYear() : "");
-  if (dayKey(d)===dayKey(today)) return ["Dnes", full];
-  if (dayKey(d)===dayKey(y)) return ["Včera", full];
-  return [full, ""];
-}
+const dayKey = d => `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
 const hhmm = d => String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0");
+const dm = d => `${d.getDate()}. ${d.getMonth()+1}.`;
+const plural = (n, a, b, c) => n===1 ? a : (n>=2 && n<=4 ? b : c);
 
-function filtered(){
-  return all.filter(a => (!src || a.zdroj===src) && (!player || (a.hraci||[]).includes(player)));
+let all = [], shown = PAGE, src = "", player = "", lastVisit = null, observer = null;
+
+/* ---------- záložky ---------- */
+const tabs = [...document.querySelectorAll(".tab")];
+function select(tab){
+  tabs.forEach(t => {
+    const on = t === tab;
+    t.setAttribute("aria-selected", on);
+    t.tabIndex = on ? 0 : -1;
+    $(t.getAttribute("aria-controls")).hidden = !on;
+  });
+  history.replaceState(null, "", tab.id === "tab-prehled" ? "#prehled" : location.pathname);
+  scrollTo(0, 0);
+}
+tabs.forEach((t, i) => {
+  t.onclick = () => select(t);
+  t.onkeydown = e => {
+    if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+    const n = tabs[(i + (e.key === "ArrowRight" ? 1 : tabs.length - 1)) % tabs.length];
+    select(n); n.focus();
+  };
+});
+
+/* ---------- vysvětlivky ---------- */
+document.querySelectorAll(".info").forEach(b => b.onclick = () => {
+  const open = b.getAttribute("aria-expanded") !== "true";
+  b.setAttribute("aria-expanded", open);
+  $(b.getAttribute("aria-controls")).hidden = !open;
+});
+
+/* ---------- články ---------- */
+function dayLabel(d){
+  const today = new Date(), y = new Date(today - DAY);
+  const full = `${DAYS[d.getDay()]} ${d.getDate()}. ${MONTHS[d.getMonth()]}` + (d.getFullYear() !== today.getFullYear() ? ` ${d.getFullYear()}` : "");
+  if (dayKey(d) === dayKey(today)) return ["Dnes", full, "Dnes"];
+  if (dayKey(d) === dayKey(y)) return ["Včera", full, "Včera"];
+  return [full.charAt(0).toUpperCase() + full.slice(1), "", `${DSHORT[d.getDay()]} ${dm(d)}`];
 }
 
 function renderFilters(){
   const counts = {};
-  all.forEach(a => counts[a.zdroj] = (counts[a.zdroj]||0)+1);
-  const names = Object.keys(counts).sort((a,b)=>counts[b]-counts[a]);
-  const players = [...new Set(all.flatMap(a=>a.hraci||[]))].sort((a,b)=>a.split(" ").pop().localeCompare(b.split(" ").pop(),"cs"));
-  const f = document.getElementById("filters");
-  f.innerHTML =
-    `<button class="chip ${!src?"on":""}" data-s="">Vše<i>${all.length}</i></button>` +
-    names.map(n=>`<button class="chip ${src===n?"on":""}" data-s="${esc(n)}">${esc(n)}<i>${counts[n]}</i></button>`).join("") +
-    (players.length ? `<select id="pl"><option value="">Všichni hráči</option>${players.map(p=>`<option ${p===player?"selected":""}>${esc(p)}</option>`).join("")}</select>` : "");
-  f.querySelectorAll(".chip").forEach(b => b.onclick = () => { src = b.dataset.s; shown = PAGE; renderFilters(); renderList(); });
-  const pl = document.getElementById("pl");
-  if (pl) pl.onchange = () => { player = pl.value; shown = PAGE; renderList(); };
+  all.forEach(a => counts[a.zdroj] = (counts[a.zdroj] || 0) + 1);
+  const names = Object.keys(counts).sort((a,b) => counts[b] - counts[a] || a.localeCompare(b, "cs"));
+  const players = [...new Set(all.flatMap(a => a.hraci || []))]
+    .sort((a,b) => a.split(" ").pop().localeCompare(b.split(" ").pop(), "cs"));
+  $("filters").innerHTML =
+    `<button class="f" data-s="" aria-pressed="${!src}">Vše<b>${all.length}</b></button>` +
+    names.map(n => `<button class="f" data-s="${esc(n)}" aria-pressed="${src===n}">${esc(n)}<b>${counts[n]}</b></button>`).join("") +
+    (players.length ? `<select id="pl" aria-label="Hráč"><option value="">Všichni hráči</option>${players.map(p => `<option${p===player?" selected":""}>${esc(p)}</option>`).join("")}</select>` : "");
+  $("filters").querySelectorAll(".f").forEach(b => b.onclick = () => { src = b.dataset.s; shown = PAGE; renderFilters(); renderFeed(); });
+  const pl = $("pl");
+  if (pl) pl.onchange = () => { player = pl.value; shown = PAGE; renderFeed(); };
 }
 
-function renderList(){
-  const items = filtered(), list = document.getElementById("list");
-  if (!items.length){ list.innerHTML = `<div class="empty">Žádné články</div>`; document.getElementById("more").hidden = true; return; }
-  let html = "", cur = "";
+function renderFeed(){
+  const items = all.filter(a => (!src || a.zdroj === src) && (!player || (a.hraci || []).includes(player)));
+  const feed = $("feed");
+  if (!items.length){
+    feed.innerHTML = `<div class="empty">Žádné články</div>`;
+    $("more").hidden = true; $("index").hidden = true; return;
+  }
+  const groups = [];
   items.slice(0, shown).forEach(a => {
     const d = when(a), k = dayKey(d);
-    if (k !== cur){ cur = k; const [l, sub] = dayLabel(d); html += `<div class="day">${l}${sub?`<em>${sub}</em>`:""}</div>`; }
-    const isNew = lastVisit && a.pridano > lastVisit;
-    html += `<div class="row${isNew?" new":""}">
-      <div class="t">${a.datum ? hhmm(d) : "–"}</div>
-      <div class="s">${esc(a.zdroj)}</div>
-      <div><a class="h" href="${esc(a.url)}" target="_blank" rel="noopener">${esc(a.titulek)}</a>
-        ${a.perex?`<div class="p">${esc(a.perex)}</div>`:""}
-        ${(a.hraci||[]).length?`<div class="tags">${a.hraci.map(h=>`<span>${esc(h)}</span>`).join("")}</div>`:""}
-      </div></div>`;
+    if (!groups.length || groups[groups.length-1].k !== k) groups.push({k, d, list: []});
+    groups[groups.length-1].list.push(a);
   });
-  list.innerHTML = html;
-  document.getElementById("more").hidden = items.length <= shown;
+  feed.innerHTML = groups.map((g, gi) => {
+    const [title, sub] = dayLabel(g.d), n = g.list.length;
+    return `<section class="day" aria-labelledby="dh${gi}">
+      <div class="day-h" id="d${gi}"><h2 id="dh${gi}">${title}</h2>${sub ? `<span>${sub}</span>` : ""}<span class="n">${n} ${plural(n,"článek","články","článků")}</span></div>
+      ${g.list.map(a => {
+        const isNew = lastVisit && a.pridano > lastVisit, d = when(a);
+        return `<article class="row${isNew ? " is-new" : ""}">
+          <div class="t">${a.datum ? hhmm(d) : "–"}</div>
+          <div class="s">${esc(a.zdroj)}</div>
+          <div>${isNew ? `<span class="new">NOVÉ</span>` : ""}<a class="h" href="${esc(a.url)}" target="_blank" rel="noopener">${esc(a.titulek)}</a>
+            ${a.perex ? `<div class="p">${esc(a.perex)}</div>` : ""}
+            ${(a.hraci || []).length ? `<div class="pl">${a.hraci.map(esc).join(" · ")}</div>` : ""}
+          </div></article>`;
+      }).join("")}</section>`;
+  }).join("");
+  $("more").hidden = items.length <= shown;
+  renderIndex(groups);
 }
 
-document.getElementById("more").onclick = () => { shown += PAGE; renderList(); };
+function renderIndex(groups){
+  if (observer) observer.disconnect();
+  const show = groups.length >= INDEX_MIN;
+  $("index").hidden = !show;
+  $("feedcol").className = show ? "c10" : "c12";
+  if (!show) return;
+  $("idx").innerHTML = groups.map((g, i) => `<a href="#d${i}" data-i="${i}">${dayLabel(g.d)[2]}</a>`).join("");
+  const links = [...$("idx").querySelectorAll("a")];
+  links.forEach(l => l.onclick = e => {
+    e.preventDefault();
+    $(`d${l.dataset.i}`).scrollIntoView({behavior: reduced.matches ? "auto" : "smooth", block: "start"});
+  });
+  const visible = new Set();
+  observer = new IntersectionObserver(entries => {
+    entries.forEach(en => en.isIntersecting ? visible.add(en.target) : visible.delete(en.target));
+    const secs = [...document.querySelectorAll("#feed .day")];
+    const first = secs.findIndex(s => visible.has(s));
+    if (first < 0) return;
+    links.forEach((l, i) => l.classList.toggle("cur", i === first));
+    const nav = $("idx"), cur = links[first];
+    if (nav.scrollWidth > nav.clientWidth) nav.scrollLeft = cur.offsetLeft - nav.offsetLeft - 8;
+  }, {rootMargin: "-60px 0px -55% 0px"});
+  document.querySelectorAll("#feed .day").forEach(s => observer.observe(s));
+}
+$("more").onclick = () => { shown += PAGE; renderFeed(); };
 
-fetch("clanky.json", {cache:"no-store"}).then(r=>r.json()).then(data => {
-  all = (data.clanky||[]).slice().sort((a,b)=>when(b)-when(a));
+/* ---------- přehled ---------- */
+function stats(keyFn){
+  const now = Date.now(), m = new Map();
+  all.forEach(a => {
+    const t = when(a).getTime();
+    keyFn(a).forEach(k => {
+      if (!m.has(k)) m.set(k, {k, total:0, w:0, pw:0, m30:0, last:0});
+      const r = m.get(k);
+      r.total++;
+      if (now - t < 7*DAY) r.w++;
+      else if (now - t < 14*DAY) r.pw++;
+      if (now - t < 30*DAY) r.m30++;
+      if (t > r.last) r.last = t;
+    });
+  });
+  return [...m.values()].map(r => ({...r, ch: r.w - r.pw}));
+}
+const signed = v => v === 0 ? `<span class="zero">0</span>` : `<span class="${v>0?"pos":"neg"}">${v>0?"+":"−"}${Math.abs(v)}</span>`;
+
+const COLS = (first, firstShort) => [
+  {id:"k",    label:first, short:firstShort, num:false, cell:r => esc(r.k), cls:"lead"},
+  {id:"total",label:"Celkem", short:"Celk.", num:true, cell:r => `<b>${r.total}</b>`},
+  {id:"w",    label:"7 dní", short:"7 d", num:true, cell:r => r.w},
+  {id:"ch",   label:"Změna", short:"±", num:true, cell:r => signed(r.ch)},
+  {id:"m30",  label:"30 dní", short:"30 d", num:true, cell:r => r.m30},
+  {id:"last", label:"Poslední", short:"Posl.", num:true, cell:r => r.last ? dm(new Date(r.last)) : "–"},
+];
+
+function sortableTable(el, rows, cols, def){
+  let key = def, dir = -1;
+  const rowHtml = r => `<tr data-k="${esc(r.k)}">${cols.map(c => `<td class="${c.num?"num":""} ${c.cls||""}">${c.cell(r)}</td>`).join("")}</tr>`;
+  const sorted = () => rows.slice().sort((a,b) => {
+    const x = a[key], y = b[key];
+    const v = typeof x === "string" ? x.localeCompare(y, "cs") : x - y;
+    return v * dir || b.total - a.total || a.k.localeCompare(b.k, "cs");
+  });
+  el.innerHTML = `<thead><tr>${cols.map(c => `<th scope="col" class="${c.num?"num":""}" data-c="${c.id}"><button type="button"><span class="lg">${c.label}</span><span class="sm">${c.short}</span></button></th>`).join("")}</tr></thead>
+    <tbody>${rows.length ? sorted().map(rowHtml).join("") : `<tr><td colspan="${cols.length}" class="zero">Zatím žádná data</td></tr>`}</tbody>`;
+  const head = () => el.querySelectorAll("th").forEach(th => {
+    if (th.dataset.c === key) th.setAttribute("aria-sort", dir < 0 ? "descending" : "ascending");
+    else th.removeAttribute("aria-sort");
+  });
+  head();
+  el.querySelectorAll("th").forEach(th => th.querySelector("button").onclick = () => {
+    if (!rows.length) return;
+    const c = th.dataset.c;
+    if (c === key) dir = -dir; else { key = c; dir = c === "k" ? 1 : -1; }
+    head();
+    flip(el.tBodies[0], sorted().map(r => r.k));
+  });
+}
+
+function flip(tbody, order){
+  const trs = [...tbody.rows], byKey = new Map(trs.map(tr => [tr.dataset.k, tr]));
+  const before = new Map(trs.map(tr => [tr, tr.getBoundingClientRect().top]));
+  order.forEach(k => tbody.appendChild(byKey.get(k)));
+  if (reduced.matches) return;
+  trs.forEach(tr => {
+    const dy = before.get(tr) - tr.getBoundingClientRect().top;
+    if (!dy) return;
+    tr.style.transition = "none";
+    tr.style.transform = `translateY(${dy}px)`;
+  });
+  requestAnimationFrame(() => requestAnimationFrame(() => trs.forEach(tr => {
+    if (!tr.style.transform) return;
+    tr.style.transition = "transform 200ms cubic-bezier(.2,.7,.3,1)";
+    tr.style.transform = "";
+    tr.addEventListener("transitionend", () => { tr.style.transition = ""; }, {once:true});
+  })));
+}
+
+/* ---------- start ---------- */
+fetch("clanky.json", {cache: "no-store"}).then(r => r.json()).then(data => {
+  all = (data.clanky || []).slice().sort((a,b) => when(b) - when(a));
   lastVisit = store.get("clanky-posledni-navsteva");
-  const newest = all.reduce((m,a)=>a.pridano>m?a.pridano:m, "");
+  const newest = all.reduce((m, a) => a.pridano > m ? a.pridano : m, "");
   if (newest) store.set("clanky-posledni-navsteva", newest);
-  if (data.aktualizace){ const u = new Date(data.aktualizace); document.getElementById("upd").textContent = `${u.getDate()}. ${u.getMonth()+1}. ${hhmm(u)}`; }
-  renderFilters(); renderList();
-}).catch(() => { document.getElementById("list").innerHTML = `<div class="empty">Data se nepodařilo načíst</div>`; });
+  if (data.aktualizace){ const u = new Date(data.aktualizace); $("upd").textContent = `Aktualizace ${dm(u)} ${hhmm(u)}`; }
+  renderFilters(); renderFeed();
+  sortableTable($("t-zdroje"), stats(a => [a.zdroj]), COLS("Zdroj", "Zdroj"), "total");
+  sortableTable($("t-hraci"), stats(a => a.hraci || []), COLS("Hráč", "Hráč"), "total");
+  if (location.hash === "#prehled") select($("tab-prehled"));
+}).catch(() => { $("feed").innerHTML = `<div class="empty">Data se nepodařilo načíst</div>`; });
+})();
 </script>
 </body>
 </html>
