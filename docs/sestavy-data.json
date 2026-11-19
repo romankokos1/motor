@@ -12814,7 +12814,7 @@
        "c": "21",
        "jmeno": "MAŘÍK Matyáš",
        "post": "GK",
-       "hral": true
+       "hral": false
       },
       {
        "c": "7",
@@ -12937,7 +12937,12 @@
        "hral": true
       }
      ],
-     "brankari": [],
+     "brankari": [
+      {
+       "c": "35",
+       "od": "00:00"
+      }
+     ],
      "lavicka": [
       {
        "jmeno": "Róbert Petrovický",
@@ -13109,7 +13114,16 @@
        "hral": true
       }
      ],
-     "brankari": [],
+     "brankari": [
+      {
+       "c": "43",
+       "od": "00:00"
+      },
+      {
+       "c": "32",
+       "od": "40:00"
+      }
+     ],
      "lavicka": [
       {
        "jmeno": "Patrik Augusta",
@@ -13146,7 +13160,7 @@
      ]
     }
    },
-   "sestava_cas": "19.11.2026 16:21",
+   "sestava_cas": "19.11.2026 19:37",
    "zapis": null
   },
   {
