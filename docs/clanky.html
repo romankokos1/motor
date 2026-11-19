@@ -89,8 +89,11 @@ main{max-width:1280px;margin:0 auto;padding:8px 24px 64px}
      background:color-mix(in srgb,var(--z) var(--tint),var(--bg));box-shadow:inset 4px 0 0 var(--z)}
 .row:last-child{border-bottom:0}
 .row:hover{background:color-mix(in srgb,var(--z) calc(var(--tint) * 2),var(--bg))}
-tbody tr:hover td{background:var(--hover)}
-tbody tr:hover td:first-child{box-shadow:inset 2px 0 0 var(--accent)}
+/* řádky tabulky: efekt po najetí (jen zařízení s myší) */
+tbody tr{transition:background-color .12s,box-shadow .12s}
+@media (hover:hover){
+  tbody tr:hover{background:var(--hover);box-shadow:inset 2px 0 0 var(--accent)}
+}
 .t{color:var(--text-3);font-size:14px;padding-top:1px}
 .s{align-self:start;justify-self:start;max-width:100%;background:var(--z);color:var(--zt);font-size:12px;font-weight:600;line-height:18px;padding:1px 6px;margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .h{font-weight:500;text-decoration:none}
@@ -100,7 +103,15 @@ tbody tr:hover td:first-child{box-shadow:inset 2px 0 0 var(--accent)}
 .p{margin-top:2px;color:var(--text-2);font-size:14px}
 .meta{margin-top:5px;font-size:13px;color:var(--text-2);display:flex;flex-wrap:wrap;gap:2px 14px;align-items:baseline}
 .typ{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text-2)}
-.typ.zraneni{color:var(--warn)}
+.typ.zraneni,.typ.zmena{color:var(--warn)}
+.orig{margin-top:4px;font-size:13.5px;color:var(--text-2)}
+.orig div{display:flex;flex-wrap:wrap;gap:0 8px;align-items:baseline}
+.orig span{color:var(--text-3);font-size:12px}
+.orig s{text-decoration-color:var(--warn);text-decoration-thickness:1px}
+.orig em{font-style:normal;color:var(--text-3);font-size:12px}
+.sub-h{display:flex;align-items:baseline;gap:10px;margin:14px 0 2px;padding-top:10px;border-top:1px dashed var(--line-strong)}
+.sub-h h3{margin:0;font-size:15px;font-weight:600;color:var(--text-2)}
+.sub-h .n{margin-left:auto;color:var(--text-3);font-size:14px}
 .zl{background:none;border:0;padding:0;cursor:pointer;color:var(--accent);font-size:13px;text-decoration:underline;text-underline-offset:2px;text-decoration-color:color-mix(in srgb,var(--accent) 40%,transparent)}
 .zl:hover{text-decoration-color:var(--accent)}
 .also{position:relative;margin-top:6px;font-size:13px;color:var(--text-3);display:flex;flex-wrap:wrap;gap:4px 6px;align-items:center}
@@ -263,7 +274,7 @@ const hhmm = d => String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()
 const dm = d => `${d.getDate()}. ${d.getMonth()+1}.`;
 const plural = (n, a, b, c) => n===1 ? a : (n>=2 && n<=4 ? b : c);
 
-let all = [], matches = {}, shown = PAGE, src = "", player = "", typ = "", lastVisit = null;
+let all = [], oppArts = [], matches = {}, shown = PAGE, src = "", player = "", typ = "", lastVisit = null;
 const observers = {};
 
 /* ---------- záložky ---------- */
@@ -334,6 +345,7 @@ function rowHtml(st, ctx){
   const m = a.zapas && matches[a.zapas];
   const meta = [];
   if (a.typ) meta.push(`<span class="typ ${a.typ}">${TYPY[a.typ] || a.typ}</span>`);
+  if ((a.puvodni || []).length) meta.push(`<span class="typ zmena">Titulek změněn</span>`);
   if (m && ctx !== "zapas") meta.push(`<button class="zl" data-z="${esc(m.id)}">${esc(matchLabel(m))}</button>`);
   if (ctx === "zapas") meta.push(`<span>${DSHORT[d.getDay()]} ${dm(d)}</span>`);
   return `<article class="row ${zc(a.zdroj)}${isNew ? " is-new" : ""}">
@@ -341,6 +353,7 @@ function rowHtml(st, ctx){
     <div class="s">${esc(a.zdroj)}</div>
     <div>${isNew ? `<span class="new">NOVÉ</span>` : ""}<a class="h" href="${esc(a.url)}" target="_blank" rel="noopener">${esc(a.titulek)}</a>
       ${a.perex ? `<div class="p">${esc(a.perex)}</div>` : ""}
+      ${(a.puvodni || []).length ? `<div class="orig">${a.puvodni.slice().reverse().map(o => { const z = new Date(o.zmeneno); return `<div><span>Původně</span><s>${esc(o.titulek)}</s><em>do ${dm(z)} ${hhmm(z)}</em></div>`; }).join("")}</div>` : ""}
       ${meta.length ? `<div class="meta">${meta.join("")}</div>` : ""}
       ${(a.hraci || []).length ? `<div class="pl"><span>Hráči</span>${a.hraci.map(h => `<b>${esc(h)}</b>`).join("")}</div>` : ""}
       ${st.others.length ? `<div class="also">Také na:${st.others.map((o, i) => `<button type="button" class="ob ${zc(o.zdroj)}" aria-expanded="false" data-i="${i}">${esc(o.zdroj)}</button>`).join("")}${st.others.map((o, i) => {
@@ -405,17 +418,21 @@ $("more").onclick = () => { shown += PAGE; renderFeed(); };
 
 /* ---------- záložka Zápasy ---------- */
 function renderMatches(){
-  const by = new Map();
-  all.forEach(a => { if (a.zapas && matches[a.zapas]){ if (!by.has(a.zapas)) by.set(a.zapas, []); by.get(a.zapas).push(a); } });
-  const list = [...by.keys()].map(id => matches[id]).sort((a,b) => b.start.localeCompare(a.start));
+  const by = new Map(), byOpp = new Map();
+  const put = (map, a) => { if (!map.has(a.zapas)) map.set(a.zapas, []); map.get(a.zapas).push(a); };
+  all.forEach(a => { if (a.zapas && matches[a.zapas]) put(by, a); });
+  oppArts.forEach(a => { if (a.zapas && matches[a.zapas]) put(byOpp, a); });
+  const list = [...new Set([...by.keys(), ...byOpp.keys()])].map(id => matches[id]).sort((a,b) => b.start.localeCompare(a.start));
   if (!list.length){ $("zfeed").innerHTML = `<div class="empty">Zatím žádné články k zápasům</div>`; renderIndex("zindex","zidx","zfeedcol",[]); return; }
   $("zfeed").innerHTML = list.map(m => {
-    const d = new Date(m.start), items = by.get(m.id).slice().sort((a,b) => when(a) - when(b));
+    const d = new Date(m.start), items = (by.get(m.id) || []).slice().sort((a,b) => when(a) - when(b));
     const st = stories(items, true), n = st.length;
+    const ost = stories(byOpp.get(m.id) || [], true);
     const teams = `${m.domaci} – ${m.hoste}`;
     return `<section class="day" aria-labelledby="mh-${m.id}">
-      <div class="day-h" id="m-${esc(m.id)}"><h2 id="mh-${m.id}">${m.kolo}. kolo</h2><span>${DSHORT[d.getDay()]} ${dm(d)} ${hhmm(d)} · ${esc(teams)}</span>${result(m)}<span class="n">${n} ${plural(n,"zpráva","zprávy","zpráv")}</span></div>
-      ${st.map(s => rowHtml(s, "zapas")).join("")}</section>`;
+      <div class="day-h" id="m-${esc(m.id)}"><h2 id="mh-${m.id}">${m.kolo}. kolo</h2><span>${DSHORT[d.getDay()]} ${dm(d)} ${hhmm(d)} · ${esc(teams)}</span>${m.odehrano ? result(m) : `<span>nadcházející</span>`}${n ? `<span class="n">${n} ${plural(n,"zpráva","zprávy","zpráv")}</span>` : ""}</div>
+      ${st.map(s => rowHtml(s, "zapas")).join("")}
+      ${ost.length ? `<div class="sub-h"><h3>O soupeři · ${esc(opp(m))}</h3><span class="n">${ost.length} ${plural(ost.length,"zpráva","zprávy","zpráv")}</span></div>${ost.map(s => rowHtml(s, "zapas")).join("")}` : ""}</section>`;
   }).join("");
   renderIndex("zindex", "zidx", "zfeedcol", list.map(m => ({id: `m-${m.id}`, label: `${m.kolo}. ${opp(m)}`})));
 }
@@ -563,7 +580,9 @@ function flip(tbody, order){
 
 /* ---------- start ---------- */
 fetch("clanky.json", {cache: "no-store"}).then(r => r.json()).then(data => {
-  all = (data.clanky || []).slice().sort((a,b) => when(b) - when(a));
+  const allData = (data.clanky || []).slice().sort((a,b) => when(b) - when(a));
+  all = allData.filter(a => !a.souper);
+  oppArts = allData.filter(a => a.souper);
   (data.zapasy || []).forEach(m => matches[m.id] = m);
   lastVisit = store.get("clanky-posledni-navsteva");
   const newest = all.reduce((m, a) => a.pridano > m ? a.pridano : m, "");
