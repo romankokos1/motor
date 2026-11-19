@@ -1,0 +1,51 @@
+{
+  "klicova_slova": ["Motor", "Budějovic", "Budějovick", "Jihočeš", "Jihočech"],
+  "hraci": [],
+  "zdroje": [
+    {
+      "id": "denik",
+      "nazev": "Deník",
+      "domena": "denik.cz",
+      "rss": ["https://ceskobudejovicky.denik.cz/rss/sport.xml"],
+      "vypisy": ["https://ceskobudejovicky.denik.cz/hokej/"],
+      "vzor_clanku": "^https://ceskobudejovicky\\.denik\\.cz/hokej/[a-z0-9-]+/?$",
+      "hokej_v_url": "/hokej/"
+    },
+    {
+      "id": "isport",
+      "nazev": "iSport",
+      "domena": "isport.blesk.cz",
+      "rss": ["https://isport.blesk.cz/rss"],
+      "vypisy": ["https://isport.blesk.cz/tipsport-extraliga", "https://isport.blesk.cz/hokej"],
+      "vzor_clanku": "^https://isport\\.blesk\\.cz/clanek/hokej[a-z0-9-]*/\\d+/[a-z0-9-]+\\.html$",
+      "hokej_v_url": "/clanek/hokej"
+    },
+    {
+      "id": "hokejcz",
+      "nazev": "hokej.cz",
+      "domena": "hokej.cz",
+      "rss": ["https://hokej.cz/rss/vse"],
+      "vypisy": ["https://www.hokej.cz/tipsport-extraliga"],
+      "vzor_clanku": "^https://www\\.hokej\\.cz/[a-z0-9-]+/\\d{6,}$",
+      "hokej_v_url": ""
+    },
+    {
+      "id": "sportcz",
+      "nazev": "Sport.cz",
+      "domena": "sport.cz",
+      "rss": ["https://www.sport.cz/rss2"],
+      "vypisy": ["https://www.sport.cz/sekce/hokej-extraliga-47"],
+      "vzor_clanku": "^https://www\\.sport\\.cz/clanek/hokej-[a-z0-9-]+-\\d+$",
+      "hokej_v_url": "/clanek/hokej-"
+    },
+    {
+      "id": "idnes",
+      "nazev": "iDNES",
+      "domena": "idnes.cz",
+      "rss": ["https://servis.idnes.cz/rss.aspx?c=sport"],
+      "vypisy": ["https://www.idnes.cz/sport/hokej"],
+      "vzor_clanku": "^https://www\\.idnes\\.cz/sport/hokej/[^?#]+\\.A\\d{6}_\\d+_[a-z0-9_]+$",
+      "hokej_v_url": "/hokej/"
+    }
+  ]
+}
