@@ -11,7 +11,7 @@ import json
 import re
 import sys
 import unicodedata
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from email.utils import parsedate_to_datetime
 from pathlib import Path
 from urllib.parse import urljoin, urlsplit, urlunsplit
@@ -68,7 +68,38 @@ def canon(url):
     path = p.path
     if host == "hokej.cz":
         host = "www.hokej.cz"
+    if host in ("hcmotor.cz", "www.hcmotor.cz"):
+        # clanek.asp?id=Slug-13927 i clanek.asp?id=13927 → jedno id
+        m = re.search(r"id=(?:[^&]*?-)?(\d+)(?:&|$)", p.query)
+        return f"https://hcmotor.cz{path}?id={m.group(1)}" if m else urlunsplit(("https", "hcmotor.cz", path, p.query, ""))
     return urlunsplit(("https", host, path, "", ""))
+
+
+REL_DATE = re.compile(r"\b(dnes|včera|před\s+(\d+)\s+dn[yíe]m?|(\d{1,2})\.\s?(\d{1,2})\.\s?(\d{4}))"
+                      r"(?:\s*,?\s*(\d{1,2}):(\d{2}))?", re.I)
+
+
+def parse_rel_date(text):
+    """„dnes“, „včera“, „před 3 dny“, „15.11.2026 18:30“ → (datetime, má_čas)."""
+    m = REL_DATE.search(text or "")
+    if not m:
+        return None, False
+    now = datetime.now(TZ)
+    w = m.group(1).lower()
+    if w == "dnes":
+        d = now
+    elif w == "včera":
+        d = now - timedelta(days=1)
+    elif m.group(2):
+        d = now - timedelta(days=int(m.group(2)))
+    else:
+        try:
+            d = datetime(int(m.group(5)), int(m.group(4)), int(m.group(3)), tzinfo=TZ)
+        except ValueError:
+            return None, False
+    if m.group(6):
+        return d.replace(hour=int(m.group(6)), minute=int(m.group(7)), second=0, microsecond=0), True
+    return d.replace(hour=12, minute=0, second=0, microsecond=0), False
 
 
 def clean_text(s):
@@ -176,6 +207,12 @@ def is_relevant(src, url, text, cfg, matchers):
     marker = src.get("hokej_v_url", "")
     if marker and marker not in url:
         return False
+    if src.get("vyloucit") and re.search(src["vyloucit"], text):
+        return False
+    if src.get("vse"):
+        return True
+    if src.get("povinne"):
+        return bool(re.search(src["povinne"], text))
     if any(k in text for k in cfg["klicova_slova"]):
         return True
     slug = urlsplit(url).path.lower()
@@ -210,7 +247,7 @@ def read_rss(url):
     return items
 
 
-def read_listing(url, pattern):
+def read_listing(url, pattern, with_dates=False):
     soup = BeautifulSoup(get(url).text, "html.parser")
     rx = re.compile(pattern)
     seen = {}
@@ -219,9 +256,26 @@ def read_listing(url, pattern):
         if not rx.match(href):
             continue
         text = re.sub(r"\s+", " ", a.get_text(" ")).strip()
-        if len(text) > len(seen.get(href, "")):
-            seen[href] = text
-    return [{"url": u, "titulek": t, "perex": "", "datum": None} for u, t in seen.items()]
+        it = seen.setdefault(href, {"url": href, "titulek": "", "perex": "", "datum": None})
+        if len(text) > len(it["titulek"]):
+            it["titulek"] = text
+        if with_dates and it["datum"] is None:
+            # datum a anotace hledej v nejbližším obalu odkazu
+            box = a
+            for _ in range(4):
+                box = box.parent
+                if box is None:
+                    break
+                btxt = re.sub(r"\s+", " ", box.get_text(" ")).strip()
+                d, has_time = parse_rel_date(btxt)
+                if d:
+                    it["datum"], it["bez_casu"] = d, not has_time
+                    rest = btxt.replace(text, "")
+                    rest = REL_DATE.sub("", rest).strip(" -–|·")
+                    if len(rest) > 40:
+                        it["perex"] = clean_text(rest)
+                    break
+    return [it for it in seen.values() if it["titulek"]]
 
 
 def read_article_meta(url):
@@ -237,7 +291,15 @@ def read_article_meta(url):
     title = meta("og:title", "twitter:title") or (soup.title.get_text() if soup.title else "")
     title = re.sub(r"\s+[|–-]\s+(iSport|iDNES|Deník|Sport\.cz|Hokej\.cz|hokej\.cz|Českobudějovický)[^|]*$",
                    "", title.strip())
+    title = re.sub(r"^Motor České Budějovice\s*[–-]\s*", "", title.strip())
     perex = meta("og:description", "description", "twitter:description")
+    if perex.strip() in ("Motor České Budějovice", ""):
+        perex = ""
+        for p_ in soup.find_all("p"):
+            t_ = p_.get_text(" ").strip()
+            if len(t_) > 60:
+                perex = t_
+                break
     date = parse_date(meta("article:published_time", "og:published_time", "date",
                            "publish-date", "article:published"))
     if date is None:
@@ -249,7 +311,11 @@ def read_article_meta(url):
             if m:
                 date = parse_date(m.group(1))
                 break
-    return {"titulek": clean_text(title), "perex": clean_text(perex), "datum": date}
+    bez_casu = False
+    if date is None:
+        date, has_time = parse_rel_date(soup.get_text(" ")[:3000])
+        bez_casu = bool(date) and not has_time
+    return {"titulek": clean_text(title), "perex": clean_text(perex), "datum": date, "bez_casu": bez_casu}
 
 
 # ---------- obohacení: typ, zápas, skupiny ----------
@@ -271,11 +337,11 @@ TYPY = {"online": "Online", "zraneni": "Zranění", "prestup": "Smlouva/přestup
         "reportaz": "Reportáž", "rozhovor": "Rozhovor"}
 
 SOUPERI = {
-    "sparta": r"spart", "kometa": r"komet|\bbrn[eoa]\b|brnensk", "plzen": r"plzn|plzen|skodovk",
-    "liberec": r"liber|bili tygri", "vitkovice": r"vitkovic|ostrav", "pardubice": r"pardubic",
-    "litvinov": r"litvinov|verva", "olomouc": r"olomouc|mamut", "karlovy": r"karlov|\bvar[yech]\b|energie",
-    "boleslav": r"boleslav", "hradec": r"hradec|hradeck|mountfield", "trinec": r"trin|ocelar",
-    "kladno": r"kladn|rytir",
+    "sparta": r"spart|\bceb\W+spa\b|\bspa\W+ceb\b", "kometa": r"komet|\bbrn[eoa]\b|brnensk|\bceb\W+kom\b|\bkom\W+ceb\b", "plzen": r"plzn|plzen|skodovk|\bceb\W+plz\b|\bplz\W+ceb\b",
+    "liberec": r"liber|bili tygri|\bceb\W+lib\b|\blib\W+ceb\b", "vitkovice": r"vitkovic|ostrav|\bceb\W+vit\b|\bvit\W+ceb\b", "pardubice": r"pardubic|\bceb\W+pce\b|\bpce\W+ceb\b",
+    "litvinov": r"litvinov|verva|\bceb\W+lit\b|\blit\W+ceb\b", "olomouc": r"olomouc|mamut|\bceb\W+olo\b|\bolo\W+ceb\b", "karlovy": r"karlov|\bvar[yech]\b|energie|\bceb\W+kva\b|\bkva\W+ceb\b",
+    "boleslav": r"boleslav|\bceb\W+mbl\b|\bmbl\W+ceb\b", "hradec": r"hradec|hradeck|mountfield|\bceb\W+hkr\b|\bhkr\W+ceb\b", "trinec": r"trin|ocelar|\bceb\W+tri\b|\btri\W+ceb\b",
+    "kladno": r"kladn|rytir|\bceb\W+kla\b|\bkla\W+ceb\b",
 }
 STOP = set("""motor motoru motorem banes ceske ceskych budej hokej hokeje extra tipsp sezon sezony klubu tymu
 zapas zapasu utkan kolem kole kola hrace hraci hracu kterem ktery ktera ktere ktery jeste ovsem jenze proto
@@ -417,7 +483,8 @@ def enrich(data, cfg):
         a["hraci"] = tag_players(f'{a["titulek"]} {a["perex"]}', matchers)
         m = assign_match(a, matches)
         a["zapas"] = m["id"] if m else None
-        after = bool(m and a.get("datum") and a["datum"] >= m["start"])
+        after = bool(m and a.get("datum") and (a["datum"] >= m["start"] or
+                     (a.get("bez_casu") and a["datum"][:10] == m["start"][:10])))
         a["typ"] = classify(a, after)
         if a["typ"] == "prestup":
             a["zapas"] = None  # kádrové zprávy k zápasu nepatří
@@ -441,7 +508,8 @@ def save_data(data):
 def source_for(url, cfg):
     host = urlsplit(url).netloc.lower()
     for s in cfg["zdroje"]:
-        if host == s["domena"] or host.endswith("." + s["domena"]):
+        doms = s["domena"] if isinstance(s["domena"], list) else [s["domena"]]
+        if any(host == d or host.endswith("." + d) for d in doms):
             return s
     return None
 
@@ -457,6 +525,7 @@ def make_record(item, src_name, matchers, manual=False):
         "pridano": now_iso(),
         "rucne": manual,
         "hraci": tag_players(text, matchers),
+        **({"bez_casu": True} if item.get("bez_casu") else {}),
     }
 
 
@@ -479,7 +548,7 @@ def scan(cfg):
                 errors.append(f"RSS {u}: {e}")
         for u in src.get("vypisy", []):
             try:
-                for it in read_listing(u, src["vzor_clanku"]):
+                for it in read_listing(u, src["vzor_clanku"], src.get("datum_ve_vypisu", False)):
                     candidates.setdefault(it["url"], it)
             except Exception as e:  # noqa: BLE001
                 errors.append(f"výpis {u}: {e}")
@@ -496,7 +565,8 @@ def scan(cfg):
                     if m["titulek"]:
                         it["titulek"] = m["titulek"]  # z výpisu bývá titulek slepený s perexem
                     it["perex"] = it["perex"] or m["perex"]
-                    it["datum"] = it["datum"] or m["datum"]
+                    if not it["datum"] and m["datum"]:
+                        it["datum"], it["bez_casu"] = m["datum"], m.get("bez_casu", False)
                 except Exception as e:  # noqa: BLE001
                     errors.append(f"článek {url}: {e}")
             if not it["titulek"]:

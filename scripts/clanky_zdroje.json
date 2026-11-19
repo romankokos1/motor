@@ -1,13 +1,23 @@
 {
-  "klicova_slova": ["Motor", "Budějovic", "Budějovick", "Jihočeš", "Jihočech"],
+  "klicova_slova": [
+    "Motor",
+    "Budějovic",
+    "Budějovick",
+    "Jihočeš",
+    "Jihočech"
+  ],
   "hraci": [],
   "zdroje": [
     {
       "id": "denik",
       "nazev": "Deník",
       "domena": "denik.cz",
-      "rss": ["https://ceskobudejovicky.denik.cz/rss/sport.xml"],
-      "vypisy": ["https://ceskobudejovicky.denik.cz/hokej/"],
+      "rss": [
+        "https://ceskobudejovicky.denik.cz/rss/sport.xml"
+      ],
+      "vypisy": [
+        "https://ceskobudejovicky.denik.cz/hokej/"
+      ],
       "vzor_clanku": "^https://ceskobudejovicky\\.denik\\.cz/hokej/[a-z0-9-]+/?$",
       "hokej_v_url": "/hokej/"
     },
@@ -15,8 +25,13 @@
       "id": "isport",
       "nazev": "iSport",
       "domena": "isport.blesk.cz",
-      "rss": ["https://isport.blesk.cz/rss"],
-      "vypisy": ["https://isport.blesk.cz/tipsport-extraliga", "https://isport.blesk.cz/hokej"],
+      "rss": [
+        "https://isport.blesk.cz/rss"
+      ],
+      "vypisy": [
+        "https://isport.blesk.cz/tipsport-extraliga",
+        "https://isport.blesk.cz/hokej"
+      ],
       "vzor_clanku": "^https://isport\\.blesk\\.cz/clanek/hokej[a-z0-9-]*/\\d+/[a-z0-9-]+\\.html$",
       "hokej_v_url": "/clanek/hokej"
     },
@@ -24,8 +39,12 @@
       "id": "hokejcz",
       "nazev": "hokej.cz",
       "domena": "hokej.cz",
-      "rss": ["https://hokej.cz/rss/vse"],
-      "vypisy": ["https://www.hokej.cz/tipsport-extraliga"],
+      "rss": [
+        "https://hokej.cz/rss/vse"
+      ],
+      "vypisy": [
+        "https://www.hokej.cz/tipsport-extraliga"
+      ],
       "vzor_clanku": "^https://www\\.hokej\\.cz/[a-z0-9-]+/\\d{6,}$",
       "hokej_v_url": ""
     },
@@ -33,8 +52,12 @@
       "id": "sportcz",
       "nazev": "Sport.cz",
       "domena": "sport.cz",
-      "rss": ["https://www.sport.cz/rss2"],
-      "vypisy": ["https://www.sport.cz/sekce/hokej-extraliga-47"],
+      "rss": [
+        "https://www.sport.cz/rss2"
+      ],
+      "vypisy": [
+        "https://www.sport.cz/sekce/hokej-extraliga-47"
+      ],
       "vzor_clanku": "^https://www\\.sport\\.cz/clanek/hokej-[a-z0-9-]+-\\d+$",
       "hokej_v_url": "/clanek/hokej-"
     },
@@ -42,10 +65,64 @@
       "id": "idnes",
       "nazev": "iDNES",
       "domena": "idnes.cz",
-      "rss": ["https://servis.idnes.cz/rss.aspx?c=sport"],
-      "vypisy": ["https://www.idnes.cz/sport/hokej"],
+      "rss": [
+        "https://servis.idnes.cz/rss.aspx?c=sport"
+      ],
+      "vypisy": [
+        "https://www.idnes.cz/sport/hokej"
+      ],
       "vzor_clanku": "^https://www\\.idnes\\.cz/sport/hokej/[^?#]+\\.A\\d{6}_\\d+_[a-z0-9_]+$",
       "hokej_v_url": "/hokej/"
+    },
+    {
+      "id": "hcmotor",
+      "nazev": "HC Motor",
+      "domena": "hcmotor.cz",
+      "rss": [],
+      "vypisy": [
+        "https://hcmotor.cz/archiv.asp?kde=clanky&zobraz=posledni&anotace=true"
+      ],
+      "vzor_clanku": "^https://hcmotor\\.cz/clanek\\.asp\\?id=\\d+$",
+      "hokej_v_url": "",
+      "vse": true,
+      "datum_ve_vypisu": true,
+      "vyloucit": "^(JUN|DOR|STD|MLD|U\\d{2}|SŽ|MŽ|ŽENY|Junioři|Dorost|Mládež)\\b"
+    },
+    {
+      "id": "cro",
+      "nazev": "ČRo",
+      "domena": "budejovice.rozhlas.cz",
+      "rss": [],
+      "vypisy": [
+        "https://budejovice.rozhlas.cz/"
+      ],
+      "vzor_clanku": "^https://budejovice\\.rozhlas\\.cz/[a-z0-9-]+-\\d{6,}$",
+      "hokej_v_url": "",
+      "povinne": "\\bMotor"
+    },
+    {
+      "id": "seznam",
+      "nazev": "Seznam Zprávy",
+      "domena": "seznamzpravy.cz",
+      "rss": [],
+      "vypisy": [
+        "https://www.seznamzpravy.cz/sekce/sport-147"
+      ],
+      "vzor_clanku": "^https://www\\.seznamzpravy\\.cz/clanek/sport-hokej-[a-z0-9-]+-\\d+$",
+      "hokej_v_url": "/clanek/sport-hokej-"
+    },
+    {
+      "id": "ctsport",
+      "nazev": "ČT sport",
+      "domena": "sport.ceskatelevize.cz",
+      "rss": [
+        "https://sport.ceskatelevize.cz/rss"
+      ],
+      "vypisy": [
+        "https://sport.ceskatelevize.cz/rubrika/hokej-2"
+      ],
+      "vzor_clanku": "^https://sport\\.ceskatelevize\\.cz/clanek/hokej/[a-z0-9-]+-\\d+$",
+      "hokej_v_url": "/clanek/hokej/"
     }
   ]
 }
