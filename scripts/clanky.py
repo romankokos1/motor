@@ -512,7 +512,21 @@ def group(articles):
             articles[k]["skupina"] = articles[first]["url"]
 
 
+def order_undated(articles):
+    """hcmotor.cz neuvádí čas vydání: články bez času seřadí v rámci dne podle čísla článku
+    (vyšší id = vydán později). Čas se na stránce nezobrazuje, slouží jen k pořadí."""
+    days = {}
+    for a in articles:
+        m = re.search(r"[?&]id=(\d+)", a["url"])
+        if a.get("bez_casu") and a.get("datum") and m:
+            days.setdefault(a["datum"][:10], []).append((int(m.group(1)), a))
+    for day, items in days.items():
+        for rank, (_, a) in enumerate(sorted(items, key=lambda x: x[0])):
+            a["datum"] = f"{day}T12:{rank:02d}{a['datum'][16:]}"
+
+
 def enrich(data, cfg):
+    order_undated(data["clanky"])
     matchers = player_matchers(load_players(cfg))
     matches = load_matches(data)
     data["zapasy"] = matches
