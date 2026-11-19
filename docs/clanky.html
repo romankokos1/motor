@@ -103,9 +103,21 @@ tbody tr:hover td:first-child{box-shadow:inset 2px 0 0 var(--accent)}
 .typ.zraneni{color:var(--warn)}
 .zl{background:none;border:0;padding:0;cursor:pointer;color:var(--accent);font-size:13px;text-decoration:underline;text-underline-offset:2px;text-decoration-color:color-mix(in srgb,var(--accent) 40%,transparent)}
 .zl:hover{text-decoration-color:var(--accent)}
-.also{margin-top:6px;font-size:13px;color:var(--text-3);display:flex;flex-wrap:wrap;gap:4px 6px;align-items:center}
-.also a{background:var(--z);color:var(--zt);font-size:12px;font-weight:600;line-height:18px;padding:1px 6px;text-decoration:none}
-.also a:hover{text-decoration:underline}
+.also{position:relative;margin-top:6px;font-size:13px;color:var(--text-3);display:flex;flex-wrap:wrap;gap:4px 6px;align-items:center}
+.ob{border:0;cursor:pointer;background:var(--z);color:var(--zt);font-size:12px;font-weight:600;line-height:18px;padding:1px 6px}
+.ob::after{content:"";display:inline-block;margin-left:5px;border:4px solid transparent;border-top-color:currentColor;border-bottom:0;vertical-align:2px}
+.ob[aria-expanded="true"]{outline:2px solid var(--z);outline-offset:1px}
+.ob[aria-expanded="true"]::after{border-top:0;border-bottom:4px solid currentColor}
+.bub{position:absolute;z-index:8;top:calc(100% + 9px);left:0;width:min(460px,100%);background:var(--bg);
+     border:1px solid var(--line-strong);box-shadow:inset 3px 0 0 var(--z);padding:10px 12px 11px 15px;color:var(--text)}
+.bub::before{content:"";position:absolute;top:-6px;left:var(--ax,20px);width:10px;height:10px;margin-left:-5px;background:var(--bg);
+     border-left:1px solid var(--line-strong);border-top:1px solid var(--line-strong);transform:rotate(45deg)}
+.bub::after{content:"";position:absolute;top:-11px;left:0;right:0;height:11px}
+.bub .bm{font-size:12px;color:var(--text-3);margin-bottom:3px}
+.bub .bm b{font-weight:600;color:var(--text-2)}
+.bub a{font-weight:600;font-size:14px;text-decoration:none;color:var(--text)}
+.bub a:hover{color:var(--accent);text-decoration:underline;text-underline-offset:2px}
+.bub p{margin:4px 0 0;font-size:13.5px;color:var(--text-2)}
 .res{font-weight:600}
 .res.pos{color:var(--pos)} .res.neg{color:var(--neg)}
 .pl{margin-top:6px;font-size:14px;color:var(--text)}
@@ -302,7 +314,7 @@ function goMatch(id){
 
 /* ---------- řádky článků ---------- */
 // sloučí články se stejnou skupinou; hlavní je nejdřív zveřejněný
-function stories(items){
+function stories(items, asc){
   const byG = new Map(), out = [];
   items.forEach(a => {
     if (!a.skupina){ out.push({main:a, others:[]}); return; }
@@ -313,7 +325,7 @@ function stories(items){
     if (!s.members) return s;
     const m = s.members.slice().sort((a,b) => when(a) - when(b));
     return {main: m[0], others: m.slice(1)};
-  });
+  }).sort((a, b) => (when(a.main) - when(b.main)) * (asc ? 1 : -1));
 }
 
 function rowHtml(st, ctx){
@@ -331,7 +343,10 @@ function rowHtml(st, ctx){
       ${a.perex ? `<div class="p">${esc(a.perex)}</div>` : ""}
       ${meta.length ? `<div class="meta">${meta.join("")}</div>` : ""}
       ${(a.hraci || []).length ? `<div class="pl"><span>Hráči</span>${a.hraci.map(h => `<b>${esc(h)}</b>`).join("")}</div>` : ""}
-      ${st.others.length ? `<div class="also">Také na:${st.others.map(o => `<a class="${zc(o.zdroj)}" href="${esc(o.url)}" target="_blank" rel="noopener" title="${esc(o.titulek)}">${esc(o.zdroj)}</a>`).join("")}</div>` : ""}
+      ${st.others.length ? `<div class="also">Také na:${st.others.map((o, i) => `<button type="button" class="ob ${zc(o.zdroj)}" aria-expanded="false" data-i="${i}">${esc(o.zdroj)}</button>`).join("")}${st.others.map((o, i) => {
+        const od = when(o);
+        return `<div class="bub ${zc(o.zdroj)}" data-i="${i}" hidden><div class="bm"><b>${esc(o.zdroj)}</b> · ${DSHORT[od.getDay()]} ${dm(od)}${o.datum && !o.bez_casu ? " " + hhmm(od) : ""}</div><a href="${esc(o.url)}" target="_blank" rel="noopener">${esc(o.titulek)}</a>${o.perex ? `<p>${esc(o.perex)}</p>` : ""}</div>`;
+      }).join("")}</div>` : ""}
     </div></article>`;
 }
 
@@ -396,7 +411,7 @@ function renderMatches(){
   if (!list.length){ $("zfeed").innerHTML = `<div class="empty">Zatím žádné články k zápasům</div>`; renderIndex("zindex","zidx","zfeedcol",[]); return; }
   $("zfeed").innerHTML = list.map(m => {
     const d = new Date(m.start), items = by.get(m.id).slice().sort((a,b) => when(a) - when(b));
-    const st = stories(items), n = st.length;
+    const st = stories(items, true), n = st.length;
     const teams = `${m.domaci} – ${m.hoste}`;
     return `<section class="day" aria-labelledby="mh-${m.id}">
       <div class="day-h" id="m-${esc(m.id)}"><h2 id="mh-${m.id}">${m.kolo}. kolo</h2><span>${DSHORT[d.getDay()]} ${dm(d)} ${hhmm(d)} · ${esc(teams)}</span>${result(m)}<span class="n">${n} ${plural(n,"zpráva","zprávy","zpráv")}</span></div>
@@ -436,6 +451,44 @@ document.addEventListener("click", e => {
   const b = e.target.closest(".zl");
   if (b) goMatch(b.dataset.z);
 });
+
+/* ---------- náhled „Také na“ ---------- */
+let openBtn = null, pinned = false, hoverT = null;
+function closeBub(){
+  if (!openBtn) return;
+  openBtn.setAttribute("aria-expanded", "false");
+  openBtn.parentElement.querySelector(`.bub[data-i="${openBtn.dataset.i}"]`).hidden = true;
+  openBtn = null; pinned = false;
+}
+function openBub(btn, pin){
+  if (openBtn === btn){ pinned = pinned || pin; return; }
+  closeBub();
+  const box = btn.parentElement, bub = box.querySelector(`.bub[data-i="${btn.dataset.i}"]`);
+  bub.hidden = false;
+  const w = bub.offsetWidth, cx = btn.offsetLeft + btn.offsetWidth / 2;
+  const left = Math.max(0, Math.min(cx - w / 2, box.clientWidth - w));
+  bub.style.left = left + "px";
+  bub.style.setProperty("--ax", (cx - left) + "px");
+  btn.setAttribute("aria-expanded", "true");
+  openBtn = btn; pinned = pin;
+}
+document.addEventListener("click", e => {
+  const btn = e.target.closest(".ob");
+  if (btn){ (openBtn === btn && pinned) ? closeBub() : openBub(btn, true); return; }
+  if (openBtn && !e.target.closest(".bub")) closeBub();
+});
+document.addEventListener("keydown", e => { if (e.key === "Escape" && openBtn){ const b = openBtn; closeBub(); b.focus(); } });
+if (matchMedia("(hover: hover)").matches){
+  document.addEventListener("mouseover", e => {
+    const btn = e.target.closest(".ob");
+    if (btn && !pinned){ clearTimeout(hoverT); hoverT = setTimeout(() => openBub(btn, false), 120); }
+  });
+  document.addEventListener("mouseout", e => {
+    const box = e.target.closest(".also");
+    if (!box || pinned || box.contains(e.relatedTarget)) return;
+    clearTimeout(hoverT); closeBub();
+  });
+}
 
 /* ---------- přehled ---------- */
 function stats(keyFn){
