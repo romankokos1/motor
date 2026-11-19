@@ -81,15 +81,21 @@ main{max-width:1280px;margin:0 auto;padding:8px 24px 64px}
 
 /* den */
 .day{margin-top:28px}
-.day-h{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 10px;border-top:1px solid var(--line-strong);padding-top:12px;margin-bottom:2px;scroll-margin-top:calc(var(--top) + 8px)}
+.day-h{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 10px;border-top:1px solid var(--line-strong);padding-top:12px;margin-bottom:0;scroll-margin-top:calc(var(--top) + 8px)}
 .day-h h2{margin:0;font-size:18px;font-weight:600}
 .day-h span{color:var(--text-3);font-size:14px}
 .day-h .n{margin-left:auto}
 
 /* řádek článku */
-.row{display:grid;grid-template-columns:48px 108px minmax(0,1fr);gap:0 14px;padding:10px 8px 10px 12px;border-bottom:1px solid var(--line);
+.row{display:grid;grid-template-columns:48px 108px minmax(0,1fr);gap:0 14px;padding:12px 10px 12px 14px;margin-top:6px;
      background:color-mix(in srgb,var(--z) var(--tint),var(--bg));box-shadow:inset 4px 0 0 var(--z)}
-.row:last-child{border-bottom:0}
+.day-h+.row,.sub-h+.row{margin-top:8px}
+/* klubový web: vlastní texty – jen titulek, menší řádek, média mají přednost */
+.row.klub{padding-top:8px;padding-bottom:8px;background:var(--bg);box-shadow:inset 4px 0 0 var(--z),inset 0 0 0 1px var(--line)}
+.row.klub .h{font-weight:400;font-size:14.5px}
+.row.klub.is-new .h{font-weight:500}
+.row.klub .t,.row.klub .s{padding-top:0}
+.row.klub:hover{background:var(--hover)}
 .row:hover{background:color-mix(in srgb,var(--z) calc(var(--tint) * 2),var(--bg))}
 /* řádky tabulky: efekt po najetí (jen zařízení s myší) */
 tbody tr{transition:background-color .12s,box-shadow .12s}
@@ -206,7 +212,7 @@ td b{font-weight:600}
   .filters{gap:2px 14px}
   .sel{margin-left:0;width:100%;margin-top:6px}
   .sel select{flex:1;min-width:0}
-  .row{grid-template-columns:40px minmax(0,1fr);padding:10px 6px}
+  .row{grid-template-columns:40px minmax(0,1fr);padding:10px 8px 10px 12px}
   .s{grid-column:2;grid-row:1;margin-bottom:4px}
   .row>div:last-child{grid-column:2}
   .t{grid-row:1 / span 2;font-size:13px}
@@ -280,7 +286,7 @@ const PAGE = 150, INDEX_MIN = 8, DAY = 864e5;
 const DAYS = ["neděle","pondělí","úterý","středa","čtvrtek","pátek","sobota"];
 const DSHORT = ["ne","po","út","st","čt","pá","so"];
 const MONTHS = ["ledna","února","března","dubna","května","června","července","srpna","září","října","listopadu","prosince"];
-const TYPY = {online:"Online", reportaz:"Reportáž", rozhovor:"Rozhovor", prestup:"Smlouva/přestup", zraneni:"Zranění"};
+const TYPY = {preview:"Preview", online:"Online", reportaz:"Reportáž", rozhovor:"Rozhovor", prestup:"Smlouva/přestup", zraneni:"Zranění"};
 const ZC = {"iSport":"isport","hokej.cz":"hokejcz","Deník":"denik","iDNES":"idnes","Sport.cz":"sportcz","HC Motor":"hcmotor","ČRo":"cro","Seznam Zprávy":"seznam","ČT sport":"ctsport"};
 const reduced = matchMedia("(prefers-reduced-motion: reduce)");
 const $ = id => document.getElementById(id);
@@ -370,11 +376,12 @@ function rowHtml(st, ctx){
   if ((a.puvodni || []).length) meta.push(`<span class="typ zmena">Titulek změněn</span>`);
   if (m && ctx !== "zapas") meta.push(`<button class="zl" data-z="${esc(m.id)}">${esc(matchLabel(m))}</button>`);
   if (ctx === "zapas") meta.push(`<span>${DSHORT[d.getDay()]} ${dm(d)}</span>`);
-  return `<article class="row ${zc(a.zdroj)}${isNew ? " is-new" : ""}">
+  const klub = a.zdroj === "HC Motor";
+  return `<article class="row ${zc(a.zdroj)}${isNew ? " is-new" : ""}${klub ? " klub" : ""}">
     <div class="t">${a.datum && !a.bez_casu ? hhmm(d) : "–"}</div>
     <div class="s">${esc(a.zdroj)}</div>
     <div>${isNew ? `<span class="new">NOVÉ</span>` : ""}<a class="h" href="${esc(a.url)}" target="_blank" rel="noopener">${esc(a.titulek)}</a>
-      ${a.perex ? `<div class="p">${esc(a.perex)}</div>` : ""}
+      ${a.perex && !klub ? `<div class="p">${esc(a.perex)}</div>` : ""}
       ${(a.puvodni || []).length ? `<div class="orig">${a.puvodni.slice().reverse().map(o => { const z = new Date(o.zmeneno); return `<div><span>Původně</span><s>${esc(o.titulek)}</s><em>do ${dm(z)} ${hhmm(z)}</em></div>`; }).join("")}</div>` : ""}
       ${meta.length ? `<div class="meta">${meta.join("")}</div>` : ""}
       ${(a.hraci || []).length ? `<div class="pl"><span>Hráči</span>${a.hraci.map(h => `<b>${esc(h)}</b>`).join("")}</div>` : ""}
