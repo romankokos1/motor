@@ -378,9 +378,10 @@ LINEUPS = ROOT / "docs" / "sestavy-data.json"
 DAY_S = 86400
 
 # typ článku – pravidla nad titulkem (u kádru a zranění i nad perexem)
-TYP_PRESTUP = re.compile(r"prestup|smlouv|prodlouzil|prodlouzeni|podepsal|posil[ay]|odchazi|konci v |angazm|"
-                         r"mir[ií] do|hostovan|vymen[ay]|zmen[ay] v kadru|pojistil|nove[mh]o? (hrace|obrance|utocnika|golmana)")
-TYP_ZRANENI = re.compile(r"zranen|zranil|operac|marod|mimo hru|vypadne na|vynecha|otres mozku|nemocensk")
+TYP_PRESTUP = re.compile(r"prestup|smlouv|prodlouzil|prodlouzeni (smlouv|kontrakt|spoluprac)|podepsal|posil[ay]|odchazi|konci v |angazm|"
+                         r"mir[ií] do|hostovan|vymen[ay]|zmen[ay] v kadru|pojistil|nove[mh]o? (hrace|obrance|utocnika|golmana)|"
+                         r"bali kufry|zamir[ií] do|prichod|odchod\b")
+TYP_ZRANENI = re.compile(r"(?<!po )zranen|zranil|operac|marod|mimo hru|vypadne na|vynecha|otres mozku|nemocensk")
 TYP_ONLINE = re.compile(r"\bonline\b")
 TYP_REPORT = re.compile(r"\d+\s*:\s*\d+|porazil|pretlac|zvitez|otocil|porazk|zdolal|skolil|vyhral|vyhr[au]|vyhre|prohral|prohr[au]|"
                         r"padl[ia]?\b|obrat|veze tri|tri body|bod[ uy]|remiz|v prodlouzeni|najezd|vyprodan")
@@ -422,9 +423,12 @@ def classify(a, has_match_after):
         return "online"
     if TYP_ZRANENI.search(t):
         return "zraneni"
+    # rozhovor podle titulku („Josef Koláček: …“, „S asistentem trenéra Jirušem o …“) přebíjí typ z perexu
+    if TYP_ROZHOVOR_JMENO.search(a["titulek"]) or re.match(r"S [^,:?!]{3,60} o ", a["titulek"]):
+        return "rozhovor"
     if TYP_PRESTUP.search(t) or TYP_PRESTUP.search(p[:160]):
         return "prestup"
-    if re.search(r"zranen|zranil|operac|marod", p[:160]):
+    if re.search(r"(?<!po )zranen|zranil|operac|marod", p[:160]) and not re.search(r"po zraneni|navrat|vratil", t):
         return "zraneni"
     if OHLAS.search(t):  # „…, říká Bulíř“, „…hodnotil obrat Blümel“ – ohlas má přednost před výsledkem
         return "rozhovor"
@@ -503,6 +507,29 @@ def assign_match(a, matches):
     return best
 
 
+TEAM_STEMS = {"spart", "komet", "plzen", "plzne", "liber", "vitko", "pardu", "litvi", "olomo", "karlo",
+              "boles", "hrade", "trinc", "trine", "kladn", "motor", "budej", "jihoc"}
+QUOTE_VERB = r"rika|rekl|priznal|hlasi|lici|tvrdi|uvedl|dodal|hodnotil|reagoval|stve|vi|vzkazuje|myslel|smutnil|zlobil"
+
+
+def quote_tokens(title):
+    """Slova přímé citace v titulku: „…“, „Jméno: citace“, „citace, řekl X“."""
+    q = re.search(r"[„\"]([^“\"]{8,})[“\"]", title)
+    if q:
+        part = q.group(1)
+    else:
+        n = norm(title)
+        head = re.match(r"^[^:?!]{2,40}: (.+)$", title)
+        verb = re.search(r"^(.*?),\s*(?:\w+\s+){0,2}(" + QUOTE_VERB + r")\b", n)
+        if head:
+            part = head.group(1)
+        elif verb:
+            part = re.split(r"[.!?]\s", verb.group(1))[-1]
+        else:
+            return set()
+    return {w for w in stems(part) if w not in TEAM_STEMS}
+
+
 def group(articles):
     """Stejná zpráva na více webech → společné id skupiny (url nejstaršího článku)."""
     n = len(articles)
@@ -514,14 +541,27 @@ def group(articles):
             i = parent[i]
         return i
 
-    info = []
+    info, quotes, titles = [], [], []
     for a in articles:
         ts = datetime.fromisoformat(a.get("datum") or a["pridano"]).timestamp()
         info.append((ts, stems(f'{a["titulek"]} {a["perex"]}'), set(a.get("hraci", []))))
+        quotes.append(quote_tokens(a["titulek"]))
+        titles.append(stems(a["titulek"]) - TEAM_STEMS)
     for i in range(n):
         for j in range(i + 1, n):
             ai, aj = articles[i], articles[j]
-            if ai["zdroj"] == aj["zdroj"] or ai.get("typ") != aj.get("typ") or ai.get("souper") != aj.get("souper"):
+            if ai["zdroj"] == aj["zdroj"] or ai.get("souper") != aj.get("souper"):
+                continue
+            if abs(info[i][0] - info[j][0]) <= 48 * 3600:
+                # stejný výrok převzatý více weby („Dostáváme do držky, přiznal Zábranský“) – bez ohledu na typ
+                hit = False
+                for q, other in ((quotes[i], titles[j]), (quotes[j], titles[i])):
+                    if len(q) >= 2 and len(q & other) >= max(2, round(len(q) * 0.6)):
+                        hit = True
+                if hit:
+                    parent[find(j)] = find(i)
+                    continue
+            if ai.get("typ") != aj.get("typ"):
                 continue
             # slučuje se jen zpráva (smlouva, přestup, zranění, ostatní); preview, online, reportáž
             # a rozhovor je vlastní zpracování každého webu – ty patří k zápasu, ne do jedné skupiny
@@ -746,6 +786,15 @@ SOUPERI_PRESNE = {
 }
 
 
+def opp_title_ok(title, m):
+    """Soupeř musí být v titulku hlavním tématem: je v něm a nejvýš s jedním dalším týmem (ne souhrn kola)."""
+    t = deaccent(title)
+    k = opponent_key(m)
+    if not k or not re.search(SOUPERI_PRESNE[k], t):
+        return False
+    return sum(1 for rx in SOUPERI_PRESNE.values() if re.search(rx, t)) <= 2
+
+
 def opponent_match(src, url, text, upcoming):
     """Článek o nejbližším soupeři (bez zmínky o Motoru) – jen hokejové rubriky celostátních webů."""
     if not upcoming or src.get("povinne") or src.get("vse"):
@@ -755,10 +804,8 @@ def opponent_match(src, url, text, upcoming):
         return None
     if not marker and src["id"] != "hokejcz":
         return None
-    t = deaccent(text)
     for m in upcoming:
-        k = opponent_key(m)
-        if k and re.search(SOUPERI_PRESNE[k], t):
+        if opp_title_ok(text, m):
             return m
     return None
 
@@ -843,12 +890,15 @@ def update_health(data, src, n_candidates, errors):
 def recheck(data, cfg):
     """Zdroje se zpřísněným filtrem (ČTK): starší záznamy, které by dnes neprošly, se odstraní."""
     matchers = player_matchers(load_players(cfg))
+    by_id = {m["id"]: m for m in data.get("zapasy", [])}
     keep = []
     for c in data["clanky"]:
         src = source_for(c["url"], cfg)
         if src and src["id"] == "ctk" and not c.get("rucne") and not c.get("souper") \
                 and not is_relevant(src, c["url"], f'{c["titulek"]} {c["perex"]}', cfg, matchers):
             continue
+        if c.get("souper") and c["souper"] in by_id and not opp_title_ok(c["titulek"], by_id[c["souper"]]):
+            continue  # souhrn kola nebo článek, kde soupeř není hlavním tématem
         keep.append(c)
     data["clanky"] = keep
 
@@ -900,7 +950,7 @@ def scan(cfg):
             text = f'{it["titulek"] or it.get("nahled", "")} {it["perex"]}'
             opp = None
             if not is_relevant(src, url, text, cfg, matchers):
-                opp = opponent_match(src, url, text, upcoming)
+                opp = opponent_match(src, url, it["titulek"] or it.get("nahled", ""), upcoming)
                 if not opp:
                     continue
             it["_key"] = listing_key(it)
@@ -909,7 +959,7 @@ def scan(cfg):
                 continue
             if src.get("vyloucit") and re.search(src["vyloucit"], it["titulek"]):
                 continue
-            if opp and not opponent_match(src, url, f'{it["titulek"]} {it["perex"]}', upcoming):
+            if opp and not opponent_match(src, url, it["titulek"], upcoming):
                 continue
             rec = make_record(it, src["nazev"], matchers)
             if opp:
