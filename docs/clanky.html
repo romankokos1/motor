@@ -112,6 +112,8 @@ tbody tr{transition:background-color .12s,box-shadow .12s}
 .new{display:inline-block;margin-right:8px;font-size:11px;font-weight:600;letter-spacing:.06em;color:var(--accent);vertical-align:1px}
 .row.is-new .h{font-weight:600}
 .p{margin-top:2px;color:var(--text-2);font-size:14px}
+/* perex jen na 2 řádky (na mobilu 3) – celý text je v článku */
+.row .p{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden}
 .meta{margin-top:5px;font-size:13px;color:var(--text-2);display:flex;flex-wrap:wrap;gap:2px 14px;align-items:baseline}
 .typ{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text-2)}
 .typ.zraneni,.typ.zmena{color:var(--warn)}
@@ -200,6 +202,7 @@ td b{font-weight:600}
 @media (max-width:1023px){ #mluvi-detail{margin-top:18px} }
 @media (max-width:640px){
   #t-mluvi th:last-child,#t-mluvi td:last-child{display:none}
+  .row .p{-webkit-line-clamp:3;line-clamp:3}
   #mluvi-detail .mr{grid-template-columns:52px minmax(0,1fr)}
   #mluvi-detail .mr .s{grid-column:2;grid-row:1;margin-bottom:3px}
   #mluvi-detail .mr .d{grid-row:1 / span 2}
