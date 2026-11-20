@@ -1,6 +1,78 @@
 {
- "aktualizace": "2026-11-19T20:32+01:00",
+ "aktualizace": "2026-11-20T03:24+01:00",
  "clanky": [
+  {
+   "url": "https://hcmotor.cz/clanek.asp?id=13930",
+   "titulek": "Hrozně se mi ulevilo, vše ale zastiňuje prohra, říká Michal Bulíř",
+   "perex": "Motor dnes měl Spartu doslova na lopatě, ve třetí třetině ale Pražané vstřelili pět gólů a předvedli málo vídaný obrat. O utkání promluvil Michal Bulíř, který prolomil dlouhé čekání na první vstřelený gól.",
+   "zdroj": "HC Motor",
+   "datum": "2026-11-20T12:00+01:00",
+   "pridano": "2026-11-20T03:24+01:00",
+   "rucne": false,
+   "hraci": [
+    "Michal Bulíř"
+   ],
+   "bez_casu": true,
+   "ver": 4,
+   "t_vypis": ", martin vašíček hrozně se mi ulevilo, vše ale zastiňuje prohra, říká michal bulíř",
+   "zapas": "2026-20",
+   "typ": "reportaz",
+   "mluvi": [
+    "Michal Bulíř"
+   ]
+  },
+  {
+   "url": "https://www.hokej.cz/tohle-byl-vas-den-banes-motor-ceske-budejovice-3/5099352",
+   "titulek": "Tohle byl váš den, Banes Motor České Budějovice!",
+   "perex": "Scházelo tomu asi jen jediné – urvat tři cenné body proti Spartě. Ale přesto doufáme, že si ve čtvrtek fanbase z Českých Budějovic na webu Hokej.cz užila speciální materiály. Jejich shrnutí naleznete níže.",
+   "zdroj": "hokej.cz",
+   "datum": "2026-11-19T22:00+01:00",
+   "pridano": "2026-11-20T03:24+01:00",
+   "rucne": false,
+   "hraci": [],
+   "t_rss": "Tohle byl váš den, Banes Motor České Budějovice!",
+   "zapas": "2026-20",
+   "typ": "reportaz"
+  },
+  {
+   "url": "https://isport.blesk.cz/clanek/hokej-tipsport-extraliga/482342/blackout-motoru-sparta-predvedla-obrat-i-bitkarskou-mstu-nastvali-jsme-se-rika-blumel.html",
+   "titulek": "Blackout Motoru! Sparta předvedla obrat i bitkařskou mstu. Naštvali jsme se, říká Blümel",
+   "perex": "„Tati, vždyť jsme vedli 4:1,“ nechápal při odchodu ze stadionu malý fanoušek Českých Budějovic a podobně se možná divili i sami hráči Motoru. Proti Spartě prohospodařili ve třetí třetině třígólový náskok a po drtivém vzedmutí soupeře padli 4:6. „Kam se člověk podívá, tam se píše o Spartě, jak nehrajeme týmově,…",
+   "zdroj": "iSport",
+   "datum": "2026-11-19T21:20+01:00",
+   "pridano": "2026-11-20T03:24+01:00",
+   "rucne": false,
+   "hraci": [],
+   "t_rss": "Blackout Motoru! Sparta předvedla obrat i bitkařskou mstu. Naštvali jsme se, říká Blümel",
+   "zapas": "2026-20",
+   "typ": "reportaz"
+  },
+  {
+   "url": "https://www.sport.cz/clanek/hokej-extraliga-nevidane-zmrtvychvstani-sparty-takovy-obrat-jeste-nikdy-nesvedla-pomohl-i-motivacni-proslov-5579094",
+   "titulek": "Nevídané zmrtvýchvstání Sparty, takový obrat ještě nikdy nesvedla. Pomohl i motivační proslov",
+   "perex": "Po druhé třetině byli zralí na ručník. Vždyť hokejisté Sparty v předehrávce 20. kola Tipsport extraligy prohrávali v Českých Budějovicích 1:4. Dění na ledě ve druhé dvacetiminutovce navíc vůbec nenasvědčovalo, že by se v té třetí mělo něco měnit. Jenže svěřenci trenéra Patrika Augusty v ní nasázeli hned pět gólů a…",
+   "zdroj": "Sport.cz",
+   "datum": "2026-11-19T21:16+01:00",
+   "pridano": "2026-11-20T03:24+01:00",
+   "rucne": false,
+   "hraci": [],
+   "t_rss": "Nevídané zmrtvýchvstání Sparty, takový obrat ještě nikdy nesvedla. Pomohl i motivační proslov",
+   "zapas": "2026-20",
+   "typ": "reportaz"
+  },
+  {
+   "url": "https://www.hokej.cz/tipsport-ice-survivor-6-jihocesi-s-tryskovym-motorem-doleteli-na-prvni-misto/5099358",
+   "titulek": "TIPSPORT ICE SURVIVOR #6: Jihočeši s tryskovým MOTOREM! Doletěli na první místo?",
+   "perex": "TIPSPORT ICE SURVIVOR je i o rychlosti, a když zapojíte silný motor, tak získáváte výhodu. Na trati vybraná trojice klubu Českých Budějovic předvedla parádní výkon.",
+   "zdroj": "hokej.cz",
+   "datum": "2026-11-19T20:45+01:00",
+   "pridano": "2026-11-20T03:24+01:00",
+   "rucne": false,
+   "hraci": [],
+   "t_rss": "TIPSPORT ICE SURVIVOR #6: Jihočeši s tryskovým MOTOREM! Doletěli na první místo?",
+   "zapas": null,
+   "typ": null
+  },
   {
    "url": "https://sport.ceskatelevize.cz/clanek/hokej/motor-se-ve-treti-tretine-zadrel-sparta-predvedla-velkolepy-obrat-160034",
    "titulek": "Motor se ve třetí třetině zadřel, Sparta předvedla velkolepý obrat",
@@ -222,6 +294,21 @@
    ]
   },
   {
+   "url": "https://hcmotor.cz/clanek.asp?id=13929",
+   "titulek": "CEB - SPA 4:6 - Sparta si po nevídaném obratu odváží všechny body",
+   "perex": "Motor měl po druhé třetině proti Spartě náskok tří branek, když vedl 4:1. Pražané ale předvedli ve třetí nevídané představení a utkání pěti góly otočili a získali všechny body.",
+   "zdroj": "HC Motor",
+   "datum": "2026-11-19T12:00+01:00",
+   "pridano": "2026-11-20T03:24+01:00",
+   "rucne": false,
+   "hraci": [],
+   "bez_casu": true,
+   "ver": 4,
+   "t_vypis": ", martin vašíček ceb - spa 4:6 - sparta si po nevídaném obratu odváží všechny body",
+   "zapas": "2026-20",
+   "typ": "reportaz"
+  },
+  {
    "url": "https://www.hokej.cz/litvinov-reaguje-nekdejsi-reprezentant-bali-kufry-ve-sparte/5099374",
    "titulek": "Litvínov reaguje: Někdejší reprezentant balí kufry ve Spartě!",
    "perex": "Na rozsáhlou marodku už vedení litvínovského klubu našlo částečný recept – z Prahy přivádí osmadvacetiletého útočníka Ondřeje Najmana. Ten tak po necelých čtyřech sezonách končí ve Spartě.",
@@ -277,7 +364,8 @@
    "t_rss": "Přišel o místo v sestavě, teď ve Spartě končí. Po útočníkovi sáhla konkurence",
    "souper": "2026-20",
    "zapas": "2026-20",
-   "typ": "prestup"
+   "typ": "prestup",
+   "t_vypis": "přišel o místo v sestavě, teď ve spartě končí. po útočníkovi sáhla konkurence"
   },
   {
    "url": "https://isport.blesk.cz/clanek/hokej-tipsport-extraliga/482296/online-ceske-budejovice-sparta-prazane-jedou-na-led-rozjeteho-motoru.html",
@@ -480,7 +568,8 @@
    "souper": "2026-21",
    "zapas": "2026-21",
    "typ": null,
-   "skupina": "https://www.sport.cz/clanek/hokej-extraliga-videomomenty-souboj-tabulkovych-sousedu-kometa-vyzve-hradec-5578435"
+   "skupina": "https://www.sport.cz/clanek/hokej-extraliga-videomomenty-souboj-tabulkovych-sousedu-kometa-vyzve-hradec-5578435",
+   "t_vypis": "mountfield hk - kometa 6:0. domácí kanonáda! třinec zvládl drama plné zvratů s olomoucí"
   },
   {
    "url": "https://www.hokej.cz/kometa-vyhorela-v-hradci-trinec-se-s-poslednim-nadrel-ale-vede-uz-o-12-bodu/5099333",
