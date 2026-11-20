@@ -31,6 +31,7 @@
 .z-seznam{--z:#D8001E;--zt:#FFFFFF}
 .z-ctsport{--z:#00707A;--zt:#FFFFFF}
 .z-ctk{--z:#7A4A12;--zt:#FFFFFF}
+.z-livesport{--z:#00141E;--zt:#FF2E63}
 .z-jiny{--z:#8A9099;--zt:#FFFFFF}
 @media (prefers-color-scheme:dark){
   :root{
@@ -40,6 +41,7 @@
   }
   .z-sportcz{--z:#7C838D;--zt:#FFFFFF}
   .z-hcmotor{--z:#2B4F8A;--zt:#F5C400}
+  .z-livesport{--z:#24485C;--zt:#FF5A85}
 }
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
@@ -288,7 +290,7 @@ const DAYS = ["neděle","pondělí","úterý","středa","čtvrtek","pátek","sob
 const DSHORT = ["ne","po","út","st","čt","pá","so"];
 const MONTHS = ["ledna","února","března","dubna","května","června","července","srpna","září","října","listopadu","prosince"];
 const TYPY = {preview:"Preview", online:"Online", reportaz:"Reportáž", rozhovor:"Rozhovor", prestup:"Smlouva/přestup", zraneni:"Zranění"};
-const ZC = {"iSport":"isport","hokej.cz":"hokejcz","Deník":"denik","iDNES":"idnes","Sport.cz":"sportcz","HC Motor":"hcmotor","ČRo":"cro","Seznam Zprávy":"seznam","ČT sport":"ctsport","ČTK":"ctk"};
+const ZC = {"iSport":"isport","hokej.cz":"hokejcz","Deník":"denik","iDNES":"idnes","Sport.cz":"sportcz","HC Motor":"hcmotor","ČRo":"cro","Seznam Zprávy":"seznam","ČT sport":"ctsport","ČTK":"ctk","Livesport":"livesport"};
 const reduced = matchMedia("(prefers-reduced-motion: reduce)");
 const $ = id => document.getElementById(id);
 const store = {
