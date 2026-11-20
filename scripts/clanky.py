@@ -209,6 +209,9 @@ def is_relevant(src, url, text, cfg, matchers):
         return False
     if src.get("vyloucit") and re.search(src["vyloucit"], text):
         return False
+    # weby bez hokejové rubriky v adrese (ČTK): hokej se musí poznat z adresy nebo textu
+    if src.get("hokej_test") and not re.search(src["hokej_test"], f"{url} {text}"):
+        return False
     if src.get("vse"):
         return True
     if src.get("povinne"):
