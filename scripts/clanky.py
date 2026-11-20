@@ -216,7 +216,7 @@ def is_relevant(src, url, text, cfg, matchers):
         return True
     if src.get("povinne"):
         return bool(re.search(src["povinne"], text))
-    if any(k in text for k in cfg["klicova_slova"]):
+    if any(re.search(k, text) for k in cfg["klicova_slova"]):
         return True
     slug = urlsplit(url).path.lower()
     if "motor" in slug or "budejovic" in slug:
@@ -733,6 +733,19 @@ def watch_title(rec, it, errors, checks):
     return 1
 
 
+def recheck(data, cfg):
+    """Zdroje se zpřísněným filtrem (ČTK): starší záznamy, které by dnes neprošly, se odstraní."""
+    matchers = player_matchers(load_players(cfg))
+    keep = []
+    for c in data["clanky"]:
+        src = source_for(c["url"], cfg)
+        if src and src["id"] == "ctk" and not c.get("rucne") and not c.get("souper") \
+                and not is_relevant(src, c["url"], f'{c["titulek"]} {c["perex"]}', cfg, matchers):
+            continue
+        keep.append(c)
+    data["clanky"] = keep
+
+
 def cleanup(data):
     """Odstraní záznamy hcmotor.cz z prvního (vadného) načtení: rozbité kódování, datum v titulku, menu."""
     data["clanky"] = [c for c in data["clanky"] if not (c["zdroj"] == "HC Motor" and c.get("ver") != 4)]
@@ -741,6 +754,7 @@ def cleanup(data):
 def scan(cfg):
     data = load_data()
     cleanup(data)
+    recheck(data, cfg)
     known = {c["url"] for c in data["clanky"]} | set(data.get("odebrane", []))
     index = {c["url"]: c for c in data["clanky"]}
     matchers = player_matchers(load_players(cfg))
