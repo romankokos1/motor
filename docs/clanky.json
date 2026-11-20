@@ -1,5 +1,5 @@
 {
- "aktualizace": "2026-11-20T10:44+01:00",
+ "aktualizace": "2026-11-20T10:52+01:00",
  "clanky": [
   {
    "url": "https://hcmotor.cz/clanek.asp?id=13930",
@@ -111,6 +111,19 @@
    "t_rss": "TIPSPORT ICE SURVIVOR #6: Jihočeši s tryskovým MOTOREM! Doletěli na první místo?",
    "zapas": null,
    "typ": null
+  },
+  {
+   "url": "https://www.ceskenoviny.cz/zpravy/hokejiste-sparty-vyhrali-v-ceskych-budejovicich-64-po-obratu-z-14-/2903479",
+   "titulek": "Hokejisté Sparty vyhráli v Českých Budějovicích 6:4 po obratu z 1:4",
+   "perex": "České Budějovice - Hokejisté Sparty zvítězili v předehrávce 20. kola extraligy v Českých Budějovicích 6:4, třebaže po druhé třetině prohrávali 1:4. Pražané se díky čtvrté výhře z posledních pěti zápasů...",
+   "zdroj": "ČTK",
+   "datum": "2026-11-19T20:12+01:00",
+   "pridano": "2026-11-20T10:52+01:00",
+   "rucne": false,
+   "hraci": [],
+   "t_rss": "Hokejisté Sparty vyhráli v Českých Budějovicích 6:4 po obratu z 1:4",
+   "zapas": "2026-20",
+   "typ": "reportaz"
   },
   {
    "url": "https://sport.ceskatelevize.cz/clanek/hokej/motor-se-ve-treti-tretine-zadrel-sparta-predvedla-velkolepy-obrat-160034",
@@ -798,6 +811,19 @@
    "typ": null
   },
   {
+   "url": "https://www.ceskenoviny.cz/zpravy/macinka-pozadal-unijni-ministry-aby-neudelovali-viza-ruskym-hokejistum/2903135",
+   "titulek": "Macinka požádal unijní ministry, aby neudělovali víza ruským hokejistům",
+   "perex": "Praha - Ministr zahraničí Petr Macinka (Motoristé) požádal unijní šéfy diplomacie, aby ruským hokejistům a hokejistkám neudělovali víza, která by jim umožnila účast na sportovních turnajích. Řekl to Českému...",
+   "zdroj": "ČTK",
+   "datum": "2026-11-17T19:28+01:00",
+   "pridano": "2026-11-20T10:52+01:00",
+   "rucne": false,
+   "hraci": [],
+   "t_rss": "Macinka požádal unijní ministry, aby neudělovali víza ruským hokejistům",
+   "zapas": null,
+   "typ": null
+  },
+  {
    "url": "https://hcmotor.cz/clanek.asp?id=13925",
    "titulek": "Ve čtvrtek přijede Sparta! Vyprodáme podruhé za sebou Budvar arénu?",
    "perex": "Program po reprezentační pauze pokračuje a již ve čtvrtek od 17:30 čeká na Motor další domácí zápas! Po vítězství nad pardubickým Dynamem dorazí pod Černou věž další \"těžká váha\" z hlavního města, pražská Sparta. Chcete být u toho a pomůžete nám podruhé v řadě vyprodat Budvar arénu? Poslední lístky jsou k dostání ZDE .",
@@ -824,6 +850,19 @@
    "bez_casu": true,
    "ver": 4,
    "t_vypis": ", roman kokoš odkud pocházejí hráči motoru? prozkoumejte novou interaktivní mapu",
+   "zapas": null,
+   "typ": null
+  },
+  {
+   "url": "https://www.ceskenoviny.cz/zpravy/hokejistky-usa-porazily-ve-finale-ms-kanadu-a-obhajily-titul/2902831",
+   "titulek": "Hokejistky USA porazily ve finále MS Kanadu a obhájily titul",
+   "perex": "Herning (Dánsko) - Hokejistky Spojených států amerických porazily ve finále mistrovství světa v Dánsku Kanadu 6:2 a obhájily loňský triumf z Českých Budějovic. Američanky získaly dvanáctý titul a v historických...",
+   "zdroj": "ČTK",
+   "datum": "2026-11-16T21:36+01:00",
+   "pridano": "2026-11-20T10:52+01:00",
+   "rucne": false,
+   "hraci": [],
+   "t_rss": "Hokejistky USA porazily ve finále MS Kanadu a obhájily titul",
    "zapas": null,
    "typ": null
   },
