@@ -1,5 +1,5 @@
 {
- "aktualizovano": "19.11.2026 16:43",
+ "aktualizovano": "20.11.2026 15:05",
  "zapasy": [
   {
    "kolo": 1,
@@ -12796,9 +12796,9 @@
    "datum": "čtvrtek 19.11.",
    "domaci": "České Budějovice",
    "hoste": "Sparta Praha",
-   "odehrano": false,
-   "cas": "17:30",
-   "vysledek": "",
+   "odehrano": true,
+   "cas": "",
+   "vysledek": "4:6",
    "hokejcz_id": "2928390",
    "sestava": {
     "A": {
@@ -13160,8 +13160,447 @@
      ]
     }
    },
-   "sestava_cas": "19.11.2026 19:37",
-   "zapis": null
+   "sestava_cas": null,
+   "zapis": {
+    "goly": [
+     {
+      "cas": "14:30",
+      "vteriny": 870,
+      "tym": "HC Sparta Praha",
+      "strelec": "Blümel Matěj",
+      "asistence": [],
+      "situace": "5/5",
+      "na_ledu_za": [
+       "Daníček Marek",
+       "Krejčík Jakub",
+       "Seppälä Niko",
+       "Blümel Matěj",
+       "Hradec Vojtěch"
+      ],
+      "na_ledu_proti": [
+       "Kachyňa Ondřej",
+       "Beránek Martin",
+       "Koláček Josef",
+       "Toman Matěj",
+       "Vráblík Roman"
+      ]
+     },
+     {
+      "cas": "15:09",
+      "vteriny": 909,
+      "tym": "BANES Motor České Budějovice",
+      "strelec": "Bulíř Michal",
+      "asistence": [
+       "Zachar Marek",
+       "Ordoš Jan"
+      ],
+      "situace": "5/5",
+      "na_ledu_za": [
+       "Bulíř Michal",
+       "Zachar Marek",
+       "Ordoš Jan",
+       "Štencel Jan",
+       "Kundrátek Tomáš"
+      ],
+      "na_ledu_proti": [
+       "Rutta Jan",
+       "Pospíšil Jiří",
+       "Tomov Nino",
+       "Řepík Michal",
+       "Kuťák Filip"
+      ]
+     },
+     {
+      "cas": "25:38",
+      "vteriny": 1538,
+      "tym": "BANES Motor České Budějovice",
+      "strelec": "Bell Parker",
+      "asistence": [
+       "Hoch Štěpán",
+       "Kundrátek Tomáš"
+      ],
+      "situace": "5/5",
+      "na_ledu_za": [
+       "Bell Parker",
+       "Hoch Štěpán",
+       "Kundrátek Tomáš",
+       "Nordsäter Lucas",
+       "Koláček Josef"
+      ],
+      "na_ledu_proti": [
+       "Hradec Vojtěch",
+       "Shore Devin",
+       "Řepík Michal",
+       "Rutta Jan",
+       "Daníček Marek"
+      ]
+     },
+     {
+      "cas": "32:39",
+      "vteriny": 1959,
+      "tym": "BANES Motor České Budějovice",
+      "strelec": "Lantoši Róbert",
+      "asistence": [
+       "Olesen Nick Alexander",
+       "Mccormack Graeme"
+      ],
+      "situace": "4/4",
+      "na_ledu_za": [
+       "Lantoši Róbert",
+       "Olesen Nick Alexander",
+       "Mccormack Graeme",
+       "Nedorost Václav"
+      ],
+      "na_ledu_proti": [
+       "Hradec Vojtěch",
+       "Mašín Dominik",
+       "Dzierkals Martins",
+       "Sirota Jakub"
+      ]
+     },
+     {
+      "cas": "36:08",
+      "vteriny": 2168,
+      "tym": "BANES Motor České Budějovice",
+      "strelec": "Koláček Josef",
+      "asistence": [
+       "Lantoši Róbert",
+       "Štencel Jan"
+      ],
+      "situace": "5/4",
+      "na_ledu_za": [
+       "Koláček Josef",
+       "Lantoši Róbert",
+       "Štencel Jan",
+       "Bell Parker",
+       "Ahl Filip"
+      ],
+      "na_ledu_proti": [
+       "Rutta Jan",
+       "Shore Devin",
+       "Sekáč Jiří",
+       "Seppälä Niko"
+      ]
+     },
+     {
+      "cas": "41:44",
+      "vteriny": 2504,
+      "tym": "HC Sparta Praha",
+      "strelec": "Blümel Matěj",
+      "asistence": [
+       "Kousal Pavel",
+       "Seppälä Niko"
+      ],
+      "situace": "5/5",
+      "na_ledu_za": [
+       "Špaček Michael",
+       "Seppälä Niko",
+       "Krejčík Jakub",
+       "Kousal Pavel",
+       "Blümel Matěj"
+      ],
+      "na_ledu_proti": [
+       "Lantoši Róbert",
+       "Nordsäter Lucas",
+       "Koláček Josef",
+       "Mccormack Graeme",
+       "Olesen Nick Alexander"
+      ]
+     },
+     {
+      "cas": "43:00",
+      "vteriny": 2580,
+      "tym": "HC Sparta Praha",
+      "strelec": "Sekáč Jiří",
+      "asistence": [
+       "Krejčík Jakub",
+       "Procházka Martin"
+      ],
+      "situace": "5/4",
+      "na_ledu_za": [
+       "Sekáč Jiří",
+       "Krejčík Jakub",
+       "Blümel Matěj",
+       "Procházka Martin",
+       "Špaček Michael"
+      ],
+      "na_ledu_proti": [
+       "Mccormack Graeme",
+       "Vráblík Roman",
+       "Toman Matěj",
+       "Beránek Martin"
+      ]
+     },
+     {
+      "cas": "51:37",
+      "vteriny": 3097,
+      "tym": "HC Sparta Praha",
+      "strelec": "Hradec Vojtěch",
+      "asistence": [
+       "Rutta Jan",
+       "Vesalainen Kristian"
+      ],
+      "situace": "5/4",
+      "na_ledu_za": [
+       "Hradec Vojtěch",
+       "Vesalainen Kristian",
+       "Kousal Pavel",
+       "Shore Devin",
+       "Rutta Jan"
+      ],
+      "na_ledu_proti": [
+       "Nordsäter Lucas",
+       "Vráblík Roman",
+       "Bell Parker",
+       "Ahl Filip"
+      ]
+     },
+     {
+      "cas": "53:34",
+      "vteriny": 3214,
+      "tym": "HC Sparta Praha",
+      "strelec": "Vesalainen Kristian",
+      "asistence": [
+       "Shore Devin"
+      ],
+      "situace": "5/4",
+      "na_ledu_za": [
+       "Mašín Dominik",
+       "Kousal Pavel",
+       "Hradec Vojtěch",
+       "Vesalainen Kristian",
+       "Shore Devin"
+      ],
+      "na_ledu_proti": [
+       "Mccormack Graeme",
+       "Hejduk Marek",
+       "Ordoš Jan",
+       "Vráblík Roman"
+      ]
+     },
+     {
+      "cas": "58:24",
+      "vteriny": 3504,
+      "tym": "HC Sparta Praha",
+      "strelec": "Seppälä Niko",
+      "asistence": [],
+      "situace": "5/5",
+      "na_ledu_za": [
+       "Blümel Matěj",
+       "Dzierkals Martins",
+       "Špaček Michael",
+       "Rutta Jan",
+       "Seppälä Niko"
+      ],
+      "na_ledu_proti": [
+       "Štencel Jan",
+       "Lantoši Róbert",
+       "Olesen Nick Alexander",
+       "Ordoš Jan",
+       "Beránek Martin",
+       "Kundrátek Tomáš"
+      ]
+     }
+    ],
+    "tresty": [
+     {
+      "cas": "23:27",
+      "vteriny": 1407,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "lavička (HL)",
+      "min": "2",
+      "od": "23:27",
+      "do": "25:27",
+      "duvod": "příliš mnoho hráčů"
+     },
+     {
+      "cas": "27:42",
+      "vteriny": 1662,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Kundrátek Tomáš",
+      "min": "2",
+      "od": "27:42",
+      "do": "29:42",
+      "duvod": "podrážení"
+     },
+     {
+      "cas": "30:07",
+      "vteriny": 1807,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Hoch Štěpán",
+      "min": "5",
+      "od": "30:07",
+      "do": "35:07",
+      "duvod": "bitka"
+     },
+     {
+      "cas": "30:07",
+      "vteriny": 1807,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Hoch Štěpán",
+      "min": "5",
+      "od": "30:07",
+      "do": "35:07",
+      "duvod": "krosček"
+     },
+     {
+      "cas": "30:07",
+      "vteriny": 1807,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Hoch Štěpán",
+      "min": "20",
+      "od": "30:07",
+      "do": "60:00",
+      "duvod": "krosček"
+     },
+     {
+      "cas": "30:07",
+      "vteriny": 1807,
+      "tym": "HC Sparta Praha",
+      "hrac": "Pospíšil Jiří",
+      "min": "5",
+      "od": "30:07",
+      "do": "35:07",
+      "duvod": "bitka"
+     },
+     {
+      "cas": "31:44",
+      "vteriny": 1904,
+      "tym": "HC Sparta Praha",
+      "hrac": "Řepík Michal",
+      "min": "2",
+      "od": "31:44",
+      "do": "33:44",
+      "duvod": "podrážení"
+     },
+     {
+      "cas": "34:35",
+      "vteriny": 2075,
+      "tym": "HC Sparta Praha",
+      "hrac": "Špaček Michael",
+      "min": "2",
+      "od": "34:35",
+      "do": "36:08",
+      "duvod": "podrážení"
+     },
+     {
+      "cas": "42:53",
+      "vteriny": 2573,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Kundrátek Tomáš",
+      "min": "2",
+      "od": "42:53",
+      "do": "43:00",
+      "duvod": "zdržování hry – vystřelení nebo vyhození puku mimo hřiště"
+     },
+     {
+      "cas": "44:55",
+      "vteriny": 2695,
+      "tym": "HC Sparta Praha",
+      "hrac": "Blümel Matěj",
+      "min": "2",
+      "od": "44:55",
+      "do": "46:55",
+      "duvod": "podrážení"
+     },
+     {
+      "cas": "50:07",
+      "vteriny": 3007,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Lantoši Róbert",
+      "min": "2",
+      "od": "50:07",
+      "do": "51:37",
+      "duvod": "vysoká hůl"
+     },
+     {
+      "cas": "51:37",
+      "vteriny": 3097,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Lantoši Róbert",
+      "min": "2",
+      "od": "51:37",
+      "do": "53:34",
+      "duvod": "vysoká hůl"
+     }
+    ],
+    "nejlepsi": {
+     "A": {
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Lantoši Róbert"
+     },
+     "B": {
+      "tym": "HC Sparta Praha",
+      "hrac": "Blümel Matěj"
+     }
+    },
+    "bez_brankare": {
+     "A": [
+      [
+       3486,
+       3504
+      ],
+      [
+       3600,
+       null
+      ]
+     ],
+     "B": [
+      [
+       3600,
+       null
+      ]
+     ]
+    },
+    "datum": "19.11.2026",
+    "rozhodci": {
+     "hlavni": [
+      "Antonín Jeřábek (BM82)",
+      "Tomáš Mejzlík"
+     ],
+     "carovi": [
+      "Jiří Svoboda (AA82)",
+      "František Štěpánek"
+     ]
+    },
+    "divaci": "6421",
+    "tretiny": [
+     {
+      "tretina": "1",
+      "goly": [
+       1,
+       1
+      ],
+      "strely": [
+       8,
+       11
+      ]
+     },
+     {
+      "tretina": "2",
+      "goly": [
+       3,
+       0
+      ],
+      "strely": [
+       14,
+       16
+      ]
+     },
+     {
+      "tretina": "3",
+      "goly": [
+       0,
+       5
+      ],
+      "strely": [
+       5,
+       18
+      ]
+     }
+    ],
+    "najezdy": []
+   }
   },
   {
    "kolo": 21,
