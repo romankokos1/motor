@@ -1,6 +1,6 @@
 {
   "klicova_slova": [
-    "Motor",
+    "\\bMotor(?!ist)",
     "Budějovic",
     "Budějovick",
     "Jihočeš",
@@ -98,7 +98,7 @@
       ],
       "vzor_clanku": "^https://budejovice\\.rozhlas\\.cz/[a-z0-9-]+-\\d{6,}$",
       "hokej_v_url": "",
-      "povinne": "\\bMotor"
+      "povinne": "\\bMotor(?!ist)"
     },
     {
       "id": "seznam",
@@ -136,8 +136,21 @@
       ],
       "vzor_clanku": "^https://www\\.ceskenoviny\\.cz/zpravy/[a-z0-9-]+/\\d+$",
       "hokej_v_url": "",
-      "hokej_test": "hokej|extralig|\\bMotor",
-      "vyloucit": "[Ff]otbal|Dynamo České Budějovice"
+      "hokej_test": "hokej|extralig|\\bMotor(?!ist)",
+      "vyloucit": "[Ff]otbal|Dynamo České Budějovice",
+      "povinne": "\\bMotor(?!ist)|[Hh]okejist\\w* Česk\\w* Budějovic|Česk[éý]\\w* Budějovice (porazil|prohrál|vyhrál|zdolal|podlehl|otočil|uhrál|ztratil)\\w*|v Česk\\w* Budějovicích|Budějovičt\\w*|Jihočeš|Jihočech"
+    },
+    {
+      "id": "livesport",
+      "nazev": "Livesport",
+      "domena": "livesport.cz",
+      "rss": [],
+      "vypisy": [
+        "https://www.livesport.cz/zpravy/hokej/",
+        "https://www.livesport.cz/zpravy/tipsport-extraliga/QR1GYbvDCdnS0XT8/"
+      ],
+      "vzor_clanku": "^https://www\\.livesport\\.cz/zpravy/hokej-tipsport-extraliga-[a-z0-9-]+/[A-Za-z0-9]+/?$",
+      "hokej_v_url": "/zpravy/hokej-tipsport-extraliga-"
     }
   ]
 }
