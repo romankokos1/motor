@@ -23,7 +23,8 @@ from bs4 import BeautifulSoup
 
 ROOT = Path(__file__).resolve().parent.parent
 CONFIG = ROOT / "scripts" / "clanky_zdroje.json"
-DATA = ROOT / "docs" / "clanky.json"
+DATA = ROOT / "docs" / "clanky.json"          # původní jednosouborové úložiště (jen pro převod)
+STORE = ROOT / "docs" / "clanky"               # index.json + měsíce RRRR-MM.json + souper.json
 BASELINE = ROOT / "scripts" / "players_baseline.json"
 TZ = ZoneInfo("Europe/Prague")
 UA = ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
@@ -275,6 +276,14 @@ def read_listing(url, pattern, with_dates=False):
     return [it for it in seen.values() if it["titulek"] or it.get("nahled")]
 
 
+SUFFIX = re.compile(r"\s+[|–-]\s+(iSport|iDNES|Deník|Sport\.cz|Hokej\.cz|hokej\.cz|Českobudějovický|Livesport|"
+                    r"Livesport\.cz|ČeskéNoviny\.cz|České noviny|ČTK|Seznam Zprávy|iROZHLAS|Český rozhlas|ČT sport|ČT24)[^|]*$")
+
+
+def strip_suffix(title):
+    return SUFFIX.sub("", (title or "").strip())
+
+
 GENERIC_TITLE = {"motor české budějovice", "hc motor české budějovice", "banes motor české budějovice"}
 
 
@@ -330,8 +339,7 @@ def read_article_meta(url, nahled=""):
         return ""
 
     title = meta("og:title", "twitter:title") or (soup.title.get_text() if soup.title else "")
-    title = re.sub(r"\s+[|–-]\s+(iSport|iDNES|Deník|Sport\.cz|Hokej\.cz|hokej\.cz|Českobudějovický)[^|]*$",
-                   "", title.strip())
+    title = strip_suffix(title)
     title = re.sub(r"^Motor České Budějovice\s*[–-]\s*", "", title.strip())
     perex = meta("og:description", "description", "twitter:description")
     if perex.strip() in ("Motor České Budějovice", ""):
@@ -402,6 +410,10 @@ def stems(text):
     return {w[:5] for w in re.findall(r"[a-z]{5,}", norm(text))} - {w[:5] for w in STOP}
 
 
+OHLAS = re.compile(r"\b(rika|rekl|hodnoti|hodnotil|reagoval|priznal|lici|hlasi|uvedl|tvrdi|dodal|vzkazuje|"
+                   r"smutnil|zlobil|chvalil|litoval|myslel|komentoval|poznamenal|posteskl)\b")
+
+
 def classify(a, has_match_after):
     t, p = norm(a["titulek"]), norm(a["perex"])
     if TYP_PRESTUP.search(t) and not TYP_ONLINE.search(t) or "prestupy" in t:
@@ -414,6 +426,8 @@ def classify(a, has_match_after):
         return "prestup"
     if re.search(r"zranen|zranil|operac|marod", p[:160]):
         return "zraneni"
+    if OHLAS.search(t):  # „…, říká Bulíř“, „…hodnotil obrat Blümel“ – ohlas má přednost před výsledkem
+        return "rozhovor"
     if has_match_after and (TYP_REPORT.search(t) or TYP_REPORT.search(p[:200])):
         return "reportaz"
     if TYP_ROZHOVOR_JMENO.search(a["titulek"]) or TYP_ROZHOVOR.search(a["titulek"]) or TYP_ROZHOVOR.search(t):
@@ -466,6 +480,8 @@ def assign_match(a, matches):
     t = datetime.fromisoformat(a["datum"]).timestamp()
     text = norm(f'{a["titulek"]} {a["perex"]}')
     title = norm(a["titulek"])
+    ours = re.search(r"\bmotor(?!ist)|budejov|jihoces|\bceb\b", title)
+    others = [k for k, rx in SOUPERI.items() if re.search(rx, title)]
     best, bd = None, None
     for m in matches:
         if m.get("odlozeno"):
@@ -477,6 +493,8 @@ def assign_match(a, matches):
         k = opponent_key(m)
         if not k or not re.search(SOUPERI[k], text):
             continue
+        if others and not ours and k not in others:
+            continue  # v titulku jen cizí týmy (souhrn kola) – k zápasu Motoru nepatří
         # soupeř v titulku má přednost – ale ne u souhrnů kola, kde je v titulku víc týmů
         in_title = re.search(SOUPERI[k], title) and sum(1 for rx in SOUPERI.values() if re.search(rx, title)) == 1
         score = abs(diff) - (10 * DAY_S if in_title else 0)
@@ -569,6 +587,7 @@ def enrich(data, cfg):
     matches = load_matches(data)
     data["zapasy"] = matches
     for a in data["clanky"]:
+        a["titulek"] = strip_suffix(a["titulek"])
         a["hraci"] = tag_players(f'{a["titulek"]} {a["perex"]}', matchers)
         if a.get("souper"):
             a["zapas"], a["typ"] = a["souper"], classify(a, False)
@@ -592,7 +611,9 @@ def enrich(data, cfg):
             # (čas začátku v rozpisu nemusí sedět, např. nedělní zápasy)
             same_day = a.get("datum", "")[:10] == m["start"][:10]
             score = re.search(r"(?<![\d:])\d\s?:\s?\d(?![\d:])", f'{a["titulek"]} {a["perex"][:200]}')
-            a["typ"] = "reportaz" if same_day and score else "preview"
+            # živé články se po zápase přejmenují („SESTŘIH: Sparta po obratu ovládla…“)
+            retitled = TYP_REPORT.search(norm(a["titulek"])) or "sestrih" in norm(a["titulek"])
+            a["typ"] = "reportaz" if (same_day and score) or retitled else "preview"
     for a in data["clanky"]:
         if a.get("souper"):
             a.pop("mluvi", None)
@@ -601,16 +622,84 @@ def enrich(data, cfg):
 
 # ---------- data ----------
 
+def _read(path, default):
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return default
+
+
 def load_data():
-    if DATA.exists():
-        return json.loads(DATA.read_text(encoding="utf-8"))
-    return {"aktualizace": None, "clanky": []}
+    """Načte úložiště do jedné struktury (měsíční soubory + soupeři + index)."""
+    if not (STORE / "index.json").exists():
+        if DATA.exists():  # převod ze starého clanky.json
+            return json.loads(DATA.read_text(encoding="utf-8"))
+        return {"aktualizace": None, "clanky": []}
+    idx = _read(STORE / "index.json", {})
+    clanky = []
+    for m in idx.get("mesice", []):
+        clanky += _read(STORE / f'{m["mesic"]}.json', [])
+    clanky += _read(STORE / "souper.json", [])
+    return {"aktualizace": idx.get("aktualizace"), "clanky": clanky, "zapasy": idx.get("zapasy", []),
+            "odebrane": idx.get("odebrane", []), "zdroje_stav": idx.get("zdroje_stav", {})}
+
+
+def _dump(path, obj):
+    path.write_text(json.dumps(obj, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")
+
+
+def precompute(articles):
+    """Souhrny pro záložku Přehled a filtry – ať stránka nemusí stahovat celý archiv."""
+    now = datetime.now(TZ).timestamp()
+
+    def bucket():
+        return {"total": 0, "w": 0, "pw": 0, "m30": 0, "last": 0}
+
+    zdroje, hraci, typy, mluvi = {}, {}, {}, {}
+    for a in articles:
+        t = datetime.fromisoformat(a.get("datum") or a["pridano"]).timestamp()
+        age = now - t
+        keys = [(zdroje, a["zdroj"])] + [(hraci, h) for h in a.get("hraci", [])]
+        for store, k in keys:
+            r = store.setdefault(k, bucket())
+            r["total"] += 1
+            r["w"] += age < 7 * DAY_S
+            r["pw"] += 7 * DAY_S <= age < 14 * DAY_S
+            r["m30"] += age < 30 * DAY_S
+            r["last"] = max(r["last"], int(t * 1000))
+        if a.get("typ"):
+            typy[a["typ"]] = typy.get(a["typ"], 0) + 1
+        for who in a.get("mluvi", []):
+            mluvi.setdefault(who, []).append({k: a.get(k) for k in ("url", "titulek", "zdroj", "datum", "pridano")})
+    return {"zdroje": zdroje, "hraci": hraci, "typy": typy, "mluvi": mluvi}
 
 
 def save_data(data):
-    data["clanky"].sort(key=lambda c: c.get("datum") or c["pridano"], reverse=True)
-    DATA.parent.mkdir(parents=True, exist_ok=True)
-    DATA.write_text(json.dumps(data, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+    key = lambda c: c.get("datum") or c["pridano"]
+    data["clanky"].sort(key=key, reverse=True)
+    main = [c for c in data["clanky"] if not c.get("souper")]
+    opp = [c for c in data["clanky"] if c.get("souper")]
+    months = {}
+    for c in main:
+        months.setdefault(key(c)[:7], []).append(c)
+    STORE.mkdir(parents=True, exist_ok=True)
+    for f in STORE.glob("????-??.json"):  # měsíce, které už nemají žádný článek
+        if f.stem not in months:
+            f.unlink()
+    for m, items in months.items():
+        _dump(STORE / f"{m}.json", items)
+    _dump(STORE / "souper.json", opp)
+    _dump(STORE / "index.json", {
+        "aktualizace": data.get("aktualizace"),
+        "mesice": [{"mesic": m, "pocet": len(months[m])} for m in sorted(months, reverse=True)],
+        "pocet": len(main),
+        "zapasy": data.get("zapasy", []),
+        "odebrane": data.get("odebrane", []),
+        "zdroje_stav": data.get("zdroje_stav", {}),
+        "souhrn": precompute(main),
+    })
+    if DATA.exists():
+        DATA.unlink()  # staré jednosouborové úložiště už není potřeba
 
 
 def source_for(url, cfg):
@@ -733,6 +822,24 @@ def watch_title(rec, it, errors, checks):
     return 1
 
 
+def update_health(data, src, n_candidates, errors):
+    """Zdroj „nefunguje“, když z výpisů ani RSS nepřijde jediný odkaz (web změnil vzhled, blokuje, je mimo)."""
+    st = data.setdefault("zdroje_stav", {}).setdefault(src["id"], {})
+    fetch_errors = [e for e in errors if e.startswith(("RSS", "výpis"))]
+    ok = n_candidates > 0
+    now = now_iso()
+    st.update({"nazev": src["nazev"], "kontrola": now, "kandidatu": n_candidates})
+    if ok:
+        st["ok"], st["posledni_ok"] = True, now
+        st.pop("od", None)
+        st.pop("chyba", None)
+    else:
+        if st.get("ok", True):
+            st["od"] = now
+        st["ok"] = False
+        st["chyba"] = (fetch_errors[0] if fetch_errors else "žádné odkazy ve výpisu ani RSS")[:200]
+
+
 def recheck(data, cfg):
     """Zdroje se zpřísněným filtrem (ČTK): starší záznamy, které by dnes neprošly, se odstraní."""
     matchers = player_matchers(load_players(cfg))
@@ -812,6 +919,7 @@ def scan(cfg):
             known.add(url)
             hits += 1
         added += hits
+        update_health(data, src, len(candidates), errors)
         report.append(f'{src["nazev"]:10} kandidátů {len(candidates):3}  nových {hits:2}'
                       + (f'  CHYBY: {"; ".join(errors)}' if errors else ""))
 
