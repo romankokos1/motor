@@ -123,6 +123,21 @@
       ],
       "vzor_clanku": "^https://sport\\.ceskatelevize\\.cz/clanek/hokej/[a-z0-9-]+-\\d+$",
       "hokej_v_url": "/clanek/hokej/"
+    },
+    {
+      "id": "ctk",
+      "nazev": "ČTK",
+      "domena": "ceskenoviny.cz",
+      "rss": [
+        "https://www.ceskenoviny.cz/sluzby/rss/sport.php"
+      ],
+      "vypisy": [
+        "https://www.ceskenoviny.cz/hokej/"
+      ],
+      "vzor_clanku": "^https://www\\.ceskenoviny\\.cz/zpravy/[a-z0-9-]+/\\d+$",
+      "hokej_v_url": "",
+      "hokej_test": "hokej|extralig|\\bMotor",
+      "vyloucit": "[Ff]otbal|Dynamo České Budějovice"
     }
   ]
 }
