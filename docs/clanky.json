@@ -1,5 +1,5 @@
 {
- "aktualizace": "2026-11-20T03:24+01:00",
+ "aktualizace": "2026-11-20T10:44+01:00",
  "clanky": [
   {
    "url": "https://hcmotor.cz/clanek.asp?id=13930",
@@ -20,6 +20,45 @@
    "mluvi": [
     "Michal Bulíř"
    ]
+  },
+  {
+   "url": "https://ceskobudejovicky.denik.cz/hokej/hokej-extraliga-motor-sparta-porazka-blackout/",
+   "titulek": "FOTO, VIDEO: Blackout ve třetí třetině připravil Motor o vítězství nad Spartou",
+   "perex": "/OBRAZEM, VIDEO/ Dvě třetiny měli Spartou pod sebou a šli si pro třetí (a hodně cennou) výhru v řadě. Hokejisté Banes Motoru České Budějovice vedli před vyprodanou Budvar arénou nad pražským rivalem už 4:1, jenže ve třetí části přišel nevídaný blackout a z vítězství 6:4 se radoval soupeř. V tabulce Tipsport extraligy…",
+   "zdroj": "Deník",
+   "datum": "2026-11-20T09:18+01:00",
+   "pridano": "2026-11-20T10:43+01:00",
+   "rucne": false,
+   "hraci": [],
+   "t_rss": "FOTO, VIDEO: Blackout ve třetí třetině připravil Motor o vítězství nad Spartou",
+   "zapas": "2026-20",
+   "typ": "reportaz"
+  },
+  {
+   "url": "https://www.sport.cz/clanek/hokej-extraliga-litvinov-ceka-tezka-sichta-s-vedoucim-trincem-plzen-si-otestuje-formu-proti-pardubicim-5579120",
+   "titulek": "Litvínov čeká těžká šichta s vedoucím Třincem, Plzeň si otestuje formu proti Pardubicím",
+   "perex": "Hokejová Tipsport extraliga má dnes na programu 20. kolo. Hrát se ale bude pouze na šesti místech, protože zápas Českých Budějovic se Spartou (4:6) se uskutečnil včera. K zahajovací buly celého dne dojde netradičně už ve 12 hodin. Stane se tak v Karlových Varech, kde se v rámci školního zápasu představí Vítkovice. V…",
+   "zdroj": "Sport.cz",
+   "datum": "2026-11-20T08:58+01:00",
+   "pridano": "2026-11-20T10:44+01:00",
+   "rucne": false,
+   "hraci": [],
+   "t_rss": "Litvínov čeká těžká šichta s vedoucím Třincem, Plzeň si otestuje formu proti Pardubicím",
+   "zapas": "2026-20",
+   "typ": "reportaz"
+  },
+  {
+   "url": "https://sport.ceskatelevize.cz/clanek/hokej/nastvali-jsme-se-sebrali-jsme-sily-a-mame-tri-body-hodnotil-obrat-sparty-blumel-160035",
+   "titulek": "Naštvali jsme se, sebrali jsme síly a máme tři body, hodnotil obrat Sparty Blümel",
+   "perex": "K obratu hokejistů Sparty v předehrávce 20. kola extraligy na ledě Českých Budějovic přispěl dvěma góly Matěj Blümel. Byl nadšený z reakce týmu na nepříznivý vývoj, kdy Pražané prohrávali po dvou třetinách 1:4 a nakonec slavili vítězství 6:4.",
+   "zdroj": "ČT sport",
+   "datum": "2026-11-20T06:00+01:00",
+   "pridano": "2026-11-20T10:44+01:00",
+   "rucne": false,
+   "hraci": [],
+   "t_rss": "Naštvali jsme se, sebrali jsme síly a máme tři body, hodnotil obrat Sparty Blümel",
+   "zapas": "2026-20",
+   "typ": "reportaz"
   },
   {
    "url": "https://www.hokej.cz/tohle-byl-vas-den-banes-motor-ceske-budejovice-3/5099352",
@@ -538,7 +577,8 @@
    "t_rss": "Boss Zábranský: Dostáváme klasicky do držky, ale dostaneme se z toho! Chce trejdovat?",
    "souper": "2026-21",
    "zapas": "2026-21",
-   "typ": "rozhovor"
+   "typ": "rozhovor",
+   "t_vypis": "boss zábranský: dostáváme klasicky do držky, ale dostaneme se z toho! chce trejdovat?"
   },
   {
    "url": "https://isport.blesk.cz/clanek/hokej-tipsport-extraliga/482289/hradec-znicil-kometu-jedno-velke-nic-v-brnenskem-podani-s-cim-prijde-majitel-zabransky.html",
@@ -553,7 +593,8 @@
    "souper": "2026-21",
    "zapas": "2026-21",
    "typ": null,
-   "skupina": "https://www.sport.cz/clanek/hokej-extraliga-videomomenty-souboj-tabulkovych-sousedu-kometa-vyzve-hradec-5578435"
+   "skupina": "https://www.sport.cz/clanek/hokej-extraliga-videomomenty-souboj-tabulkovych-sousedu-kometa-vyzve-hradec-5578435",
+   "t_vypis": "hradec zničil kometu! jedno velké nic v brněnském podání. s čím přijde majitel zábranský?"
   },
   {
    "url": "https://isport.blesk.cz/clanek/hokej-tipsport-extraliga/482250/online-trinec-olomouc-lidr-extraligy-hosti-posledniho-kometa-hraje-v-hradci.html",
@@ -855,7 +896,8 @@
    "hraci": [],
    "zapas": "2026-19",
    "typ": "reportaz",
-   "t_rss": "FOTO: Tohle je Motor, znělo vyprodanou Budvar arénou po výhře nad Pardubicemi"
+   "t_rss": "FOTO: Tohle je Motor, znělo vyprodanou Budvar arénou po výhře nad Pardubicemi",
+   "t_vypis": "/obrazem, video/ tohle byl zatím vrchol letošní sezony v českobudějovické budvar aréně. poprvé bylo vyprodáno a hokejisté banes motoru ve výborném duelu přetlačili hvězdami nabitého obhájce titulu dynamo pardubice 2:1. v tabulce tipsport extraligy si jihočeši podrželi čtvrtou příčku a ve čtvrtek je čeká další mimořádně atraktivní domácí duel se spartou praha (17:30)."
   },
   {
    "url": "https://hcmotor.cz/clanek.asp?id=13924",
