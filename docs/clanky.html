@@ -184,7 +184,8 @@ th.num[aria-sort="ascending"] button::before{content:"▲"}
 .num{text-align:right}
 th.num button{text-align:right}
 td.lead{font-weight:500}
-.pos{color:var(--pos)} .neg{color:var(--neg)} .zero{color:var(--text-3)}
+td.c-last{white-space:nowrap}
+.pos{color:var(--pos)} .neg{color:var(--neg)} .zero{color:var(--text-3)} .warn-t{color:var(--warn)}
 td b{font-weight:600}
 
 @media (max-width:1023px){
@@ -202,6 +203,7 @@ td b{font-weight:600}
 @media (max-width:1023px){ #mluvi-detail{margin-top:18px} }
 @media (max-width:640px){
   #t-mluvi th:last-child,#t-mluvi td:last-child{display:none}
+  #t-zdroje .c-m30{display:none}
   .row .p{-webkit-line-clamp:3;line-clamp:3}
   #mluvi-detail .mr{grid-template-columns:52px minmax(0,1fr)}
   #mluvi-detail .mr .s{grid-column:2;grid-row:1;margin-bottom:3px}
@@ -257,7 +259,7 @@ td b{font-weight:600}
 
   <section id="p-zapasy" role="tabpanel" aria-labelledby="tab-zapasy" hidden>
     <div class="grid">
-      <div class="c10" id="zfeedcol"><div id="zfeed"></div></div>
+      <div class="c10" id="zfeedcol"><div id="zfeed"></div><button class="more" id="zmore" hidden>Starší zápasy</button></div>
       <aside class="c2 index" id="zindex" hidden><h3>Zápasy</h3><nav id="zidx"></nav></aside>
     </div>
   </section>
@@ -266,7 +268,7 @@ td b{font-weight:600}
     <div class="grid">
       <div class="card c6">
         <div class="card-h"><h2>Zdroje</h2><button class="info" aria-expanded="false" aria-controls="n-zdroje" aria-label="Vysvětlivky">i</button></div>
-        <p class="note" id="n-zdroje" hidden>7 dní = články za posledních 7 dní. Změna = rozdíl proti předchozím 7 dnům. Poslední = datum nejnovějšího článku.</p>
+        <p class="note" id="n-zdroje" hidden>7 dní = články za posledních 7 dní. Změna = rozdíl proti předchozím 7 dnům. Poslední = datum nejnovějšího článku. Stav: „nefunguje“ znamená, že z webu už déle než 20 hodin nepřišel žádný odkaz – nejspíš změnil vzhled nebo blokuje stahování.</p>
         <table id="t-zdroje"></table>
       </div>
       <div class="card c6">
@@ -308,8 +310,25 @@ const hhmm = d => String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()
 const dm = d => `${d.getDate()}. ${d.getMonth()+1}.`;
 const plural = (n, a, b, c) => n===1 ? a : (n>=2 && n<=4 ? b : c);
 
+let idx = {mesice: [], souhrn: {zdroje:{}, hraci:{}, typy:{}, mluvi:{}}, zdroje_stav: {}}, monthsLoaded = 0, oppLoaded = false, storyCount = 0;
 let all = [], oppArts = [], matches = {}, shown = PAGE, src = "", player = "", typ = "", lastVisit = null;
 const observers = {};
+
+/* ---------- data: index + měsíce, soupeři až na vyžádání ---------- */
+const getJSON = url => fetch(url, {cache: "no-store"}).then(r => { if (!r.ok) throw new Error(url); return r.json(); });
+const moreMonths = () => monthsLoaded < idx.mesice.length;
+function loadMonth(){
+  if (!moreMonths()) return Promise.resolve();
+  const m = idx.mesice[monthsLoaded++];
+  return getJSON(`clanky/${m.mesic}.json`).then(list => {
+    all = all.concat(list).sort((a,b) => when(b) - when(a));
+  });
+}
+function ensureOpp(){
+  if (oppLoaded) return Promise.resolve();
+  oppLoaded = true;
+  return getJSON("clanky/souper.json").then(list => { oppArts = list; }).catch(() => {});
+}
 
 /* ---------- záložky ---------- */
 const tabs = [...document.querySelectorAll(".tab")];
@@ -322,6 +341,7 @@ function select(tab, keepScroll){
   });
   const h = {"tab-zapasy":"#zapasy","tab-prehled":"#prehled"}[tab.id];
   history.replaceState(null, "", h || location.pathname);
+  if (tab.id === "tab-zapasy" && !oppLoaded) ensureOpp().then(renderMatches);
   if (!keepScroll) scrollTo(0, 0);
 }
 tabs.forEach((t, i) => {
@@ -409,13 +429,13 @@ function dayLabel(d){
 
 function renderFilters(){
   const counts = {};
-  all.forEach(a => counts[a.zdroj] = (counts[a.zdroj] || 0) + 1);
+  Object.entries(idx.souhrn.zdroje).forEach(([k, r]) => counts[k] = r.total);
   const names = Object.keys(counts).sort((a,b) => counts[b] - counts[a] || a.localeCompare(b, "cs"));
-  const players = [...new Set(all.flatMap(a => a.hraci || []))]
+  const players = Object.keys(idx.souhrn.hraci)
     .sort((a,b) => a.split(" ").pop().localeCompare(b.split(" ").pop(), "cs"));
-  const types = Object.keys(TYPY).filter(t => all.some(a => a.typ === t));
+  const types = Object.keys(TYPY).filter(t => idx.souhrn.typy[t]);
   $("filters").innerHTML =
-    `<button class="f" data-s="" aria-pressed="${!src}">Vše<b>${all.length}</b></button>` +
+    `<button class="f" data-s="" aria-pressed="${!src}">Vše<b>${idx.pocet || 0}</b></button>` +
     names.map(n => `<button class="f ${zc(n)}" data-s="${esc(n)}" aria-pressed="${src===n}"><i class="sq" aria-hidden="true"></i>${esc(n)}<b>${counts[n]}</b></button>`).join("") +
     `<span class="sel">` +
     (types.length ? `<select id="ty" aria-label="Typ článku"><option value="">Všechny typy</option>${types.map(t => `<option value="${t}"${t===typ?" selected":""}>${TYPY[t]}</option>`).join("")}</select>` : "") +
@@ -430,9 +450,10 @@ function renderFilters(){
 function renderFeed(){
   const items = all.filter(a => (!src || a.zdroj === src) && (!player || (a.hraci || []).includes(player)) && (!typ || a.typ === typ));
   const st = stories(items);
+  storyCount = st.length;
   if (!st.length){
-    $("feed").innerHTML = `<div class="empty">Žádné články</div>`;
-    $("more").hidden = true; renderIndex("index", "idx", "feedcol", []); return;
+    $("feed").innerHTML = `<div class="empty">Žádné články${moreMonths() ? " v posledních měsících" : ""}</div>`;
+    $("more").hidden = !moreMonths(); renderIndex("index", "idx", "feedcol", []); return;
   }
   const groups = [];
   st.slice(0, shown).forEach(s => {
@@ -446,10 +467,18 @@ function renderFeed(){
       <div class="day-h" id="d${gi}"><h2 id="dh${gi}">${title}</h2>${sub ? `<span>${sub}</span>` : ""}<span class="n">${n} ${plural(n,"zpráva","zprávy","zpráv")}</span></div>
       ${g.list.map(s => rowHtml(s, "feed")).join("")}</section>`;
   }).join("");
-  $("more").hidden = st.length <= shown;
+  $("more").hidden = st.length <= shown && !moreMonths();
   renderIndex("index", "idx", "feedcol", groups.map((g, i) => ({id: `d${i}`, label: dayLabel(g.d)[2]})));
 }
-$("more").onclick = () => { shown += PAGE; renderFeed(); };
+$("more").onclick = () => {
+  if (storyCount > shown){ shown += PAGE; renderFeed(); return; }
+  const b = $("more"); b.disabled = true;
+  loadMonth().then(() => { shown += PAGE; renderFeed(); renderMatches(); }).finally(() => { b.disabled = false; });
+};
+$("zmore").onclick = () => {
+  const b = $("zmore"); b.disabled = true;
+  loadMonth().then(() => { renderFeed(); renderMatches(); }).finally(() => { b.disabled = false; });
+};
 
 /* ---------- záložka Zápasy ---------- */
 function renderMatches(){
@@ -458,6 +487,7 @@ function renderMatches(){
   all.forEach(a => { if (a.zapas && matches[a.zapas]) put(by, a); });
   oppArts.forEach(a => { if (a.zapas && matches[a.zapas]) put(byOpp, a); });
   const list = [...new Set([...by.keys(), ...byOpp.keys()])].map(id => matches[id]).sort((a,b) => b.start.localeCompare(a.start));
+  $("zmore").hidden = !moreMonths();
   if (!list.length){ $("zfeed").innerHTML = `<div class="empty">Zatím žádné články k zápasům</div>`; renderIndex("zindex","zidx","zfeedcol",[]); return; }
   $("zfeed").innerHTML = list.map(m => {
     const d = new Date(m.start), items = (by.get(m.id) || []).slice().sort((a,b) => when(a) - when(b));
@@ -543,21 +573,17 @@ if (matchMedia("(hover: hover)").matches){
 }
 
 /* ---------- přehled ---------- */
-function stats(keyFn){
-  const now = Date.now(), m = new Map();
-  all.forEach(a => {
-    const t = when(a).getTime();
-    keyFn(a).forEach(k => {
-      if (!m.has(k)) m.set(k, {k, total:0, w:0, pw:0, m30:0, last:0});
-      const r = m.get(k);
-      r.total++;
-      if (now - t < 7*DAY) r.w++;
-      else if (now - t < 14*DAY) r.pw++;
-      if (now - t < 30*DAY) r.m30++;
-      if (t > r.last) r.last = t;
-    });
-  });
-  return [...m.values()].map(r => ({...r, ch: r.w - r.pw}));
+function statRows(obj){
+  return Object.entries(obj || {}).map(([k, r]) => ({k, ...r, ch: r.w - r.pw}));
+}
+const HOUR = 36e5;
+function health(name){
+  const st = Object.values(idx.zdroje_stav || {}).find(x => x.nazev === name);
+  if (!st || st.ok !== false) return {rank: 0, html: `<span class="zero"><span class="lg">v pořádku</span><span class="sm">OK</span></span>`};
+  const od = new Date(st.od), long = Date.now() - od >= 20 * HOUR;
+  return long
+    ? {rank: 2, html: `<span class="neg" title="${esc(st.chyba || "")}">✕ <span class="lg">nefunguje </span>od&nbsp;${dm(od).replace(" ", "&nbsp;")}</span>`}
+    : {rank: 1, html: `<span class="warn-t" title="${esc(st.chyba || "")}">výpadek<span class="lg"> od ${hhmm(od)}</span></span>`};
 }
 const signed = v => v === 0 ? `<span class="zero">0</span>` : `<span class="${v>0?"pos":"neg"}">${v>0?"+":"−"}${Math.abs(v)}</span>`;
 
@@ -568,17 +594,18 @@ const COLS = (first, firstShort) => [
   {id:"ch",   label:"Změna", short:"±", num:true, cell:r => signed(r.ch)},
   {id:"m30",  label:"30 dní", short:"30 d", num:true, cell:r => r.m30},
   {id:"last", label:"Poslední", short:"Posl.", num:true, cell:r => r.last ? dm(new Date(r.last)) : "–"},
+  ...(first === "Zdroj" ? [{id:"stav", label:"Stav", short:"Stav", num:false, cell:r => health(r.k).html}] : []),
 ];
 
 function sortableTable(el, rows, cols, def, sel){
   let key = def, dir = -1;
-  const rowHtml = r => `<tr data-k="${esc(r.k)}"${sel ? ` tabindex="0"${sel() === r.k ? ' class="picked"' : ""}` : ""}>${cols.map(c => `<td class="${c.num?"num":""} ${c.cls||""}">${c.cell(r)}</td>`).join("")}</tr>`;
+  const rowHtml = r => `<tr data-k="${esc(r.k)}"${sel ? ` tabindex="0"${sel() === r.k ? ' class="picked"' : ""}` : ""}>${cols.map(c => `<td class="${c.num?"num":""} ${c.cls||""} c-${c.id}">${c.cell(r)}</td>`).join("")}</tr>`;
   const sorted = () => rows.slice().sort((a,b) => {
     const x = a[key], y = b[key];
     const v = typeof x === "string" ? x.localeCompare(y, "cs") : x - y;
     return v * dir || b.total - a.total || a.k.localeCompare(b.k, "cs");
   });
-  el.innerHTML = `<thead><tr>${cols.map(c => `<th scope="col" class="${c.num?"num":""}" data-c="${c.id}"><button type="button"><span class="lg">${c.label}</span><span class="sm">${c.short}</span></button></th>`).join("")}</tr></thead>
+  el.innerHTML = `<thead><tr>${cols.map(c => `<th scope="col" class="${c.num?"num":""} c-${c.id}" data-c="${c.id}"><button type="button"><span class="lg">${c.label}</span><span class="sm">${c.short}</span></button></th>`).join("")}</tr></thead>
     <tbody>${rows.length ? sorted().map(rowHtml).join("") : `<tr><td colspan="${cols.length}" class="zero">Zatím žádná data</td></tr>`}</tbody>`;
   const head = () => el.querySelectorAll("th").forEach(th => {
     if (th.dataset.c === key) th.setAttribute("aria-sort", dir < 0 ? "descending" : "ascending");
@@ -617,7 +644,7 @@ function flip(tbody, order){
 let speaker = "";
 function renderSpeakers(){
   const now = Date.now(), m = new Map();
-  all.forEach(a => (a.mluvi || []).forEach(k => {
+  Object.entries(idx.souhrn.mluvi || {}).forEach(([k, list]) => list.forEach(a => {
     if (!m.has(k)) m.set(k, {k, total:0, m30:0, last:0, list:[], web:{}});
     const r = m.get(k), t = when(a).getTime();
     r.total++; r.list.push(a);
@@ -655,18 +682,25 @@ function renderSpeakers(){
 }
 
 /* ---------- start ---------- */
-fetch("clanky.json", {cache: "no-store"}).then(r => r.json()).then(data => {
-  const allData = (data.clanky || []).slice().sort((a,b) => when(b) - when(a));
-  all = allData.filter(a => !a.souper);
-  oppArts = allData.filter(a => a.souper);
-  (data.zapasy || []).forEach(m => matches[m.id] = m);
+getJSON("clanky/index.json").then(data => {
+  idx = data;
+  (idx.zapasy || []).forEach(m => matches[m.id] = m);
+  // načti nejnovější měsíce, dokud není co zobrazit (aspoň jedna stránka článků)
+  const fill = () => (all.length < PAGE && moreMonths()) ? loadMonth().then(fill) : Promise.resolve();
+  return fill();
+}).then(() => {
   lastVisit = store.get("clanky-posledni-navsteva");
   const newest = all.reduce((m, a) => a.pridano > m ? a.pridano : m, "");
   if (newest) store.set("clanky-posledni-navsteva", newest);
-  if (data.aktualizace){ const u = new Date(data.aktualizace); $("upd").textContent = `Aktualizace ${dm(u)} ${hhmm(u)}`; }
+  if (idx.aktualizace){ const u = new Date(idx.aktualizace); $("upd").textContent = `Aktualizace ${dm(u)} ${hhmm(u)}`; }
   renderFilters(); renderFeed(); renderMatches();
-  sortableTable($("t-zdroje"), stats(a => [a.zdroj]), COLS("Zdroj", "Zdroj"), "total");
-  sortableTable($("t-hraci"), stats(a => a.hraci || []), COLS("Hráč", "Hráč"), "total");
+  const zrows = statRows(idx.souhrn.zdroje);
+  Object.values(idx.zdroje_stav || {}).forEach(st => {
+    if (!zrows.some(r => r.k === st.nazev)) zrows.push({k: st.nazev, total:0, w:0, pw:0, m30:0, last:0, ch:0});
+  });
+  zrows.forEach(r => r.stav = health(r.k).rank);
+  sortableTable($("t-zdroje"), zrows, COLS("Zdroj", "Zdroj"), "total");
+  sortableTable($("t-hraci"), statRows(idx.souhrn.hraci), COLS("Hráč", "Hráč"), "total");
   renderSpeakers();
   if (location.hash === "#prehled") select($("tab-prehled"));
   if (location.hash === "#zapasy") select($("tab-zapasy"));
