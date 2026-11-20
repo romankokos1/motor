@@ -1,5 +1,5 @@
 {
- "aktualizace": "2026-11-20T10:52+01:00",
+ "aktualizace": "2026-11-20T11:05+01:00",
  "clanky": [
   {
    "url": "https://hcmotor.cz/clanek.asp?id=13930",
@@ -59,6 +59,21 @@
    "t_rss": "Naštvali jsme se, sebrali jsme síly a máme tři body, hodnotil obrat Sparty Blümel",
    "zapas": "2026-20",
    "typ": "reportaz"
+  },
+  {
+   "url": "https://www.livesport.cz/zpravy/hokej-tipsport-extraliga-bulirovi-vzal-radost-z-premieroveho-golu-budejovicky-kolaps-nevim-co-vic-chceme-rekl/lWRT01Zg/",
+   "titulek": "Nevím, co víc chceme, reagoval Bulíř na kolaps Motoru proti Spartě | Livesport.cz",
+   "perex": "Českobudějovický útočník Michal Bulíř (35) prožil velkou úlevu, když v předehrávce 20. kola extraligy proti Spartě zaznamenal premiérový gól v sezoně, radost z něj mu ale naprosto zkazil málokdy vídaný kolaps týmu ve třetí třetině. Motor v závěrečné dvacetiminutovce pětkrát inkasoval, ztratil náskok 4:1 a Pražanům…",
+   "zdroj": "Livesport",
+   "datum": "2026-11-20T05:55+01:00",
+   "pridano": "2026-11-20T11:04+01:00",
+   "rucne": false,
+   "hraci": [
+    "Michal Bulíř"
+   ],
+   "t_vypis": "bulířovi vzal radost z premiérového gólu budějovický kolaps. nevím, co víc chceme, řekl",
+   "zapas": "2026-20",
+   "typ": null
   },
   {
    "url": "https://www.hokej.cz/tohle-byl-vas-den-banes-motor-ceske-budejovice-3/5099352",
@@ -198,6 +213,19 @@
      "zmeneno": "2026-11-19T20:32+01:00"
     }
    ]
+  },
+  {
+   "url": "https://www.livesport.cz/zpravy/hokej-tipsport-extraliga-live-ziskaji-budejovice-dalsi-cenny-skalp-v-extraligove-predehravce-hosti-spartu/0tKJAdsA/",
+   "titulek": "Sparta předvedla v Budějovicích mocný obrat. Motor zdolala kanonádou ve třetí třetině | Livesport.cz",
+   "perex": "Sparta v předehrávce 20. kola extraligy zvítězila v Českých Budějovicích po desetigólové přestřelce 6:4. Motor se sice díky třem brankám ve druhé třetině dostal do vedení 4:1, Pražané však pětigólovou kanonádou v závěrečném dějství strhli zápas na svou stranu a připsali si čtvrtou výhru z posledních pěti zápasů. Motor…",
+   "zdroj": "Livesport",
+   "datum": "2026-11-19T17:10+01:00",
+   "pridano": "2026-11-20T11:04+01:00",
+   "rucne": false,
+   "hraci": [],
+   "t_vypis": "sparta předvedla v budějovicích mocný obrat. motor zdolala kanonádou ve třetí třetině aktualizováno",
+   "zapas": "2026-20",
+   "typ": "reportaz"
   },
   {
    "url": "https://www.hokej.cz/telh-online-ctvrty-s-osmym-sparta-chce-bodovat-a-dotahnout-motor/5099280",
@@ -549,6 +577,20 @@
    "skupina": "https://www.sport.cz/clanek/hokej-extraliga-videomomenty-souboj-tabulkovych-sousedu-kometa-vyzve-hradec-5578435"
   },
   {
+   "url": "https://www.livesport.cz/zpravy/hokej-tipsport-extraliga-debakl-jako-vrchol-mizerneho-obdobi-komety-tymu-verim-musi-se-to-zlomit-hlasi-zabransky/zuQzoakC/",
+   "titulek": "Debakl jako vrchol mizerného období Komety. Týmu věřím, musí se to zlomit, hlásí Zábranský | Livesport.cz",
+   "perex": "Pátou porážku z posledních sedmi zápasů si připsali hokejisté Komety Brno, kteří po páteční prohře v Pardubicích 2:6 při dalším výjezdu na východ Čech v Hradci Králové utrpěli v dohrávce 16. kola debakl 0:6. Majitel klubu, generální manažer a hlavní trenér Libor Zábranský starší však neplánuje ani v současném…",
+   "zdroj": "Livesport",
+   "datum": "2026-11-18T22:10+01:00",
+   "pridano": "2026-11-20T11:04+01:00",
+   "rucne": false,
+   "hraci": [],
+   "t_vypis": "debakl jako vrchol mizerného období komety. týmu věřím, musí se to zlomit, hlásí zábranský",
+   "souper": "2026-21",
+   "zapas": "2026-21",
+   "typ": "rozhovor"
+  },
+  {
    "url": "https://www.idnes.cz/hokej/extraliga/josef-korenar-sparta-nova-smlouva.A261118_213958_hokej_voti",
    "titulek": "Kořenář prodloužil se Spartou. To nejlepší má ještě před sebou, věří Divíšek",
    "perex": "Hokejový brankář Josef Kořenář podepsal novou tříletou smlouvu se Spartou. Dres Pražanů tak bude oblékat minimálně do konce sezony 2029/30. Osmadvacetiletý reprezentační gólman působí v klubu od roku 2022, kdy se do Evropy vrátil ze zámoří.",
@@ -700,6 +742,21 @@
    "t_rss": "Gólman Milan Klouček prodloužil smlouvu v Banes Motoru"
   },
   {
+   "url": "https://www.livesport.cz/zpravy/hokej-tipsport-extraliga-live-upevni-si-trinec-proti-olomouci-pozici-v-cele-extraligy-hradec-hosti-kometu/tYfo3874/",
+   "titulek": "Třinec zlomil Olomouc v závěru a upevnil si pozici v čele extraligy. Hradec zničil Kometu | Livesport.cz",
+   "perex": "Třinec měl v předehrávce 21. kola extraligy problémy s poslední Olomoucí, ale po vítězství 5:3 zvýšil náskok v čele tabulky na 12 bodů. Oceláři doma ještě na začátku třetí třetiny prohrávali, obrat dokonal vítězným gólem v čase 52:49 Marko Daňo. Na programu byla i dohrávka 16. kola, ve které Hradec Králové doma…",
+   "zdroj": "Livesport",
+   "datum": "2026-11-18T16:31+01:00",
+   "pridano": "2026-11-20T11:04+01:00",
+   "rucne": false,
+   "hraci": [],
+   "t_vypis": "třinec zlomil olomouc v závěru a upevnil si pozici v čele extraligy. hradec zničil kometu",
+   "souper": "2026-21",
+   "zapas": "2026-21",
+   "typ": null,
+   "skupina": "https://www.sport.cz/clanek/hokej-extraliga-videomomenty-souboj-tabulkovych-sousedu-kometa-vyzve-hradec-5578435"
+  },
+  {
    "url": "https://www.sport.cz/clanek/hokej-extraliga-ceske-budejovice-si-pojistily-sluzby-sveho-brankare-5578482",
    "titulek": "České Budějovice si pojistily služby svého brankáře",
    "perex": "Brankář Milan Klouček prodloužil o dvě sezony smlouvu v Českých Budějovicích a hokejistou Motoru bude nejméně do roku 2029. Jihočeši na svém webu oznámili, že součástí nové dohody s osmadvacetiletým gólmanem je i opce na další ročník.",
@@ -811,16 +868,17 @@
    "typ": null
   },
   {
-   "url": "https://www.ceskenoviny.cz/zpravy/macinka-pozadal-unijni-ministry-aby-neudelovali-viza-ruskym-hokejistum/2903135",
-   "titulek": "Macinka požádal unijní ministry, aby neudělovali víza ruským hokejistům",
-   "perex": "Praha - Ministr zahraničí Petr Macinka (Motoristé) požádal unijní šéfy diplomacie, aby ruským hokejistům a hokejistkám neudělovali víza, která by jim umožnila účast na sportovních turnajích. Řekl to Českému...",
-   "zdroj": "ČTK",
-   "datum": "2026-11-17T19:28+01:00",
-   "pridano": "2026-11-20T10:52+01:00",
+   "url": "https://www.livesport.cz/zpravy/hokej-tipsport-extraliga-t-arena-brno-novy-domov-komety-za-miliardy-kdy-se-otevre-jaka-bude-kapacita-a-program/WltGgf8l/",
+   "titulek": "T ARENA Brno: Nový domov Komety za miliardy. Kdy se otevře, jaká bude kapacita a program? | Livesport.cz",
+   "perex": "Brno získává jednu z nejmodernějších multifunkčních hal v České republice. Nová T ARENA, která vyrostla v areálu brněnského výstaviště, nabídne prostor pro více než 13 tisíc návštěvníků a stane se novým domovem hokejové Komety Brno. Kromě extraligových zápasů bude hostit koncerty světových hvězd, evropské a světové…",
+   "zdroj": "Livesport",
+   "datum": "2026-11-17T19:20+01:00",
+   "pridano": "2026-11-20T11:04+01:00",
    "rucne": false,
    "hraci": [],
-   "t_rss": "Macinka požádal unijní ministry, aby neudělovali víza ruským hokejistům",
-   "zapas": null,
+   "t_vypis": "t arena brno: nový domov komety za miliardy. kdy se otevře, jaká bude kapacita a program?",
+   "souper": "2026-21",
+   "zapas": "2026-21",
    "typ": null
   },
   {
@@ -850,19 +908,6 @@
    "bez_casu": true,
    "ver": 4,
    "t_vypis": ", roman kokoš odkud pocházejí hráči motoru? prozkoumejte novou interaktivní mapu",
-   "zapas": null,
-   "typ": null
-  },
-  {
-   "url": "https://www.ceskenoviny.cz/zpravy/hokejistky-usa-porazily-ve-finale-ms-kanadu-a-obhajily-titul/2902831",
-   "titulek": "Hokejistky USA porazily ve finále MS Kanadu a obhájily titul",
-   "perex": "Herning (Dánsko) - Hokejistky Spojených států amerických porazily ve finále mistrovství světa v Dánsku Kanadu 6:2 a obhájily loňský triumf z Českých Budějovic. Američanky získaly dvanáctý titul a v historických...",
-   "zdroj": "ČTK",
-   "datum": "2026-11-16T21:36+01:00",
-   "pridano": "2026-11-20T10:52+01:00",
-   "rucne": false,
-   "hraci": [],
-   "t_rss": "Hokejistky USA porazily ve finále MS Kanadu a obhájily titul",
    "zapas": null,
    "typ": null
   },
@@ -1113,6 +1158,20 @@
    "typ": "preview"
   },
   {
+   "url": "https://www.livesport.cz/zpravy/hokej-tipsport-extraliga-kaut-prvni-brankou-po-zraneni-pomohl-k-triumfu-nad-kometou-drzime-se-planu-hodnotil/zHcqCxLU/",
+   "titulek": "Kaut první brankou po zranění pomohl k triumfu nad Kometou. Držíme se plánu, hodnotil | Livesport.cz",
+   "perex": "Pardubický útočník Martin Kaut (27) vstřelil svůj první gól po návratu z marodky zpět do sestavy Dynama. V utkání 18. kola extraligy proti brněnské Kometě zvýšil na 3:1 a přispěl tak k vítězství Východočechů 6:2. Jeho gól byl zároveň vítězný.",
+   "zdroj": "Livesport",
+   "datum": "2026-11-13T23:33+01:00",
+   "pridano": "2026-11-20T11:05+01:00",
+   "rucne": false,
+   "hraci": [],
+   "t_vypis": "kaut první brankou po zranění pomohl k triumfu nad kometou. držíme se plánu, hodnotil",
+   "souper": "2026-21",
+   "zapas": "2026-21",
+   "typ": "zraneni"
+  },
+  {
    "url": "https://sport.ceskatelevize.cz/clanek/hokej/trinec-podruhe-v-sezone-porazil-liberec-oslabeny-litvinov-nestacil-na-budejovice-159946",
    "titulek": "Třinec podruhé v sezoně porazil Liberec, Pardubice deklasovaly Kometu",
    "perex": "Lídr tabulky z Třince porazil v rámci 18. extraligového kola Liberec 5:2. Navzdory dvoubrankovému manku dokázaly České Budějovice naplno bodovat v Litvínově, Mladá Boleslav zvítězila doma nad Vítkovicemi 3:1. Olomouc zůstává na posledním místě v tabulce, na vlastním ledě podlehla Kladnu po samostatných nájezdech 2:3.…",
@@ -1137,6 +1196,20 @@
    "zapas": "2026-18",
    "typ": "reportaz",
    "t_vypis": "po reprezentační přestávce naskočili do extraligového kolotoče na jedničku. v osmnáctém kole nejvyšší soutěže vyhráli hokejisté banes motoru české budějovice v litvínově 4:3. v neděli je čeká domácí megašlágr s pardubicemi (17), o který je mimořádný zájem a v prodeji už zbývají jen poslední vstupenky."
+  },
+  {
+   "url": "https://www.livesport.cz/zpravy/hokej-tipsport-extraliga-live-lidr-trinec-hraje-s-libercem-pardubice-v-extralize-hosti-kometu-sparta-bojuje-ve-varech/ltPj1v6b/",
+   "titulek": "Extraligový lídr Třinec si poradil s Libercem. Pardubice vyprovodily Kometu, slaví i Sparta | Livesport.cz",
+   "perex": "V Tipsport extralize se zápasy 18. kola opět naplno rozběhly boje o body po reprezentační pauze vyhrazené Finským hrám. Vedoucí Třinec porazil doma Liberec 5:2 a udržel šestibodový náskok před druhými Pardubicemi, které zdolaly brněnskou Kometu přesvědčivě 6:2. Třetí Kladno zvítězilo v Olomouci 3:2 po samostatných…",
+   "zdroj": "Livesport",
+   "datum": "2026-11-13T16:46+01:00",
+   "pridano": "2026-11-20T11:05+01:00",
+   "rucne": false,
+   "hraci": [],
+   "t_vypis": "extraligový lídr třinec si poradil s libercem. pardubice vyprovodily kometu, slaví i sparta",
+   "souper": "2026-21",
+   "zapas": "2026-21",
+   "typ": null
   },
   {
    "url": "https://hcmotor.cz/clanek.asp?id=13917",
@@ -1365,6 +1438,20 @@
    ]
   },
   {
+   "url": "https://www.livesport.cz/zpravy/hokej-tipsport-extraliga-dobre-nam-to-funguje-pochvaloval-si-pospisil-spolupraci-s-flekem-po-triumfu-komety/hjH8sUMF/",
+   "titulek": "Dobře nám to funguje, pochvaloval si Pospíšil spolupráci s Flekem po triumfu Komety | Livesport.cz",
+   "perex": "Gólem a jednou asistencí se podílel na výhře Komety nad Olomoucí 3:2 v 17. kole extraligy slovenský útočník Kristián Pospíšil (30). Reprezentant, který v Brně působí už pátou sezonu, má tak před reprezentační přestávkou na kontě v kanadském bodování dva góly a jedenáct asistencí.",
+   "zdroj": "Livesport",
+   "datum": "2026-11-01T21:08+01:00",
+   "pridano": "2026-11-20T11:05+01:00",
+   "rucne": false,
+   "hraci": [],
+   "t_vypis": "dobře nám to funguje, pochvaloval si pospíšil spolupráci s flekem po triumfu komety",
+   "souper": "2026-21",
+   "zapas": "2026-21",
+   "typ": null
+  },
+  {
    "url": "https://hcmotor.cz/clanek.asp?id=13898",
    "titulek": "Fanoušci jsou fantastičtí, říká nový obránce McCormack",
    "perex": "Motoru poslední utkání před reprezentační přestávkou nevyšlo. Jihočeši podlehli Karlovým Varům o jednu branku. Utkání zhodnotil obránce Graeme McCormack, pro něhož se jednalo o první utkání před domácími příznivci po dokončeném trejdu.",
@@ -1401,6 +1488,20 @@
    "t_vypis": ", roman kokoš ceb - kva 2:3 - motor dotáhl dvoubrankovou ztrátu, poslední slovo ale měly vary",
    "zapas": "2026-17",
    "typ": "reportaz"
+  },
+  {
+   "url": "https://www.livesport.cz/zpravy/hokej-tipsport-extraliga-live-lidr-z-trince-hraje-na-lede-komety-ta-ma-proti-favoritovi-pozitivni-bilanci/vwtI2PIi/",
+   "titulek": "Lídr z Třince otočil duel na hřišti Komety, v prodloužení rozhodl zápas Adámek | Livesport.cz",
+   "perex": "Hokejisté Třince otočili vývoj zápasu 15. kola extraligy v Brně, kde prohrávali 1:3, a vybojovali v prodloužení vítězství 4:3. Slezané po vítězné trefě Mariana Adámka (29) bodovali i v šestém zápase sezony venku a v čele tabulky mají náskok devíti bodů na druhé Pardubice. Třemi body za gól a dvě asistence dnes k výhře…",
+   "zdroj": "Livesport",
+   "datum": "2026-10-28T17:55+01:00",
+   "pridano": "2026-11-20T11:05+01:00",
+   "rucne": false,
+   "hraci": [],
+   "t_vypis": "lídr z třince otočil duel na hřišti komety, v prodloužení rozhodl zápas adámek",
+   "souper": "2026-21",
+   "zapas": "2026-21",
+   "typ": "prestup"
   },
   {
    "url": "https://www.sport.cz/clanek/hokej-extraliga-hokejove-prestupy-online-plzen-i-boleslav-oznamily-prvni-posily-5437465",
