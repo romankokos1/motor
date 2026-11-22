@@ -1,5 +1,5 @@
 {
- "aktualizovano": "22.11.2026 15:32",
+ "aktualizovano": "22.11.2026 21:21",
  "zapasy": [
   {
    "kolo": 1,
@@ -13607,9 +13607,9 @@
    "datum": "neděle 22.11.",
    "domaci": "Kometa Brno",
    "hoste": "České Budějovice",
-   "odehrano": false,
-   "cas": "17:00",
-   "vysledek": "",
+   "odehrano": true,
+   "cas": "",
+   "vysledek": "2:4",
    "hokejcz_id": "2928401",
    "sestava": {
     "A": {
@@ -13963,8 +13963,304 @@
      ]
     }
    },
-   "sestava_cas": "22.11.2026 18:21",
-   "zapis": null
+   "sestava_cas": null,
+   "zapis": {
+    "goly": [
+     {
+      "cas": "06:49",
+      "vteriny": 409,
+      "tym": "BANES Motor České Budějovice",
+      "strelec": "Bell Parker",
+      "asistence": [
+       "Mccormack Graeme"
+      ],
+      "situace": "5/5",
+      "na_ledu_za": [
+       "Pour Jakub",
+       "Mccormack Graeme",
+       "Bell Parker",
+       "Ahl Filip",
+       "Nordsäter Lucas"
+      ],
+      "na_ledu_proti": [
+       "Kollár Andrej",
+       "Witkowski Luke",
+       "Gulaši Michal",
+       "Pospíšil Kristián",
+       "Flek Jakub"
+      ]
+     },
+     {
+      "cas": "13:24",
+      "vteriny": 804,
+      "tym": "HC KOMETA BRNO",
+      "strelec": "Kollár Andrej",
+      "asistence": [
+       "Flek Jakub"
+      ],
+      "situace": "5/5",
+      "na_ledu_za": [
+       "Kollár Andrej",
+       "Flek Jakub",
+       "Král Filip",
+       "Pospíšil Kristián",
+       "Witkowski Luke"
+      ],
+      "na_ledu_proti": [
+       "Kundrátek Tomáš",
+       "Pour Jakub",
+       "Štencel Jan",
+       "Ahl Filip",
+       "Bell Parker"
+      ]
+     },
+     {
+      "cas": "25:26",
+      "vteriny": 1526,
+      "tym": "BANES Motor České Budějovice",
+      "strelec": "Olesen Nick Alexander",
+      "asistence": [
+       "Štencel Jan",
+       "Koláček Josef"
+      ],
+      "situace": "5/5",
+      "na_ledu_za": [
+       "Olesen Nick Alexander",
+       "Štencel Jan",
+       "Bulíř Michal",
+       "Kundrátek Tomáš",
+       "Koláček Josef"
+      ],
+      "na_ledu_proti": [
+       "Nedomlel Richard",
+       "Zbořil Adam",
+       "Zohorna Hynek",
+       "Gulaši Michal",
+       "Ilomäki Arttu"
+      ]
+     },
+     {
+      "cas": "29:57",
+      "vteriny": 1797,
+      "tym": "BANES Motor České Budějovice",
+      "strelec": "Olesen Nick Alexander",
+      "asistence": [],
+      "situace": "5/5",
+      "na_ledu_za": [
+       "Štencel Jan",
+       "Olesen Nick Alexander",
+       "Lantoši Róbert",
+       "Bulíř Michal",
+       "Kachyňa Ondřej"
+      ],
+      "na_ledu_proti": [
+       "Zohorna Tomáš",
+       "Witkowski Luke",
+       "Král Filip",
+       "Vondráček Tomáš",
+       "Kusko Silvester"
+      ]
+     },
+     {
+      "cas": "48:02",
+      "vteriny": 2882,
+      "tym": "HC KOMETA BRNO",
+      "strelec": "Ilomäki Arttu",
+      "asistence": [
+       "Gulaši Michal",
+       "Zbořil Adam"
+      ],
+      "situace": "5/5",
+      "na_ledu_za": [
+       "Ilomäki Arttu",
+       "Gulaši Michal",
+       "Zbořil Adam",
+       "Kučeřík Radek",
+       "Zohorna Hynek"
+      ],
+      "na_ledu_proti": [
+       "Lantoši Róbert",
+       "Beránek Martin",
+       "Vráblík Roman",
+       "Mccormack Graeme",
+       "Toman Matěj"
+      ]
+     },
+     {
+      "cas": "54:24",
+      "vteriny": 3264,
+      "tym": "BANES Motor České Budějovice",
+      "strelec": "Olesen Nick Alexander",
+      "asistence": [
+       "Bulíř Michal",
+       "Lantoši Róbert"
+      ],
+      "situace": "5/5",
+      "na_ledu_za": [
+       "Kundrátek Tomáš",
+       "Olesen Nick Alexander",
+       "Bulíř Michal",
+       "Lantoši Róbert",
+       "Štencel Jan"
+      ],
+      "na_ledu_proti": [
+       "Witkowski Luke",
+       "Král Filip",
+       "Flek Jakub",
+       "Pospíšil Kristián",
+       "Kollár Andrej"
+      ]
+     }
+    ],
+    "tresty": [
+     {
+      "cas": "27:17",
+      "vteriny": 1637,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Nedorost Václav",
+      "min": "2",
+      "od": "27:17",
+      "do": "29:17",
+      "duvod": "vysoká hůl"
+     },
+     {
+      "cas": "37:40",
+      "vteriny": 2260,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Nordsäter Lucas",
+      "min": "2",
+      "od": "37:40",
+      "do": "39:40",
+      "duvod": "hrubost"
+     },
+     {
+      "cas": "39:47",
+      "vteriny": 2387,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Toman Matěj",
+      "min": "2",
+      "od": "39:47",
+      "do": "41:47",
+      "duvod": "faul loktem"
+     },
+     {
+      "cas": "44:21",
+      "vteriny": 2661,
+      "tym": "HC KOMETA BRNO",
+      "hrac": "Gulaši Michal",
+      "min": "2",
+      "od": "44:21",
+      "do": "46:21",
+      "duvod": "podrážení"
+     },
+     {
+      "cas": "45:49",
+      "vteriny": 2749,
+      "tym": "HC KOMETA BRNO",
+      "hrac": "Kunc Michal",
+      "min": "2",
+      "od": "45:49",
+      "do": "47:49",
+      "duvod": "podrážení"
+     },
+     {
+      "cas": "54:24",
+      "vteriny": 3264,
+      "tym": "HC KOMETA BRNO",
+      "hrac": "Pospíšil Kristián",
+      "min": "2",
+      "od": "54:24",
+      "do": "56:24",
+      "duvod": "krosček"
+     },
+     {
+      "cas": "59:05",
+      "vteriny": 3545,
+      "tym": "HC KOMETA BRNO",
+      "hrac": "Pospíšil Kristián",
+      "min": "2",
+      "od": "59:05",
+      "do": "60:00",
+      "duvod": "vražení na hrazení"
+     }
+    ],
+    "nejlepsi": {
+     "A": {
+      "tym": "HC KOMETA BRNO",
+      "hrac": "Vondráček Tomáš"
+     },
+     "B": {
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Olesen Nick Alexander"
+     }
+    },
+    "bez_brankare": {
+     "A": [
+      [
+       3416,
+       3545
+      ],
+      [
+       3600,
+       null
+      ]
+     ],
+     "B": [
+      [
+       3600,
+       null
+      ]
+     ]
+    },
+    "datum": "22.11.2026",
+    "rozhodci": {
+     "hlavni": [
+      "Filip Vrba",
+      "Viktor Schenel"
+     ],
+     "carovi": [
+      "Patrik Augusta",
+      "Lukáš Rampír"
+     ]
+    },
+    "divaci": "7048",
+    "tretiny": [
+     {
+      "tretina": "1",
+      "goly": [
+       1,
+       1
+      ],
+      "strely": [
+       7,
+       8
+      ]
+     },
+     {
+      "tretina": "2",
+      "goly": [
+       0,
+       2
+      ],
+      "strely": [
+       13,
+       12
+      ]
+     },
+     {
+      "tretina": "3",
+      "goly": [
+       1,
+       1
+      ],
+      "strely": [
+       17,
+       8
+      ]
+     }
+    ],
+    "najezdy": []
+   }
   },
   {
    "kolo": 22,

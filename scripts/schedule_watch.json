@@ -121,9 +121,9 @@
   },
   "21": {
     "datum": "neděle 22.11.",
-    "cas": "17:00",
+    "cas": null,
     "misto": "Brno, Winning Group Arena",
-    "odehrano": false
+    "odehrano": true
   },
   "22": {
     "datum": "úterý 24.11.",
