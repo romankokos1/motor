@@ -130,6 +130,11 @@ tbody tr{transition:background-color .12s,box-shadow .12s}
 #mluvi-detail .mr .d{color:var(--text-3)}
 #mluvi-detail .mr .s{margin-top:0}
 .sub-h{display:flex;align-items:baseline;gap:10px;margin:14px 0 2px;padding-top:10px;border-top:1px dashed var(--line-strong)}
+details.opp>summary{cursor:pointer;list-style:none}
+details.opp>summary::-webkit-details-marker{display:none}
+details.opp>summary h3::before{content:"";display:inline-block;margin-right:8px;border:5px solid transparent;border-left-color:currentColor;border-right:0;vertical-align:1px;transition:transform .12s}
+details.opp[open]>summary h3::before{transform:rotate(90deg)}
+details.opp>summary:hover h3{color:var(--accent)}
 .sub-h h3{margin:0;font-size:15px;font-weight:600;color:var(--text-2)}
 .sub-h .n{margin-left:auto;color:var(--text-3);font-size:14px}
 .zl{background:none;border:0;padding:0;cursor:pointer;color:var(--accent);font-size:13px;text-decoration:underline;text-underline-offset:2px;text-decoration-color:color-mix(in srgb,var(--accent) 40%,transparent)}
@@ -341,7 +346,7 @@ function select(tab, keepScroll){
   });
   const h = {"tab-zapasy":"#zapasy","tab-prehled":"#prehled"}[tab.id];
   history.replaceState(null, "", h || location.pathname);
-  if (tab.id === "tab-zapasy" && !oppLoaded) ensureOpp().then(renderMatches);
+  if (tab.id === "tab-zapasy" && !oppLoaded) ensureOpp().then(() => { renderMatches(); scrollToCurrent(); });
   if (!keepScroll) scrollTo(0, 0);
 }
 tabs.forEach((t, i) => {
@@ -481,12 +486,20 @@ $("zmore").onclick = () => {
 };
 
 /* ---------- záložka Zápasy ---------- */
+// zápasy jdou od nejstaršího; po otevření záložky se posune na poslední odehraný zápas
+function scrollToCurrent(){
+  const secs = [...document.querySelectorAll("#zfeed .day-h[id^='m-']")];
+  if (!secs.length) return;
+  const played = secs.filter(h => (matches[h.id.slice(2)] || {}).odehrano);
+  const target = played.length ? played[played.length - 1] : secs[0];
+  requestAnimationFrame(() => target.scrollIntoView({block: "start"}));
+}
 function renderMatches(){
   const by = new Map(), byOpp = new Map();
   const put = (map, a) => { if (!map.has(a.zapas)) map.set(a.zapas, []); map.get(a.zapas).push(a); };
   all.forEach(a => { if (a.zapas && matches[a.zapas]) put(by, a); });
   oppArts.forEach(a => { if (a.zapas && matches[a.zapas]) put(byOpp, a); });
-  const list = [...new Set([...by.keys(), ...byOpp.keys()])].map(id => matches[id]).sort((a,b) => b.start.localeCompare(a.start));
+  const list = [...new Set([...by.keys(), ...byOpp.keys()])].map(id => matches[id]).sort((a,b) => a.start.localeCompare(b.start));
   $("zmore").hidden = !moreMonths();
   if (!list.length){ $("zfeed").innerHTML = `<div class="empty">Zatím žádné články k zápasům</div>`; renderIndex("zindex","zidx","zfeedcol",[]); return; }
   $("zfeed").innerHTML = list.map(m => {
@@ -497,7 +510,7 @@ function renderMatches(){
     return `<section class="day" aria-labelledby="mh-${m.id}">
       <div class="day-h" id="m-${esc(m.id)}"><h2 id="mh-${m.id}">${m.kolo}. kolo</h2><span>${DSHORT[d.getDay()]} ${dm(d)} ${hhmm(d)} · ${esc(teams)}</span>${m.odehrano ? result(m) : `<span>nadcházející</span>`}${n ? `<span class="n">${n} ${plural(n,"zpráva","zprávy","zpráv")}</span>` : ""}</div>
       ${st.map(s => rowHtml(s, "zapas")).join("")}
-      ${ost.length ? `<div class="sub-h"><h3>O soupeři · ${esc(opp(m))}</h3><span class="n">${ost.length} ${plural(ost.length,"zpráva","zprávy","zpráv")}</span></div>${ost.map(s => rowHtml(s, "zapas")).join("")}` : ""}</section>`;
+      ${ost.length ? `<details class="opp"><summary class="sub-h"><h3>O soupeři · ${esc(opp(m))}</h3><span class="n">${ost.length} ${plural(ost.length,"zpráva","zprávy","zpráv")}</span></summary>${ost.map(s => rowHtml(s, "zapas")).join("")}</details>` : ""}</section>`;
   }).join("");
   renderIndex("zindex", "zidx", "zfeedcol", list.map(m => ({id: `m-${m.id}`, label: `${m.kolo}. ${opp(m)}`})));
 }
