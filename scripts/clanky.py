@@ -204,7 +204,18 @@ def mentions_full_name(text, matchers):
 
 # ---------- filtr ----------
 
+# mládež (dorost, junioři, žáci…) – pozor na „Nedorost“, proto \b
+MLADEZ = re.compile(r"\b(dorost\w*|junior\w*|juniork\w*|žác\w*|žák\w*|mládež\w*|mladší\w* dorost\w*|"
+                    r"U1[4-9]|U20|ELJ|ELD|Liga juniorů|CCM extralig\w*)\b|\b(JUN|DOR|SDO|MDO)\s*:", re.I)
+
+
+def is_youth(title, perex=""):
+    return bool(MLADEZ.search(f"{title} {perex[:200]}"))
+
+
 def is_relevant(src, url, text, cfg, matchers):
+    if MLADEZ.search(text[:400]):
+        return False
     marker = src.get("hokej_v_url", "")
     if marker and marker not in url:
         return False
@@ -497,7 +508,7 @@ def assign_match(a, matches):
         k = opponent_key(m)
         if not k or not re.search(SOUPERI[k], text):
             continue
-        if others and not ours and k not in others:
+        if others and not ours and (k not in others or len(others) >= 3):
             continue  # v titulku jen cizí týmy (souhrn kola) – k zápasu Motoru nepatří
         # soupeř v titulku má přednost – ale ne u souhrnů kola, kde je v titulku víc týmů
         in_title = re.search(SOUPERI[k], title) and sum(1 for rx in SOUPERI.values() if re.search(rx, title)) == 1
@@ -804,6 +815,8 @@ def opponent_match(src, url, text, upcoming):
         return None
     if not marker and src["id"] != "hokejcz":
         return None
+    if MLADEZ.search(text):
+        return None
     for m in upcoming:
         if opp_title_ok(text, m):
             return m
@@ -887,12 +900,25 @@ def update_health(data, src, n_candidates, errors):
         st["chyba"] = (fetch_errors[0] if fetch_errors else "žádné odkazy ve výpisu ani RSS")[:200]
 
 
+def opponent_window(matches):
+    """Zápasy, ke kterým se drží články o soupeři: poslední odehraný, nejbližší a ten po něm."""
+    ms = sorted(matches, key=lambda m: m["start"])
+    played = [m["id"] for m in ms if m.get("odehrano")]
+    nxt = [m["id"] for m in ms if not m.get("odehrano") and not m.get("odlozeno")]
+    return set(played[-1:] + nxt[:2])
+
+
 def recheck(data, cfg):
     """Zdroje se zpřísněným filtrem (ČTK): starší záznamy, které by dnes neprošly, se odstraní."""
     matchers = player_matchers(load_players(cfg))
     by_id = {m["id"]: m for m in data.get("zapasy", [])}
+    keep_opp = opponent_window(data.get("zapasy", []))
     keep = []
     for c in data["clanky"]:
+        if not c.get("rucne") and is_youth(c["titulek"], c["perex"]):
+            continue  # články o mládeži
+        if c.get("souper") and c["souper"] not in keep_opp:
+            continue  # o soupeři se drží jen minulý, nejbližší a další zápas
         src = source_for(c["url"], cfg)
         if src and src["id"] == "ctk" and not c.get("rucne") and not c.get("souper") \
                 and not is_relevant(src, c["url"], f'{c["titulek"]} {c["perex"]}', cfg, matchers):
