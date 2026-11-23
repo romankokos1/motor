@@ -1,5 +1,5 @@
 {
- "aktualizovano": "22.11.2026 21:21",
+ "aktualizovano": "23.11.2026 14:59",
  "zapasy": [
   {
    "kolo": 1,
@@ -14277,13 +14277,13 @@
   },
   {
    "kolo": 23,
-   "datum": "pátek 27.11.",
+   "datum": "středa 16.12.",
    "domaci": "Liberec",
    "hoste": "České Budějovice",
    "odehrano": false,
-   "cas": "Odloženo",
+   "cas": "18:00",
    "vysledek": "",
-   "hokejcz_id": null,
+   "hokejcz_id": "2928411",
    "sestava": null,
    "sestava_cas": null,
    "zapis": null
