@@ -1,0 +1,43 @@
+name: Články – zpětné doplnění
+
+# Jednorázově doplní starší články z archivů zdrojů (od zadaného data).
+on:
+  workflow_dispatch:
+    inputs:
+      od:
+        description: "Nejstarší datum článku (RRRR-MM-DD)"
+        default: "2026-08-01"
+        required: true
+
+concurrency:
+  group: clanky
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install requests beautifulsoup4
+      - name: Zpětné doplnění
+        env:
+          OD: ${{ github.event.inputs.od }}
+        run: python scripts/clanky_zpetne.py --od "$OD"
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898333+github-actions[bot]@users.noreply.github.com"
+          git add -A docs/clanky
+          git diff --cached --quiet && exit 0
+          git commit -m "Články: zpětné doplnění od $OD"
+          git pull --rebase
+          git push
+        env:
+          OD: ${{ github.event.inputs.od }}
