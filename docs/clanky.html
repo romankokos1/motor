@@ -90,7 +90,7 @@ main{max-width:1280px;margin:0 auto;padding:8px 24px 64px}
 .day-h .n{margin-left:auto}
 
 /* řádek článku */
-.row{display:grid;grid-template-columns:48px 108px minmax(0,1fr);gap:0 14px;padding:12px 10px 12px 14px;margin-top:6px;
+.row{display:grid;grid-template-columns:48px 120px minmax(0,1fr);gap:0 14px;padding:12px 10px 12px 14px;margin-top:6px;
      background:color-mix(in srgb,var(--z) var(--tint),var(--bg));box-shadow:inset 4px 0 0 var(--z)}
 .day-h+.row,.sub-h+.row{margin-top:8px}
 /* klubový web: vlastní texty – jen titulek, menší řádek, média mají přednost */
@@ -114,6 +114,16 @@ tbody tr{transition:background-color .12s,box-shadow .12s}
 .p{margin-top:2px;color:var(--text-2);font-size:14px}
 /* perex jen na 2 řádky (na mobilu 3) – celý text je v článku */
 .row .p{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden}
+/* typ, zápas a hráči ve volném místě pod časem a zdrojem (PC); na mobilu pod textem */
+.row>.t{grid-column:1;grid-row:1}
+.row>.s{grid-column:2;grid-row:1}
+.row>.c{grid-column:3;grid-row:1 / span 2}
+.row>.side{grid-column:1 / span 2;grid-row:2;align-self:start;margin-top:8px;min-width:0}
+.side .meta{margin-top:0;flex-direction:column;align-items:flex-start;gap:3px}
+.side .pl{margin-top:8px;font-size:13px}
+.side .pl span{display:block;margin:0 0 1px}
+.side .pl b{display:block}
+.side .pl b+b::before{content:none}
 .meta{margin-top:5px;font-size:13px;color:var(--text-2);display:flex;flex-wrap:wrap;gap:2px 14px;align-items:baseline}
 .typ{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text-2)}
 .typ.zraneni,.typ.zmena{color:var(--warn)}
@@ -226,9 +236,15 @@ td b{font-weight:600}
   .sel{margin-left:0;width:100%;margin-top:6px}
   .sel select{flex:1;min-width:0}
   .row{grid-template-columns:40px minmax(0,1fr);padding:10px 8px 10px 12px}
-  .s{grid-column:2;grid-row:1;margin-bottom:4px}
-  .row>div:last-child{grid-column:2}
-  .t{grid-row:1 / span 2;font-size:13px}
+  .row>.s{grid-column:2;grid-row:1;margin-bottom:4px}
+  .row>.c{grid-column:2;grid-row:2}
+  .row>.t{grid-column:1;grid-row:1 / span 3;font-size:13px}
+  .row>.side{grid-column:2;grid-row:3;margin-top:5px}
+  .side .meta{flex-direction:row;flex-wrap:wrap;align-items:baseline;gap:2px 14px}
+  .side .pl{margin-top:6px}
+  .side .pl span{display:inline;margin-right:6px}
+  .side .pl b{display:inline}
+  .side .pl b+b::before{content:", "}
   table{font-size:13px}
   td{padding:7px 5px}
   th button{padding:7px 5px}
@@ -413,16 +429,18 @@ function rowHtml(st, ctx){
   return `<article class="row ${zc(a.zdroj)}${isNew ? " is-new" : ""}${klub ? " klub" : ""}">
     <div class="t">${a.datum && !a.bez_casu ? hhmm(d) : "–"}</div>
     <div class="s">${esc(a.zdroj)}</div>
-    <div>${isNew ? `<span class="new">NOVÉ</span>` : ""}<a class="h" href="${esc(a.url)}" target="_blank" rel="noopener">${esc(a.titulek)}</a>
+    <div class="c">${isNew ? `<span class="new">NOVÉ</span>` : ""}<a class="h" href="${esc(a.url)}" target="_blank" rel="noopener">${esc(a.titulek)}</a>
       ${a.perex && !klub ? `<div class="p">${esc(a.perex)}</div>` : ""}
       ${(a.puvodni || []).length ? `<div class="orig">${a.puvodni.slice().reverse().map(o => { const z = new Date(o.zmeneno); return `<div><span>Původně</span><s>${esc(o.titulek)}</s><em>do ${dm(z)} ${hhmm(z)}</em></div>`; }).join("")}</div>` : ""}
-      ${meta.length ? `<div class="meta">${meta.join("")}</div>` : ""}
-      ${(a.hraci || []).length ? `<div class="pl"><span>Hráči</span>${a.hraci.map(h => `<b>${esc(h)}</b>`).join("")}</div>` : ""}
       ${st.others.length ? `<div class="also">Také na:${st.others.map((o, i) => `<button type="button" class="ob ${zc(o.zdroj)}" aria-expanded="false" data-i="${i}">${esc(o.zdroj)}</button>`).join("")}${st.others.map((o, i) => {
         const od = when(o);
         return `<div class="bub ${zc(o.zdroj)}" data-i="${i}" hidden><div class="bm"><b>${esc(o.zdroj)}</b> · ${DSHORT[od.getDay()]} ${dm(od)}${o.datum && !o.bez_casu ? " " + hhmm(od) : ""}</div><a href="${esc(o.url)}" target="_blank" rel="noopener">${esc(o.titulek)}</a>${o.perex ? `<p>${esc(o.perex)}</p>` : ""}</div>`;
       }).join("")}</div>` : ""}
-    </div></article>`;
+    </div>
+    ${meta.length || (a.hraci || []).length ? `<div class="side">
+      ${meta.length ? `<div class="meta">${meta.join("")}</div>` : ""}
+      ${(a.hraci || []).length ? `<div class="pl"><span>Hráči</span>${a.hraci.map(h => `<b>${esc(h)}</b>`).join("")}</div>` : ""}
+    </div>` : ""}</article>`;
 }
 
 /* ---------- záložka Články ---------- */
