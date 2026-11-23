@@ -522,8 +522,8 @@ function renderMatches(){
   if (!list.length){ $("zfeed").innerHTML = `<div class="empty">Zatím žádné články k zápasům</div>`; renderIndex("zindex","zidx","zfeedcol",[]); return; }
   $("zfeed").innerHTML = list.map(m => {
     const d = new Date(m.start), items = (by.get(m.id) || []).slice().sort((a,b) => when(a) - when(b));
-    const st = stories(items, true), n = st.length;
-    const ost = stories(byOpp.get(m.id) || [], true);
+    const st = stories(items), n = st.length;           // nejnovější nahoře
+    const ost = stories(byOpp.get(m.id) || []);
     const teams = `${m.domaci} – ${m.hoste}`;
     return `<section class="day" aria-labelledby="mh-${m.id}">
       <div class="day-h" id="m-${esc(m.id)}"><h2 id="mh-${m.id}">${m.kolo}. kolo</h2><span>${DSHORT[d.getDay()]} ${dm(d)} ${hhmm(d)} · ${esc(teams)}</span>${m.odehrano ? result(m) : `<span>nadcházející</span>`}${n ? `<span class="n">${n} ${plural(n,"zpráva","zprávy","zpráv")}</span>` : ""}</div>
