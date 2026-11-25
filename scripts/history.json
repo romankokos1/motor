@@ -1,5 +1,22 @@
 [
   {
+    "date": "2026-11-25",
+    "changes": [
+      "🏒 Štencel Jan: +2b (1G+1A) → celkem 18b (5G 13A, 22 zápasů)",
+      "🏒 Lantoši Róbert: +2b (2A) → celkem 23b (3G 20A, 22 zápasů)",
+      "🏒 Olesen Nick Alexander: +1b (1A) → celkem 20b (13G 7A, 21 zápasů)",
+      "🏒 Bell Parker: +1b (1G) → celkem 10b (8G 2A, 19 zápasů)",
+      "🆕 Nový hráč v tabulce: Humeník Matyáš — debut: 1 zápas, 0G 0A, 0b",
+      "▫️ Bez bodu odehráli zápas (15): Beránek Martin, Bulíř Michal, Hejduk Marek, Hoch Štěpán, Kachyňa Ondřej, Koláček Josef, Kundrátek Tomáš, McCormack Graeme, Nedorost Václav, Nordsäter Lucas, Ordoš Jan, Pour Jakub, Toman Matěj, Vráblík Roman, Zachar Marek",
+      "🥅 Klouček Milan: odchytal další zápas — 92.2% úspěšnost, 2.60 průměr (14 zápasů celkem)",
+      "⭐ 22. kolo — nejlepší hráči: Motor: Štencel Jan · soupeř: Schleiss Jan",
+      "🚑 22. kolo — na soupisce chyběli: Ahl Filip, Andersen Ole Einar, Drančák Samuel, Krastenbergs Renars, Lev Jakub, Mařík Matyáš, Pýcha Pavel, Strmeň Jan, Vála Ondřej",
+      "↩️ Klouček Milan: návrat do sestavy po 1 zápase (22. kolo)",
+      "↩️ Hoch Štěpán: návrat do sestavy po 1 zápase (22. kolo)"
+    ],
+    "corrections": []
+  },
+  {
     "date": "2026-11-22",
     "changes": [
       "🏒 Štencel Jan: +1b (1A) → celkem 16b (4G 12A, 21 zápasů)",
@@ -92,14 +109,5 @@
       "↩️ Zachar Marek: návrat do sestavy po 1 zápase (18. kolo)"
     ],
     "corrections": []
-  },
-  {
-    "date": "2026-11-05",
-    "changes": [
-      "▫️ Bez bodu odehráli zápas (1): McCormack Graeme"
-    ],
-    "corrections": [
-      "📝 Mařík Matyáš: oprava statistik (+1Zás) — beze změny počtu zápasů"
-    ]
   }
 ]

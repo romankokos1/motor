@@ -1,5 +1,5 @@
 {
- "aktualizovano": "24.11.2026 18:40",
+ "aktualizovano": "25.11.2026 08:23",
  "zapasy": [
   {
    "kolo": 1,
@@ -14267,9 +14267,9 @@
    "datum": "úterý 24.11.",
    "domaci": "České Budějovice",
    "hoste": "Plzeň",
-   "odehrano": false,
-   "cas": "17:30",
-   "vysledek": "",
+   "odehrano": true,
+   "cas": "",
+   "vysledek": "2:3",
    "hokejcz_id": "2928406",
    "sestava": {
     "A": {
@@ -14611,8 +14611,269 @@
      ]
     }
    },
-   "sestava_cas": "24.11.2026 21:19",
-   "zapis": null
+   "sestava_cas": null,
+   "zapis": {
+    "goly": [
+     {
+      "cas": "01:20",
+      "vteriny": 80,
+      "tym": "BANES Motor České Budějovice",
+      "strelec": "Bell Parker",
+      "asistence": [
+       "Lantoši Róbert",
+       "Štencel Jan"
+      ],
+      "situace": "5/4",
+      "na_ledu_za": [
+       "Bell Parker",
+       "Lantoši Róbert",
+       "Štencel Jan",
+       "Olesen Nick Alexander",
+       "Hoch Štěpán"
+      ],
+      "na_ledu_proti": [
+       "Schleiss Jan",
+       "Malák Daniel",
+       "Lev Jakub",
+       "Merezhko Igor"
+      ]
+     },
+     {
+      "cas": "34:42",
+      "vteriny": 2082,
+      "tym": "HC ŠKODA PLZEŇ",
+      "strelec": "Petman Ville Emil",
+      "asistence": [
+       "Robertson Carter Aj",
+       "Schleiss Jan"
+      ],
+      "situace": "5/5",
+      "na_ledu_za": [
+       "Schleiss Jan",
+       "Rubins Kristians",
+       "Robertson Carter Aj",
+       "Petman Mikko Artturi",
+       "Petman Ville Emil"
+      ],
+      "na_ledu_proti": [
+       "Kundrátek Tomáš",
+       "Štencel Jan",
+       "Koláček Josef",
+       "Toman Matěj",
+       "Beránek Martin"
+      ]
+     },
+     {
+      "cas": "40:15",
+      "vteriny": 2415,
+      "tym": "HC ŠKODA PLZEŇ",
+      "strelec": "Schleiss Jan",
+      "asistence": [
+       "Petman Mikko Artturi",
+       "Petman Ville Emil"
+      ],
+      "situace": "5/5",
+      "na_ledu_za": [
+       "Rubins Kristians",
+       "Petman Ville Emil",
+       "Robertson Carter Aj",
+       "Schleiss Jan",
+       "Petman Mikko Artturi"
+      ],
+      "na_ledu_proti": [
+       "Kundrátek Tomáš",
+       "Lantoši Róbert",
+       "Štencel Jan",
+       "Olesen Nick Alexander",
+       "Hoch Štěpán"
+      ]
+     },
+     {
+      "cas": "51:03",
+      "vteriny": 3063,
+      "tym": "BANES Motor České Budějovice",
+      "strelec": "Štencel Jan",
+      "asistence": [
+       "Lantoši Róbert",
+       "Olesen Nick Alexander"
+      ],
+      "situace": "5/5",
+      "na_ledu_za": [
+       "Štencel Jan",
+       "Lantoši Róbert",
+       "Olesen Nick Alexander",
+       "Pour Jakub",
+       "Kundrátek Tomáš"
+      ],
+      "na_ledu_proti": [
+       "Schleiss Jan",
+       "Merezhko Igor",
+       "Petman Mikko Artturi",
+       "Petman Ville Emil",
+       "Malák Daniel"
+      ]
+     },
+     {
+      "cas": "57:52",
+      "vteriny": 3472,
+      "tym": "HC ŠKODA PLZEŇ",
+      "strelec": "Schleiss Jan",
+      "asistence": [
+       "Žemlička Richard",
+       "Teplý Michal"
+      ],
+      "situace": "5/5",
+      "na_ledu_za": [
+       "Strnad Lukáš",
+       "Merezhko Igor",
+       "Malák Daniel",
+       "Schleiss Jan",
+       "Žemlička Richard"
+      ],
+      "na_ledu_proti": [
+       "Bell Parker",
+       "Pour Jakub",
+       "Nedorost Václav",
+       "Koláček Josef",
+       "Vráblík Roman"
+      ]
+     }
+    ],
+    "tresty": [
+     {
+      "cas": "00:57",
+      "vteriny": 57,
+      "tym": "HC ŠKODA PLZEŇ",
+      "hrac": "Žemlička Richard",
+      "min": "2",
+      "od": "00:57",
+      "do": "01:20",
+      "duvod": "podrážení"
+     },
+     {
+      "cas": "03:48",
+      "vteriny": 228,
+      "tym": "HC ŠKODA PLZEŇ",
+      "hrac": "Schleiss Jan",
+      "min": "2",
+      "od": "03:48",
+      "do": "05:48",
+      "duvod": "vysoká hůl"
+     },
+     {
+      "cas": "06:06",
+      "vteriny": 366,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Nedorost Václav",
+      "min": "2",
+      "od": "06:06",
+      "do": "08:06",
+      "duvod": "držení"
+     },
+     {
+      "cas": "16:01",
+      "vteriny": 961,
+      "tym": "HC ŠKODA PLZEŇ",
+      "hrac": "Robertson Carter Aj",
+      "min": "2",
+      "od": "16:01",
+      "do": "18:01",
+      "duvod": "nedovolené bránění"
+     },
+     {
+      "cas": "35:43",
+      "vteriny": 2143,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Nordsäter Lucas",
+      "min": "2",
+      "od": "35:43",
+      "do": "37:43",
+      "duvod": "podrážení"
+     },
+     {
+      "cas": "45:11",
+      "vteriny": 2711,
+      "tym": "HC ŠKODA PLZEŇ",
+      "hrac": "Petman Mikko Artturi",
+      "min": "2",
+      "od": "45:11",
+      "do": "47:11",
+      "duvod": "hákování"
+     }
+    ],
+    "nejlepsi": {
+     "A": {
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Štencel Jan"
+     },
+     "B": {
+      "tym": "HC ŠKODA PLZEŇ",
+      "hrac": "Schleiss Jan"
+     }
+    },
+    "bez_brankare": {
+     "A": [
+      [
+       3482,
+       null
+      ]
+     ],
+     "B": [
+      [
+       3600,
+       null
+      ]
+     ]
+    },
+    "datum": "24.11.2026",
+    "rozhodci": {
+     "hlavni": [
+      "Josef Barek",
+      "Jan Jaroš"
+     ],
+     "carovi": [
+      "Jakub Frodl",
+      "Jakub Maňák"
+     ]
+    },
+    "divaci": "5784",
+    "tretiny": [
+     {
+      "tretina": "1",
+      "goly": [
+       1,
+       0
+      ],
+      "strely": [
+       9,
+       8
+      ]
+     },
+     {
+      "tretina": "2",
+      "goly": [
+       0,
+       1
+      ],
+      "strely": [
+       1,
+       21
+      ]
+     },
+     {
+      "tretina": "3",
+      "goly": [
+       1,
+       2
+      ],
+      "strely": [
+       17,
+       7
+      ]
+     }
+    ],
+    "najezdy": []
+   }
   },
   {
    "kolo": 23,
