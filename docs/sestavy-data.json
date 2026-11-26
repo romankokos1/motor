@@ -1,5 +1,5 @@
 {
- "aktualizovano": "26.11.2026 15:55",
+ "aktualizovano": "26.11.2026 16:01",
  "zapasy": [
   {
    "kolo": 1,
@@ -14881,19 +14881,6 @@
    }
   },
   {
-   "kolo": 23,
-   "datum": "středa 16.12.",
-   "domaci": "Liberec",
-   "hoste": "České Budějovice",
-   "odehrano": false,
-   "cas": "18:00",
-   "vysledek": "",
-   "hokejcz_id": "2928411",
-   "sestava": null,
-   "sestava_cas": null,
-   "zapis": null
-  },
-  {
    "kolo": 24,
    "datum": "neděle 29.11.",
    "domaci": "České Budějovice",
@@ -14928,6 +14915,19 @@
    "cas": "16:00",
    "vysledek": "",
    "hokejcz_id": "2928430",
+   "sestava": null,
+   "sestava_cas": null,
+   "zapis": null
+  },
+  {
+   "kolo": 23,
+   "datum": "středa 16.12.",
+   "domaci": "Liberec",
+   "hoste": "České Budějovice",
+   "odehrano": false,
+   "cas": "18:00",
+   "vysledek": "",
+   "hokejcz_id": "2928411",
    "sestava": null,
    "sestava_cas": null,
    "zapis": null
@@ -15024,19 +15024,6 @@
    "zapis": null
   },
   {
-   "kolo": 34,
-   "datum": "středa 13.1.",
-   "domaci": "Kometa Brno",
-   "hoste": "České Budějovice",
-   "odehrano": false,
-   "cas": "18:00",
-   "vysledek": "",
-   "hokejcz_id": "2928492",
-   "sestava": null,
-   "sestava_cas": null,
-   "zapis": null
-  },
-  {
    "kolo": 35,
    "datum": "neděle 10.1.",
    "domaci": "Plzeň",
@@ -15045,6 +15032,19 @@
    "cas": "16:30",
    "vysledek": "",
    "hokejcz_id": "2928497",
+   "sestava": null,
+   "sestava_cas": null,
+   "zapis": null
+  },
+  {
+   "kolo": 34,
+   "datum": "středa 13.1.",
+   "domaci": "Kometa Brno",
+   "hoste": "České Budějovice",
+   "odehrano": false,
+   "cas": "18:00",
+   "vysledek": "",
+   "hokejcz_id": "2928492",
    "sestava": null,
    "sestava_cas": null,
    "zapis": null
