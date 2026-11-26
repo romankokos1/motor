@@ -1,5 +1,5 @@
 {
- "aktualizovano": "26.11.2026 15:48",
+ "aktualizovano": "26.11.2026 15:55",
  "zapasy": [
   {
    "kolo": 1,
@@ -11949,8 +11949,8 @@
       "tym": "BANES Motor České Budějovice",
       "strelec": "Olesen Nick Alexander",
       "asistence": [
-       "Bell Parker",
-       "Lantoši Róbert"
+       "Lantoši Róbert",
+       "Štencel Jan"
       ],
       "situace": "5/4",
       "na_ledu_za": [
@@ -13180,9 +13180,9 @@
       "na_ledu_proti": [
        "Kachyňa Ondřej",
        "Beránek Martin",
-       "Koláček Josef",
        "Toman Matěj",
-       "Vráblík Roman"
+       "Vráblík Roman",
+       "Hejduk Marek"
       ]
      },
      {
@@ -13248,14 +13248,14 @@
       "na_ledu_za": [
        "Lantoši Róbert",
        "Olesen Nick Alexander",
-       "Mccormack Graeme",
-       "Nedorost Václav"
+       "Nedorost Václav",
+       "Vráblík Roman"
       ],
       "na_ledu_proti": [
        "Hradec Vojtěch",
        "Mašín Dominik",
        "Dzierkals Martins",
-       "Sirota Jakub"
+       "Michálek Matyáš"
       ]
      },
      {
@@ -13361,7 +13361,8 @@
       "tym": "HC Sparta Praha",
       "strelec": "Vesalainen Kristian",
       "asistence": [
-       "Shore Devin"
+       "Shore Devin",
+       "Kousal Pavel"
       ],
       "situace": "5/4",
       "na_ledu_za": [
@@ -13372,10 +13373,10 @@
        "Shore Devin"
       ],
       "na_ledu_proti": [
-       "Mccormack Graeme",
        "Hejduk Marek",
        "Ordoš Jan",
-       "Vráblík Roman"
+       "Vráblík Roman",
+       "Štencel Jan"
       ]
      },
      {
@@ -13446,16 +13447,6 @@
      {
       "cas": "30:07",
       "vteriny": 1807,
-      "tym": "BANES Motor České Budějovice",
-      "hrac": "Hoch Štěpán",
-      "min": "20",
-      "od": "30:07",
-      "do": "60:00",
-      "duvod": "krosček"
-     },
-     {
-      "cas": "30:07",
-      "vteriny": 1807,
       "tym": "HC Sparta Praha",
       "hrac": "Pospíšil Jiří",
       "min": "5",
@@ -13482,6 +13473,16 @@
       "od": "34:35",
       "do": "36:08",
       "duvod": "podrážení"
+     },
+     {
+      "cas": "35:07",
+      "vteriny": 2107,
+      "tym": "BANES Motor České Budějovice",
+      "hrac": "Hoch Štěpán",
+      "min": "20",
+      "od": "35:07",
+      "do": "60:00",
+      "duvod": "krosček"
      },
      {
       "cas": "42:53",
@@ -13996,7 +13997,8 @@
       "tym": "HC KOMETA BRNO",
       "strelec": "Kollár Andrej",
       "asistence": [
-       "Flek Jakub"
+       "Flek Jakub",
+       "Král Filip"
       ],
       "situace": "5/5",
       "na_ledu_za": [
@@ -14007,11 +14009,11 @@
        "Witkowski Luke"
       ],
       "na_ledu_proti": [
-       "Kundrátek Tomáš",
-       "Pour Jakub",
-       "Štencel Jan",
        "Ahl Filip",
-       "Bell Parker"
+       "Bell Parker",
+       "Nedorost Václav",
+       "Vráblík Roman",
+       "Koláček Josef"
       ]
      },
      {
@@ -14044,14 +14046,17 @@
       "vteriny": 1797,
       "tym": "BANES Motor České Budějovice",
       "strelec": "Olesen Nick Alexander",
-      "asistence": [],
+      "asistence": [
+       "Lantoši Róbert",
+       "Štencel Jan"
+      ],
       "situace": "5/5",
       "na_ledu_za": [
        "Štencel Jan",
        "Olesen Nick Alexander",
        "Lantoši Róbert",
        "Bulíř Michal",
-       "Kachyňa Ondřej"
+       "Kundrátek Tomáš"
       ],
       "na_ledu_proti": [
        "Zohorna Tomáš",
@@ -14082,8 +14087,8 @@
        "Lantoši Róbert",
        "Beránek Martin",
        "Vráblík Roman",
-       "Mccormack Graeme",
-       "Toman Matěj"
+       "Toman Matěj",
+       "Nedorost Václav"
       ]
      },
      {
@@ -14633,9 +14638,9 @@
       ],
       "na_ledu_proti": [
        "Schleiss Jan",
-       "Malák Daniel",
        "Lev Jakub",
-       "Merezhko Igor"
+       "Merezhko Igor",
+       "Rubins Kristians"
       ]
      },
      {
@@ -14644,8 +14649,8 @@
       "tym": "HC ŠKODA PLZEŇ",
       "strelec": "Petman Ville Emil",
       "asistence": [
-       "Robertson Carter Aj",
-       "Schleiss Jan"
+       "Schleiss Jan",
+       "Robertson Carter Aj"
       ],
       "situace": "5/5",
       "na_ledu_za": [
@@ -14702,8 +14707,8 @@
        "Štencel Jan",
        "Lantoši Róbert",
        "Olesen Nick Alexander",
-       "Pour Jakub",
-       "Kundrátek Tomáš"
+       "Kundrátek Tomáš",
+       "Bell Parker"
       ],
       "na_ledu_proti": [
        "Schleiss Jan",
@@ -14724,11 +14729,11 @@
       ],
       "situace": "5/5",
       "na_ledu_za": [
-       "Strnad Lukáš",
        "Merezhko Igor",
        "Malák Daniel",
        "Schleiss Jan",
-       "Žemlička Richard"
+       "Žemlička Richard",
+       "Teplý Michal"
       ],
       "na_ledu_proti": [
        "Bell Parker",
