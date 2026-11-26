@@ -783,12 +783,42 @@ def build_schedule_changes(old: dict, games: list) -> list:
     return changes
 
 
+def _game_date(g: dict):
+    """Datum zápasu z rozpisu ('středa 16.9.' bez roku). Rok vychází ze sezóny:
+    červenec–prosinec = rok začátku sezóny, leden–červen = o rok později."""
+    from datetime import date
+    m = re.search(r"(\d{1,2})\.\s*(\d{1,2})\.", g.get("datum") or "")
+    if not m:
+        return None
+    dnes = datetime.now(ZoneInfo("Europe/Prague")).date()
+    start = dnes.year if dnes.month >= 7 else dnes.year - 1
+    mesic = int(m.group(2))
+    try:
+        return date(start if mesic >= 7 else start + 1, mesic, int(m.group(1)))
+    except ValueError:
+        return None
+
+
+def _game_order(g: dict):
+    """Chronologické pořadí zápasů — podle data, ne podle čísla kola (odložené
+    zápasy se hrají mimo pořadí). Bez data se řadí podle kola."""
+    from datetime import date
+    return (_game_date(g) or date.max, g["kolo"])
+
+
+def _zapis_order(z: dict):
+    """Totéž pro uložený zápis ('16.09.2026', '17:30')."""
+    m = re.match(r"\s*(\d{1,2})\.\s*(\d{1,2})\.\s*(\d{4})", z.get("datum") or "")
+    k = (int(m.group(3)), int(m.group(2)), int(m.group(1))) if m else (9999, 0, 0)
+    return (k, z.get("zacatek") or "", z["kolo"])
+
+
 def build_next_match(games: list) -> dict | None:
     """Nejbližší dosud neodehraný zápas (podle nejnižšího čísla kola)."""
     upcoming = [g for g in games if not g["odehrano"]]
     if not upcoming:
         return None
-    g = min(upcoming, key=lambda x: x["kolo"])
+    g = min(upcoming, key=_game_order)
     doma = g["domaci"] == CLUB_NAME
     return {
         "kolo": g["kolo"],
@@ -848,7 +878,7 @@ def build_streaks(games: list) -> dict:
     Aktuální série od posledního odehraného zápasu zpátky: kolikrát v
     řadě Motor vyhrál/prohrál, a kolikrát v řadě hrál doma/venku.
     """
-    played = sorted((g for g in games if g["odehrano"]), key=lambda g: g["kolo"], reverse=True)
+    played = sorted((g for g in games if g["odehrano"]), key=_game_order, reverse=True)
 
     vysledek_typ, vysledek_pocet = None, 0
     for g in played:
@@ -937,20 +967,20 @@ def build_record_svg(games: list) -> str:
     ve světlém i tmavém režimu. Úseky nahoru zeleně, dolů červeně, plocha
     mezi linkou a nulou zeleně nad nulou a červeně pod ní; mřížka vodorovná; data bodů jsou v data-pts pro tooltip (JS).
     """
-    played = sorted((g for g in games if g["odehrano"]), key=lambda g: g["kolo"])
+    played = sorted((g for g in games if g["odehrano"]), key=_game_order)
     if not played:
         return ""
 
     total = 0
     pts = [(0, 0, "Start sezóny")]
-    for g in played:
+    for poradi, g in enumerate(played, 1):
         if g["vyhra"]:
             total += 1
         elif g["prohra"]:
             total -= 1
         doma = g["domaci"] == CLUB_NAME
         souper = g["hoste"] if doma else g["domaci"]
-        pts.append((g["kolo"], total,
+        pts.append((poradi, total,
                     f'{g["kolo"]}. kolo: {souper} ({"doma" if doma else "venku"}) {g.get("vysledek") or ""}'.strip()))
 
     width, height = 760, 300
@@ -1610,7 +1640,7 @@ def write_lineups_json(games: list, zapis_state: dict) -> None:
         except Exception:
             pass
         out = []
-        for g in sorted(games, key=lambda g: g["kolo"]):
+        for g in sorted(games, key=_game_order):
             z = zk.get(g["kolo"]) or {}
             out.append({
                 "kolo": g["kolo"],
@@ -1844,7 +1874,7 @@ def build_absences(zapasy: list) -> dict:
     "hraci": {jmeno: {"nastoupil", "chybel", "serie"}}, "navraty":
     {kolo: [(jmeno, kolik)]}} — serie = kolik posledních zápasů v řadě
     chybí, navraty = kdo se v tom kole vrátil po absenci."""
-    zz = sorted((z for z in zapasy if z.get("nastoupili")), key=lambda z: z["kolo"])
+    zz = sorted((z for z in zapasy if z.get("nastoupili")), key=_zapis_order)
     seen, po_kolech, hraci, navraty, run = [], {}, {}, {}, {}
     for z in zz:
         hrali = z["nastoupili"][_motor_side(z)]
@@ -2709,7 +2739,7 @@ def render_html(
         record_html = ""
 
     # --- KPI dlaždice (Přehled + Bilance)
-    played_g = sorted((g for g in (games or []) if g.get("odehrano")), key=lambda g: g["kolo"])
+    played_g = sorted((g for g in (games or []) if g.get("odehrano")), key=_game_order)
     res_counts = {"V": 0, "VP": 0, "PP": 0, "P": 0}
     for g in played_g:
         rt = _result_type(g)
@@ -2912,7 +2942,7 @@ def render_html(
             bits.append(f'🎯 Nájezdy Motoru: {", ".join(mp)}')
         return "".join(f'<p class="small">{esc(b)}</p>' for b in bits)
 
-    zapis_games = sorted(zapis_all, key=lambda z: z["kolo"], reverse=True)[:ZAPIS_GAMES_SHOWN]
+    zapis_games = sorted(zapis_all, key=_zapis_order, reverse=True)[:ZAPIS_GAMES_SHOWN]
     if zapis_games:
         game_blocks = []
         for i, z in enumerate(zapis_games):
