@@ -1079,6 +1079,7 @@ ZAPIS_ZMENA_POLE = (
     ("bez_brankare", "hra bez brankáře"), ("konec", "konec zápasu"),
     ("zacatek", "začátek zápasu"), ("misto", "místo"),
 )
+ZAPIS_PLNA_KONTROLA_DEN = 0  # v tento den v týdnu (0 = pondělí) se znovu zkontroluje celá sezóna
 ZAPIS_MAX_PER_RUN = 80  # strop stažených zápisů za jeden běh (zpětné doplnění)
 LINEUPS_JSON = DOCS_DIR / "sestavy-data.json"  # data pro docs/sestavy.html
 
@@ -1691,7 +1692,8 @@ def update_zapis_state(state: dict, games: list) -> dict:
         z = zapasy.get(g["kolo"])
         d = _datum_hry(g.get("datum"), dnes)
         if (g.get("odehrano") and z and z.get("verze") == ZAPIS_VERZE and z.get("hokejcz_id")
-                and d and 0 <= (dnes - d).days <= ZAPIS_ZPETNE_DNY):
+                and d and (dnes - d).days >= 0
+                and ((dnes - d).days <= ZAPIS_ZPETNE_DNY or dnes.weekday() == ZAPIS_PLNA_KONTROLA_DEN)):
             kontrola.append(g)
     chybi = sorted(
         (g for g in games if g.get("odehrano")
@@ -1729,8 +1731,9 @@ def update_zapis_state(state: dict, games: list) -> dict:
         except Exception as exc:  # jeden vadný zápis nesmí zastavit ostatní
             print(f"Varování: zápis {game['kolo']}. kola se nepodařilo zpracovat ({exc}).")
 
-    # Zpětná kontrola: zápisy z posledních ZAPIS_ZPETNE_DNY dní se stáhnou
-    # znovu a porovnají s uloženými (opravy gólů, trestů, nejlepších hráčů…).
+    # Zpětná kontrola: zápisy z posledních ZAPIS_ZPETNE_DNY dní (a jednou týdně
+    # celé sezóny) se stáhnou znovu a porovnají s uloženými (opravy gólů,
+    # trestů, nejlepších hráčů…).
     zkontrolovano = 0
     for game in kontrola:
         stary = zapasy.get(game["kolo"])
