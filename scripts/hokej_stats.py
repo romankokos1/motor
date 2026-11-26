@@ -730,21 +730,42 @@ def save_schedule_watch(data: dict) -> None:
     )
 
 
+def _souper(g: dict) -> str:
+    return g["hoste"] if g["domaci"] == CLUB_NAME else g["domaci"]
+
+
 def build_schedule_changes(old: dict, games: list) -> list:
     """
-    Porovná dosud NEODEHRANÉ zápasy s posledně uloženým termínem/místem
-    a nahlásí, pokud se něco změnilo (datum, čas, nebo místo). Odehrané
-    zápasy se přeskakují — jejich termín se zpětně nemění. První běh
-    (žádný předchozí záznam pro dané kolo) nic nehlásí, jen založí stav.
+    Porovná rozpis s posledně uloženým stavem a nahlásí:
+    - u dosud NEODEHRANÝCH zápasů změnu data, času, místa nebo soupeře
+      (přeskládání kalendáře), nový zápas v rozpisu a zápas, který
+      z rozpisu zmizel;
+    - u odehraných zápasů zpětnou změnu výsledku.
+    První běh (prázdný stav) nic nehlásí, jen založí stav. Záznamy ze
+    starší verze bez soupeře / výsledku se v těch polích neporovnávají.
     """
     changes = []
+    if not old:
+        return changes
+    aktualni = {str(g["kolo"]) for g in games}
     for g in games:
-        if g["odehrano"]:
-            continue
         prev = old.get(str(g["kolo"]))
-        if prev is None or prev.get("odehrano"):
+        souper = _souper(g)
+        if prev is None:
+            if not g["odehrano"]:
+                changes.append(f'🆕 {g["kolo"]}. kolo ({souper}): nově v rozpisu – '
+                               f'{g["datum"]}, {g["cas"] or "čas neuveden"}, {g["misto"]}')
+            continue
+        if g["odehrano"]:
+            if prev.get("odehrano") and prev.get("vysledek") and prev["vysledek"] != g["vysledek"]:
+                changes.append(f'⚠️ {g["kolo"]}. kolo ({souper}): výsledek '
+                               f'{prev["vysledek"]} → {g["vysledek"]}')
+            continue
+        if prev.get("odehrano"):
             continue
         rozdily = []
+        if prev.get("souper") and prev["souper"] != souper:
+            rozdily.append(f'soupeř {prev["souper"]} → {souper}')
         if prev.get("datum") != g["datum"]:
             rozdily.append(f'datum {prev.get("datum") or "?"} → {g["datum"]}')
         if prev.get("cas") != g["cas"]:
@@ -752,8 +773,13 @@ def build_schedule_changes(old: dict, games: list) -> list:
         if prev.get("misto") != g["misto"]:
             rozdily.append(f'místo {prev.get("misto") or "?"} → {g["misto"]}')
         if rozdily:
-            soupeř = g["hoste"] if g["domaci"] == CLUB_NAME else g["domaci"]
-            changes.append(f'⏰ {g["kolo"]}. kolo ({soupeř}): ' + ", ".join(rozdily))
+            changes.append(f'⏰ {g["kolo"]}. kolo ({souper}): ' + ", ".join(rozdily))
+    # zmizelé zápasy — jen když rozpis vypadá úplný (ochrana proti chybě stránky)
+    if len(games) >= 0.8 * len(old):
+        for kolo, prev in sorted(old.items(), key=lambda kv: int(kv[0])):
+            if kolo not in aktualni and not prev.get("odehrano"):
+                changes.append(f'❌ {kolo}. kolo ({prev.get("souper") or "?"}): zmizelo z rozpisu '
+                               f'(bylo {prev.get("datum") or "?"}, {prev.get("cas") or "čas neuveden"})')
     return changes
 
 
@@ -881,13 +907,21 @@ def update_schedule_log(log: list, schedule_changes: list) -> list:
 
 
 def update_schedule_watch(old: dict, games: list) -> dict:
-    new = dict(old)
+    aktualni = {str(g["kolo"]) for g in games}
+    if len(games) >= 0.8 * len(old):
+        # zmizelé neodehrané zápasy se zapomenou (už byly nahlášeny),
+        # odehrané zůstávají
+        new = {k: v for k, v in old.items() if k in aktualni or v.get("odehrano")}
+    else:
+        new = dict(old)
     for g in games:
         new[str(g["kolo"])] = {
             "datum": g["datum"],
             "cas": g["cas"],
             "misto": g["misto"],
             "odehrano": g["odehrano"],
+            "souper": _souper(g),
+            "vysledek": g.get("vysledek"),
         }
     return new
 
@@ -1006,6 +1040,15 @@ HOKEJOVYZAPIS_URL_TMPL = "https://hokejovyzapis.cz/pdf/print/cs-html/?hokejczId=
 ZAPIS_STATE_FILE = SCRIPT_DIR / "zapis_state.json"
 ZAPIS_GAMES_SHOWN = 5  # kolik posledních zápasů se zobrazuje v záložce Zápas
 ZAPIS_VERZE = 8  # 8 = oficiální zkratky trestů, 2 = hráči na ledě, 3 = nejlepší hráči, 4 = soupiska/třetiny/nájezdy/rozhodčí, 5 = pozice hráčů, 6 = sestavy, 7 = hra bez brankáře
+ZAPIS_ZPETNE_DNY = 14  # zápisy odehraných zápasů se tolik dní zpětně stahují znovu a kontrolují
+ZAPIS_ZMENY: list = []  # změny nalezené při poslední kontrole (plní update_zapis_state)
+ZAPIS_ZMENA_POLE = (
+    ("goly", "góly"), ("tresty", "tresty"), ("nejlepsi", "nejlepší hráči"),
+    ("divaci", "diváci"), ("nastoupili", "soupiska"), ("tretiny", "třetiny a střely"),
+    ("najezdy_raw", "nájezdy"), ("rozhodci", "rozhodčí"), ("sestava", "sestavy"),
+    ("bez_brankare", "hra bez brankáře"), ("konec", "konec zápasu"),
+    ("zacatek", "začátek zápasu"), ("misto", "místo"),
+)
 ZAPIS_MAX_PER_RUN = 80  # strop stažených zápisů za jeden běh (zpětné doplnění)
 LINEUPS_JSON = DOCS_DIR / "sestavy-data.json"  # data pro docs/sestavy.html
 
@@ -1610,19 +1653,30 @@ def update_zapis_state(state: dict, games: list) -> dict:
     hokej.cz se stahuje jednou na běh. Chyby (web nedostupný, zápis ještě
     není kompletní, změna struktury) se potichu přeskočí — tahle funkce
     nikdy nesmí shodit celý běh statistik."""
+    ZAPIS_ZMENY.clear()
     zapasy = {z["kolo"]: z for z in state.get("zapasy", [])}
+    dnes = datetime.now(ZoneInfo("Europe/Prague")).date()
+    kontrola = []
+    for g in games:
+        z = zapasy.get(g["kolo"])
+        d = _datum_hry(g.get("datum"), dnes)
+        if (g.get("odehrano") and z and z.get("verze") == ZAPIS_VERZE and z.get("hokejcz_id")
+                and d and 0 <= (dnes - d).days <= ZAPIS_ZPETNE_DNY):
+            kontrola.append(g)
     chybi = sorted(
         (g for g in games if g.get("odehrano")
          and zapasy.get(g["kolo"], {}).get("verze") != ZAPIS_VERZE),
         key=lambda g: g["kolo"],
     )
-    if not chybi:
+    if not chybi and not kontrola:
         return state
-    try:
-        hokejcz_matches = fetch_hokejcz_matches()
-    except Exception as exc:
-        print(f"Varování: nepodařilo se načíst rozpis na hokej.cz ({exc}).")
-        return state
+    hokejcz_matches = []
+    if chybi:
+        try:
+            hokejcz_matches = fetch_hokejcz_matches()
+        except Exception as exc:
+            print(f"Varování: nepodařilo se načíst rozpis na hokej.cz ({exc}).")
+            chybi = []
 
     stazeno = 0
     for game in chybi[:ZAPIS_MAX_PER_RUN]:
@@ -1644,10 +1698,68 @@ def update_zapis_state(state: dict, games: list) -> dict:
             time.sleep(0.5)
         except Exception as exc:  # jeden vadný zápis nesmí zastavit ostatní
             print(f"Varování: zápis {game['kolo']}. kola se nepodařilo zpracovat ({exc}).")
+
+    # Zpětná kontrola: zápisy z posledních ZAPIS_ZPETNE_DNY dní se stáhnou
+    # znovu a porovnají s uloženými (opravy gólů, trestů, nejlepších hráčů…).
+    zkontrolovano = 0
+    for game in kontrola:
+        stary = zapasy.get(game["kolo"])
+        if not stary or stary.get("verze") != ZAPIS_VERZE:
+            continue  # právě stažené nebo přepsané — není co porovnávat
+        try:
+            novy = fetch_zapis(stary["hokejcz_id"])
+            time.sleep(0.5)
+            if not novy:
+                continue
+            novy["kolo"] = game["kolo"]
+            zkontrolovano += 1
+            zmena = _zapis_zmena(stary, novy)
+            if zmena:
+                zapasy[game["kolo"]] = novy
+                ZAPIS_ZMENY.append({"kolo": game["kolo"], **zmena,
+                                    "nejlepsi_nove": not stary.get("nejlepsi") and bool(novy.get("nejlepsi")),
+                                    "zapis": novy})
+                print(f"Zápis {game['kolo']}. kola se změnil: {', '.join(zmena['pole'])}.")
+        except Exception as exc:
+            print(f"Varování: kontrola zápisu {game['kolo']}. kola selhala ({exc}).")
     state["zapasy"] = [zapasy[k] for k in sorted(zapasy)]
     state["zpracovana_kola"] = sorted(zapasy)
-    print(f"Zápisy: staženo {stazeno}, celkem uloženo {len(zapasy)}.")
+    print(f"Zápisy: staženo {stazeno}, zpětně zkontrolováno {zkontrolovano} "
+          f"(změněno {len(ZAPIS_ZMENY)}), celkem uloženo {len(zapasy)}.")
     return state
+
+
+def _datum_hry(txt, dnes):
+    """'středa 16.9.' → date (rok se dopočítá jako nejbližší k dnešku)."""
+    m = re.search(r"(\d{1,2})\.\s*(\d{1,2})\.", txt or "")
+    if not m:
+        return None
+    from datetime import date
+    kandidati = []
+    for rok in (dnes.year - 1, dnes.year, dnes.year + 1):
+        try:
+            kandidati.append(date(rok, int(m.group(2)), int(m.group(1))))
+        except ValueError:
+            pass
+    return min(kandidati, key=lambda x: abs((x - dnes).days)) if kandidati else None
+
+
+def _zapis_zmena(stary: dict, novy: dict) -> dict | None:
+    """Porovná dva stažené zápisy téhož zápasu. Vrací {"pole": [...], "detail": [...]}
+    nebo None, když jsou shodné (verze a hokejcz_id se nesrovnávají)."""
+    def ser(v):
+        return json.dumps(v, ensure_ascii=False, sort_keys=True)
+    pole = [lbl for key, lbl in ZAPIS_ZMENA_POLE if ser(stary.get(key)) != ser(novy.get(key))]
+    if not pole:
+        return None
+    detail = []
+    if "diváci" in pole:
+        detail.append(f'diváci {stary.get("divaci") or "?"} → {novy.get("divaci") or "?"}')
+    ss = (stary.get("skore_domaci"), stary.get("skore_hoste"))
+    ns = (novy.get("skore_domaci"), novy.get("skore_hoste"))
+    if ss != ns:
+        detail.append(f"skóre {ss[0]}:{ss[1]} → {ns[0]}:{ns[1]}")
+    return {"pole": pole, "detail": detail}
 
 
 def _is_motor(team: str) -> bool:
@@ -4071,6 +4183,12 @@ def main() -> None:
                     best_changes.append(f'👥 {k}. kolo — rekordní návštěva sezóny doma: {_fmt_n(n)}')
                 if _motor_side(z) == "domaci" and n:
                     starsi_doma.append(n)
+        for zm in ZAPIS_ZMENY:
+            k = zm["kolo"]
+            best_changes.append(f'🔁 {k}. kolo — zápis opraven: {", ".join(zm["pole"])}'
+                                + (f' ({"; ".join(zm["detail"])})' if zm["detail"] else ""))
+            if zm["nejlepsi_nove"]:
+                best_changes.append(f'⭐ {k}. kolo — nejlepší hráči: {_best_line(zm["zapis"])}')
         if best_changes:
             changes.extend(best_changes)
             history = update_history(history, best_changes, [])
