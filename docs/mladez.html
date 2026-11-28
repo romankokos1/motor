@@ -165,6 +165,10 @@
       <p class="small hidden" id="rep-none"></p>
       <div id="rep-body">
         <div class="block">
+          <div class="block-head"><strong>Online komentář (onlajny.com)</strong></div>
+          <textarea id="online" placeholder="Ctrl+V" style="width:100%;min-height:60px" aria-label="Online komentář"></textarea>
+        </div>
+        <div class="block">
           <div class="block-head"><strong>Titulky</strong><button class="btn ghost" data-copy="rep-tit">Kopírovat</button></div>
           <textarea class="out" id="rep-tit" spellcheck="false"></textarea>
         </div>
@@ -199,6 +203,7 @@ const DNY = ["ne", "po", "út", "st", "čt", "pá", "so"];
 
 let ROZPIS_LIMIT = 6, vsechny = false;
 let MATCHES = [], team = "u20", selected = null, current = null;
+let onlineText = "";
 let rep = null, upravy = { off: {}, vi: {} }, upravyKlic = "", vybrana = null, clanek = "", spodek = [];
 const posledniText = {}, hotove = { "rep-perex": "", "rep-text": "" };
 
@@ -262,6 +267,7 @@ $("paste").addEventListener("paste", e => {
   const parsed = parseZapis(cd ? cd.getData("text/html") : "", cd ? cd.getData("text/plain") : "");
   if (!parsed) { setStatus("Ve vloženém obsahu nejsou soupisky zápisu.", "warn"); return; }
   $("paste").value = "";
+  onlineText = ""; $("online").value = "";   // komentář patří k předchozímu zápasu
   setStatus("Načteno ze zkopírovaného zápisu.", "ok");
   render(parsed);
 });
@@ -320,7 +326,7 @@ function renderReportaz(m) {
   $("rep-none").classList.toggle("hidden", ok);
   if (!ok) { $("rep-none").textContent = "V zápisu zatím nejsou góly ani tresty — reportáž půjde po zápase."; rep = null; return; }
   const namer = makeNamer(m);
-  const r = buildReportage(m, namer, null, "", delka());
+  const r = buildReportage(m, namer, null, onlineText, delka());
   if (!r) { $("rep-body").classList.add("hidden"); $("rep-none").textContent = "Reportáž z tohoto zápisu nejde sestavit."; $("rep-none").classList.remove("hidden"); rep = null; return; }
   const klic = `${m.A.nazev}|${m.B.nazev}|${m.goly.length}|${delka()}`;
   if (klic !== upravyKlic) { upravy = { off: {}, vi: {} }; upravyKlic = klic; }
@@ -407,6 +413,7 @@ $("modes").addEventListener("click", e => {
     if (current) { renderSestavy(current); renderReportaz(current); }
   });
 });
+$("online").addEventListener("input", e => { onlineText = e.target.value; if (current) renderReportaz(current); });
 $("delka").addEventListener("change", () => {
   try { localStorage.setItem("mladez-delka", delka()); } catch {}
   if (current) renderReportaz(current);
