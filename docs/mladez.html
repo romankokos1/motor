@@ -1,0 +1,434 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mládež – sestavy a reportáž</title>
+<style>
+  @font-face { font-family: "IBM Plex Sans"; font-weight: 400; font-display: swap; src: url("fonts/ibm-plex-sans-latin-400-normal.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215; }
+  @font-face { font-family: "IBM Plex Sans"; font-weight: 400; font-display: swap; src: url("fonts/ibm-plex-sans-latin-ext-400-normal.woff2") format("woff2"); unicode-range: U+0100-02AF, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+  @font-face { font-family: "IBM Plex Sans"; font-weight: 500; font-display: swap; src: url("fonts/ibm-plex-sans-latin-500-normal.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215; }
+  @font-face { font-family: "IBM Plex Sans"; font-weight: 500; font-display: swap; src: url("fonts/ibm-plex-sans-latin-ext-500-normal.woff2") format("woff2"); unicode-range: U+0100-02AF, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+  @font-face { font-family: "IBM Plex Sans"; font-weight: 600; font-display: swap; src: url("fonts/ibm-plex-sans-latin-600-normal.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215; }
+  @font-face { font-family: "IBM Plex Sans"; font-weight: 600; font-display: swap; src: url("fonts/ibm-plex-sans-latin-ext-600-normal.woff2") format("woff2"); unicode-range: U+0100-02AF, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+
+  :root {
+    --bg: #FFFFFF; --surface-2: #F3F4F6; --line: #E4E6EA; --line-strong: #C5C9CF;
+    --text: #15181C; --text-2: #3F454D; --text-3: #6A717B;
+    --accent: #1F5FA8; --accent-ink: #FFFFFF; --pos: #1E7B3A; --neg: #C2352A; --warn: #A06A00; --hover: #F3F4F6;
+    --tabbar-h: 46px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #121416; --surface-2: #1B1E22; --line: #2A2E34; --line-strong: #444A52;
+      --text: #ECEEF0; --text-2: #C3C8CE; --text-3: #8D949D;
+      --accent: #6EA8F0; --accent-ink: #0E1419; --pos: #4CC27A; --neg: #F0685D; --warn: #D9A441; --hover: #1B1E22;
+    }
+  }
+  * { box-sizing: border-box; }
+    body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font: 15px/1.5 "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-variant-numeric: tabular-nums;
+  }
+  main { max-width: 960px; margin: 0 auto; padding: 0 16px 56px; }
+  .hidden { display: none !important; }
+  .small { font-size: 13px; color: var(--text-3); }
+  h1 { font-size: 20px; font-weight: 600; margin: 18px 0 4px; }
+  h2 { font-size: 16px; font-weight: 600; margin: 0 0 10px; }
+
+  /* kategorie */
+  .tabbar { background: var(--bg); border-bottom: 1px solid var(--line); display: flex; gap: 22px; height: var(--tabbar-h); margin: 0 -16px; padding: 0 16px; overflow-x: auto; }
+  .tab { appearance: none; background: none; border: 0; border-bottom: 2px solid transparent; color: var(--text-3); font: inherit; font-weight: 500; padding: 0; cursor: pointer; white-space: nowrap; }
+  .tab:hover { color: var(--accent); }
+  .tab[aria-selected="true"] { color: var(--text); border-bottom-color: var(--accent); }
+
+  .card { border-top: 1px solid var(--line); padding: 16px 0 6px; margin-top: 18px; }
+  .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+
+  /* rozpis */
+  .seg { display: inline-flex; border: 1px solid var(--line-strong); border-radius: 6px; overflow: hidden; }
+  .seg label { padding: 4px 11px; cursor: pointer; font-size: 13px; color: var(--text-3); }
+  .seg input { display: none; }
+  .seg input:checked + span { color: var(--text); font-weight: 600; }
+  .seg label + label { border-left: 1px solid var(--line-strong); }
+  table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 14px; }
+  th { text-align: left; font-weight: 600; font-size: 12.5px; color: var(--text-2); background: var(--surface-2); padding: 6px 8px; }
+  td { padding: 7px 8px; border-top: 1px solid var(--line); vertical-align: top; }
+  tbody tr { cursor: pointer; transition: background-color .12s, box-shadow .12s; }
+  tbody tr:hover { background: var(--hover); box-shadow: inset 2px 0 0 var(--accent); }
+  tbody tr.sel { background: var(--hover); box-shadow: inset 2px 0 0 var(--accent); font-weight: 500; }
+  tbody tr:hover td.opp, tbody tr.sel td.opp { color: var(--accent); }
+  .ha { font-size: 12px; font-weight: 600; letter-spacing: .02em; color: var(--text-3); }
+  .ha.doma { color: var(--accent); }
+  td.when { white-space: nowrap; }
+  td.loc { color: var(--text-3); }
+  @media (max-width: 640px) { td.loc, th.loc { display: none; } }
+
+  /* vstup a výstup */
+  textarea, select { font: inherit; color: var(--text); background: var(--bg); border: 1px solid var(--line-strong); border-radius: 6px; padding: 8px 10px; }
+  textarea:focus-visible, button:focus-visible, .tab:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  #paste { width: 100%; min-height: 76px; }
+  button.btn { font: inherit; font-size: 14px; font-weight: 500; border: 1px solid var(--accent); background: var(--accent); color: var(--accent-ink); border-radius: 6px; padding: 6px 12px; cursor: pointer; white-space: nowrap; }
+  button.btn.ghost { background: transparent; color: var(--accent); }
+  #status { margin: 8px 0 0; font-size: 13px; color: var(--text-3); min-height: 1.3em; }
+  #status.ok { color: var(--pos); } #status.warn { color: var(--warn); }
+  .ctx { font-size: 14px; color: var(--text-2); margin: 0 0 8px; }
+  .ctx b { color: var(--text); font-weight: 600; }
+
+  .modes { display: flex; gap: 22px; border-bottom: 1px solid var(--line); margin-bottom: 14px; }
+  .modes .tab { height: 38px; }
+
+  .block { margin-bottom: 16px; }
+  .block-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; margin-bottom: 6px; }
+  .block-head strong { font-size: 14px; font-weight: 600; }
+  textarea.out { width: 100%; min-height: 92px; resize: vertical; line-height: 1.5; }
+  textarea.out.report { min-height: 130px; }
+  .check { font-size: 12.5px; color: var(--text-3); margin-top: 4px; }
+  .check b { color: var(--text); font-weight: 600; }
+
+  .txt { background: var(--surface-2); border-radius: 6px; padding: 10px 12px; line-height: 1.6; }
+  .txt p { margin: 0 0 10px; }
+  .txt p:last-child { margin-bottom: 0; }
+  .txt .s { cursor: pointer; border-radius: 3px; padding: 1px 0; }
+  .txt .s:hover { background: color-mix(in srgb, var(--accent) 12%, transparent); }
+  .txt .s.sel { background: color-mix(in srgb, var(--accent) 24%, transparent); }
+  .txt .s.off { color: var(--text-3); text-decoration: line-through; }
+  #pop { position: absolute; z-index: 20; display: flex; gap: 6px; background: var(--bg); border: 1px solid var(--line-strong); border-radius: 8px; padding: 6px; box-shadow: 0 4px 14px rgba(0,0,0,.16); }
+  #pop button { font-size: 13px; padding: 5px 10px; }
+  .opts { display: flex; gap: 6px 18px; flex-wrap: wrap; margin-bottom: 12px; font-size: 13px; color: var(--text-2); align-items: center; }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<main>
+  <h1>Mládež</h1>
+  <p class="small" style="margin:0 0 10px">Sestavy a reportáž ze zápisu o utkání mládežnických týmů HC Motor.</p>
+
+  <div class="tabbar" id="cats" role="tablist" aria-label="Kategorie">
+    <button class="tab" role="tab" data-team="u20" aria-selected="true">Junioři</button>
+    <button class="tab" role="tab" data-team="sdo" aria-selected="false">Starší dorost</button>
+    <button class="tab" role="tab" data-team="mdo" aria-selected="false">Mladší dorost</button>
+  </div>
+
+  <section class="card" id="rozpis-card">
+    <div class="row" style="justify-content:space-between">
+      <h2 style="margin:0">Rozpis</h2>
+      <div class="seg" id="kdy">
+        <label><input type="radio" name="kdy" value="budouci" checked><span>nadcházející</span></label>
+        <label><input type="radio" name="kdy" value="odehrane"><span>odehrané</span></label>
+      </div>
+    </div>
+    <table id="rozpis" aria-label="Rozpis zápasů">
+      <thead><tr><th>Datum</th><th>Čas</th><th></th><th>Soupeř</th><th class="loc">Místo</th></tr></thead>
+      <tbody></tbody>
+    </table>
+    <div class="row" style="margin-top:8px"><button class="btn ghost hidden" id="vice">Zobrazit všechny</button><span class="small" id="rozpis-info"></span></div>
+  </section>
+
+  <section class="card">
+    <h2>Zápis o utkání</h2>
+    <p class="ctx hidden" id="ctx"></p>
+    <textarea id="paste" placeholder="Ctrl+V" aria-label="Zápis o utkání vložený ze schránky"></textarea>
+    <p id="status"></p>
+  </section>
+
+  <section class="card hidden" id="result">
+    <div class="modes" id="modes" role="tablist">
+      <button class="tab" role="tab" data-mode="sestavy" aria-selected="true">Sestavy</button>
+      <button class="tab" role="tab" data-mode="reportaz" aria-selected="false">Reportáž</button>
+    </div>
+
+    <div id="m-sestavy">
+      <div class="opts">
+        <label><input type="checkbox" id="motor-first"> Motor vždy první</label>
+        <label><input type="checkbox" id="bold-labels"> Tučné popisky v zápisu (HTML &lt;b&gt;)</label>
+      </div>
+      <div id="teams"></div>
+      <div class="block">
+        <div class="block-head"><strong>Zápis utkání</strong><button class="btn ghost" id="copy-report">Kopírovat</button></div>
+        <textarea class="out report" id="report" spellcheck="false"></textarea>
+        <div class="check" id="report-check"></div>
+      </div>
+      <div class="row"><button class="btn" id="copy-all">Kopírovat vše</button></div>
+    </div>
+
+    <div id="m-reportaz" class="hidden">
+      <div class="opts">
+        <span>Délka</span>
+        <div class="seg" id="delka">
+          <label><input type="radio" name="delka" value="kratka"><span>krátká</span></label>
+          <label><input type="radio" name="delka" value="standard" checked><span>standardní</span></label>
+          <label><input type="radio" name="delka" value="dlouha"><span>dlouhá</span></label>
+        </div>
+      </div>
+      <p class="small hidden" id="rep-none"></p>
+      <div id="rep-body">
+        <div class="block">
+          <div class="block-head"><strong>Titulky</strong><button class="btn ghost" data-copy="rep-tit">Kopírovat</button></div>
+          <textarea class="out" id="rep-tit" spellcheck="false"></textarea>
+        </div>
+        <div class="block">
+          <div class="block-head"><strong>Perex</strong><button class="btn ghost" data-copy="rep-perex">Kopírovat</button></div>
+          <div class="txt" id="rep-perex"></div>
+        </div>
+        <div class="block">
+          <div class="block-head"><strong>Reportáž</strong><button class="btn ghost" data-copy="rep-text">Kopírovat</button></div>
+          <div class="txt" id="rep-text"></div>
+          <div class="check" id="rep-check"></div>
+        </div>
+        <div class="row"><button class="btn" id="copy-article">Kopírovat celý článek</button></div>
+      </div>
+    </div>
+  </section>
+</main>
+<div id="pop" class="hidden">
+  <button class="btn" id="pop-jina">Jiná formulace</button>
+  <button class="btn ghost" id="pop-vyn">Vynechat</button>
+</div>
+
+<script src="zapis-core.js"></script>
+<script>
+// Společné zpracování zápisu (jména, texty) je v zapis-core.js; tahle stránka řeší jen mládež.
+// Sezónní souvislosti A-týmu (série, vzájemné zápasy, kariérní milníky) se tu záměrně
+// nepoužívají — DATA zůstává prázdná, texty vznikají jen z jednoho zápisu.
+
+const TEAMS = { u20: "Junioři", sdo: "Starší dorost", mdo: "Mladší dorost" };
+const MATCH_URLS = ["../data/matches.json", "data/matches.json", "matches.json"];
+const DNY = ["ne", "po", "út", "st", "čt", "pá", "so"];
+
+let ROZPIS_LIMIT = 6, vsechny = false;
+let MATCHES = [], team = "u20", selected = null, current = null;
+let rep = null, upravy = { off: {}, vi: {} }, upravyKlic = "", vybrana = null, clanek = "", spodek = [];
+const posledniText = {}, hotove = { "rep-perex": "", "rep-text": "" };
+
+function setStatus(msg, cls = "") { const s = $("status"); s.textContent = msg; s.className = cls; }
+function esc(s) { return String(s).replace(/[&<>"]/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[ch])); }
+const delka = () => document.querySelector('input[name="delka"]:checked').value;
+const dnes = () => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`; };
+function datumTxt(iso) { const [y, m, d] = iso.split("-").map(Number); return `${DNY[new Date(y, m - 1, d).getDay()]} ${d}. ${m}.`; }
+
+// ===== Rozpis ===============================================================
+function renderRozpis() {
+  const kdy = document.querySelector('input[name="kdy"]:checked').value, t = dnes();
+  let list = MATCHES.filter(m => m.team === team);
+  list = kdy === "budouci" ? list.filter(m => m.date >= t).sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time))
+                           : list.filter(m => m.date < t).sort((a, b) => (b.date + b.time).localeCompare(a.date + a.time));
+  const tb = $("rozpis").querySelector("tbody");
+  tb.innerHTML = "";
+  const celkem = list.length;
+  if (!vsechny) list = list.slice(0, ROZPIS_LIMIT);
+  $("vice").classList.toggle("hidden", celkem <= ROZPIS_LIMIT);
+  $("vice").textContent = vsechny ? "Zobrazit méně" : `Zobrazit všechny (${celkem})`;
+  list.forEach(m => {
+    const tr = document.createElement("tr");
+    tr.dataset.key = m.team + m.date + m.time;
+    if (selected && selected.team + selected.date + selected.time === tr.dataset.key) tr.className = "sel";
+    tr.innerHTML = `<td class="when">${esc(datumTxt(m.date))}</td><td>${esc(m.time || "")}</td>` +
+      `<td><span class="ha ${m.home ? "doma" : ""}">${m.home ? "DOMA" : "VENKU"}</span></td>` +
+      `<td class="opp">${esc(m.opponent)}</td><td class="loc">${esc(m.location || "")}</td>`;
+    tr.addEventListener("click", () => selectGame(m));
+    tb.appendChild(tr);
+  });
+  $("rozpis-info").textContent = MATCHES.length ? (celkem ? "" : "Žádné zápasy.") : "Rozpis se nepodařilo načíst.";
+}
+
+function selectGame(m) {
+  selected = selected && selected === m ? null : m;
+  renderRozpis();
+  const c = $("ctx");
+  if (selected) {
+    c.innerHTML = `<b>${esc(TEAMS[selected.team])}</b> · ${esc(datumTxt(selected.date))}${selected.time ? ", " + esc(selected.time) : ""} · ${selected.home ? "doma" : "venku"} · ${esc(selected.opponent)}`;
+    c.classList.remove("hidden");
+  } else c.classList.add("hidden");
+}
+
+$("cats").addEventListener("click", e => {
+  const b = e.target.closest(".tab");
+  if (!b) return;
+  team = b.dataset.team;
+  document.querySelectorAll("#cats .tab").forEach(t => t.setAttribute("aria-selected", String(t === b)));
+  if (selected && selected.team !== team) selectGame(selected);
+  vsechny = false;
+  renderRozpis();
+});
+document.querySelectorAll('input[name="kdy"]').forEach(i => i.addEventListener("change", () => { vsechny = false; renderRozpis(); }));
+$("vice").addEventListener("click", () => { vsechny = !vsechny; renderRozpis(); });
+
+// ===== Zápis ================================================================
+$("paste").addEventListener("paste", e => {
+  const cd = e.clipboardData;
+  e.preventDefault();
+  const parsed = parseZapis(cd ? cd.getData("text/html") : "", cd ? cd.getData("text/plain") : "");
+  if (!parsed) { setStatus("Ve vloženém obsahu nejsou soupisky zápisu.", "warn"); return; }
+  $("paste").value = "";
+  setStatus("Načteno ze zkopírovaného zápisu.", "ok");
+  render(parsed);
+});
+
+function render(m) {
+  current = m;
+  // rozhodující nájezd vede zápis i jako gól (65:00+) — do branek ani průběhu nepatří
+  if (m.najezdy.length) m.goly = m.goly.filter(g => g.sec < 3900);
+  if (!motorSideOf(m)) {
+    $("result").classList.add("hidden");
+    setStatus("V zápisu nehraje Motor.", "warn");
+    return;
+  }
+  renderSestavy(m);
+  renderReportaz(m);
+  $("result").classList.remove("hidden");
+}
+
+function renderSestavy(m) {
+  const namer = makeNamer(m);
+  const lines = buildLines(m, namer, $("motor-first").checked);
+  const box = $("teams");
+  box.innerHTML = "";
+  lines.forEach((l, i) => {
+    const div = document.createElement("div");
+    div.className = "block";
+    const c = l.check, warn = [];
+    if (!c.gk) warn.push("v soupisce není brankář");
+    if (!c.trenéři) warn.push("v zápisu nejsou trenéři");
+    div.innerHTML = `
+      <div class="block-head"><strong></strong><button class="btn ghost">Kopírovat</button></div>
+      <textarea class="out lineup" spellcheck="false"></textarea>
+      <div class="check"></div>`;
+    div.querySelector("strong").textContent = l.nazev;
+    div.querySelector("textarea").value = l.text;
+    div.querySelector(".check").innerHTML =
+      `brankáři <b>${c.gk}</b> · obránci <b>${c.d}</b> · útočníci <b>${c.f}</b>` +
+      (c.nehrali.length ? ` · nenastoupili: ${esc(c.nehrali.join(", "))}` : "") +
+      (warn.length ? `<br>⚠️ ${esc(warn.join("; "))}` : "");
+    box.appendChild(div);
+  });
+  if (m.jeZapis) {
+    const r = buildReport(m, namer, $("bold-labels").checked);
+    $("report").value = r.text;
+    $("report-check").innerHTML = `góly <b>${m.goly.length}</b> · tresty <b>${m.tresty.length}</b>` +
+      (r.warn.length ? `<br>⚠️ ${esc(r.warn.join("; "))}` : "");
+  } else {
+    $("report").value = "";
+    $("report-check").textContent = "V zápisu zatím nejsou údaje o průběhu — vlož ho znovu po zápase.";
+  }
+}
+
+function renderReportaz(m) {
+  const ok = m.jeZapis;
+  $("rep-body").classList.toggle("hidden", !ok);
+  $("rep-none").classList.toggle("hidden", ok);
+  if (!ok) { $("rep-none").textContent = "V zápisu zatím nejsou góly ani tresty — reportáž půjde po zápase."; rep = null; return; }
+  const namer = makeNamer(m);
+  const r = buildReportage(m, namer, null, "", delka());
+  if (!r) { $("rep-body").classList.add("hidden"); $("rep-none").textContent = "Reportáž z tohoto zápisu nejde sestavit."; $("rep-none").classList.remove("hidden"); rep = null; return; }
+  const klic = `${m.A.nazev}|${m.B.nazev}|${m.goly.length}|${delka()}`;
+  if (klic !== upravyKlic) { upravy = { off: {}, vi: {} }; upravyKlic = klic; }
+  rep = r;
+  $("rep-tit").value = r.titulky.join("\n");
+  spodek = [buildReport(m, namer, false).text, ...buildLines(m, namer, false).map(l => l.text)];
+  hidePop();
+  paint();
+}
+
+function paint() {
+  const out = rep.realize(upravy);
+  const veta = s => {
+    if (!s.off) posledniText[s.id] = s.text;
+    const el = document.createElement("span");
+    el.className = "s" + (s.off ? " off" : "") + (s.id === vybrana ? " sel" : "");
+    el.dataset.id = s.id; el.dataset.n = s.n;
+    el.textContent = s.off ? posledniText[s.id] || "…" : s.text;
+    return el;
+  };
+  const odstavec = list => { const p = document.createElement("p"); list.filter(s => !s.hid).forEach((s, i) => { if (i) p.append(" "); p.append(veta(s)); }); return p; };
+  $("rep-perex").replaceChildren(odstavec(out.perex));
+  $("rep-text").replaceChildren(...out.odstavce.map(odstavec));
+  hotove["rep-perex"] = out.perexText; hotove["rep-text"] = out.text;
+  $("rep-check").textContent = rep.kontrola + (out.varovani.length ? " · ⚠️ zkontroluj: " + out.varovani.join(", ") : "");
+  clanek = [rep.titulky[0], out.perexText, out.text, ...spodek].join("\n\n");
+}
+
+// ----- úpravy klepnutím: jiná formulace věty / vynechat větu -----
+function hidePop() { vybrana = null; $("pop").classList.add("hidden"); document.querySelectorAll(".txt .s.sel").forEach(e => e.classList.remove("sel")); }
+document.addEventListener("click", e => {
+  if (e.target.closest("#pop")) return;
+  const s = e.target.closest(".txt .s");
+  if (!s) return hidePop();
+  hidePop();
+  vybrana = s.dataset.id;
+  s.classList.add("sel");
+  const off = s.classList.contains("off");
+  $("pop-jina").classList.toggle("hidden", off || +s.dataset.n < 2);
+  $("pop-vyn").textContent = off ? "Vrátit" : "Vynechat";
+  const pop = $("pop"), r = s.getClientRects()[0];
+  pop.classList.remove("hidden");
+  pop.style.top = `${r.bottom + window.scrollY + 6}px`;
+  pop.style.left = `${Math.max(8, Math.min(r.left + window.scrollX, window.scrollX + document.documentElement.clientWidth - pop.offsetWidth - 8))}px`;
+});
+$("pop-jina").addEventListener("click", () => { upravy.vi[vybrana] = (upravy.vi[vybrana] || 0) + 1; paint(); });
+$("pop-vyn").addEventListener("click", () => {
+  if (upravy.off[vybrana]) delete upravy.off[vybrana]; else upravy.off[vybrana] = true;
+  hidePop(); paint();
+});
+
+// ===== Kopírování a přepínače ================================================
+async function copyText(text, btn) {
+  try { await navigator.clipboard.writeText(text); }
+  catch { const ta = document.createElement("textarea"); ta.value = text; document.body.appendChild(ta); ta.select(); document.execCommand("copy"); ta.remove(); }
+  const old = btn.textContent; btn.textContent = "Zkopírováno ✓"; setTimeout(() => (btn.textContent = old), 1400);
+}
+$("teams").addEventListener("click", e => {
+  const b = e.target.closest("button");
+  if (b) copyText(b.closest(".block").querySelector("textarea").value, b);
+});
+$("copy-report").addEventListener("click", e => copyText($("report").value, e.target));
+$("copy-all").addEventListener("click", e =>
+  copyText([...document.querySelectorAll("textarea.lineup"), $("report")].map(t => t.value).filter(Boolean).join("\n"), e.target));
+$("m-reportaz").addEventListener("click", e => {
+  const b = e.target.closest("button[data-copy]");
+  if (b) copyText(b.dataset.copy in hotove ? hotove[b.dataset.copy] : $(b.dataset.copy).value, b);
+});
+$("copy-article").addEventListener("click", e => copyText(clanek, e.target));
+
+$("modes").addEventListener("click", e => {
+  const b = e.target.closest(".tab");
+  if (!b) return;
+  document.querySelectorAll("#modes .tab").forEach(t => t.setAttribute("aria-selected", String(t === b)));
+  $("m-sestavy").classList.toggle("hidden", b.dataset.mode !== "sestavy");
+  $("m-reportaz").classList.toggle("hidden", b.dataset.mode !== "reportaz");
+  hidePop();
+});
+
+["motor-first", "bold-labels"].forEach(id => {
+  try { $(id).checked = localStorage.getItem("mladez-" + id) === "1"; } catch {}
+  $(id).addEventListener("change", e => {
+    try { localStorage.setItem("mladez-" + id, e.target.checked ? "1" : "0"); } catch {}
+    if (current) { renderSestavy(current); renderReportaz(current); }
+  });
+});
+$("delka").addEventListener("change", () => {
+  try { localStorage.setItem("mladez-delka", delka()); } catch {}
+  if (current) renderReportaz(current);
+});
+try {
+  const d = localStorage.getItem("mladez-delka");
+  if (d) document.querySelector(`input[name="delka"][value="${d}"]`).checked = true;
+} catch {}
+
+// ===== Start ================================================================
+(async function init() {
+  for (const url of MATCH_URLS) {
+    try {
+      const res = await fetch(url, { cache: "no-store" });
+      if (!res.ok) continue;
+      const data = await res.json();
+      MATCHES = data.matches || [];
+      break;
+    } catch {}
+  }
+  renderRozpis();
+})();
+</script>
+</body>
+</html>
